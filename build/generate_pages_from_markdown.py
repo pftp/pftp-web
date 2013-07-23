@@ -6,7 +6,7 @@ processor = markdown.Markdown()
 for root, subFolders, files in os.walk('../markdown'):
   for filename in files:
     input_path = os.path.join(root, filename)
-    output_dir = root.replace('markdown', 'templates', 1)
+    output_dir = root.replace('markdown', 'templates/gen', 1)
     output_path = os.path.splitext(os.path.join(output_dir, filename))[0] + '.html'
     input_file = open(input_path, 'r')
 
