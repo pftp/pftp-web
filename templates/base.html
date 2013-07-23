@@ -1,9 +1,10 @@
 <html>
   <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/lib/flatly/bootstrap.min.css" />
-    <script type="text/javascript" src="/static/lib/bootstrap/js/bootstrap.min.js" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/flatly/bootstrap.min.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery-1.10.2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
     {% block head %}
     {% endblock %}
   </head>
