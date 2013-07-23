@@ -1,0 +1,6 @@
+[submodule "static/lib/codemirror"]
+	path = static/lib/codemirror
+	url = git@github.com:marijnh/CodeMirror.git
+[submodule "static/lib/skulpt"]
+	path = static/lib/skulpt
+	url = git@github.com:bnmnetp/skulpt.git
