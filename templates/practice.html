@@ -5,13 +5,14 @@ Python Practice
 {% endblock %}
 
 {% block head %}
-<script type="text/javascript" src="{{ url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='lib/codemirror/mode/python/python.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='practice/practice.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/codemirror/lib/codemirror.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/codemirror/theme/cobalt.css') }}">
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='practice/practice.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}">
 {% endblock %}
 
 {% block content %}
+<h3>{{ex.prompt}}</h3>
 <textarea id="code" style="display:none;"></textarea>
 {% endblock %}

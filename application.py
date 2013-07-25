@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from contextlib import closing
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, g
 
 DATABASE = 'pftp.db'
 
@@ -14,7 +14,13 @@ def index():
 
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):
-    return render_template('practice.html', ex_id=ex_id)
+    cur_ex = g.db.execute(
+        'select * from exercises where id = ?', [str(ex_id)]
+    ).fetchone()
+    if cur_ex is not None:
+        return render_template('practice.html', ex=cur_ex)
+    else:
+        return redirect('/practice/ex1')
 
 @app.route('/lessons/<path>')
 def lesson(path):
@@ -32,6 +38,17 @@ def init_db():
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
+
+@app.before_request
+def before_request():
+    g.db = connect_db()
+    g.db.row_factory = sqlite3.Row
+
+@app.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
 
 if __name__ == '__main__':
   app.run(debug=True)
