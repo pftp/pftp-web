@@ -1,6 +1,7 @@
 import os
 import markdown
 from markdown.postprocessors import Postprocessor
+from termcolor import colored
 
 def humanize(filename):
   uncapitalized = ['a', 'an', 'and', 'at', 'by', 'from', 'of', 'on', 'or', 'the', 'to', 'with', 'without']
@@ -15,6 +16,7 @@ if __name__ == '__main__':
   markdown_template = markdown_template_file.read()
 
   processor = markdown.Markdown()
+  count = 0
 
 
   for root, subFolders, files in os.walk('markdown'):
@@ -29,10 +31,13 @@ if __name__ == '__main__':
         os.makedirs(output_dir)
       output_file = open(output_path, 'w')
 
-      print "Generating %s from %s" % (output_path, input_path)
+      print colored("Generating %s from %s" % (output_path, input_path), "yellow")
       html_output = processor.convert(input_text)
 
       output_text = markdown_template.replace('[title]', humanize(filename)).replace('[content]', html_output)
       output_file.write(output_text)
 
       processor.reset()
+      count += 1
+
+  print colored("%s files generated" % count, "green")
