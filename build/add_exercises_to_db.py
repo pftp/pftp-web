@@ -11,10 +11,12 @@ if __name__ == '__main__':
     exercises = json.loads(exercises_file.read())
     db = sqlite3.connect('pftp.db')
     for ex in exercises:
+        print colored("Adding %s to database" % ex['prompt'], "yellow")
         db.execute('insert into exercises (prompt, hint, test_cases, ' +
                    'solution) values (?, ?, ?, ?)',
                    [ex['prompt'], ex['hint'], json.dumps(ex['test_cases']),
                        ex['solution']])
+
     db.commit()
     db.close()
-    print colored("%s exercises addded to database." % len(exercises), "green")
+    print colored("%s exercises added to database." % len(exercises), "green")
