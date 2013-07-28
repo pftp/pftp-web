@@ -4,30 +4,68 @@ var builtinRead = function(x) {
     throw "File not found: '" + x + "'";
   return Sk.builtinFiles['files'][x];
 };
-var genOutf = function(outputs) {
+var genOutf = function(execObj) {
   return function(text) {
-    if ($.trim(text) !== '') {
-      outputs.push(text);
+    if (!('output' in execObj)) {
+      execObj['output'] = '';
     }
+    execObj['output'] += text;
   };
 };
-var runit = function(code, outputs) {
-  Sk.configure({output: genOutf(outputs), read: builtinRead});
+var executeCode = function(execObj) {
   try {
-    eval(Sk.importMainWithBody('<stdin>', false, code));
+    Sk.configure({output: genOutf(execObj), read: builtinRead});
+    eval(Sk.importMainWithBody('<stdin>', false, execObj['input']));
   } catch (err) {
     if (err.toString().trim() === "TypeError: Cannot read property 'constructor' of null") {
-      outputs.push('Error: Your function does not have return value. Your function needs a return value.');
+      execObj['error'] = 'Error: Your function does not have return value. Your function needs a return value.';
     } else if (err.toString().trim() === 'ImportError: No module named <stdin>') {
-      outputs.push('Error: You did not type any code. You must type some code.');
+      execObj['error'] = 'Error: You did not type any code. You must type some code.';
     } else {
-      outputs.push(err.toString());
+      execObj['error'] = err.toString();
     }
   }
-  $('#output').text(outputs[outputs.length-1]);
+};
+var runit = function(code) {
+  var runObj = {'input': code};
+  executeCode(runObj);
+  if (runObj['output'] !== undefined) {
+    $('#output').text(runObj['run']);
+  } else {
+    $('#output').text(runObj['error']);
+  }
+  return runObj;
+};
+var testit = function(code) {
+  var testCases, testCase, testObj, runLines, testResult, testObjs = [];
+  testCases = JSON.parse($('#test_cases').text());
+  for (testCase in testCases) {
+    if (testCases.hasOwnProperty(testCase)) {
+      testObj = {};
+      if (testCase !== '') {
+        testObj['input'] = code + '\nprint\nprint repr(' + testCase + ')';
+      } else {
+        testObj['input'] = code;
+      }
+      testObj['expected'] = testCases[testCase];
+      executeCode(testObj);
+      if (testObj['output'] !== undefined) {
+        if (testCase !== '') {
+          runLines = testObj['output'].split('\n');
+          testObj['output'] = runLines[runLines.length - 2];
+        }
+        testResult = testObj['output'];
+      } else {
+        testResult = testObj['error'];
+      }
+      testObj['correct'] = (testObj['expected'] === testResult) ? 1 : 0;
+      testObjs.push(testObj);
+    }
+  }
+  return testObjs;
 };
 $(function() {
-  var editor, inputs = [], outputs = [], curOutput;
+  var editor, execObj, execHistory = [];
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'output';
   editor = CodeMirror.fromTextArea(document.getElementById('code'), {
@@ -38,13 +76,28 @@ $(function() {
     mode: 'python'
   });
   $('#run_code').click(function(e) {
-    var code = editor.getValue().replace(/\t/g, '    ');
-    inputs.push(code);
+    var runObj, testObjs, correct,
+      code = editor.getValue().replace(/\t/g, '    ');
     $('#output').text('');
-    runit(code, outputs);
+    runObj = runit(code);
+    testObjs = testit(code);
+    correct = testObjs.reduce(function(acc, testObj) {
+      return acc && testObj['correct'];
+    }, true);
+    if (correct) {
+      $('#next_exercise').show();
+    }
+  });
+  $('#next_exercise').click(function(e) {
+    window.location.href = $('#next_exercise').attr('href');
   });
   $('#show_hint').click(function(e) {
     $('#show_hint').hide();
+    $('#show_solution').show();
     $('#hint_wrapper').show();
+  });
+  $('#show_solution').click(function(e) {
+    $('#show_solution').hide();
+    $('#solution_wrapper').show();
   });
 });

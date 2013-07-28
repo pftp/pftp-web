@@ -6,9 +6,10 @@ if __name__ == '__main__':
     exercises = json.loads(exercises_file.read())
     db = sqlite3.connect('pftp.db')
     for ex in exercises:
-        db.execute('insert into exercises (prompt, hint, solution)' +
-                   'values (?, ?, ?)',
-                   [ex['prompt'], ex['hint'], ex['solution']])
+        db.execute('insert into exercises (prompt, hint, test_cases, ' +
+                   'solution) values (?, ?, ?, ?)',
+                   [ex['prompt'], ex['hint'], json.dumps(ex['test_cases']),
+                       ex['solution']])
     db.commit()
     db.close()
     print exercises
