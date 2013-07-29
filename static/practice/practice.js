@@ -30,7 +30,7 @@ var runit = function(code) {
   var runObj = {'input': code};
   executeCode(runObj);
   if (runObj['output'] !== undefined) {
-    $('#output').text(runObj['run']);
+    $('#output').text(runObj['output']);
   } else {
     $('#output').text(runObj['error']);
   }
