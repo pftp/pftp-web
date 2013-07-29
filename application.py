@@ -3,12 +3,22 @@ import sqlite3
 from contextlib import closing
 from flask import Flask, render_template, redirect, g, Markup
 
-
-####################################################################################
-# Database
-####################################################################################
+################################################################################
+# Config
+################################################################################
 DATABASE = 'pftp.db'
 
+
+################################################################################
+# App
+################################################################################
+app = Flask(__name__)
+app.config.from_object(__name__)
+
+
+################################################################################
+# Database
+################################################################################
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
@@ -17,41 +27,6 @@ def init_db():
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
-
-
-####################################################################################
-# App
-####################################################################################
-app = Flask(__name__)
-app.config.from_object(__name__)
-
-
-####################################################################################
-# Routes
-####################################################################################
-@app.route('/')
-def index():
-  return 'This is Programming Feel The Power'
-
-@app.route('/practice/ex<int:ex_id>')
-def practice(ex_id):
-    ex_row = g.db.execute(
-        'select * from exercises where id = ?', [str(ex_id)]
-    ).fetchone()
-    if ex_row is not None:
-        ex = dict(ex_row)
-        ex['hint'] = Markup(ex['hint'])
-        return render_template('practice.html', ex=ex)
-    else:
-        return redirect('/practice/ex1')
-
-@app.route('/lessons/<path>')
-def lesson(path):
-  filepath = os.path.join('gen', path)
-  if os.path.exists(os.path.join('templates', filepath)):
-    return render_template(filepath)
-  else:
-    return redirect('/')
 
 @app.before_request
 def before_request():
@@ -65,8 +40,36 @@ def teardown_request(exception):
         db.close()
 
 
-####################################################################################
+################################################################################
+# Routes
+################################################################################
+@app.route('/')
+def index():
+  return render_template('course_info.html')
+
+@app.route('/lessons/<path>')
+def lesson(path):
+  filepath = os.path.join('gen', path)
+  if os.path.exists(os.path.join('templates', filepath)):
+    return render_template(filepath)
+  else:
+    return redirect('/')
+
+@app.route('/practice/ex<int:ex_id>')
+def practice(ex_id):
+    ex_row = g.db.execute(
+        'select * from exercises where id = ?', [str(ex_id)]
+    ).fetchone()
+    if ex_row is not None:
+        ex = dict(ex_row)
+        ex['hint'] = Markup(ex['hint'])
+        return render_template('practice.html', ex=ex)
+    else:
+        return redirect('/practice/ex1')
+
+
+################################################################################
 # Runner
-####################################################################################
+################################################################################
 if __name__ == '__main__':
   app.run(debug=True)
