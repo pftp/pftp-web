@@ -7,11 +7,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 ################################################################################
 # Config
 ################################################################################
-DATABASE = 'pftp.db'
-
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///%s' % DATABASE
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pftp.db'
 
 ################################################################################
 # Database
@@ -92,12 +90,9 @@ def lesson(path):
 
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):
-    ex_row = g.db.execute(
-        'select * from exercises where id = ?', [str(ex_id)]
-    ).fetchone()
-    if ex_row is not None:
-        ex = dict(ex_row)
-        ex['hint'] = Markup(ex['hint'])
+    ex = Exercise.query.get(ex_id)
+    if ex is not None:
+        ex.hint = Markup(ex.hint)
         return render_template('practice.html', ex=ex)
     else:
         return redirect('/practice/ex1')
