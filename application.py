@@ -3,37 +3,43 @@ import sqlite3
 from contextlib import closing
 from flask import Flask, render_template, redirect, g, Markup
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 
 ################################################################################
 # Config
 ################################################################################
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['DEBUG'] = True
+# XXX use environment variables
+app.config['SECRET_KEY'] = 'this is the secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pftp.db'
+
 
 ################################################################################
 # Database
 ################################################################################
 db = SQLAlchemy(app)
 
-ROLE_USER = 0
-ROLE_ADMIN = 1
+roles_users = db.Table('roles_users',
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
-class User(db.Model):
-  id = db.Column(db.Integer, primary_key = True)
+class Role(db.Model, RoleMixin):
+  id = db.Column(db.Integer(), primary_key=True)
+  name = db.Column(db.String(80), unique=True)
+  description = db.Column(db.String(255))
+
+class User(db.Model, UserMixin):
+  id = db.Column(db.Integer, primary_key=True)
   email = db.Column(db.String(120), index = True, unique = True, nullable = False)
   firstname = db.Column(db.String(30), index = True, unique = True, nullable = False)
   lastname = db.Column(db.String(30), index = True, unique = True, nullable = False)
-  role = db.Column(db.SmallInteger, default = ROLE_USER, nullable = False)
-
-  def __init__(self, firstname, lastname, email, role=ROLE_USER):
-    self.firstname = firstname
-    self.lastname = lastname
-    self.email = email
-    self.role = role
-
-  def __repr__(self):
-    return '<User %r>' % (self.email)
+  password = db.Column(db.String(255), nullable = False)
+  active = db.Column(db.Boolean())
+  confirmed_at = db.Column(db.DateTime())
+  roles = db.relationship('Role', secondary=roles_users,
+      backref=db.backref('users', lazy='dynamic'))
 
 class Exercise(db.Model):
   id = db.Column(db.Integer, primary_key = True)
@@ -51,27 +57,8 @@ class Exercise(db.Model):
   def __repr__(self):
     return '<Exercise %r>' % (self.prompt)
 
-
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
-
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-@app.before_request
-def before_request():
-    g.db = connect_db()
-    g.db.row_factory = sqlite3.Row
-
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
-
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
 
 ################################################################################
 # Routes
