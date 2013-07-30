@@ -12,7 +12,7 @@ if __name__ == '__main__':
     db = sqlite3.connect('pftp.db')
     for ex in exercises:
         print colored("Adding %s to database" % ex['prompt'], "yellow")
-        db.execute('insert into exercises (prompt, hint, test_cases, ' +
+        db.execute('insert into exercise (prompt, hint, test_cases, ' +
                    'solution) values (?, ?, ?, ?)',
                    [ex['prompt'], ex['hint'], json.dumps(ex['test_cases']),
                        ex['solution']])

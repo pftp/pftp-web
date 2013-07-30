@@ -2,23 +2,58 @@ import os
 import sqlite3
 from contextlib import closing
 from flask import Flask, render_template, redirect, g, Markup
+from flask.ext.sqlalchemy import SQLAlchemy
 
 ################################################################################
 # Config
 ################################################################################
 DATABASE = 'pftp.db'
 
-
-################################################################################
-# App
-################################################################################
 app = Flask(__name__)
 app.config.from_object(__name__)
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///%s' % DATABASE
 
 ################################################################################
 # Database
 ################################################################################
+db = SQLAlchemy(app)
+
+ROLE_USER = 0
+ROLE_ADMIN = 1
+
+class User(db.Model):
+  id = db.Column(db.Integer, primary_key = True)
+  email = db.Column(db.String(120), index = True, unique = True, nullable = False)
+  firstname = db.Column(db.String(30), index = True, unique = True, nullable = False)
+  lastname = db.Column(db.String(30), index = True, unique = True, nullable = False)
+  role = db.Column(db.SmallInteger, default = ROLE_USER, nullable = False)
+
+  def __init__(self, firstname, lastname, email, role=ROLE_USER):
+    self.firstname = firstname
+    self.lastname = lastname
+    self.email = email
+    self.role = role
+
+  def __repr__(self):
+    return '<User %r>' % (self.email)
+
+class Exercise(db.Model):
+  id = db.Column(db.Integer, primary_key = True)
+  prompt = db.Column(db.Text(), nullable = False)
+  hint = db.Column(db.Text(), nullable = False)
+  test_cases = db.Column(db.Text(), nullable = False)
+  solution = db.Column(db.Text(), nullable = False)
+
+  def __init__(self, prompt, hint, test_cases, solution):
+    self.prompt = prompt
+    self.hint = hint
+    self.test_cases = test_cases
+    self.solution = solution
+
+  def __repr__(self):
+    return '<Exercise %r>' % (self.prompt)
+
+
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
