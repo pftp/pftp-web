@@ -1,7 +1,7 @@
 import os
+import sys
 import sqlite3
-from contextlib import closing
-from flask import Flask, render_template, redirect, g, Markup
+from flask import Flask, render_template, redirect, Markup
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 
@@ -60,6 +60,7 @@ class Exercise(db.Model):
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
+
 ################################################################################
 # Routes
 ################################################################################
@@ -77,16 +78,25 @@ def lesson(path):
 
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):
-    ex = Exercise.query.get(ex_id)
-    if ex is not None:
-        ex.hint = Markup(ex.hint)
-        return render_template('practice.html', ex=ex)
-    else:
-        return redirect('/practice/ex1')
+  ex = Exercise.query.get(ex_id)
+  if ex is not None:
+    ex.hint = Markup(ex.hint)
+    return render_template('practice.html', ex=ex)
+  else:
+    return redirect('/practice/ex1')
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+  return 'dash'
 
 
 ################################################################################
 # Runner
 ################################################################################
 if __name__ == '__main__':
-  app.run(debug=True)
+  if len(sys.argv) == 2 and sys.argv[1] == 'console':
+    import code
+    code.interact(local=locals())
+  else:
+    app.run(debug=True)
