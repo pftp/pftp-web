@@ -5,24 +5,37 @@ Course Info
 {% endblock %}
 
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/course_info.css')}}">
 {% endblock %}
 
 {% block content %}
 <div id="title_container">
-  <div id="title">Programming: Feel the Power</h1>
-  <div id="subtitle">DeCal Fall 2013</h2>
+  <div id="title">Programming: Feel the Power</div>
+  <div id="subtitle">DeCal Fall 2013</div>
 </div>
 <div id="blurb_container">
-  Hello! You look like you want to learn to write code. We know how, and we want
-  to guide you. Why? Because we think it's important that you understand the
-  computing devices that are omnipresent in all of our lives. Because the demand
-  for quality computer scientists in this world is outpacing supply, and you can
-  help bridge the gap. And, most of all, because coding is a ton of fun once you
-  get the hang of it.
-  <img src="/static/img/unclesammeme.png" title="America Needs You">
+  <div class="large">Hello!</div>
+  <div class="medium">
+    You look like you want to learn to write code, and we want to guide you.
+  </div>
+  <div class="large">Why?</div>
+  <div class="small">
+    Because we think it's important that you understand the computing devices
+    that are omnipresent in all of our lives. Because the demand for quality
+    computer scientists in this world is outpacing supply, and you can help
+    bridge the gap. And, most of all, because coding is a ton of fun once you
+    get the hang of it.
+  </div>
+  <img src="{{url_for('static', filename='img/unclesammeme.png')}}" title="America Needs You">
 </div>
 <div id="faq_container">
   <div id="faq_title">FAQ, What Da</div>
+  <div class="faq_header">
+    How much programming experience should I have coming into this course?
+  </div>
+  <p>
+  None. Nada. Zip. Zero. The course is designed to teach you from the ground up!
+  </p>
   <div class="faq_header">What will I actually learn from this course?</div>
   <p>
   You will learn Python, our favorite programming language for just Getting

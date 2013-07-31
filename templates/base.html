@@ -3,19 +3,27 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/flatly/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
     <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery-1.10.2.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
     {% block head %}
     {% endblock %}
   </head>
   <body>
-    <div id="navbar" class="navbar">
-      <a href="/"><div class="navbar_item">Home</div></a>
-      <a href="/lessons/intro.html"><div class="navbar_item">Lessons</div></a>
-      <a href="/practice/ex1"><div class="navbar_item">Practice</div></a>
-      <a href="/login"><div class="navbar_item">Login</div></a>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <ul class="nav">
+        <li><a href="/">Programming: Feel the Power</a></li>
+      </ul>
+      <ul class="nav pull-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="/lessons/intro.html">Lessons</a></li>
+        <li><a href="/practice/ex1">Practice</a></li>
+        <li class="pull-right"><a href="/login">Login</a></li>
+      </ul>
     </div>
-    {% block content %}
-    {% endblock %}
-  </body>
+  </div>
+  {% block content %}
+  {% endblock %}
+</body>
 </html>

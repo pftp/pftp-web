@@ -1,0 +1,23 @@
+#title_container {
+  background: red;
+  color: white;
+  width: 400px;
+  padding: 15px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#title {
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#subtitle {
+  font-size: 16px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 10px;
+}
