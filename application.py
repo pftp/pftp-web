@@ -3,7 +3,7 @@ import sys
 import sqlite3
 from flask import Flask, render_template, redirect, Markup
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
+from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required
 
 ################################################################################
 # Config
@@ -40,6 +40,9 @@ class User(db.Model, UserMixin):
   confirmed_at = db.Column(db.DateTime())
   roles = db.relationship('Role', secondary=roles_users,
       backref=db.backref('users', lazy='dynamic'))
+
+  def is_admin(self):
+    return self.has_role("admin")
 
 class Exercise(db.Model):
   id = db.Column(db.Integer, primary_key = True)
@@ -90,13 +93,33 @@ def practice(ex_id):
 def dashboard():
   return 'dash'
 
+@app.route('/teacher_dashboard')
+@roles_required('admin')
+def teacher_dashboard():
+  return 'teacher dash'
+
 
 ################################################################################
 # Runner
 ################################################################################
 if __name__ == '__main__':
-  if len(sys.argv) == 2 and sys.argv[1] == 'console':
-    import code
-    code.interact(local=locals())
+  if len(sys.argv) == 2:
+    if sys.argv[1] == 'console':
+      import code
+      code.interact(local=locals())
+    elif sys.argv[1] == 'create_user':
+      user_role = Role(name="user")
+      admin_role = Role(name="admin")
+
+      admin_user = user_datastore.create_user(email="admin@cramm.it", firstname="Cramm", lastname="It", password="p@ssw0rd")
+      admin_user.roles.append(user_role)
+      admin_user.roles.append(admin_role)
+
+      test_user = user_datastore.create_user(email="test@cramm.it", firstname="Test", lastname="User", password="p@ssw0rd")
+      test_user.roles.append(user_role)
+
+      db.session.add(admin_user)
+      db.session.add(test_user)
+      db.session.commit()
   else:
     app.run(debug=True)
