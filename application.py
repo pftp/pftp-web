@@ -40,6 +40,7 @@ class User(db.Model, UserMixin):
   confirmed_at = db.Column(db.DateTime())
   roles = db.relationship('Role', secondary=roles_users,
       backref=db.backref('users', lazy='dynamic'))
+  grades = db.relationship('Grade', backref='grade')
 
   def is_admin(self):
     return self.has_role("admin")
@@ -59,6 +60,21 @@ class Exercise(db.Model):
 
   def __repr__(self):
     return '<Exercise %r>' % (self.prompt)
+
+class Assignment(db.Model):
+  __tablename__ = 'assignment'
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(100), index = True, unique = True, nullable = False)
+  description = db.Column(db.Text(), nullable = False)
+  points = db.Column(db.Integer, nullable = False)
+  grades = db.relationship('Grade', backref='assignment')
+
+class Grade(db.Model):
+  __tablename__ = 'grade'
+  id = db.Column(db.Integer, primary_key = True)
+  score = db.Column(db.Integer, nullable = False)
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+  assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
