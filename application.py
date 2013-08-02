@@ -143,11 +143,14 @@ if __name__ == '__main__':
       admin_user.roles.append(user_role)
       admin_user.roles.append(admin_role)
 
-      test_user = user_datastore.create_user(email="test@cramm.it", firstname="Test", lastname="User", password="p@ssw0rd")
-      test_user.roles.append(user_role)
+      test_user1 = user_datastore.create_user(email="test@cramm.it", firstname="Test", lastname="User", password="p@ssw0rd")
+      test_user1.roles.append(user_role)
+      test_user2 = user_datastore.create_user(email="test2@cramm.it", firstname="Test2", lastname="User2", password="p@ssw0rd")
+      test_user2.roles.append(user_role)
 
       db.session.add(admin_user)
-      db.session.add(test_user)
+      db.session.add(test_user1)
+      db.session.add(test_user2)
 
       assignment1 = Assignment(name='Homework 1', description='Finish exercises 1-5 before next class',  points=10)
       assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10)
