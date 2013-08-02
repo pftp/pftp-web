@@ -170,7 +170,5 @@ if __name__ == '__main__':
       db.session.add(assignment9)
 
       db.session.commit()
-
-      app.run(debug=True)
   else:
     app.run(debug=True)
