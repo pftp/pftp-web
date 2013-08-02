@@ -123,7 +123,9 @@ if __name__ == '__main__':
     if sys.argv[1] == 'console':
       import code
       code.interact(local=locals())
-    elif sys.argv[1] == 'create_user':
+    elif sys.argv[1] == 'init':
+      db.create_all()
+
       user_role = Role(name="user")
       admin_role = Role(name="admin")
 
@@ -136,6 +138,13 @@ if __name__ == '__main__':
 
       db.session.add(admin_user)
       db.session.add(test_user)
+
+      assignment1 = Assignment(name='Homework 1', description='Finish exercises 1-5 before next class',  points=10)
+      assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10)
+
+      db.session.add(assignment1)
+      db.session.add(assignment2)
+
       db.session.commit()
   else:
     app.run(debug=True)
