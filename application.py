@@ -151,10 +151,26 @@ if __name__ == '__main__':
 
       assignment1 = Assignment(name='Homework 1', description='Finish exercises 1-5 before next class',  points=10)
       assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10)
+      assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30)
+      assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10)
+      assignment5 = Assignment(name='Homework 4', description='Finish exercises 16-20 before next class', points=10)
+      assignment6 = Assignment(name='Project 2', description='Build a Flask app', points=30)
+      assignment7 = Assignment(name='Homework 5', description='Finish exercises 21-25 before next class',  points=10)
+      assignment8 = Assignment(name='Homework 6', description='Finish exercises 26-30 before next class', points=10)
+      assignment9 = Assignment(name='Final Project', description='Build something cool', points=50)
 
       db.session.add(assignment1)
       db.session.add(assignment2)
+      db.session.add(assignment3)
+      db.session.add(assignment4)
+      db.session.add(assignment5)
+      db.session.add(assignment6)
+      db.session.add(assignment7)
+      db.session.add(assignment8)
+      db.session.add(assignment9)
 
       db.session.commit()
+
+      app.run(debug=True)
   else:
     app.run(debug=True)
