@@ -1,7 +1,7 @@
 import os
 import sys
 import sqlite3
-from flask import Flask, render_template, redirect, Markup
+from flask import Flask, render_template, redirect, Markup, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required
 
@@ -81,7 +81,7 @@ security = Security(app, user_datastore)
 
 
 ################################################################################
-# Routes
+# Student Routes
 ################################################################################
 @app.route('/')
 def index():
@@ -108,6 +108,16 @@ def practice(ex_id):
 @login_required
 def dashboard():
   return 'dash'
+
+@app.route('/assignments')
+@login_required
+def assignments():
+  assignments = Assignment.query.all()
+  return render_template('assignments.html', assignments=assignments)
+
+################################################################################
+# Admin Routes
+################################################################################
 
 @app.route('/teacher_dashboard')
 @roles_required('admin')
