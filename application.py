@@ -71,9 +71,9 @@ security = Security(app, user_datastore)
 def index():
   return render_template('course_info.html')
 
-@app.route('/lessons/<path>')
-def lesson(path):
-  filepath = os.path.join('gen', path)
+@app.route('/lessons/<path:lesson_path>')
+def lesson(lesson_path):
+  filepath = os.path.join('gen', lesson_path)
   if os.path.exists(os.path.join('templates', filepath)):
     return render_template(filepath)
   else:
