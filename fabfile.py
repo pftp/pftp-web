@@ -89,7 +89,6 @@ def generate_models():
   admin_role = Role(name="admin")
 
   admin_user = user_datastore.create_user(email="admin@cramm.it", firstname="Cramm", lastname="It", password="p@ssw0rd")
-  admin_user.roles.append(user_role)
   admin_user.roles.append(admin_role)
 
   test_user1 = user_datastore.create_user(email="test@cramm.it", firstname="Test", lastname="User", password="p@ssw0rd")
@@ -122,6 +121,23 @@ def generate_models():
   db.session.add(assignment8)
   db.session.add(assignment9)
   print colored("9 assignments added to database.", "green")
+
+  db.session.commit()
+
+  for assignment in Assignment.query.all():
+    grade1 = Grade(score=assignment.points)
+    grade2 = Grade(score=assignment.points-5)
+    test_user1.grades.append(grade1)
+    test_user2.grades.append(grade2)
+    assignment.grades.append(grade1)
+    assignment.grades.append(grade2)
+
+    db.session.add(grade1)
+    db.session.add(grade2)
+    db.session.add(assignment)
+
+  db.session.add(test_user1)
+  db.session.add(test_user2)
 
   db.session.commit()
 

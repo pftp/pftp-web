@@ -51,6 +51,14 @@ class User(db.Model, UserMixin):
     db.session.add(grade)
     db.session.commit()
 
+  def get_grade(self, assignment):
+    grades = self.grades.filter_by(assignment_id=assignment.id).all()
+    if len(grades) == 0:
+      grade = self.grades.filter_by(assignment_id=assignment.id).all()[0]
+      return grade
+    else:
+      return None
+
 class Exercise(db.Model):
   id = db.Column(db.Integer, primary_key = True)
   prompt = db.Column(db.Text(), nullable = False)
