@@ -10,10 +10,9 @@ from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, Rol
 ################################################################################
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['DEBUG'] = True
-# XXX use environment variables
-app.config['SECRET_KEY'] = 'this is the secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pftp.db'
+app.config['DEBUG'] = 'PRODUCTION' not in os.environ
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'development_key')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp.db')
 
 
 ################################################################################
