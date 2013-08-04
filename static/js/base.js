@@ -103,11 +103,19 @@ $(function() {
     $('#solution_wrapper').show();
   });
   $('#toggle_console').click(function(e) {
-    var href = $(e.currentTarget).attr('href');
-    if (href === '#console') {
-      $(e.currentTarget).attr('href', '#');
-    } else if (href === '#') {
-      $(e.currentTarget).attr('href', '#console');
+    e.preventDefault();
+    if (window.location.hash === '#console') {
+      window.location.hash = '#x';
+    } else {
+      window.location.hash = '#console';
+      $('#console').attr('top', '-350px');
+    }
+  });
+  $(document).mouseup(function (e) {
+    var container = $('#nav_console');
+    if (window.location.hash === '#console' && !container.is(e.target) &&
+        container.has(e.target).length === 0 && !$('html').is(e.target)) {
+      window.location.hash = '#x';
     }
   });
 });

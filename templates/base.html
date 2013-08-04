@@ -17,24 +17,26 @@
     {% endblock %}
   </head>
   <body>
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <ul class="nav">
-        <li><a href="/">Programming: Feel the Power</a></li>
-      </ul>
-      <ul class="nav pull-right">
-        <li><a href="/">Home</a></li>
-        <li><a href="/lessons/intro.html">Lessons</a></li>
-        <li><a href="/practice/ex1">Practice</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a id="toggle_console" href="#">Console</a></li>
-      </ul>
+  <div id="nav_console">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <ul class="nav">
+          <li><a href="/">Programming: Feel the Power</a></li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/">Home</a></li>
+          <li><a href="/lessons/intro.html">Lessons</a></li>
+          <li><a href="/practice/ex1">Practice</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a id="toggle_console" href="#">Console</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-  <div id="console">
-    <textarea id="code" style="display:none;"></textarea>
-    <button id="run_code">Run It!</button>
-    <pre id="output"></pre>
+    <div id="console">
+      <textarea id="code" style="display:none;"></textarea>
+      <button id="run_code">Run It!</button>
+      <pre id="output"></pre>
+    </div>
   </div>
   {% block content %}
   {% endblock %}
