@@ -36,9 +36,15 @@ def console():
   context['application'] = application
   code.interact(local=locals())
 
-@task(default=True)
+@task
 def run():
   app.run()
+
+@task(default=True)
+def all():
+  clean()
+  build()
+  run()
 
 ################################################################################
 # Helpers
@@ -85,16 +91,17 @@ def generate_pages():
 
 
 def generate_models():
-  user_role = Role(name="user")
-  admin_role = Role(name="admin")
+  user_role = user_datastore.create_role(name="user")
+  admin_role = user_datastore.create_role(name="admin")
 
   admin_user = user_datastore.create_user(email="admin@cramm.it", firstname="Cramm", lastname="It", password="p@ssw0rd")
-  admin_user.roles.append(admin_role)
+  user_datastore.add_role_to_user(admin_user, admin_role)
 
   test_user1 = user_datastore.create_user(email="test@cramm.it", firstname="Test", lastname="User", password="p@ssw0rd")
-  test_user1.roles.append(user_role)
   test_user2 = user_datastore.create_user(email="test2@cramm.it", firstname="Test2", lastname="User2", password="p@ssw0rd")
-  test_user2.roles.append(user_role)
+
+  user_datastore.add_role_to_user(test_user1, user_role)
+  user_datastore.add_role_to_user(test_user2, user_role)
 
   db.session.add(admin_user)
   db.session.add(test_user1)
