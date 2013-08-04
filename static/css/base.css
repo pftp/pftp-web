@@ -2,6 +2,27 @@ body {
   padding-top: 51px;
 }
 
+a {
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+}
+
+.transition {
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+}
+
+#logo-text {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+
+
 .navbar {
   z-index: 100;
 }
