@@ -27,8 +27,8 @@ Teacher Dashboard
       <td>{{ student.email }}</td>
       <td>{{ student.firstname }}</td>
       <td>{{ student.lastname }}</td>
-      {% for assignment in assignments %}
-      <td>-/{{ assignment.points }}</td>
+      {% for grade in student.grades %}
+      <td>{{ grade.score }}</td>
       {% endfor %}
     </tr>
     {% endfor %}

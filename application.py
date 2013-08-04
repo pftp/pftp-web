@@ -136,6 +136,12 @@ def assignments():
 @app.route('/teacher_dashboard')
 @roles_required('admin')
 def teacher_dashboard():
-  students = User.query.filter(User.roles.any(Role.name == 'user'))
+  student_models = User.query.filter(User.roles.any(Role.name == 'user'))
   assignments = Assignment.query.all()
+  grades = Grade.query
+
+  students = map(lambda x: x.__dict__, student_models)
+  for student in students:
+    student['grades'] = map(lambda x: x.__dict__, grades.filter_by(user_id=student['id']))
+
   return render_template('admin/dashboard.html', students=students, assignments=assignments)
