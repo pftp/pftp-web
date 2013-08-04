@@ -39,10 +39,17 @@ class User(db.Model, UserMixin):
   confirmed_at = db.Column(db.DateTime())
   roles = db.relationship('Role', secondary=roles_users,
       backref=db.backref('users', lazy='dynamic'))
-  grades = db.relationship('Grade', backref='grade')
+  grades = db.relationship('Grade', lazy='dynamic', backref='grade')
 
   def is_admin(self):
     return self.has_role("admin")
+
+  def add_grade(self, assignment, score):
+    grade = Grade(score=score)
+    self.grades.append(grade)
+    assignment.grades.append(grade)
+    db.session.add(grade)
+    db.session.commit()
 
 class Exercise(db.Model):
   id = db.Column(db.Integer, primary_key = True)
@@ -66,7 +73,7 @@ class Assignment(db.Model):
   name = db.Column(db.String(100), index = True, unique = True, nullable = False)
   description = db.Column(db.Text(), nullable = False)
   points = db.Column(db.Integer, nullable = False)
-  grades = db.relationship('Grade', backref='assignment')
+  grades = db.relationship('Grade', lazy='dynamic', backref='assignment')
 
 class Grade(db.Model):
   __tablename__ = 'grade'
@@ -121,4 +128,6 @@ def assignments():
 @app.route('/teacher_dashboard')
 @roles_required('admin')
 def teacher_dashboard():
-  return 'teacher dash'
+  students = User.query.filter(User.roles.any(Role.name == 'user'))
+  assignments = Assignment.query.all()
+  return render_template('admin/dashboard.html', students=students, assignments=assignments)

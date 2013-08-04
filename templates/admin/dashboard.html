@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+Teacher Dashboard
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+  <table border="1px">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Email</th>
+        <th>First</th>
+        <th>Last</th>
+        {% for assignment in assignments %}
+        <th>{{ assignment.name }} ({{ assignment.points }})</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+      <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.firstname }}</td>
+        <td>{{ student.lastname }}</td>
+        {% for grade in student.grades %}
+        <td>{{ grade.score }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
