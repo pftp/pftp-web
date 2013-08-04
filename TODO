@@ -1,4 +1,2 @@
-add sqlalchemy tables to build script
-create models for Assignment, Grade
 create Student dashboard
 create teacher dashboard
