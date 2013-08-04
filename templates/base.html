@@ -1,11 +1,18 @@
 <html>
   <head>
     <title>{% block title %}{% endblock %}</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery-1.10.2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/builtin.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/base.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/flatly/bootstrap.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
-    <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery-1.10.2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}">
     {% block head %}
     {% endblock %}
   </head>
@@ -19,9 +26,15 @@
         <li><a href="/">Home</a></li>
         <li><a href="/lessons/intro.html">Lessons</a></li>
         <li><a href="/practice/ex1">Practice</a></li>
-        <li class="pull-right"><a href="/login">Login</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a id="toggle_console" href="#">Console</a></li>
       </ul>
     </div>
+  </div>
+  <div id="console">
+    <textarea id="code" style="display:none;"></textarea>
+    <button id="run_code">Run It!</button>
+    <pre id="output"></pre>
   </div>
   {% block content %}
   {% endblock %}

@@ -127,7 +127,7 @@ def generate_models():
 
 
 def add_exercises():
-  exercises_file = open('static/practice/exercises.json', 'r')
+  exercises_file = open('static/js/practice/exercises.json', 'r')
   exercises = json.loads(exercises_file.read())
   db = sqlite3.connect('pftp.db')
   for ex in exercises:

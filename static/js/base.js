@@ -80,6 +80,7 @@ $(function() {
       code = editor.getValue().replace(/\t/g, '    ');
     $('#output').text('');
     runObj = runit(code);
+    /*
     testObjs = testit(code);
     correct = testObjs.reduce(function(acc, testObj) {
       return acc && testObj['correct'];
@@ -87,6 +88,7 @@ $(function() {
     if (correct) {
       $('#next_exercise').show();
     }
+   */
   });
   $('#next_exercise').click(function(e) {
     window.location.href = $('#next_exercise').attr('href');
@@ -99,5 +101,13 @@ $(function() {
   $('#show_solution').click(function(e) {
     $('#show_solution').hide();
     $('#solution_wrapper').show();
+  });
+  $('#toggle_console').click(function(e) {
+    var href = $(e.currentTarget).attr('href');
+    if (href === '#console') {
+      $(e.currentTarget).attr('href', '#');
+    } else if (href === '#') {
+      $(e.currentTarget).attr('href', '#console');
+    }
   });
 });
