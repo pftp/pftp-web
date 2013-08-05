@@ -127,7 +127,15 @@ def practice(ex_id):
 @app.route('/dashboard')
 @login_required
 def user_dashboard():
-  return 'dash'
+  grade_models = Grade.query.filter_by(user_id=current_user.id)
+
+  grades = map(lambda x: x.__dict__, grade_models)
+  for grade in grades:
+    assignment = Assignment.query.filter_by(id=grade['assignment_id']).all()[0]
+
+    grade['assignment'] = assignment
+
+  return render_template('dashboard.html', assignments=assignments, grades=grades)
 
 @app.route('/assignments')
 @login_required

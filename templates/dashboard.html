@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<b>Your progress</b>
+<table border="1px">
+  <thead>
+    <tr>
+      <th>Assignment</th>
+      <th>Description</th>
+      <th>Score</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for grade in grades %}
+    <tr>
+      <td>{{ grade.assignment.name }}</td>
+      <td>{{ grade.assignment.description }}</td>
+      <td>{{ grade.score }}</td>
+      <td>{{ grade.assignment.points }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+{% endblock %}
