@@ -1,9 +1,9 @@
 import os
 import sys
 import sqlite3
-from flask import Flask, render_template, redirect, Markup, jsonify
+from flask import Flask, render_template, redirect, Markup, jsonify, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required
+from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 
 ################################################################################
 # Config
@@ -99,7 +99,12 @@ security = Security(app, user_datastore)
 ################################################################################
 @app.route('/')
 def index():
-  return render_template('course_info.html')
+  if current_user.is_authenticated() and current_user.is_admin():
+    return redirect(url_for('admin_dashboard'))
+  elif current_user.is_authenticated() and current_user.is_user():
+    return redirect(url_for('user_dashboard'))
+  else:
+    return render_template('course_info.html')
 
 @app.route('/lessons/<path:lesson_path>')
 def lesson(lesson_path):
@@ -120,7 +125,7 @@ def practice(ex_id):
 
 @app.route('/dashboard')
 @login_required
-def dashboard():
+def user_dashboard():
   return 'dash'
 
 @app.route('/assignments')
@@ -133,9 +138,9 @@ def assignments():
 # Admin Routes
 ################################################################################
 
-@app.route('/teacher_dashboard')
+@app.route('/admin')
 @roles_required('admin')
-def teacher_dashboard():
+def admin_dashboard():
   student_models = User.query.filter(User.roles.any(Role.name == 'user'))
   assignments = Assignment.query.all()
   grades = Grade.query
