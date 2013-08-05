@@ -140,15 +140,14 @@ def generate_models():
   for assignment in Assignment.query.all():
     if random() > 0.5:
       grade1 = Grade(score=randrange(0,assignment.points))
+      test_user1.grades.append(grade1)
+      assignment.grades.append(grade1)
+      db.session.add(grade1)
     if random() > 0.5:
       grade2 = Grade(score=randrange(0,assignment.points))
-    test_user1.grades.append(grade1)
-    test_user2.grades.append(grade2)
-    assignment.grades.append(grade1)
-    assignment.grades.append(grade2)
-
-    db.session.add(grade1)
-    db.session.add(grade2)
+      test_user2.grades.append(grade2)
+      assignment.grades.append(grade2)
+      db.session.add(grade2)
     db.session.add(assignment)
 
   db.session.add(test_user1)
@@ -170,3 +169,4 @@ def add_exercises():
   db.commit()
   db.close()
   print colored("%s exercises added to database." % len(exercises), "green")
+
