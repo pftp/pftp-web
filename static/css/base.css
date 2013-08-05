@@ -68,7 +68,7 @@ a {
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
   pointer-events: none;
-  border-radius: 0px 0px 10px 10px;
+	border-radius: 0 0 10px 10px;
 }
 
 #console:target {
@@ -77,3 +77,39 @@ a {
   pointer-events: auto;
 }
 
+#code_container {
+  float: left;
+  width: 50%;
+}
+
+#output_tabs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 24px;
+}
+
+#output_tabs ul li {
+  background: #ececec;
+	border: 1px solid #aaa;
+	border-radius: 10px 10px 0 0;
+	display: inline-block;
+}
+
+a.output-tab {
+	border-radius: 10px 10px 0 0;
+  padding: 0 10px;
+}
+
+a.output-tab.active {
+  background: #fff;
+  color: #000;
+}
+
+.output-content {
+  display: none;
+}
+
+.output-content.active {
+  display: block;
+}

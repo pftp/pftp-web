@@ -17,41 +17,54 @@
     {% endblock %}
   </head>
   <body>
-    <div id="nav_console">
-      <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-          <ul class="nav">
-            <li>
-              <a id="logo-text" href="/">Programming: Feel the Power
-                {% if current_user.is_authenticated() and current_user.is_admin() %}
-                <span id="admin-logo">[Admin]</span>
-                {% endif %}
-              </a>
-            </li>
-          </ul>
-          <ul class="nav pull-right">
-            <li><a href="/">Home</a></li>
-            <li><a href="/lessons/intro.html">Lessons</a></li>
-            <li><a href="/practice/ex1">Practice</a></li>
-            <li><a href="/assignments">Assignments</a></li>
-            {% if current_user.is_authenticated() %}
-            <li><a href="/logout">Logout</a></li>
-            {% else %}
-            <li><a href="/login">Login</a></li>
-            {% endif %}
-            <li class="dropdown">
-              <a id="toggle_console" class="dropdown-toggle" href="#">Console <b class="caret"></b></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="console">
-        <textarea id="code" style="display:none;"></textarea>
-        <button id="run_code">Run It!</button>
-        <pre id="output"></pre>
+  <div id="nav_console">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <ul class="nav">
+          <li><a id="logo-text" href="/">Programming: Feel the Power{% if current_user.is_authenticated() and current_user.is_admin() %}<span id="admin-logo">[Admin]</span>{% endif %}</a></li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/">Home</a></li>
+          <li><a href="/lessons/intro.html">Lessons</a></li>
+          <li><a href="/practice/ex1">Practice</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="#" id="toggle_console">Console</a></li>
+          <li><a href="/assignments">Assignments</a></li>
+          {% if current_user.is_authenticated() %}
+          <li><a href="/logout">Logout</a></li>
+          {% else %}
+          <li><a href="/login">Login</a></li>
+          {% endif %}
+          <li class="dropdown">
+          <a id="toggle_console" class="dropdown-toggle" href="#">Console <b class="caret"></b></a>
+          </li>
+        </ul>
       </div>
     </div>
-    {% block content %}
-    {% endblock %}
+    <div id="console">
+      <div id="code_container">
+        <textarea id="code_area" style="display:none;"></textarea>
+      </div>
+      <div id="output_container">
+        <div id="output_tabs">
+          <ul>
+            <li><a href="#" content-id="printed_output" class="output-tab active">Printed Output</a></li>
+            <li><a href="#" content-id="turtle_output" class="output-tab">Turtle Canvas</a></li>
+          </ul>
+        </div>
+        <div id="output_contents">
+          <div id="printed_output" class="output-content active">
+            <pre id="output"></pre>
+          </div>
+          <div id="turtle_output" class="output-content">
+            <canvas id="turtle_canvas"></canvas>
+          </div>
+        </div>
+      </div>
+      <button id="run_code">Run It!</button>
+    </div>
+  </div>
+  {% block content %}
+  {% endblock %}
   </body>
 </html>

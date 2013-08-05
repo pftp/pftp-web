@@ -68,7 +68,7 @@ $(function() {
   var editor, execObj, execHistory = [];
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'output';
-  editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+  editor = CodeMirror.fromTextArea(document.getElementById('code_area'), {
     autofocus: true,
     theme: 'cobalt',
     lineNumbers: true,
@@ -102,20 +102,26 @@ $(function() {
     $('#show_solution').hide();
     $('#solution_wrapper').show();
   });
+  $('.output-tab').click(function(e) {
+    e.preventDefault();
+    $('.output-tab').removeClass('active');
+    $('.output-content').removeClass('active');
+    $(e.currentTarget).addClass('active');
+    $('#' + $(e.currentTarget).attr('content-id')).addClass('active');
+  });
   $('#toggle_console').click(function(e) {
     e.preventDefault();
     if (window.location.hash === '#console') {
-      window.location.hash = '#x';
+      window.location.replace('#x');
     } else {
-      window.location.hash = '#console';
-      $('#console').attr('top', '-350px');
+      window.location.replace('#console');
     }
   });
   $(document).mouseup(function (e) {
     var container = $('#nav_console');
     if (window.location.hash === '#console' && !container.is(e.target) &&
         container.has(e.target).length === 0 && !$('html').is(e.target)) {
-      window.location.hash = '#x';
+      window.location.replace('#x');
     }
   });
 });
