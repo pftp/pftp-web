@@ -99,10 +99,11 @@ security = Security(app, user_datastore)
 ################################################################################
 @app.route('/')
 def index():
-  if current_user.is_authenticated() and current_user.is_admin():
-    return redirect(url_for('admin_dashboard'))
-  elif current_user.is_authenticated() and current_user.is_user():
-    return redirect(url_for('user_dashboard'))
+  if current_user.is_authenticated():
+    if current_user.is_admin():
+      return redirect(url_for('admin_dashboard'))
+    else:
+      return redirect(url_for('user_dashboard'))
   else:
     return render_template('course_info.html')
 
