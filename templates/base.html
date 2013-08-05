@@ -44,17 +44,15 @@
         <textarea id="code_area" style="display:none;"></textarea>
       </div>
       <div id="output_container">
-        <div id="output_tabs">
-          <ul>
-            <li><a href="#" content-id="printed_output" class="output-tab active">Printed Output</a></li>
-            <li><a href="#" content-id="turtle_output" class="output-tab">Turtle Canvas</a></li>
-          </ul>
-        </div>
-        <div id="output_contents">
-          <div id="printed_output" class="output-content active">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+          <li class="active"><a href="#pane1" content-id="printed_output" class="outpt-tab" data-toggle="tab">Printed Output</a></li>
+          <li><a href="#pane2" content-id="turtle_output" class="outpt-tab" data-toggle="tab">Turtle Canvas</a></li>
+        </ul>
+        <div id="output_contents" class="tab-content">
+          <div id="pane1" class="tab-pane active">
             <pre id="output"></pre>
           </div>
-          <div id="turtle_output" class="output-content">
+          <div id="pane2" class="tab-pane">
             <canvas id="turtle_canvas"></canvas>
           </div>
         </div>
