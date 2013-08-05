@@ -8,7 +8,6 @@ from termcolor import colored
 
 from fabric.api import local, task, settings
 
-import application
 from application import app, db, user_datastore, Role, User, Assignment, Grade
 
 ################################################################################
@@ -33,7 +32,13 @@ def build():
 @task
 def console():
   context = locals()
-  context['application'] = application
+  context['app'] = app
+  context['db'] = db
+  context['user_datastore'] = user_datastore
+  context['Role'] = Role
+  context['User'] = User
+  context['Assignment'] = Assignment
+  context['Grade'] = Grade
   code.interact(local=locals())
 
 @task
