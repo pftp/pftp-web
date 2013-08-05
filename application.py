@@ -127,15 +127,28 @@ def practice(ex_id):
 @app.route('/dashboard')
 @login_required
 def user_dashboard():
-  grade_models = Grade.query.filter_by(user_id=current_user.id)
+  context = {}
+  context['total_score'] = 0
+  context['total_points'] = 0
 
-  grades = map(lambda x: x.__dict__, grade_models)
-  for grade in grades:
-    assignment = Assignment.query.filter_by(id=grade['assignment_id']).all()[0]
+  assignment_models = Assignment.query.all()
+  assignments = map(lambda x: x.__dict__, assignment_models)
 
-    grade['assignment'] = assignment
+  for assignment in assignments:
+    grades = Grade.query.filter_by(assignment_id=assignment['id'], user_id=current_user.id).all()
 
-  return render_template('dashboard.html', assignments=assignments, grades=grades)
+    if len(grades) == 1:
+      grade = grades[0]
+      assignment['graded'] = True
+      assignment['score'] = grade.score
+      context['total_score'] += grade.score
+      context['total_points'] += assignment['points']
+    else:
+      assignment['graded'] = False
+
+  context['assignments'] = assignments
+
+  return render_template('dashboard.html', context=context)
 
 @app.route('/assignments')
 @login_required

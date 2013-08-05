@@ -15,24 +15,52 @@ Dashboard
       <th>Description</th>
       <th>Due date</th>
       <th>Score</th>
+      <th>Comments</th>
     </tr>
   </thead>
   <tbody>
-  {% for grade in grades %}
+  {% for assignment in context.assignments %}
     <tr>
-      <td>{{ grade.assignment.name }}</td>
-      <td>{{ grade.assignment.description }}</td>
+      <td>{{ assignment.name }}</td>
+      <td>{{ assignment.description }}</td>
       <td></td>
       <td>
-      {% if grade.score/grade.assignment.points > 0.7 %}
-      <span class="badge badge-success">{{ grade.score }}/{{ grade.assignment.points }}</span>
-      {% elif grade.score/grade.assignment.points > 0.4 %}
-      <span class="badge badge-warning">{{ grade.score }}/{{ grade.assignment.points }}</span>
+      {% if assignment.graded %}
+        {% if assignment.score/assignment.points > 0.7 %}
+        <span class="badge badge-success">{{ assignment.score }}/{{ assignment.points }}</span>
+        {% elif assignment.score/assignment.points > 0.4 %}
+        <span class="badge badge-warning">{{ assignment.score }}/{{ assignment.points }}</span>
+        {% else %}
+        <span class="badge badge-important">{{ assignment.score }}/{{ assignment.points }}</span>
+        {% endif %}
       {% else %}
-      <span class="badge badge-important">{{ grade.score }}/{{ grade.assignment.points }}</span>
+        <a id="assignment_{{ assignment.id }}" class="btn btn-primary submit_assignment">Submit {{ assignment.name }}</a>
       {% endif %}
       </td>
+      <td>
     </tr>
   {% endfor %}
+    <tr>
+      <td><b>Total</b></td>
+      <td><b>Your course grade</b></td>
+      <td></td>
+      <td>
+      {% if context.total_score/context.total_points > 0.7 %}
+      <span class="badge badge-success">{{ context.total_score }}/{{ context.total_points }}</span>
+      {% elif context.total_score/context.total_points > 0.4 %}
+      <span class="badge badge-warning">{{ context.total_score }}/{{ context.total_points }}</span>
+      {% else %}
+      <span class="badge badge-important">{{ context.total_score }}/{{ context.total_points }}</span>
+      {% endif %}
+      </td>
+      <td></td>
+    </tr>
   </tbody>
+  <script>
+    $('.submit_assignment').click(function() {
+      var userid = {{ current_user.id }};
+      var id = $(this).attr('id').substring("assignment_".length);
+      alert("User " + userid + " submitting assignment " + id);
+    });
+  </script>
 {% endblock %}

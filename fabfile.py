@@ -5,7 +5,7 @@ import sqlite3
 import markdown
 from markdown.postprocessors import Postprocessor
 from termcolor import colored
-from random import randrange
+from random import randrange, random
 
 from fabric.api import local, task, settings
 
@@ -138,8 +138,10 @@ def generate_models():
   db.session.commit()
 
   for assignment in Assignment.query.all():
-    grade1 = Grade(score=randrange(0,assignment.points))
-    grade2 = Grade(score=randrange(0,assignment.points))
+    if random() > 0.5:
+      grade1 = Grade(score=randrange(0,assignment.points))
+    if random() > 0.5:
+      grade2 = Grade(score=randrange(0,assignment.points))
     test_user1.grades.append(grade1)
     test_user2.grades.append(grade2)
     assignment.grades.append(grade1)
