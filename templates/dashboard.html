@@ -12,7 +12,6 @@ Dashboard
   <thead>
     <tr>
       <th>Assignment</th>
-      <th>Description</th>
       <th>Due date</th>
       <th>Score</th>
       <th>Comments</th>
@@ -21,9 +20,8 @@ Dashboard
   <tbody>
   {% for assignment in context.assignments %}
     <tr>
-      <td>{{ assignment.name }}</td>
-      <td>{{ assignment.description }}</td>
-      <td></td>
+      <td><a href="/assignments/{{ assignment.id }}">{{ assignment.name }}</a></td>
+      <td>{{ assignment.deadline.strftime('%A, %B %d @ %I:%M%P') }}</td>
       <td>
       {% if assignment.graded %}
         {% if assignment.score/assignment.points > 0.7 %}
@@ -41,8 +39,7 @@ Dashboard
     </tr>
   {% endfor %}
     <tr>
-      <td><b>Total</b></td>
-      <td><b>Your course grade</b></td>
+      <td><b>Course grade</b></td>
       <td></td>
       <td>
       {% if context.total_score/context.total_points > 0.7 %}

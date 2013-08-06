@@ -6,6 +6,7 @@ import markdown
 from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
+from datetime import datetime
 
 from fabric.api import local, task, settings
 
@@ -114,15 +115,15 @@ def generate_models():
   db.session.add(test_user2)
   print colored("3 users added to database.", "green")
 
-  assignment1 = Assignment(name='Homework 1', description='Finish exercises 1-5 before next class',  points=10)
-  assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10)
-  assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30)
-  assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10)
-  assignment5 = Assignment(name='Homework 4', description='Finish exercises 16-20 before next class', points=10)
-  assignment6 = Assignment(name='Project 2', description='Build a Flask app', points=30)
-  assignment7 = Assignment(name='Homework 5', description='Finish exercises 21-25 before next class',  points=10)
-  assignment8 = Assignment(name='Homework 6', description='Finish exercises 26-30 before next class', points=10)
-  assignment9 = Assignment(name='Final Project', description='Build something cool', points=50)
+  assignment1 = Assignment(name='Homework 1', description='Finish exercises 1-5 before next class',  points=10, deadline=datetime(2013,9,10))
+  assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10, deadline=datetime(2013,9,17))
+  assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30, deadline=datetime(2013,10,1))
+  assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10, deadline=datetime(2013,10,8))
+  assignment5 = Assignment(name='Homework 4', description='Finish exercises 16-20 before next class', points=10, deadline=datetime(2013,10,15))
+  assignment6 = Assignment(name='Project 2', description='Build a Flask app', points=30, deadline=datetime(2013,10,29))
+  assignment7 = Assignment(name='Homework 5', description='Finish exercises 21-25 before next class',  points=10, deadline=datetime(2013,11,5))
+  assignment8 = Assignment(name='Homework 6', description='Finish exercises 26-30 before next class', points=10, deadline=datetime(2013,11,12))
+  assignment9 = Assignment(name='Final Project', description='Build something cool', points=50, deadline=datetime(2013,11,29))
 
   db.session.add(assignment1)
   db.session.add(assignment2)

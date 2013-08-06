@@ -80,6 +80,7 @@ class Assignment(db.Model):
   id = db.Column(db.Integer, primary_key = True)
   name = db.Column(db.String(100), index = True, unique = True, nullable = False)
   description = db.Column(db.Text(), nullable = False)
+  deadline = db.Column(db.DateTime(), nullable = False)
   points = db.Column(db.Integer, nullable = False)
   grades = db.relationship('Grade', lazy='dynamic', backref='assignment')
 
@@ -124,6 +125,14 @@ def practice(ex_id):
   else:
     return redirect('/practice/ex1')
 
+@app.route('/assignments/<int:assignment_id>')
+def assignments(assignment_id):
+  assignment = Assignment.query.get(assignment_id)
+  if assignment is not None:
+    return render_template('assignment.html', assignment=assignment)
+  else:
+    return redirect('/assignments/1')
+
 @app.route('/dashboard')
 @login_required
 def user_dashboard():
@@ -150,13 +159,8 @@ def user_dashboard():
 
   return render_template('dashboard.html', context=context)
 
-@app.route('/assignments')
-@login_required
-def assignments():
-  assignments = Assignment.query.all()
-  return render_template('assignments.html', assignments=assignments)
 
-################################################################################
+###############################################################################
 # Admin Routes
 ################################################################################
 
