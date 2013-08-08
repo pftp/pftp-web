@@ -8,7 +8,7 @@ Teacher Dashboard
 {% endblock %}
 
 {% block content %}
-<table border="1px">
+<table class="table table-bordered table-striped table-hover">
   <thead>
     <tr>
       <th>Id</th>
@@ -28,7 +28,17 @@ Teacher Dashboard
       <td>{{ student.firstname }}</td>
       <td>{{ student.lastname }}</td>
       {% for grade in student.grades %}
-      <td>{{ grade.score }}</td>
+        {% if grade.completed %}
+          {% if grade.score/grade.points > 0.7 %}
+          <td><span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span></td>
+          {% elif grade.score/grade.points > 0.4 %}
+          <td><span class="badge badge-warning">{{ grade.score }}/{{ grade.points }}</span></td>
+          {% else %}
+          <td><span class="badge badge-important">{{ grade.score }}/{{ grade.points }}</span></td>
+          {% endif %}
+        {% else %}
+        <td><span class="badge badge-info">N/A</span></td>
+        {% endif %}
       {% endfor %}
     </tr>
     {% endfor %}

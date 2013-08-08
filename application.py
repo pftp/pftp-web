@@ -169,10 +169,18 @@ def user_dashboard():
 def admin_dashboard():
   student_models = User.query.filter(User.roles.any(Role.name == 'user'))
   assignments = Assignment.query.all()
-  grades = Grade.query
 
   students = map(lambda x: x.__dict__, student_models)
   for student in students:
-    student['grades'] = map(lambda x: x.__dict__, grades.filter_by(user_id=student['id']))
+    student['grades'] = []
+    for assignment in assignments:
+      grade = Grade.query.filter_by(user_id=student['id'], assignment_id=assignment.id).all()
+      if len(grade) == 1:
+        grade = grade[0].__dict__
+        grade['completed'] = True
+        grade['points'] = assignment.points
+        student['grades'].append(grade)
+      else:
+        student['grades'].append({'completed': False})
 
   return render_template('admin/dashboard.html', students=students, assignments=assignments)
