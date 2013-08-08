@@ -18,6 +18,7 @@ Teacher Dashboard
       {% for assignment in assignments %}
       <th>{{ assignment.name }} ({{ assignment.points }})</th>
       {% endfor %}
+      <th>Course Total</th>
     </tr>
   </thead>
   <tbody>
@@ -29,17 +30,28 @@ Teacher Dashboard
       <td>{{ student.lastname }}</td>
       {% for grade in student.grades %}
         {% if grade.completed %}
+          <td>
           {% if grade.score/grade.points > 0.7 %}
-          <td><span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span></td>
+          <span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span>
           {% elif grade.score/grade.points > 0.4 %}
-          <td><span class="badge badge-warning">{{ grade.score }}/{{ grade.points }}</span></td>
+          <span class="badge badge-warning">{{ grade.score }}/{{ grade.points }}</span>
           {% else %}
-          <td><span class="badge badge-important">{{ grade.score }}/{{ grade.points }}</span></td>
+          <span class="badge badge-important">{{ grade.score }}/{{ grade.points }}</span>
           {% endif %}
+          </td>
         {% else %}
         <td><span class="badge badge-info">N/A</span></td>
         {% endif %}
       {% endfor %}
+      <td>
+        {% if student.total_score/student.total_points > 0.7 %}
+        <span class="badge badge-success">{{ student.total_score }}/{{ student.total_points }}</span>
+        {% elif student.total_score/student.total_points > 0.4 %}
+        <span class="badge badge-warning">{{ student.total_score }}/{{ student.total_points }}</span>
+        {% else %}
+        <span class="badge badge-important">{{ student.total_score }}/{{ student.total_points }}</span>
+        {% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>

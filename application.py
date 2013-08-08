@@ -173,12 +173,16 @@ def admin_dashboard():
   students = map(lambda x: x.__dict__, student_models)
   for student in students:
     student['grades'] = []
+    student['total_points'] = 0
+    student['total_score'] = 0
     for assignment in assignments:
       grade = Grade.query.filter_by(user_id=student['id'], assignment_id=assignment.id).all()
       if len(grade) == 1:
         grade = grade[0].__dict__
         grade['completed'] = True
         grade['points'] = assignment.points
+        student['total_points'] += assignment.points
+        student['total_score'] += grade['score']
         student['grades'].append(grade)
       else:
         student['grades'].append({'completed': False})
