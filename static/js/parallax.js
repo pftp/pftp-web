@@ -1,24 +1,59 @@
-function update_background() {
-	var scrolled = $(window).scrollTop();
-	var scroll_rate = -scrolled * 0.2;
-	if (scroll_rate > 40) scroll_rate = 40 + scroll_rate;
-	$('.parallax_block').css('background-position', "0% " + (scroll_rate));
-}
+(function($) {
 
-function check_text() {
-	$('.parallax_block p').each(function() {
-		var window_pos = $(this).offset().top - $(window).scrollTop();
-		if (window_pos < 80) {
-			$(this).css('opacity', window_pos/100.0);
-		} else if (window_pos < 280) {
-			$(this).css('opacity', 1.0);
-		} else {
-			$(this).css('opacity', (400-window_pos)/100.0);
+	$.fn.parallax = function(options) {
+
+		var settings = $.extend({ speed: 0.5, top: 0},
+			options);
+
+		var selector = $(this).selector;
+		var is_load = true;
+		var is_init = true;
+
+		$(window).scroll(function(e) {
+			if (is_load) load();
+			update_background();
+			update_text();
+		});
+
+		function load() {
+			settings.top = -$(window).scrollTop();
+			is_load = false;
 		}
-	});
-}
 
-$(window).scroll(function(e) {
-	update_background();
-	check_text();
-});
+		function init(top) {
+			settings.top -= top;
+			is_init = false;
+		}
+
+		function update_background() {
+			var scrolled = $(window).scrollTop();
+			if ($(selector).offset().top - scrolled > window.innerHeight) return;
+			var scroll_dist = -(scrolled) * settings.speed;
+			var position = scroll_dist - $(selector).offset().top;
+			if (is_init) init(position);
+			$(selector).css('background-position', "0px " + (position + settings.top) + "px");
+		}
+
+		function update_text() {
+			$(selector + ' *').each(function() {
+				var window_pos = $(this).offset().top - $(window).scrollTop();
+				if (window_pos < 80) {
+					$(this).css('opacity', window_pos/100.0);
+				} else if (window_pos < 280) {
+					$(this).css('opacity', 1.0);
+				} else {
+					$(this).css('opacity', (400-window_pos)/100.0);
+				}
+			});
+		}
+
+	};
+
+	$('.bg1').parallax();
+	$('.bg2').parallax({speed:0.2});
+	$('.bg3').parallax();
+	$('.bg4').parallax();
+	$('.bg5').parallax();
+	$('.bg6').parallax();
+
+})(jQuery);
