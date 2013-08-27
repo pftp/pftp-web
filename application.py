@@ -108,9 +108,13 @@ def index():
   else:
     return render_template('course_info.html')
 
+@app.route('/about')
+def about():
+  return render_template('about.html')
+
 @app.route('/lessons/<path:lesson_path>')
 def lesson(lesson_path):
-  filepath = os.path.join('gen', lesson_path)
+  filepath = os.path.join('gen', lesson_path + ".html")
   if os.path.exists(os.path.join('templates', filepath)):
     return render_template(filepath)
   else:

@@ -65,3 +65,28 @@ div.bg6 {
 	padding: 10px 0;
 }
 
+
+/* About */
+
+/* logistics */
+#logistics {
+	margin: 0 auto;
+	margin-top: 100px;
+	text-align: center;
+}
+#logistics div {
+	text-align: center;
+	margin: 0 120px;
+	display: inline-block;
+	vertical-align: top;
+}
+#logistics p {
+	font-size: 150%;
+	color: #566;
+	margin-bottom: 10px;
+}
+#logistics img {
+	margin-bottom: 20px;
+}
+
+

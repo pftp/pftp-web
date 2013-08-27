@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+About
+{% endblock %}
+
+{% block content %}
+
+	<div id="container">
+		<div id="logistics">
+			<div id="time">
+				<img src="{{url_for('static', filename='img/icons/14.png')}}">
+				<p>Wednesday</p>
+				<p>3-5pm</p>
+			</div>
+			<div id="units">
+				<img src="{{url_for('static', filename='img/icons/8.png')}}">
+				<p>2 units</p>
+			</div>
+			<div id="location">
+				<img src="{{url_for('static', filename='img/icons/5.png')}}">
+				<p>Sutardja Dai</p>
+			</div>
+		</div>
+	</div>
+
+{% include "faq.html" %}
+{% endblock %}
