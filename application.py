@@ -125,6 +125,11 @@ def practice(ex_id):
   else:
     return redirect('/practice/ex1')
 
+@app.route('/assignments/')
+def assignments_home():
+  assignments = Assignment.query.all()
+  return render_template('assignment_home.html', assignments=assignments)
+
 @app.route('/assignments/<int:assignment_id>')
 def assignments(assignment_id):
   assignment = Assignment.query.get(assignment_id)
