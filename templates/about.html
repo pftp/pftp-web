@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+About
+{% endblock %}
+
+{% block content %}
+
+	<div id="container">
+		<div id="logistics">
+			<div id="time">
+				<img src="{{url_for('static', filename='img/icons/14.png')}}">
+				<p>Wednesday</p>
+				<p>3-5pm</p>
+			</div>
+			<div id="units">
+				<img src="{{url_for('static', filename='img/icons/8.png')}}">
+				<p>2 units</p>
+			</div>
+			<div id="location">
+				<img src="{{url_for('static', filename='img/icons/5.png')}}">
+				<p>Sutardja Dai</p>
+			</div>
+		</div>
+		{% include "faq.html" %}
+		<div id="more_info">
+			<div id="apply">
+				<a href="https://docs.google.com/forms/d/1CYiTur4ItSRb2beK1TCIwC3h5xaYgxON5VyireKjLf0/viewform" target="_blank">
+					<img src="{{url_for('static', filename='img/icons/clipboard.png')}}">
+					<p>Apply</p>
+				</a>
+			</div>
+			<div id="contact">
+				<img src="{{url_for('static', filename='img/icons/bubble.png')}}">
+				<p>Contact us at:</p>
+				<p>programmingfeelthepower AT gmail.com</p>
+			</div>
+		</div>
+		<div id="instructors">
+		</div>
+		<div id="copyright">
+			<p>design by <a href="http://jiannmok.com" target="_blank">Jiann Mok</a></p>
+		</div>
+	</div>
+
+{% endblock %}

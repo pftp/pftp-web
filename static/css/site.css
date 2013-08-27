@@ -46,11 +46,13 @@ div.bg6 {
 }
 
 /* Intro */
+#container.intro {
+	margin-bottom: 30px;
+}
 
 /* FAQ Container */
 #faq_container {
-	padding: 60px 50px;
-	/*height: 90%;*/
+	padding: 30px 50px 60px;
 }
 #faq_title {
 	font-size: 200%;
@@ -64,4 +66,36 @@ div.bg6 {
 #faq_table td.answer {
 	padding: 10px 0;
 }
+
+
+/* About */
+
+/* logistics */
+#logistics, #more_info {
+	margin: 0 auto;
+	text-align: center;
+}
+#logistics {
+	margin-top: 100px;
+}
+#logistics div, #more_info div {
+	text-align: center;
+	margin: 0 120px;
+	display: inline-block;
+	vertical-align: top;
+}
+#logistics p, #more_info p {
+	font-size: 150%;
+	color: #566;
+	margin-bottom: 10px;
+}
+#logistics img, #more_info img {
+	margin-bottom: 20px;
+}
+#copyright {
+	margin: 40px 15px 0 0;
+	text-align: right;
+	font-size: 80%;
+}
+
 
