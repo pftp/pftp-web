@@ -183,7 +183,7 @@ def save_program():
   code = request.form['code']
   program = None
   if 'program_id' in request.form:
-    program = Program.query.filter_by(id=request.form['program_id']).first()
+    program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
     program.title = title
     program.code = code
   else:

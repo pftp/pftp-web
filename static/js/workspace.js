@@ -49,7 +49,7 @@ var saveCode = function() {
   clearTimeout(saveTimer);
   $.ajax({
     type: 'POST',
-    url: '/save_program',
+    url: '/save_program/',
     data: saveData
   }).done(function(pid) {
     programId = pid;
