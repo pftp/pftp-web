@@ -170,7 +170,7 @@ def practice(ex_id):
 def workspace():
   return render_template('workspace.html')
 
-@app.route('/save_program', methods=['POST'])
+@app.route('/save_program/', methods=['POST'])
 @login_required
 def save_program():
   title = request.form['title']
@@ -186,7 +186,7 @@ def save_program():
   db.session.commit()
   return str(program.id)
 
-@app.route('/assignments')
+@app.route('/assignments/')
 def assignments_home():
   assignments = Assignment.query.all()
   return render_template('assignment_home.html', assignments=assignments)
