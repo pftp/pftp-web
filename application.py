@@ -32,7 +32,7 @@ class Role(db.Model, RoleMixin):
   description = db.Column(db.String(255))
 
 class User(db.Model, UserMixin):
-  id = db.Column(db.Integer, primary_key=True)
+  id = db.Column(db.Integer(), primary_key=True)
   email = db.Column(db.String(120), index = True, unique = True, nullable = False)
   firstname = db.Column(db.String(30), index = True, unique = True, nullable = False)
   lastname = db.Column(db.String(30), index = True, unique = True, nullable = False)
@@ -42,6 +42,7 @@ class User(db.Model, UserMixin):
   roles = db.relationship('Role', secondary=roles_users,
       backref=db.backref('users', lazy='dynamic'))
   grades = db.relationship('Grade', lazy='dynamic', backref='grade')
+  programs = db.relationship('Program', lazy='dynamic', backref='program')
 
   def is_admin(self):
     return self.has_role("admin")
@@ -62,7 +63,7 @@ class User(db.Model, UserMixin):
       return None
 
 class Exercise(db.Model):
-  id = db.Column(db.Integer, primary_key = True)
+  id = db.Column(db.Integer(), primary_key = True)
   prompt = db.Column(db.Text(), nullable = False)
   hint = db.Column(db.Text(), nullable = False)
   test_cases = db.Column(db.Text(), nullable = False)
@@ -79,19 +80,25 @@ class Exercise(db.Model):
 
 class Assignment(db.Model):
   __tablename__ = 'assignment'
-  id = db.Column(db.Integer, primary_key = True)
+  id = db.Column(db.Integer(), primary_key = True)
   name = db.Column(db.String(100), index = True, unique = True, nullable = False)
   description = db.Column(db.Text(), nullable = False)
   deadline = db.Column(db.DateTime(), nullable = False)
-  points = db.Column(db.Integer, nullable = False)
+  points = db.Column(db.Integer(), nullable = False)
   grades = db.relationship('Grade', lazy='dynamic', backref='assignment')
 
 class Grade(db.Model):
   __tablename__ = 'grade'
-  id = db.Column(db.Integer, primary_key = True)
-  score = db.Column(db.Integer, nullable = False)
-  user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-  assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
+  id = db.Column(db.Integer(), primary_key = True)
+  score = db.Column(db.Integer(), nullable = False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+  assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
+
+class Program(db.Model):
+  __tablename__ = 'program'
+  id = db.Column(db.Integer(), primary_key = True)
+  code = db.Column(db.Text(), nullable = False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
 class Lesson(db.Model):
   __tablename__ = 'lesson'
@@ -158,7 +165,11 @@ def practice(ex_id):
   else:
     return redirect('/practice/ex1')
 
-@app.route('/assignments/')
+@app.route('/workspace')
+def workspace():
+  return render_template('workspace.html')
+
+@app.route('/assignments')
 def assignments_home():
   assignments = Assignment.query.all()
   return render_template('assignment_home.html', assignments=assignments)
