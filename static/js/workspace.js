@@ -1,3 +1,4 @@
+var editor, saveTimer, programId;
 var builtinRead = function(x) {
   if (Sk.builtinFiles === undefined ||
       Sk.builtinFiles['files'][x] === undefined)
@@ -36,8 +37,27 @@ var runit = function(code) {
   }
   return runObj;
 };
+var saveCode = function() {
+  var saveData = {
+    title: $('#program_title').text(),
+    code: editor.getValue()
+  };
+  if (programId !== undefined) {
+    saveData['program_id'] = programId;
+  }
+  $('#save_msg').text('Saving...');
+  clearTimeout(saveTimer);
+  $.ajax({
+    type: 'POST',
+    url: '/save_program',
+    data: saveData
+  }).done(function(pid) {
+    programId = pid;
+    $('#save_msg').text('All changes saved');
+  });
+};
 $(function() {
-  var editor, execObj, execHistory = [];
+  var execObj, execHistory = [];
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'output';
   editor = CodeMirror.fromTextArea(document.getElementById('code_area'), {
@@ -49,11 +69,15 @@ $(function() {
   });
   $('#run_code').click(function(e) {
     var runObj, testObjs, correct,
-      code = editor.getValue().replace(/\t/g, '    ');
+    code = editor.getValue().replace(/\t/g, '    ');
     $('#output').text('');
     runObj = runit(code);
   });
+  $('#save_code').click(function(e) {
+    saveCode();
+  });
   $('#program_title').tooltip();
+  $('#save_code_disabled').tooltip();
   $('#program_title').click(function(e) {
     $('#new_program_title').val($('#program_title').text());
     $('#rename_modal').modal('show');
@@ -61,5 +85,11 @@ $(function() {
   $('#rename_ok').click(function(e) {
     $('#program_title').text($('#new_program_title').val());
     $('#rename_modal').modal('hide');
+    saveCode();
+  });
+  editor.on('change', function(cm, changeObj) {
+    $('#save_msg').text('Saving...');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveCode, 1000);
   });
 });
