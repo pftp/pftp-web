@@ -19,7 +19,11 @@ Workspace
 <span id="program_title" role="button" data-toggle="tooltip" data-placement="bottom" title="Rename">Untitled Program</span>
 <textarea id="code_area" style="display:none;"></textarea>
 <button id="run_code">Run It!</button>
-<button id="save_code">Save Code</button>
+{% if current_user.is_authenticated() %}
+<button id="save_code">Save Code</button><span id="save_msg">All changes saved</span>
+{% else %}
+<span>Login to Save Code</span>
+{% endif %}
 <pre id="output"></pre>
 <canvas id="turtle_canvas"></canvas>
 <div id="rename_modal" class="modal fade">

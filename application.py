@@ -1,7 +1,7 @@
 import os
 import sys
 import sqlite3
-from flask import Flask, render_template, redirect, Markup, jsonify, url_for
+from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 
@@ -97,6 +97,7 @@ class Grade(db.Model):
 class Program(db.Model):
   __tablename__ = 'program'
   id = db.Column(db.Integer(), primary_key = True)
+  title = db.Column(db.Text(), nullable = False)
   code = db.Column(db.Text(), nullable = False)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
@@ -169,7 +170,23 @@ def practice(ex_id):
 def workspace():
   return render_template('workspace.html')
 
-@app.route('/assignments/')
+@app.route('/save_program', methods=['POST'])
+@login_required
+def save_program():
+  title = request.form['title']
+  code = request.form['code']
+  program = None
+  if 'program_id' in request.form:
+    program = Program.query.filter_by(id=request.form['program_id']).first()
+    program.title = title
+    program.code = code
+  else:
+    program = Program(title=title, code=code, user_id=current_user.id)
+  db.session.add(program)
+  db.session.commit()
+  return str(program.id)
+
+@app.route('/assignments')
 def assignments_home():
   assignments = Assignment.query.all()
   return render_template('assignment_home.html', assignments=assignments)

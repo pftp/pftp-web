@@ -10,3 +10,7 @@
   background-color: cyan;
   cursor: pointer;
 }
+
+#save_msg {
+  margin: 0 5px;
+}
