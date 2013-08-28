@@ -1,0 +1,557 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span1"></div>
+      <div class="span10">
+	<center> <h1> Cheat Sheet  </h1> </center>
+	<h4> <a href="#variables">Variables</a> </h4>
+	<h4> <a href="#string_manipulation"> String Manipulation </a> </h4>
+	<h4> <a href="#if_statements">If Statements</a> </h4>
+	<h4> <a href="#lists"> Lists </a> </h4>
+	<h4> <a href="#dictionaries"> Dictionaries</a> </h4>
+	<h4> <a href="#for_loops">For Loops</a> </h4>
+	<h4> <a href="#while_loops">While Loops</a> </h4>
+	<h4> <a href="#functions">Functions</a> </h4>
+
+	<a id="variables">&nbsp</a><br><br>
+	<h2>  Variables</h2>
+	<div class="indent">
+	  <h4> Assigning to a variable </h4>
+<pre>>>> a_string = "hello world"
+>>> print a_string
+hello world
+>>> a_number = 5
+>>> print a_number
+5
+</pre>
+        <h4> Using a variable in place of a number or a string</h4>
+	<pre>>>> 5 + 6
+11
+>>> x = 5
+>>> print x + 6
+11
+>>> a_string = "hello"
+>>> print a_string + "world"
+helloworld
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="string_manipulation">&nbsp</a><br><br>
+	<h2> String Manipulation </h2>
+
+	<div class="indent">
+	  <h4>Adding strings together</h4>
+	  <pre>>>> print "hello " + "my name is " + "billy"
+hello my name is billy
+>>> x = "hello " + "billy"
+>>> print x
+hello joe
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Replace every occurence of a substring</h4>
+	  <pre>>>> a_string = "this is a string"
+>>> print a_string.replace('a', 'another') #replace every 'a' with 'another' in a_string
+this is another string
+>>> a_string = "banana"
+>>> print a_string.replace('a', 'o') #replace every 'a' with 'o' in a_string
+bonono
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Select segments of a string by index</h4>
+a_string = "this is a string"
+a_string[5] selects the fifth character of the string, so count left to right starting from 0 to get the fifth character to be 'i'.
+a_string[5:] selects the segment from the fifth character to the end.
+a_string[:5] selects the segment from the beginning to the fifth character.
+a_string[5:7] selects the segment from the fifth character to the seventh character.
+<pre>
+>>> a_string = "this is a string"
+>>> print a_string[5]
+i
+>>> print a_string[5:]
+is a string
+>>> print a_string[:5]
+this
+>>> print a_string[5:7]
+is
+</pre>
+</div>
+<div class="indent">
+<h4> Checking if a substring is in a string using in</h4>
+<pre>
+>>> a_string = "this is a string"
+>>> print "is" in a_string
+True
+>>> print "this is" in a_string
+True
+>>> print "random junk" in a_string
+False
+>>> print "random junk" not in a_string
+True
+</div>
+
+	<div class="indent">
+	  <h4> Making a string all lowercase </h4>
+	  <pre>
+>>> x = "this is a string"
+>>> print x.lower()
+this is a string
+>>> x = "This Is Another String"
+>>> print x.lower()
+this is another string
+>>> x = "ThIs Is AnOtHeR sTrInG"
+>>> print x.lower()
+this is another string</pre>
+	</div>
+	<div class="indent">
+	  <h4>Finding the index of the first occurence of substring</h4>
+<pre>
+>>> a_string = "this is a string. another string here"
+>>> a_string.find('a')
+8
+>>> a_string[8:]
+'a string. another string here'
+>>> a_string.find('another')
+18
+>>> a_string[18:]
+'another string here'
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="if_statements">&nbsp</a><br><br>
+	<h2> If Statements </h2>
+	<b>Note: When checking for equality use == instead of the single = we use for assignment </b> <br>
+	5 == 5 evalulates to True since 5 equals 5 <br>
+	5 == 6 evaluates to False since 5 does not equal 6<br>
+	x = 5 assigns 5 to x a single = sign means assignment<br>
+	5 != 6 evaluates to True since 5 does not equal to 6 <br>
+	<div class="indent">
+	  <h4>Basic If Statement</h4>
+	  </pre>
+>>> if 5 == 5:
+...    print 'hello'
+...
+hello
+>>> if 6 == 5:
+...    print 'hello'
+...
+
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Basic If/Else Statement</h4>
+<pre>>>> if 6 == 5:
+...    print 'hello'
+...
+>>> if 5 == 5:
+...    print '5 equals 5'
+... else:
+...    print '5 not equal to 5'
+...
+5 equals 5
+>>> if 5 == 6:
+...    print '5 equals 6'
+... else:
+...    print '5 not equal to 6'
+...
+5 not equal to 6
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>If Elif Elif Else </h4>
+Checks each if, elif statement in order until finds one that's true and executes the body and skips the rest of elif/else cases. If none of the if/elif are satisfied, the body of the else executes.
+<pre>
+>>> if 5 > 6:
+...    print '5 greater than 6'
+... elif 5 == 6:
+...    print '5 equal to 6'
+... elif 5 < 6:
+...    print '5 less than 6'
+... else:
+...    print "it's all a lie"
+...
+5 less than 6
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> If If If vs If Elif Elif</h4>
+	  Let's see what happens in each case by walking through the code. <br>
+	  If you use three if statements, they run independently from each other. If the first if is True, then we evaluate the body of the first if statement and check if the second if statement is True. If the second if statement is True we evaluate the body of the second if statement and then check if the third if is True. If the third if is True, we evaluate the body of the third if statement. <br>
+	  On the other hand, in the If/Elif/Elif case, we first check if the first if is True. If the first if is True, then we evaluate the body of the first if statement and then we complete the evaluation of the entire if/elif/elif block.
+<pre>
+>>> if 'h' in 'hello':
+...    print 'h is in hello'
+...
+h is in hello
+>>> if 'e' in 'hello':
+...    print 'e is in hello'
+...
+e is in hello
+>>> if 'l' in 'hello':
+...    print 'l in hello'
+...
+l in hello
+>>> if 'h' in 'hello':
+...    print 'h is in hello'
+... elif 'e' in 'hello':
+...    print 'e is in hello'
+... elif 'l' in 'hello':
+...    print 'l is in hello'
+...
+h is in hello
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+
+	<a id="lists">&nbsp</a><br><br>
+	<h2> Lists </h2>
+	<div class="indent">
+	  <h4>Creating a list</h4>
+<pre>
+>>> a_list = [] #creates an empty list
+>>> print a_list
+[]
+>>> a_list = [1, 2, 3, 4] #creates a list with numbers already inside
+>>> print a_list
+[1, 2, 3, 4]
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Adding elements to end of list</h4>
+<pre>
+>>> a_list = []
+>>> a_list.append(5)
+>>> a_list.append(4)
+>>> a_list.append(3)
+>>> a_list.append(2)
+>>> a_list.append(1)
+>>> a_list.append("BLAST OFF!")
+>>> print a_list
+[5, 4, 3, 2, 1, 'BLAST OFF!']
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Getting parts of a list</h4>
+<pre>
+>>> print a_list[0] #prints the first element of a_list
+hello
+>>> print a_list[1] #prints the second element of a_list
+this
+>>> print a_list[2] #prints the third element of a_list
+is
+>>> print a_list[:2] #prints all the elements from the beginning of a list up to the third element (not including third element)
+['hello', 'this']
+>>> print a_list[2:] #prints all the elements from the third element of the list to the end of the list
+['is', 'a', 'list']
+>>> print a_list[2:3] #prints the third up to the fifth element of a_list (not including the fifth element)
+['is', 'a']
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Checking if an element is inside list</h4>
+<pre>
+>>> list_of_ingredients = ['apples', 'strawberries', 'bananas', 'kiwis']
+>>> 'pineapples' in list_of_ingredients
+False
+>>> 'apples' in list_of_ingredients
+True
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> Creating a list of lists </h4>
+	  <pre>
+>>> list_of_lists = []
+>>> a_list = [1, 2, 3, 4, 5]
+>>> another_list = [6, 7, 8, 9, 10]
+>>> a_third_list = [11, 12, 13, 14, 15]
+>>> list_of_lists.append(a_list)
+>>> list_of_lists.append(another_list)
+>>> list_of_lists.append(a_third_list)
+>>> print list_of_lists
+[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15]]</pre>
+	  <h5> OR </h5>
+	  <pre>
+>>> another_list_of_lists = [['hello', 'this', 'is', 'gandalf'],['hi', 'gandalf']]
+>>> print another_list_of_lists
+[['hello', 'this', 'is', 'gandalf'], ['hi', 'gandalf']]
+>>> print another_list_of_lists[0]
+['hello', 'this', 'is', 'gandalf']
+>>> print another_list_of_lists[0][1]
+this</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="dictionaries">&nbsp</a><br><br>
+	<h2> Dictionaries </h2>
+	<div class="indent">
+	  <h4>Creating a dictionary</h4>
+	  <pre>
+>>> empty_dictionary = {}
+>>> print empty_dictionary
+{}
+>>> fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5}
+>>> print fruit_prices{'orange': 1.5, 'strawberry': 0.5, 'banana': 0.5, 'apple': 1}</pre>
+	</div>
+	<div class="indent">
+	  <h4>Adding items to a dictionary</h4>
+	  <pre>
+>>> fruit_prices = {}
+>>> fruit_prices['banana'] = .5
+>>> fruit_prices['apple'] = 1
+>>> fruit_prices['strawberry'] = .5
+>>> fruit_prices['orange'] = 1.50
+>>> print fruit_prices
+{'orange': 1.5, 'strawberry': 0.5, 'banana': 0.5, 'apple': 1} </pre>
+	</div>
+	<div class="indent">
+	  <h4>Looking up keys in a dictionary</h4>
+<pre>
+>>> fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5}
+>>> print fruit_prices['banana']
+0.5
+>>> print fruit_prices['apple']
+1
+>>> print fruit_prices['banana']
+0.5
+>>> print fruit_prices['strawberry']
+0.5</pre>
+	</div>
+	<div class="indent">
+	  <h4>Checking if key is in dictionary</h4>
+<pre>
+>>> fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5}
+>>> print 'banana' in fruit_prices
+True
+>>> print 'apple' in fruit_prices
+True
+>>> print 'pineapple' in fruit_prices
+False </pre>
+	</div>
+	<div class="indent">
+	  <h4> Creating a list of dictionaries </h4>
+	  <pre>
+>>> fruit_prices = {'apple' : 1, 'pear' : .5, 'orange' : 1.5, 'banana' : .5}
+>>> pet_prices = {'dog' : 500, 'giraffe' : 1000, 'kangaroo' : 1500, 'cat' : - 100}
+>>> vegetable_prices = {'broccoli' : 1, 'celery' : 2, 'carrot' : 2, 'bittermelon' : - 1000}
+>>> list_of_prices = []
+>>> list_of_prices.append(fruit_prices)
+>>> list_of_prices.append(pet_prices)
+>>> list_of_prices.append(vegetable_prices)
+>>> print list_of_prices
+[{'orange': 1.5, 'pear': 0.5, 'apple': 1, 'banana': 0.5},
+{'kangaroo': 1500, 'giraffe': 1000, 'dog': 500, 'cat': -100},
+{'celery': 2, 'bittermelon': -1000, 'carrot': 2, 'broccoli': 1}]
+>>> print list_of_prices[0]
+{'orange': 1.5, 'pear': 0.5, 'apple': 1, 'banana': 0.5}
+>>> print list_of_prices[0]['orange']
+1.5</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="for_loops">&nbsp</a><br><br>
+	<h2> For Loops </h2>
+	<div class="indent">
+	  <h4>Looping over a list. Printing out each element in a list one element on each line</h4>
+	  Note it doesn't matter what variable name you use after the "for" in the syntax. Both x and fruit work in the example below.
+	  <pre>
+>>> list_of_fruits = ['pineapple', 'banana', 'orange', 'strawberry']
+>>> for x in list_of_fruits:
+...    print x
+...
+pineapple
+banana
+orange
+strawberry
+>>> for fruit in list_of_fruits:
+...    print fruit
+...
+pineapple
+banana
+orange
+strawberry</pre>
+	</div>
+	<div class="indent">
+	  <h4>Looping over a range of numbers</h4>
+	  <pre>
+>>> for x in range(10):
+...    print x
+...
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+>>> for x in range(10):
+...    print x * x
+...
+0
+1
+4
+9
+16
+25
+36
+49
+64
+81</pre>
+	</div>
+	<div class="indent">
+	  <h4>Looping over a list of lists</h4>
+	  <pre>
+>>> list_of_lists = [[1,2,3,4,5], [11, 12, 13, 14, 15], [21, 22, 23, 24, 25]]
+>>> for a_list in list_of_lists:
+...    for x in a_list:
+...       print x
+...
+1
+2
+3
+4
+5
+11
+12
+13
+14
+15
+21
+22
+23
+24
+25
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="while_loops">&nbsp</a><br><br>
+	<h2> While Loops </h2>
+	<div class="indent">
+	  <h4>Basic While Loop</h4>
+	  <pre>
+>>> x = 5
+>>> while x > 0:
+...    print x
+...    x = x - 1
+...    if x == 0:
+...       print 'BLASTOFF!'
+...
+5
+4
+3
+2
+1
+BLASTOFF!</pre>
+	</div>
+	<div class="indent">
+	  <h4>Break</h4>
+	  <pre>
+>>> x = 5
+>>> while True:
+...    print x
+...    x = x - 1
+...    if x == 0:
+...       print 'BLASTOFF!'
+...       break
+...
+5
+4
+3
+2
+1
+BLASTOFF!</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="functions">&nbsp</a><br><br>
+	<h2> Functions </h2>
+	<div class="indent">
+	  <h4>Creating a function with no arguments</h4>
+	  <pre>
+>>> def return_10():
+...    return 10
+...
+>>> print return_10()
+10</pre>
+	</div>
+	<div class="indent">
+	  <h4>Creating a function with one argument</h4>
+	  <pre>
+>>> def multiply_by_10(x):
+...    return 10 * x
+...
+>>> print multiply_by_10(10)
+100
+>>> print multiply_by_10(5)
+50</pre>
+	</div>
+	<div class="indent">
+	  <h4>Creating a function with multiply arguments</h4>
+	  <pre>
+>>> def return_list_multiplied_by_x(a_list, x):
+...    new_list = []
+...    for element in a_list:
+...        new_list.append(element * x)
+...    return new_list
+...
+>>> print return_list_multiplied_by_x([1,2,3,4,5], 5)
+[5, 10, 15, 20, 25]
+>>> print return_list_multiplied_by_x([1,2,3,4,5], 3)
+[3, 6, 9, 12, 15]
+>>> print return_list_multiplied_by_x([1,2,3,4,5], 2)
+[2, 4, 6, 8, 10]</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+      </div>
+      <div class="span1"></div>
+    </div>
+  </div>
+{% endblock %}

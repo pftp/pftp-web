@@ -103,17 +103,17 @@ class Program(db.Model):
 
 class Lesson(db.Model):
   __tablename__ = 'lesson'
-  id = db.Column(db.Integer, primary_key = True)
+  id = db.Column(db.Integer(), primary_key = True)
   name = db.Column(db.String(30), nullable=False)
   link = db.Column(db.String(30), nullable=False, index = True)
   sublessons = db.relationship('Sublesson', lazy='dynamic', backref='lesson')
 
 class Sublesson(db.Model):
   __tablename__ = 'sublesson'
-  id = db.Column(db.Integer, primary_key=True)
+  id = db.Column(db.Integer(), primary_key=True)
   name = db.Column(db.String(30), nullable=False)
   link = db.Column(db.String(30), nullable=False)
-  lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.id'))
+  lesson_id = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
 
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -204,6 +204,10 @@ def assignments(assignment_id):
     return render_template('assignment.html', assignment=assignment)
   else:
     return redirect('/assignments/1')
+
+@app.route('/cheatsheet.html')
+def cheatsheet():
+  return render_template('cheatsheet.html')
 
 @app.route('/dashboard/')
 @login_required
