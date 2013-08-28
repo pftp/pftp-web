@@ -132,7 +132,7 @@ def index():
   else:
     return render_template('course_info.html')
 
-@app.route('/about')
+@app.route('/about/')
 def about():
   return render_template('about.html')
 
@@ -165,11 +165,11 @@ def practice(ex_id):
   else:
     return redirect('/practice/ex1')
 
-@app.route('/workspace')
+@app.route('/workspace/')
 def workspace():
   return render_template('workspace.html')
 
-@app.route('/assignments')
+@app.route('/assignments/')
 def assignments_home():
   assignments = Assignment.query.all()
   return render_template('assignment_home.html', assignments=assignments)
@@ -182,7 +182,7 @@ def assignments(assignment_id):
   else:
     return redirect('/assignments/1')
 
-@app.route('/dashboard')
+@app.route('/dashboard/')
 @login_required
 def user_dashboard():
   context = {}
@@ -213,7 +213,7 @@ def user_dashboard():
 # Admin Routes
 ################################################################################
 
-@app.route('/admin')
+@app.route('/admin/')
 @roles_required('admin')
 def admin_dashboard():
   student_models = User.query.filter(User.roles.any(Role.name == 'user'))
