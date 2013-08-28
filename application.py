@@ -253,8 +253,9 @@ def admin_dashboard():
     student['total_score'] = 0
     for assignment in assignments:
       grade = Grade.query.filter_by(user_id=student['id'], assignment_id=assignment.id).all()
-      if len(grade) == 1:
-        grade = grade[0].__dict__
+      if len(grade) >= 1:
+        # take the most recently updated grade
+        grade = grade[-1].__dict__
         grade['completed'] = True
         grade['points'] = assignment.points
         student['total_points'] += assignment.points
@@ -264,3 +265,14 @@ def admin_dashboard():
         student['grades'].append({'completed': False})
 
   return render_template('admin/dashboard.html', students=students, assignments=assignments)
+
+
+@app.route('/admin/submit_grade/', methods=['POST'])
+@roles_required('admin')
+def submit_grade():
+  assignment = Assignment.query.filter(Assignment.name==request.json['assignment_name']).first()
+  first_name = request.json['student_name'].rsplit(' ', 1)[0]
+  last_name = request.json['student_name'].rsplit(' ', 1)[1]
+  student = User.query.filter(User.firstname==first_name and User.lastname==last_name).first()
+  student.add_grade(assignment, int(request.json['score']))
+  return "success"
