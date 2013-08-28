@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+Workspace
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<h3>Untitled Program</h3>
+<textarea id="code" style="display:none;"></textarea>
+<button id="run_code">Run It!</button>
+<button id="save_code">Save Code</button>
+<pre id="output"></pre>
+<canvas id="turtle_canvas"></canvas>
+{% endblock %}
