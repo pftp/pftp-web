@@ -53,4 +53,13 @@ $(function() {
     $('#output').text('');
     runObj = runit(code);
   });
+  $('#program_title').tooltip();
+  $('#program_title').click(function(e) {
+    $('#new_program_title').val($('#program_title').text());
+    $('#rename_modal').modal('show');
+  });
+  $('#rename_ok').click(function(e) {
+    $('#program_title').text($('#new_program_title').val());
+    $('#rename_modal').modal('hide');
+  });
 });

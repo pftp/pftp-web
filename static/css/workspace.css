@@ -1,0 +1,12 @@
+#program_title {
+  margin: 2px;
+  padding: 0 5px;
+  font-size: 36px;
+  line-height: 50px;
+  display: inline-block;
+}
+
+#program_title:hover {
+  background-color: cyan;
+  cursor: pointer;
+}
