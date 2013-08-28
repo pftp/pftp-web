@@ -138,7 +138,11 @@ def about():
 
 @app.route('/lessons/')
 def lesson_home():
-  return render_template('lesson_home.html', lessons=Lesson.query.all())
+  context = {}
+  lessons = map(lambda x: x.__dict__, Lesson.query.all())
+  context['lessons'] = lessons
+  context['lesson_name'] = 'Lessons'
+  return render_template('lesson_home.html', context=context)
 
 @app.route('/lessons/<path:lesson_path>')
 def lesson(lesson_path):
@@ -148,11 +152,13 @@ def lesson(lesson_path):
       return render_template(filepath)
   else:
     lesson = Lesson.query.filter(Lesson.link==lesson_path).first()
-
+    context = {}
     sublessons = map(lambda x: x.__dict__, lesson.sublessons)
     for sublesson in sublessons:
       sublesson['sublesson'] = []
-    return render_template('lesson_home.html', lessons=sublessons)
+    context['lessons'] = sublessons
+    context['lesson_name'] = lesson.name
+    return render_template('lesson_home.html', context=context)
 
   return redirect('/')
 
