@@ -5,6 +5,8 @@ from flask import Flask, render_template, redirect, Markup, jsonify, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 
+from termcolor import colored
+
 ################################################################################
 # Config
 ################################################################################
@@ -91,6 +93,21 @@ class Grade(db.Model):
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
   assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
 
+class Lesson(db.Model):
+  __tablename__ = 'lesson'
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(30), nullable=False)
+  link = db.Column(db.String(30), nullable=False, index = True)
+  sublessons = db.relationship('Sublesson', lazy='dynamic', backref='lesson')
+
+class Sublesson(db.Model):
+  __tablename__ = 'sublesson'
+  id = db.Column(db.Integer, primary_key=True)
+  name = db.Column(db.String(30), nullable=False)
+  link = db.Column(db.String(30), nullable=False)
+  lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.id'))
+
+
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
@@ -112,13 +129,25 @@ def index():
 def about():
   return render_template('about.html')
 
+@app.route('/lessons/')
+def lesson_home():
+  return render_template('lesson_home.html', lessons=Lesson.query.all())
+
 @app.route('/lessons/<path:lesson_path>')
 def lesson(lesson_path):
-  filepath = os.path.join('gen', lesson_path + ".html")
-  if os.path.exists(os.path.join('templates', filepath)):
-    return render_template(filepath)
+  if '.html' in lesson_path:
+    filepath = os.path.join('gen', lesson_path)
+    if os.path.exists(os.path.join('templates', filepath)):
+      return render_template(filepath)
   else:
-    return redirect('/')
+    lesson = Lesson.query.filter(Lesson.link==lesson_path).first()
+
+    sublessons = map(lambda x: x.__dict__, lesson.sublessons)
+    for sublesson in sublessons:
+      sublesson['sublesson'] = []
+    return render_template('lesson_home.html', lessons=sublessons)
+
+  return redirect('/')
 
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):

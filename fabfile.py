@@ -10,7 +10,7 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson
 
 ################################################################################
 # Tasks
@@ -156,6 +156,27 @@ def generate_models():
 
   db.session.commit()
 
+  def get_lesson_name_from_file(lesson_file):
+    if lesson_file[-5:] == '.html':
+      return humanize(lesson_file[:-5])
+    else:
+      return humanize(lesson_file)
+
+  lesson_root_path = os.path.join('templates', 'gen')
+  for lesson_file in os.listdir(lesson_root_path):
+    lesson_name = get_lesson_name_from_file(lesson_file)
+    lesson_link = lesson_file
+    lesson = Lesson(name=lesson_name, link=lesson_link)
+    print lesson_name
+    lesson_path = os.path.join(lesson_root_path, lesson_file)
+    if os.path.isdir(lesson_path):
+      for sublesson_file in os.listdir(lesson_path):
+        sublesson_name = get_lesson_name_from_file(sublesson_file)
+        sublesson_link = os.path.join(lesson_link, sublesson_file)
+        sublesson = Sublesson(name=sublesson_name, link=sublesson_link)
+        lesson.sublessons.append(sublesson)
+    db.session.add(lesson)
+  db.session.commit()
 
 def add_exercises():
   exercises_file = open('static/js/practice/exercises.json', 'r')
@@ -170,4 +191,3 @@ def add_exercises():
   db.commit()
   db.close()
   print colored("%s exercises added to database." % len(exercises), "green")
-
