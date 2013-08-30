@@ -42,7 +42,7 @@ var saveCode = function() {
     title: $('#program_title').text(),
     code: editor.getValue()
   };
-  if (programId !== undefined) {
+  if (programId !== '-1') {
     saveData['program_id'] = programId;
   }
   $('#save_msg').text('Saving...');
@@ -58,6 +58,7 @@ var saveCode = function() {
 };
 $(function() {
   var execObj, execHistory = [];
+  programId = $('#program_id').text();
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'output';
   editor = CodeMirror.fromTextArea(document.getElementById('code_area'), {

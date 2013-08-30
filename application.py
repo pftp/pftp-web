@@ -173,8 +173,19 @@ def practice(ex_id):
     return redirect('/practice/ex1')
 
 @app.route('/workspace/')
-def workspace():
+def workspace_home():
+  if current_user.is_authenticated():
+    programs = Program.query.filter_by(user_id=current_user.id).all()
+    return render_template('workspace_home.html', programs=programs)
   return render_template('workspace.html')
+
+@app.route('/workspace/<int:prog_id>')
+@login_required
+def workspace(prog_id):
+  program = Program.query.filter_by(id=prog_id, user_id=current_user.id).first()
+  if program == None:
+    return redirect('/workspace/')
+  return render_template('workspace.html', program=program)
 
 @app.route('/save_program/', methods=['POST'])
 @login_required

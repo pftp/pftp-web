@@ -16,8 +16,10 @@ Workspace
 {% endblock %}
 
 {% block content %}
-<span id="program_title" role="button" data-toggle="tooltip" data-placement="bottom" title="Rename">Untitled Program</span>
-<textarea id="code_area" style="display:none;"></textarea>
+<div id="program_id" style="display:none;">{% if program %}{{ program.id }}{% else %}-1{% endif %}</div>
+{% if current_user.is_authenticated() %}<a href="/workspace/">back</a>{% endif %}
+<span id="program_title" role="button" data-toggle="tooltip" data-placement="bottom" title="Rename">{% if program %}{{ program.title }}{% else %}Untitled Program{% endif %}</span>
+<textarea id="code_area" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
 <button id="run_code">Run It!</button>
 {% if current_user.is_authenticated() %}
 <button id="save_code">Save Code</button><span id="save_msg">All changes saved</span>
