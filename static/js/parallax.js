@@ -27,10 +27,8 @@
 
 		function update_background() {
 			var scrolled = $(window).scrollTop();
-			if ($(selector).offset().top - scrolled > window.innerHeight) return;
 			var scroll_dist = scrolled * settings.speed;
 			var position = scroll_dist - $(selector).offset().top;
-			if (is_init) init(position);
 			$(selector).css('background-position', "0px " + (position + settings.top) + "px");
 		}
 
