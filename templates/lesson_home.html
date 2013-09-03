@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<h2> {{ context.lesson_name }} </h2>
+{% for lesson in context.lessons %}
+    <div class="row">
+        <div class="span6">
+            <a href={{ lesson.link }}> <h4> {{ lesson.name }} </h4> </a>
+            {% for sublesson in lesson.sublessons %}
+            <a href={{ sublesson.link }}> <h5> {{ sublesson.name }} </h5> </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

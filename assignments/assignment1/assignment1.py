@@ -1,6 +1,34 @@
 import turtle
 import time
 
+#Wrapper class to display messages and pause between steps
+class Turtle(object):
+  def __init__(self):
+    turtle.bgcolor("black")
+    self.turtle = turtle.Turtle()
+    self.turtle.pencolor("white")
+
+  def forward(self, amt):
+    self.turtle.forward(amt)
+    time.sleep(3)
+
+  def backward(self, amt):
+    self.turtle.backward(amt)
+    time.sleep(3)
+
+  def left(self, amt):
+    self.turtle.left(amt)
+    time.sleep(3)
+
+  def right(self, amt):
+    self.turtle.right(amt)
+    time.sleep(3)
+
+  def say(self, msg):
+    self.turtle.write(msg)
+    time.sleep(3)
+
+
 # This is Winston, your chelonian (that means turtle) guide to the magic that is python.
 winston = turtle.Turtle()
 
@@ -18,7 +46,7 @@ winston.right(90)
 ## Tell Winston to spin in a circle clockwise
 # winston.right(360)
 
-# with this, you can tell winston to make shapes
+# by combining these instructions, you can tell winston to make shapes
 winston.right(90)
 winston.forward(100)
 winston.right(90)

@@ -1,67 +1,7 @@
-<html>
-  <head>
-    <title>{% block title %}{% endblock %}</title>
-    <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery-2.0.3.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/builtin.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='js/base.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/flatly/bootstrap.min.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/site.css')}}">
-    {% block head %}
-    {% endblock %}
-  </head>
-  <body>
-  <div id="nav_console">
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <ul class="nav">
-          <li><a id="logo-text" href="/">Programming: Feel the Power{% if current_user.is_authenticated() and current_user.is_admin() %}<span id="admin-logo">[Admin]</span>{% endif %}</a></li>
-        </ul>
-        <ul class="nav pull-right">
-          <li><a href="/about">About</a></li>
-          <li><a href="/lessons/intro">Lessons</a></li>
-          <li><a href="/practice/ex1">Practice</a></li>
-          <li><a href="/assignments">Assignments</a></li>
-          {% if current_user.is_authenticated() %}
-          <li><a href="/logout">Logout</a></li>
-          {% else %}
-          <li><a href="/login">Login</a></li>
-          {% endif %}
-          <li class="dropdown">
-          <a id="toggle_console" class="dropdown-toggle" href="#">Console <b class="caret"></b></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div id="console">
-      <div id="code_container">
-        <textarea id="code_area" style="display:none;"></textarea>
-      </div>
-      <div id="output_container">
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-          <li class="active"><a href="#pane1" content-id="printed_output" class="outpt-tab" data-toggle="tab">Printed Output</a></li>
-          <li><a href="#pane2" content-id="turtle_output" class="outpt-tab" data-toggle="tab">Turtle Canvas</a></li>
-        </ul>
-        <div id="output_contents" class="tab-content">
-          <div id="pane1" class="tab-pane active">
-            <pre id="output"></pre>
-          </div>
-          <div id="pane2" class="tab-pane">
-            <canvas id="turtle_canvas"></canvas>
-          </div>
-        </div>
-      </div>
-      <button id="run_code">Run It!</button>
-    </div>
-  </div>
-  {% block content %}
-  {% endblock %}
-  </body>
-</html>
+{% extends "basebase.html" %}
+
+{% block base_content %}
+<div style="padding-bottom: 1.75cm"></div>
+{% block content %}
+{% endblock %}
+{% endblock %}

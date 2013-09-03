@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery-2.0.3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/flatly/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/site.css')}}">
+
+    <!-- TODO current using below for autocomplete but need to add actual jquery ui stuff later (choose a theme) -->
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+  <div id="nav_console">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <ul class="nav">
+          <li><a id="logo-text" href="/">Programming: Feel the Power{% if current_user.is_authenticated() and current_user.is_admin() %}<span id="admin-logo">[Admin]</span>{% endif %}</a></li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/about">About</a></li>
+          <li><a href="/lessons/">Lessons</a></li>
+          <li><a href="/practice/ex1">Practice</a></li>
+          <li><a href="/assignments">Assignments</a></li>
+          <li><a href="/workspace">Workspace</a></li>
+          {% if current_user.is_authenticated() %}
+          <li><a href="/logout">Logout</a></li>
+          {% else %}
+          <li><a href="/login">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% block base_content %}
+  {% endblock %}
+  </body>
+</html>

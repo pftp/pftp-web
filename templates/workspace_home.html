@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Program List
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/workspace_home.css')}}" />
+{% endblock %}
+
+{% block content %}
+<h3>Your Programs</h3>
+<ul>
+  {% for program in programs %}
+  <li><a href="/workspace/{{ program.id }}">{{ program.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

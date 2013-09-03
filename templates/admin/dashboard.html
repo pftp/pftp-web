@@ -5,32 +5,43 @@ Teacher Dashboard
 {% endblock %}
 
 {% block head %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<script type="text/javascript">
+  {% for student in students %}
+  students.push("{{ student.firstname }} {{ student.lastname }}");
+  {% endfor %}
+  var assignment_to_score = {};
+  {% for assignment in assignments %}
+  assignment_to_score["{{ assignment.name }}"] = {{ assignment.points }};
+  {% endfor %}
+</script>
 {% endblock %}
 
 {% block content %}
-<table class="table table-bordered table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Email</th>
-      <th>First</th>
-      <th>Last</th>
-      {% for assignment in assignments %}
-      <th>{{ assignment.name }} ({{ assignment.points }})</th>
-      {% endfor %}
-      <th>Course Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for student in students %}
-    <tr>
-      <td>{{ student.id }}</td>
-      <td>{{ student.email }}</td>
-      <td>{{ student.firstname }}</td>
-      <td>{{ student.lastname }}</td>
-      {% for grade in student.grades %}
+<div style="width:90%; margin:auto">
+  <table class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Email</th>
+        <th>First</th>
+        <th>Last</th>
+        {% for assignment in assignments %}
+        <th>{{ assignment.name }} ({{ assignment.points }})</th>
+        {% endfor %}
+        <th>Course Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.firstname }}</td>
+        <td>{{ student.lastname }}</td>
+        {% for grade in student.grades %}
         {% if grade.completed %}
-          <td>
+        <td>
           {% if grade.score/grade.points > 0.7 %}
           <span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span>
           {% elif grade.score/grade.points > 0.4 %}
@@ -38,22 +49,59 @@ Teacher Dashboard
           {% else %}
           <span class="badge badge-important">{{ grade.score }}/{{ grade.points }}</span>
           {% endif %}
-          </td>
+        </td>
         {% else %}
         <td><span class="badge badge-info">N/A</span></td>
         {% endif %}
+        {% endfor %}
+        <td>
+          {% if student.total_score/student.total_points > 0.7 %}
+          <span class="badge badge-success">{{ student.total_score }}/{{ student.total_points }}</span>
+          {% elif student.total_score/student.total_points > 0.4 %}
+          <span class="badge badge-warning">{{ student.total_score }}/{{ student.total_points }}</span>
+          {% else %}
+          <span class="badge badge-important">{{ student.total_score }}/{{ student.total_points }}</span>
+          {% endif %}
+        </td>
+      </tr>
       {% endfor %}
-      <td>
-        {% if student.total_score/student.total_points > 0.7 %}
-        <span class="badge badge-success">{{ student.total_score }}/{{ student.total_points }}</span>
-        {% elif student.total_score/student.total_points > 0.4 %}
-        <span class="badge badge-warning">{{ student.total_score }}/{{ student.total_points }}</span>
-        {% else %}
-        <span class="badge badge-important">{{ student.total_score }}/{{ student.total_points }}</span>
-        {% endif %}
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </tbody>
+  </table>
+
+
+  <!-- TODO IN FUTURE integrate this so that we can view a student's submission, code, and tests on the same screen as submitting grade -->
+  <div class="container">
+    <h3> Add Grades </h3>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="assignment_name">Assignment</label>
+        <div class="controls">
+          <select id="assignment_name">
+            <option> Choose an assignment </option>
+            {% for assignment in assignments %}
+            <option value="{{ assignment.name }}"> {{ assignment.name }} </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="student_name">Student Name</label>
+        <div class="controls">
+          <input type="text" id="student_name" placeholder="Student Name">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="assignment_score">Score</label>
+        <div class="controls">
+          <input type="text" id="assignment_score" placeholder="Score (press enter to submit)">
+          <div id="max_score">
+            out of 50
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}
