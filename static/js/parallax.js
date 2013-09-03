@@ -48,7 +48,7 @@
 	};
 
 	$('.bg1').parallax();
-	$('.bg2').parallax({speed:0.2});
+	$('.bg2').parallax();
 	$('.bg3').parallax();
 	$('.bg4').parallax();
 	$('.bg5').parallax();
