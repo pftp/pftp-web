@@ -15,7 +15,7 @@ body {
 
 /* Parallax */
 .parallax_block {
-	height: 90%;
+	height: 50%;
 	padding-top: 20%;
 	background-size: cover;
 }

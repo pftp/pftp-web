@@ -33,4 +33,6 @@ Course Info
   </div>
 </div>
 {% include "faq.html" %}
+<script type="text/javascript" src="{{url_for('static', filename='lib/nicescroll/jquery.nicescroll.min.js')}}"></script>
+<script type="text/javascript">$('html').scrollTop(1);$('html').scrollTop(0);</script>
 {% endblock %}
