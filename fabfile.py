@@ -47,6 +47,11 @@ def console():
 def run():
   app.run()
 
+@task
+def update():
+  clean()
+  build()
+
 @task(default=True)
 def all():
   clean()
