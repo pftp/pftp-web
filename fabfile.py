@@ -163,7 +163,7 @@ def generate_models():
       return humanize(lesson_file)
 
   lesson_root_path = os.path.join('templates', 'gen')
-  for lesson_file in os.listdir(lesson_root_path):
+  for lesson_file in sorted(os.listdir(lesson_root_path)):
     lesson_name = get_lesson_name_from_file(lesson_file)
     lesson_link = lesson_file
     lesson = Lesson(name=lesson_name, link=lesson_link)
