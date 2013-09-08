@@ -46,9 +46,10 @@
   };
 
   var lab_content = [
-    ['Welcome to Lab 1! We are going to learn some turtle graphics today. Hit the Next button to get started.'],
-    ["This is Winston, your guide to the magic that is Python.\nDon't worry about what import or turtle.Turtle() means - we will get into that later. All that matters is that we have a turtle and his name is Winston.",
-    'import turtle\nwinston = turtle.Turtle()']
+    ["Welcome to Lab 1! We are going to learn some turtle graphics today. Hit the 'Next' button to get started."],
+    ["This is Winston, your guide to the magic that is Python.\nDon't worry about what <code>import</code> or <code>turtle.Turtle()</code> means - we will get into that later. All that matters is that we have a turtle and his name is Winston.",
+    'import turtle\nwinston = turtle.Turtle()'],
+    ["You can call Winston by his name and tell him to move! Try adding a line at the end that says <code>winston.forward(100)</code>. This tells Winston to move 100 units in the direction he's facing. Hit the 'Run It!' button when yo're done to see Winston in action."]
   ];
   var section = 0;
 
@@ -81,7 +82,7 @@
       }
     });
     var update = function(section) {
-      $('#lab_text').text(lab_content[section][0]);
+      $('#lab_text').html(lab_content[section][0]);
       if (lab_content[section][1])
         editor.setValue(lab_content[section][1]);
     };
