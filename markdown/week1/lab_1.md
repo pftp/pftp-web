@@ -44,8 +44,13 @@
     }
     return runObj;
   };
+
+  var lab_content = [
+    ['Welcome to Lab 1! We are going to learn some turtle graphics today.',
+    'import turtle\nwinston = turtle.Turtle()']
+  ];
+
   $(function() {
-    $('#turtle_canvas').css('width', $("#canvas_container").clientWidth);
     var editor, execObj, execHistory = [];
     Sk.canvas = 'turtle_canvas';
     Sk.pre = 'lab_output';
@@ -61,6 +66,12 @@
         code = editor.getValue().replace(/\t/g, '    ');
       runObs = runit(code);
     });
+    var update = function(section) {
+      $('#lab_text').text(lab_content[section][0]);
+      editor.setValue(lab_content[section][1]);
+    };
+
+    update(0);
   });
 </script>
 
@@ -69,11 +80,12 @@ Lab 1
 
 <div class="row">
   <div class="span6">
+    <div id="lab_text"></div></br>
     <textarea id="lab_code" style="display:none;"></textarea>
     <button id="lab_run_code">Run It!</button>
     <pre id="lab_output"></pre>
   </div>
   <div class="span6" id="canvas_container">
-    <canvas id="turtle_canvas" style="border: 1px solid black;"></canvas>
+    <canvas id="turtle_canvas" width="500" height="500" style="border: 1px solid black;"></canvas>
   </div>
 </div>
