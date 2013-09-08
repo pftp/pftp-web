@@ -49,7 +49,13 @@
     ["Welcome to Lab 1! We are going to learn some turtle graphics today. Hit the 'Next' button to get started."],
     ["This is Winston, your guide to the magic that is Python.\nDon't worry about what <code>import</code> or <code>turtle.Turtle()</code> means - we will get into that later. All that matters is that we have a turtle and his name is Winston.",
     'import turtle\nwinston = turtle.Turtle()'],
-    ["You can call Winston by his name and tell him to move! Try adding a line at the end that says <code>winston.forward(100)</code>. This tells Winston to move 100 units in the direction he's facing. Hit the 'Run It!' button when yo're done to see Winston in action."]
+    ["You can call Winston by his name and tell him to move! Try adding a line at the end that says <code>winston.forward(100)</code>. This tells Winston to move 100 units in the direction he's facing. Hit the 'Run It!' button when you're done to see Winston in action."],
+    ["Now try bringing Winston back to where he started with <code>winston.backward()</code> (You still need to supply a number between the parentheses so Winston knows how far to go."],
+    ["Winston can even change directions! Try telling Winston to turn right by adding a line at the end that says <code>winston.right(90)</code>."],
+    ["Now try making Winston spin in a circle counter-clockwise. (Hint: Winston will have to turn left and he only understands angles in degrees."],
+    ["Now Winston is pretty smart for a turtle, and using just these commands, you can tell him to draw shapes. Try adding these lines at the end: <pre>winston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)</pre>"]
+
+
   ];
   var section = 0;
 
