@@ -105,8 +105,8 @@ Lab 1
 
 <div class="row">
   <div class="span6">
-    <div style="height: 300px">
-      <div id="lab_text" style="overflow: auto"></div></br>
+    <div style="height: 200px">
+      <div id="lab_text" style="overflow: auto; height: 195px;"></div></br>
     </div>
     <button id="prev_section">Prev</button>
     <button id="next_section">Next</button>
