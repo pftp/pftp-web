@@ -46,9 +46,11 @@
   };
 
   var lab_content = [
-    ['Welcome to Lab 1! We are going to learn some turtle graphics today.',
+    ['Welcome to Lab 1! We are going to learn some turtle graphics today. Hit the Next button to get started.'],
+    ["This is Winston, your guide to the magic that is Python.\nDon't worry about what import or turtle.Turtle() means - we will get into that later. All that matters is that we have a turtle and his name is Winston.",
     'import turtle\nwinston = turtle.Turtle()']
   ];
+  var section = 0;
 
   $(function() {
     var editor, execObj, execHistory = [];
@@ -66,12 +68,25 @@
         code = editor.getValue().replace(/\t/g, '    ');
       runObs = runit(code);
     });
+    $('#next_section').click(function() {
+      if (section < lab_content.length - 1) {
+        section++;
+        update(section);
+      }
+    });
+    $('#prev_section').click(function() {
+      if (section > 0) {
+        section--;
+        update(section);
+      }
+    });
     var update = function(section) {
       $('#lab_text').text(lab_content[section][0]);
-      editor.setValue(lab_content[section][1]);
+      if (lab_content[section][1])
+        editor.setValue(lab_content[section][1]);
     };
 
-    update(0);
+    update(section);
   });
 </script>
 
@@ -81,6 +96,8 @@ Lab 1
 <div class="row">
   <div class="span6">
     <div id="lab_text"></div></br>
+    <button id="prev_section">Prev</button>
+    <button id="next_section">Next</button>
     <textarea id="lab_code" style="display:none;"></textarea>
     <button id="lab_run_code">Run It!</button>
     <pre id="lab_output"></pre>
