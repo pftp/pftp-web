@@ -47,15 +47,18 @@
 
   var lab_content = [
     ["Welcome to Lab 1! We are going to learn some turtle graphics today. Hit the 'Next' button to get started."],
-    ["This is Winston, your guide to the magic that is Python.\nDon't worry about what <code>import</code> or <code>turtle.Turtle()</code> means - we will get into that later. All that matters is that we have a turtle and his name is Winston.",
+    ["This is Winston, your guide to the magic that is Python.\nDon't worry about what <code>import</code> or <code>turtle.Turtle()</code> means - we will get into that later. All that matters is that we have a turtle and his name is Winston. He will listen to your instructions and execute them in order with no mistakes because he is just that good.",
     'import turtle\nwinston = turtle.Turtle()'],
     ["You can call Winston by his name and tell him to move! Try adding a line at the end that says <code>winston.forward(100)</code>. This tells Winston to move 100 units in the direction he's facing. Hit the 'Run It!' button when you're done to see Winston in action."],
     ["Now try bringing Winston back to where he started with <code>winston.backward()</code> (You still need to supply a number between the parentheses so Winston knows how far to go."],
     ["Winston can even change directions! Try telling Winston to turn right by adding a line at the end that says <code>winston.right(90)</code>."],
-    ["Now try making Winston spin in a circle counter-clockwise. (Hint: Winston will have to turn left and he only understands angles in degrees."],
-    ["Now Winston is pretty smart for a turtle, and using just these commands, you can tell him to draw shapes. Try adding these lines at the end: <pre>winston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)</pre>"]
-
-
+    ["Try making Winston spin in a circle counter-clockwise. (Hint: Winston will have to turn left and he only understands angles in degrees."],
+    ["Now Winston is pretty smart for a turtle, and using just these commands, you can tell him to draw shapes. Try adding these lines at the end: <pre>winston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)</pre>"],
+    ["Now it's your turn! Make Winston draw a triangle. You can edit or delete the lines from the previous step to do this."],
+    ["Cool! Now normally Winston drags a pen behind him when he moves, and this leaves the lines that you see. You can tell Winston to stop slacking off and carry the pen if you don't want him to draw: <code>winston.penup()</code>. Try adding this line and then make Winston move. You should see that there is no line behind him as he moves this time!"],
+    ["You can use this to make separate shapes! Just tell Winston to put his pen back down and draw a shape, and then pick it up while he moves to a different spot to start the next shape. Try adding these lines to see it: <pre>winston.pendown()\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\n\nwinston.penup()\nwinston.forward(200)\nwinston.pendown()\n\nwinston.right(120)\nwinston.forward(100)\nwinston.right(120)\nwinston.forward(100)\nwinston.right(120)\nwinston.forward(100)</pre>"],
+    ["Now you try making a pentagon and a hexagon with some space in between."],
+    ["Awesome! Now your assignment for this week is to make a picture of something cool"]
   ];
   var section = 0;
 
@@ -102,7 +105,9 @@ Lab 1
 
 <div class="row">
   <div class="span6">
-    <div id="lab_text"></div></br>
+    <div style="height: 300px">
+      <div id="lab_text" style="overflow: auto"></div></br>
+    </div>
     <button id="prev_section">Prev</button>
     <button id="next_section">Next</button>
     <textarea id="lab_code" style="display:none;"></textarea>
