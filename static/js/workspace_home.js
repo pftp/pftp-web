@@ -1,19 +1,5 @@
-var saveCode = function() {
-  $.ajax({
-    type: 'POST',
-    url: '/save_program/',
-    data: saveData
-  }).done(function(pid) {
-    programId = pid;
-    $('#save_msg').text('All changes saved');
-  });
-};
 $(function() {
-  var submitProgramId, deleteProgramId;
-  $('.submit-program').click(function(e) {
-    submitProgramId = $(e.currentTarget).data('program-id');
-    $('#submit_program_title').text($(e.currentTarget).data('program-title'));
-  });
+  var deleteProgramId;
   $('.delete-program').click(function(e) {
     deleteProgramId = $(e.currentTarget).data('program-id');
     $('#delete_program_title').text($(e.currentTarget).data('program-title'));
