@@ -11,12 +11,13 @@
 <div class="container">
     <div class="row">
         <div class="span12">
-            <h3>{{ assignment.name }}</h3>
+            <h2>{{ assignment.name }}</h2>
             Due {{ assignment.deadline }}
         </div>
     </div>
+    <br><br>
     <p>
-        {{ assignment.description }}
+        {{ assignment.description|safe }}
     </p>
 </div>
 {% endblock %}

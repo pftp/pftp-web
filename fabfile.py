@@ -123,7 +123,7 @@ def generate_models():
   db.session.add(test_user2)
   print colored("3 users added to database.", "green")
 
-  assignment1 = Assignment(name='Homework 1', description='Finish exercises 1-5 before next class',  points=10, deadline=datetime(2013,9,10))
+  assignment1 = Assignment(name='Homework 1', description='Draw something using turtle graphics and submit the code <a href="/dashboard/"> here </a>',  points=10, deadline=datetime(2013,9,10))
   assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10, deadline=datetime(2013,9,17))
   assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30, deadline=datetime(2013,10,1))
   assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10, deadline=datetime(2013,10,8))
