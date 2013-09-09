@@ -57,7 +57,7 @@
     ["Now it's your turn! Make Winston draw a triangle. You can edit or delete the lines from the previous step to do this."],
     ["Cool! Now normally Winston drags a pen behind him when he moves, and this leaves the lines that you see. You can tell Winston to stop slacking off and carry the pen if you don't want him to draw: <code>winston.penup()</code>. Try adding this line and then make Winston move. You should see that there is no line behind him as he moves this time!"],
     ["You can use this to make separate shapes! Just tell Winston to put his pen back down and draw a shape, and then pick it up while he moves to a different spot to start the next shape. Try adding these lines to see it: <pre>winston.pendown()\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\nwinston.right(90)\nwinston.forward(100)\n\nwinston.penup()\nwinston.forward(200)\nwinston.pendown()\n\nwinston.right(120)\nwinston.forward(100)\nwinston.right(120)\nwinston.forward(100)\nwinston.right(120)\nwinston.forward(100)</pre>"],
-    ["Now you try making a pentagon and a hexagon with some space in between."],
+    ["Now you try making a pentagon inside of a hexagon."],
     ['Winston also has one of those giant packs of crayons, so you can tell him to change the color he draws too: <code>winston.color("green")</code>. He will understand the following list of colors: <pre>aliceblue\nantiquewhite\naqua\naquamarine\nazure\nbeige\nbisque\nblack\nblanchedalmond\nblue\nblueviolet\nbrown\nburlywood\ncadetblue\nchartreuse\nchocolate\ncoral\ncornflowerblue\ncornsilk\ncrimson\ncyan\ndarkblue\ndarkcyan\ndarkgoldenrod\ndarkgray\ndarkgreen\ndarkgrey\ndarkkhaki\ndarkmagenta\ndarkolivegreen\ndarkorange\ndarkorchid\ndarkred\ndarksalmon\ndarkseagreen\ndarkslateblue\ndarkslategray\ndarkslategrey\ndarkturquoise\ndarkviolet\ndeeppink\ndeepskyblue\ndimgray\ndimgrey\ndodgerblue\nfirebrick\nfloralwhite\nforestgreen\nfuchsia\ngainsboro\nghostwhite\ngold\ngoldenrod\ngray\ngreen\ngreenyellow\ngrey\nhoneydew\nhotpink\nindianred\nindigo\nivory\nkhaki\nlavender\nlavenderblush\nlawngreen\nlemonchiffon\nlightblue\nlightcoral\nlightcyan\nlightgoldenrodyellow\nlightgray\nlightgreen\nlightgrey\nlightpink\nlightsalmon\nlightseagreen\nlightskyblue\nlightslategray\nlightslategrey\nlightsteelblue\nlightyellow\nlime\nlimegreen\nlinen\nmagenta\nmaroon\nmediumaquamarine\nmediumblue\nmediumorchid\nmediumpurple\nmediumseagreen\nmediumslateblue\nmediumspringgreen\nmediumturquoise\nmediumvioletred\nmidnightblue\nmintcream\nmistyrose\nmoccasin\nnavajowhite\nnavy\noldlace\nolive\nolivedrab\norange\norangered\norchid\npalegoldenrod\npalegreen\npaleturquoise\npalevioletred\npapayawhip\npeachpuff\nperu\npink\nplum\npowderblue\npurple\nred\nrosybrown\nroyalblue\nsaddlebrown\nsalmon\nsandybrown\nseagreen\nseashell\nsienna\nsilver\nskyblue\nslateblue\nslategray\nslategrey\nsnow\nspringgreen\nsteelblue\ntan\nteal\nthistle\ntomato\nturquoise\nviolet\nwheat\nwhite\nwhitesmoke\nyellow\nyellowgreen</pre>'],
     ["Awesome! Now your assignment for this week is to make a picture of something cool"]
   ];
@@ -109,10 +109,12 @@ Lab 1
     <div style="height: 200px">
       <div id="lab_text" style="overflow: auto; height: 195px;"></div></br>
     </div>
-    <button id="prev_section">Prev</button>
-    <button id="next_section">Next</button>
+    <div style="margin: 10px 0;">
+      <button id="prev_section" class="btn btn-primary btn-small">Prev</button>
+      <button id="next_section" class="btn btn-primary btn-small">Next</button>
+    </div>
     <textarea id="lab_code" style="display:none;"></textarea>
-    <button id="lab_run_code">Run It!</button>
+    <button id="lab_run_code" class="btn btn-success" style="margin: 10px 0;">Run It!</button>
     <pre id="lab_output"></pre>
   </div>
   <div class="span6" id="canvas_container">
