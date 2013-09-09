@@ -50,11 +50,14 @@ def run():
 ################################################################################
 # Helpers
 ################################################################################
-
-def humanize(filename):
+def clean_filename(filename):
   # makes it so we can order files in a directory
   if filename[0].isdigit():
     filename = filename[1:]
+  return filename
+
+def humanize(filename):
+  filename = clean_filename(filename)
   uncapitalized = ['a', 'an', 'and', 'at', 'by', 'from', 'of', 'on', 'or', 'the', 'to', 'with', 'without']
   name = os.path.splitext(filename)[0]
   words = [word[0].upper() + word[1:] if word not in uncapitalized else word for word in name.split('_')]
@@ -75,12 +78,20 @@ def generate_pages():
     for filename in files:
       input_path = os.path.join(root, filename)
       output_dir = root.replace('markdown', 'templates/gen', 1)
-      output_path = os.path.splitext(os.path.join(output_dir, filename))[0] + '.html'
-      input_file = open(input_path, 'r')
-      input_text = input_file.read()
-
       if not os.path.exists(output_dir):
         os.makedirs(output_dir)
+      input_file = open(input_path, 'r')
+
+      if '.pdf' in filename:
+        output_path = os.path.join(output_dir, filename)
+        input_text = input_file.read()
+        output_file = open(output_path, 'w')
+        output_file.write(input_text)
+        output_file.close()
+        continue
+
+      output_path = os.path.splitext(os.path.join(output_dir, filename))[0] + '.html'
+      input_text = input_file.read()
       output_file = open(output_path, 'w')
 
       html_output = processor.convert(input_text)
@@ -164,12 +175,17 @@ def generate_models():
     lesson_name = get_lesson_name_from_file(lesson_file)
     lesson_link = lesson_file
     lesson = Lesson(name=lesson_name, link=lesson_link)
-    print lesson_name
     lesson_path = os.path.join(lesson_root_path, lesson_file)
     if os.path.isdir(lesson_path):
       for sublesson_file in os.listdir(lesson_path):
         sublesson_name = get_lesson_name_from_file(sublesson_file)
-        sublesson_link = os.path.join(lesson_link, sublesson_file)
+        sublesson_link = os.path.join(lesson_link, clean_filename(sublesson_file))
+
+        # example: mv 0lecture_1.html to lecture1.html
+        sublesson_path = os.path.join(lesson_path, sublesson_file)
+        clean_sublesson_path = os.path.join(lesson_path, clean_filename(sublesson_file))
+        os.system('mv %s %s' % (sublesson_path, clean_sublesson_path))
+
         sublesson = Sublesson(name=sublesson_name, link=sublesson_link)
         lesson.sublessons.append(sublesson)
     db.session.add(lesson)

@@ -2,7 +2,7 @@ import os
 import sys
 import sqlite3
 import datetime
-from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request
+from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 from flask_security.forms import RegisterForm, TextField, Required
@@ -173,10 +173,15 @@ def lesson_home():
 
 @app.route('/lessons/<path:lesson_path>')
 def lesson(lesson_path):
-  if '.html' in lesson_path:
-    filepath = os.path.join('gen', lesson_path)
-    if os.path.exists(os.path.join('templates', filepath)):
-      return render_template(filepath)
+  file_path = os.path.join('gen', lesson_path)
+  if '.pdf' in file_path:
+    if os.path.exists(os.path.join('templates', file_path)):
+      return send_file(os.path.join('templates', file_path), mimetype='application/pdf')
+    else:
+      return redirect('/')
+  if '.html' in file_path:
+    if os.path.exists(os.path.join('templates', file_path)):
+      return render_template(file_path)
   else:
     lesson = Lesson.query.filter(Lesson.link==lesson_path).first()
     context = {}
