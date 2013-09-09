@@ -43,19 +43,9 @@ def console():
   context['Grade'] = Grade
   code.interact(local=locals())
 
-@task
+@task(default=True)
 def run():
   app.run()
-
-@task
-def update():
-  clean()
-  build()
-
-@task(default=True)
-def all():
-  update()
-  run()
 
 ################################################################################
 # Helpers
