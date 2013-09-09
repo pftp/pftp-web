@@ -10,7 +10,7 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week
 
 ################################################################################
 # Tasks
@@ -52,6 +52,9 @@ def run():
 ################################################################################
 
 def humanize(filename):
+  # makes it so we can order files in a directory
+  if filename[0].isdigit():
+    filename = filename[1:]
   uncapitalized = ['a', 'an', 'and', 'at', 'by', 'from', 'of', 'on', 'or', 'the', 'to', 'with', 'without']
   name = os.path.splitext(filename)[0]
   words = [word[0].upper() + word[1:] if word not in uncapitalized else word for word in name.split('_')]
@@ -171,6 +174,16 @@ def generate_models():
         lesson.sublessons.append(sublesson)
     db.session.add(lesson)
   db.session.commit()
+
+
+  # Add weeks (which contains a lesson and an assignment per week)
+  for lesson in Lesson.query.all():
+    id = lesson.id
+    assignment = Assignment.query.get(id)
+    week = Week(assignment=assignment.id, lesson=lesson.id)
+    db.session.add(week)
+  db.session.commit()
+
 
 def add_exercises():
   exercises_file = open('static/js/practice/exercises.json', 'r')

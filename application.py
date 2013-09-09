@@ -121,6 +121,11 @@ class Sublesson(db.Model):
   link = db.Column(db.String(30), nullable=False)
   lesson_id = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
 
+class Week(db.Model):
+  __tablename__ = 'week'
+  id = db.Column(db.Integer(), primary_key=True)
+  lesson = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
+  assignment = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
 
 class ExtendedRegisterForm(RegisterForm):
   firstname = TextField('First Name', [Required()])
@@ -151,7 +156,12 @@ def index():
 
 @app.route('/about/')
 def about():
-  return render_template('about.html')
+  weeks = map(lambda x:x.__dict__, Week.query.all())
+  # not sure if this is the best way
+  for week in weeks:
+    week['assignment'] = Assignment.query.get(week['assignment'])
+    week['lesson'] = Lesson.query.get(week['lesson'])
+  return render_template('about.html', weeks=weeks)
 
 @app.route('/lessons/')
 def lesson_home():
