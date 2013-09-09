@@ -51,9 +51,10 @@ class User(db.Model, UserMixin):
   active = db.Column(db.Boolean())
   confirmed_at = db.Column(db.DateTime())
   roles = db.relationship('Role', secondary=roles_users,
-      backref=db.backref('users', lazy='dynamic'))
-  grades = db.relationship('Grade', lazy='dynamic', backref='grade')
-  programs = db.relationship('Program', lazy='dynamic', backref='program')
+      backref=db.backref('user', lazy='dynamic'))
+  grades = db.relationship('Grade', lazy='dynamic', backref='user')
+  programs = db.relationship('Program', lazy='dynamic', backref='user')
+  submissions = db.relationship('Submission', lazy='dynamic', backref='user')
 
   def is_admin(self):
     return self.has_role("admin")
@@ -90,45 +91,48 @@ class Exercise(db.Model):
     return '<Exercise %r>' % (self.prompt)
 
 class Assignment(db.Model):
-  __tablename__ = 'assignment'
   id = db.Column(db.Integer(), primary_key = True)
   name = db.Column(db.String(100), index = True, unique = True, nullable = False)
   description = db.Column(db.Text(), nullable = False)
   deadline = db.Column(db.DateTime(), nullable = False)
   points = db.Column(db.Integer(), nullable = False)
   grades = db.relationship('Grade', lazy='dynamic', backref='assignment')
+  submissions = db.relationship('Submission', lazy='dynamic', backref='assignment')
 
 class Grade(db.Model):
-  __tablename__ = 'grade'
   id = db.Column(db.Integer(), primary_key = True)
   score = db.Column(db.Integer(), nullable = False)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
   assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
 
 class Program(db.Model):
-  __tablename__ = 'program'
   id = db.Column(db.Integer(), primary_key = True)
   title = db.Column(db.Text(), nullable = False, default = 'Untitled Program')
   code = db.Column(db.Text(), nullable = False, default = '')
   last_modified = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
+class Submission(db.Model):
+  id = db.Column(db.Integer(), primary_key = True)
+  title = db.Column(db.Text(), nullable = False)
+  code = db.Column(db.Text(), nullable = False)
+  submit_time = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
+  assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+
 class Lesson(db.Model):
-  __tablename__ = 'lesson'
   id = db.Column(db.Integer(), primary_key = True)
   name = db.Column(db.String(30), nullable=False)
   link = db.Column(db.String(30), nullable=False, index = True)
   sublessons = db.relationship('Sublesson', lazy='dynamic', backref='lesson')
 
 class Sublesson(db.Model):
-  __tablename__ = 'sublesson'
   id = db.Column(db.Integer(), primary_key=True)
   name = db.Column(db.String(30), nullable=False)
   link = db.Column(db.String(30), nullable=False)
   lesson_id = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
 
 class Week(db.Model):
-  __tablename__ = 'week'
   id = db.Column(db.Integer(), primary_key=True)
   lesson = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
   assignment = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
@@ -152,13 +156,7 @@ def register():
 ################################################################################
 @app.route('/')
 def index():
-  if current_user.is_authenticated():
-    if current_user.is_admin():
-      return redirect(url_for('admin_dashboard'))
-    else:
-      return redirect(url_for('user_dashboard'))
-  else:
-    return render_template('course_info.html')
+  return redirect('/about/')
 
 @app.route('/about/')
 def about():
@@ -197,7 +195,6 @@ def lesson(lesson_path):
     context['lessons'] = sublessons
     context['lesson_name'] = lesson.name
     return render_template('lesson_home.html', context=context)
-
   return redirect('/')
 
 @app.route('/practice/ex<int:ex_id>')
@@ -280,13 +277,10 @@ def user_dashboard():
   context = {}
   context['total_score'] = 0
   context['total_points'] = 0
-
   assignment_models = Assignment.query.all()
   assignments = map(lambda x: x.__dict__, assignment_models)
-
   for assignment in assignments:
     grades = Grade.query.filter_by(assignment_id=assignment['id'], user_id=current_user.id).all()
-
     if len(grades) == 1:
       grade = grades[0]
       assignment['graded'] = True
@@ -294,7 +288,6 @@ def user_dashboard():
       context['total_score'] += grade.score
     else:
       assignment['graded'] = False
-
     context['total_points'] += assignment['points']
 
   context['assignments'] = assignments

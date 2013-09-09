@@ -12,17 +12,20 @@ Python Practice
 <script type="text/javascript" src="{{url_for('static', filename='js/practice/practice.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice.css')}}" />
 {% endblock %}
 
 {% block content %}
 <div class="container">
   <h3>{{ex.prompt}}</h3>
   <textarea id="practice_code" style="display:none;"></textarea>
-  <button id="practice_run_code">Run It!</button>
-  <button id="next_exercise" href="/practice/ex{{ex.id+1}}" style="display:none;">Next Exercise</button>
+  <div id="run_container">
+    <button id="practice_run_code" class="btn btn-success">Run It!</button>
+    <button id="next_exercise" href="/practice/ex{{ex.id+1}}" class="btn btn-success" style="display:none;">Next Exercise</button>
+  </div>
   <pre id="practice_output"></pre>
-  <button id="show_hint">Get hint</button>
-  <button id="show_solution" style="display:none;">Get solution</button>
+  <button id="show_hint" class="btn btn-small">Get hint</button>
+  <button id="show_solution" class="btn btn-small" style="display:none;">Get solution</button>
   <div id="hint_wrapper" style="display:none;">
     <b>Hint:</b>
     <div id="hint">{{ex.hint}}</div>
