@@ -5,41 +5,11 @@
   "test_cases": {"":"hey\n"},
   "solution": "print \"hey\""
 },{
-  "prompt": "Print the string \"Power to the people!\"",
-  "hint": "The syntax to print the string \"Hello, world!\" is<br><pre>print \"Hello, world!\"</pre>",
-  "concepts": ["print","str"],
-  "test_cases": {"":"Power to the people!\n"},
-  "solution": "print \"Power to the people!\""
-},{
-  "prompt": "Print the string \"Flying monkeys\"",
-  "hint": "The syntax to print the string \"Hello, world!\" is<br><pre>print \"Hello, world!\"</pre>",
-  "concepts": ["print","str"],
-  "test_cases": {"":"Flying monkeys\n"},
-  "solution": "print \"Flying monkeys\""
-},{
   "prompt": "Print the string \"Lighthouses rule!!!\"",
   "hint": "The syntax to print the string \"Hello, world!\" is<br><pre>print \"Hello, world!\"</pre>",
   "concepts": ["print","str"],
   "test_cases": {"":"Lighthouses rule!!!\n"},
   "solution": "print \"Lighthouses rule!!!\""
-},{
-  "prompt": "Print the string \"Don't eat the yellow snow\"",
-  "hint": "The syntax to print the string \"Hello, world!\" is<br><pre>print \"Hello, world!\"</pre>",
-  "concepts": ["print","str"],
-  "test_cases": {"":"Don't eat the yellow snow\n"},
-  "solution": "print \"Don't eat the yellow snow\""
-},{
-  "prompt": "Print the number 5",
-  "hint": "The syntax to print the number 23 is<br><pre>print 23</pre>",
-  "concepts": ["print","num"],
-  "test_cases": {"":"5\n"},
-  "solution": "print 5"
-},{
-  "prompt": "Print the number 47",
-  "hint": "The syntax to print the number 23 is<br><pre>print 23</pre>",
-  "concepts": ["print","num"],
-  "test_cases": {"":"47\n"},
-  "solution": "print 47"
 },{
   "prompt": "Print the number -7",
   "hint": "The syntax to print the number 23 is<br><pre>print 23</pre>",
@@ -47,41 +17,11 @@
   "test_cases": {"":"-7\n"},
   "solution": "print -7"
 },{
-  "prompt": "Print the number 101",
-  "hint": "The syntax to print the number 23 is<br><pre>print 23</pre>",
-  "concepts": ["print","num"],
-  "test_cases": {"":"101\n"},
-  "solution": "print 101"
-},{
-  "prompt": "Print the number 9001",
-  "hint": "The syntax to print the number 23 is<br><pre>print 23</pre>",
-  "concepts": ["print","num"],
-  "test_cases": {"":"9001\n"},
-  "solution": "print 9001"
-},{
-  "prompt": "Print the number 6 and then the number 7 on the next line",
-  "hint": "The syntax to print the string \"Hello, world!\" and then the number 23 on the next line is<br><pre>print \"Hello, world!\"\nprint 23</pre>",
-  "concepts": ["print","num","print-mult"],
-  "test_cases": {"":"6\n7\n"},
-  "solution": "print 6\nprint 7"
-},{
   "prompt": "Print the string \"Can you dig it?\" and then the string \"Oh yeah\" on the next line",
   "hint": "The syntax to print the string \"Hello, world!\" and then the number 23 on the next line is<br><pre>print \"Hello, world!\"\nprint 23</pre>",
   "concepts": ["print","str","print-mult"],
   "test_cases": {"":"Can you dig it?\nOh yeah\n"},
   "solution": "print \"Can you dig it?\"\nprint \"Oh yeah\""
-},{
-  "prompt": "Print the number 100 and then the string \"bottles of beer on the wall\" on the next line",
-  "hint": "The syntax to print the string \"Hello, world!\" and then the number 23 on the next line is<br><pre>print \"Hello, world!\"\nprint 23</pre>",
-  "concepts": ["print","num","str","print-mult"],
-  "test_cases": {"":"100\nbottles of beer on the wall\n"},
-  "solution": "print 100\nprint \"bottles of beer on the wall\""
-},{
-  "prompt": "Print the strings \"Hi\", \"Nice to meet you\", and \"Bye\" on consecutive lines",
-  "hint": "The syntax to print the string \"Hello, world!\" and then the number 23 on the next line is<br><pre>print \"Hello, world!\"\nprint 23</pre>",
-  "concepts": ["print","str","print-mult"],
-  "test_cases": {"":"Hi\nNice to meet you\nBye\n"},
-  "solution": "print \"Hi\"\nprint \"Nice to meet you\"\nprint \"Bye\""
 },{
   "prompt": "Print the numbers 11, 21, and 1211 on consecutive lines",
   "hint": "The syntax to print the string \"Hello, world!\" and then the number 23 on the next line is<br><pre>print \"Hello, world!\"\nprint 23</pre>",
@@ -101,24 +41,6 @@
   "test_cases": {"":"1067\n"},
   "solution": "print 1111 + 22 * 33 / 121 - 50"
 },{
-  "prompt": "Print ((1234 plus negative 5678) divided by 1111) times (66 minus 50)",
-  "hint": "The syntax to print 47 minus ((3 plus 3) times 7 divided by 2) is<br><pre>print 47 - ((3 + 3) * 7 / 2)</pre>",
-  "concepts": ["print","num","num-ops"],
-  "test_cases": {"":"-64\n"},
-  "solution": "print (1234 + -5678) / 1111 * (66 - 50)"
-},{
-  "prompt": "Print 3 times (((358 plus 126) divided by 11) minus 21)",
-  "hint": "The syntax to print 47 minus ((3 plus 3) times 7 divided by 2) is<br><pre>print 47 - ((3 + 3) * 7 / 2)</pre>",
-  "concepts": ["print","num","num-ops"],
-  "test_cases": {"":"69\n"},
-  "solution": "print 3 * ((358 + 126) / 11 - 21)"
-},{
-  "prompt": "Print 4 plus ((4 times 4) divided by 4) minus 4",
-  "hint": "The syntax to print 47 minus ((3 plus 3) times 7 divided by 2) is<br><pre>print 47 - ((3 + 3) * 7 / 2)</pre>",
-  "concepts": ["print","num","num-ops"],
-  "test_cases": {"":"4\n"},
-  "solution": "print 4 + 4 * 4 / 4 - 4"
-},{
   "prompt": "Print the string \"sub\" concatenated with the string \"liminal\"",
   "hint": "The syntax to print the string \"happy\" concatenated with the string \"ness\" is<br><pre>print \"happy\" + \"ness\"</pre>",
   "concepts": ["print","str","add-str"],
@@ -130,24 +52,6 @@
   "concepts": ["print","str","add-str"],
   "test_cases": {"":"bookkeeper\n"},
   "solution": "print \"book\" + \"keep\" + \"er\""
-},{
-  "prompt": "Print the string \"daily \" concatenated with the string \"practice\"",
-  "hint": "The syntax to print the string \"happy\" concatenated with the string \"ness\" is<br><pre>print \"happy\" + \"ness\"</pre>",
-  "concepts": ["print","str","add-str"],
-  "test_cases": {"":"daily practice\n"},
-  "solution": "print \"daily \" + \"practice\""
-},{
-  "prompt": "Print the string \"Hello, \" concatenated with the string \"world!\"",
-  "hint": "The syntax to print the string \"happy\" concatenated with the string \"ness\" is<br><pre>print \"happy\" + \"ness\"</pre>",
-  "concepts": ["print","str","add-str"],
-  "test_cases": {"":"Hello, world!\n"},
-  "solution": "print \"Hello, \" + \"world!\""
-},{
-  "prompt": "Print the string \"egg\" concatenated with the string \"nog\"",
-  "hint": "The syntax to print the string \"happy\" concatenated with the string \"ness\" is<br><pre>print \"happy\" + \"ness\"</pre>",
-  "concepts": ["print","str","add-str"],
-  "test_cases": {"":"eggnog\n"},
-  "solution": "print \"egg\" + \"nog\""
 },{
   "prompt": "Print the string \"hey!\" repeated 5 times",
   "hint": "The syntax to print the string \"hello\" repeated 4 times is<br><pre>print \"hello\" * 4</pre>",
@@ -166,18 +70,6 @@
   "concepts": ["print","str","mul-str","num"],
   "test_cases": {"":"thbthbthbthbthbthb\n"},
   "solution": "print \"thb\" * 6"
-},{
-  "prompt": "Print the string \"al\" repeated 10 times",
-  "hint": "The syntax to print the string \"hello\" repeated 4 times is<br><pre>print \"hello\" * 4</pre>",
-  "concepts": ["print","str","mul-str","num"],
-  "test_cases": {"":"alalalalalalalalalal\n"},
-  "solution": "print \"al\" * 10"
-},{
-  "prompt": "Print the string \"ex\" repeated 10 times",
-  "hint": "The syntax to print the string \"hello\" repeated 4 times is<br><pre>print \"hello\" * 4</pre>",
-  "concepts": ["print","str","mul-str","num"],
-  "test_cases": {"":"exexexexexexexexexex\n"},
-  "solution": "print \"ex\" * 10"
 },{
   "prompt": "Set the variable 'cups' equal to the number 6 and then print the value of 'cups' times 23",
   "hint": "The syntax to set the variable 'spam' equal to the number 5 and then print the value of 'spam' plus 10 is<br><pre>spam = 5\nprint spam + 10</pre>",
