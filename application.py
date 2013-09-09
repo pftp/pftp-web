@@ -114,7 +114,6 @@ class Program(db.Model):
 
 class Submission(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
-  title = db.Column(db.Text(), nullable = False)
   code = db.Column(db.Text(), nullable = False)
   submit_time = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
@@ -267,6 +266,15 @@ def assignments(assignment_id):
   else:
     return redirect('/assignments/1')
 
+@app.route('/submit_assignment/', methods=['POST'])
+@login_required
+def submit_assignment():
+  program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
+  submission = Submission(code=program.code, assignment_id=request.form['assignment_id'], user_id=current_user.id)
+  db.session.add(submission)
+  db.session.commit()
+  return ''
+
 @app.route('/cheatsheet.html')
 def cheatsheet():
   return render_template('cheatsheet.html')
@@ -280,6 +288,9 @@ def user_dashboard():
   assignment_models = Assignment.query.all()
   assignments = map(lambda x: x.__dict__, assignment_models)
   for assignment in assignments:
+    submission = Submission.query.filter_by(assignment_id=assignment['id'], user_id=current_user.id).order_by(Submission.submit_time.desc()).first()
+    if submission != None:
+      assignment['submission'] = submission
     grades = Grade.query.filter_by(assignment_id=assignment['id'], user_id=current_user.id).all()
     if len(grades) == 1:
       grade = grades[0]
@@ -291,6 +302,8 @@ def user_dashboard():
     context['total_points'] += assignment['points']
 
   context['assignments'] = assignments
+  context['programs'] = Program.query.filter_by(user_id=current_user.id).order_by(Program.last_modified.desc()).all()
+
 
   return render_template('dashboard.html', context=context)
 
