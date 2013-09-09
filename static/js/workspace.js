@@ -63,6 +63,7 @@ $(function() {
   Sk.pre = 'output';
   editor = CodeMirror.fromTextArea(document.getElementById('code_area'), {
     autofocus: true,
+    width: 500,
     theme: 'cobalt',
     lineNumbers: true,
     indentUnit: 4,

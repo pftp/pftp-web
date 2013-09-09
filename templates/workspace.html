@@ -16,32 +16,42 @@ Workspace
 {% endblock %}
 
 {% block content %}
-<div id="program_id" style="display:none;">{% if program %}{{ program.id }}{% else %}-1{% endif %}</div>
-{% if current_user.is_authenticated() %}<a href="/workspace/">back</a>{% endif %}
-<span id="program_title" role="button" data-toggle="tooltip" data-placement="bottom" title="Rename">{% if program %}{{ program.title }}{% else %}Untitled Program{% endif %}</span>
-<textarea id="code_area" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
-<button id="run_code">Run It!</button>
-{% if current_user.is_authenticated() %}
-<button id="save_code">Save Code</button><span id="save_msg">All changes saved</span>
-{% else %}
-<span>Login to Save Code</span>
-{% endif %}
-<pre id="output"></pre>
-<canvas id="turtle_canvas"></canvas>
-<div id="rename_modal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Rename program</h4>
+<div class="container">
+  <div class="row">
+    <div id="program_id" style="display:none;">{% if program %}{{ program.id }}{% else %}-1{% endif %}</div>
+    <div class="span6">
+      {% if current_user.is_authenticated() %}<a href="/workspace/">back</a>{% endif %}
+      <span id="program_title" role="button" data-toggle="tooltip" data-placement="bottom" title="Rename">{% if program %}{{ program.title }}{% else %}Untitled Program{% endif %}</span>
+      <textarea id="code_area" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
+      <div id="run_container">
+        <button id="run_code" class="btn btn-success">Run It!</button>
+        {% if current_user.is_authenticated() %}
+        <span id="save_msg">All changes saved</span>
+        {% else %}
+        <span>Login to Save Code</span>
+        {% endif %}
       </div>
-      <div class="modal-body">
-        <p>Enter a new program name:</p>
-        <input type="text" id="new_program_title">
-      </div>
-      <div class="modal-footer">
-        <button id="rename_ok" type="button" class="btn btn-primary">OK</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <pre id="output"></pre>
+    </div>
+    <div class="span6">
+      <canvas id="turtle_canvas" width="500" height="500"></canvas>
+    </div>
+  </div>
+  <div id="rename_modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Rename program</h4>
+        </div>
+        <div class="modal-body">
+          <p>Enter a new program name:</p>
+          <input type="text" id="new_program_title">
+        </div>
+        <div class="modal-footer">
+          <button id="rename_ok" type="button" class="btn btn-primary">OK</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
       </div>
     </div>
   </div>

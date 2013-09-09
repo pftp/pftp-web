@@ -11,6 +11,15 @@
   cursor: pointer;
 }
 
+#turtle_canvas {
+  margin: 10px;
+  border: 1px solid black;
+}
+
+#run_container {
+  margin: 10px 0;
+}
+
 #save_msg {
   margin: 0 5px;
 }

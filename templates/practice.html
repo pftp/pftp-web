@@ -15,23 +15,24 @@ Python Practice
 {% endblock %}
 
 {% block content %}
-<h3>{{ex.prompt}}</h3>
-<textarea id="practice_code" style="display:none;"></textarea>
-<button id="practice_run_code">Run It!</button>
-<button id="next_exercise" href="/practice/ex{{ex.id+1}}" style="display:none;">Next Exercise</button>
-<pre id="practice_output"></pre>
-<canvas id="turtle_canvas"></canvas>
-<button id="show_hint">Get hint</button>
-<button id="show_solution" style="display:none;">Get solution</button>
-<div id="hint_wrapper" style="display:none;">
-  <b>Hint:</b>
-  <div id="hint">{{ex.hint}}</div>
-</div>
-<div id="solution_wrapper" style="display:none;">
-  <b>Solution:</b>
-  <div id="solution"><pre>{{ex.solution}}</pre></div>
-</div>
-<div id="test_cases" style="display:none;">
-  {{ex.test_cases}}
+<div class="container">
+  <h3>{{ex.prompt}}</h3>
+  <textarea id="practice_code" style="display:none;"></textarea>
+  <button id="practice_run_code">Run It!</button>
+  <button id="next_exercise" href="/practice/ex{{ex.id+1}}" style="display:none;">Next Exercise</button>
+  <pre id="practice_output"></pre>
+  <button id="show_hint">Get hint</button>
+  <button id="show_solution" style="display:none;">Get solution</button>
+  <div id="hint_wrapper" style="display:none;">
+    <b>Hint:</b>
+    <div id="hint">{{ex.hint}}</div>
+  </div>
+  <div id="solution_wrapper" style="display:none;">
+    <b>Solution:</b>
+    <div id="solution"><pre>{{ex.solution}}</pre></div>
+  </div>
+  <div id="test_cases" style="display:none;">
+    {{ex.test_cases}}
+  </div>
 </div>
 {% endblock %}
