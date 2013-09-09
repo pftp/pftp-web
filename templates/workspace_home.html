@@ -5,6 +5,7 @@ Program List
 {% endblock %}
 
 {% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='js/workspace_home.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/workspace_home.css')}}" />
 {% endblock %}
 
@@ -23,11 +24,45 @@ Program List
       <td><a href="/workspace/{{ program.id }}">{{ program.title }}</a></td>
       <td>{{ program.last_modified }}</td>
       <td>
-        <button class="btn btn-small btn-success">Submit</button>
-        <button class="btn btn-small btn-danger">Delete</button>
+        <a class="btn btn-small btn-success submit-program" data-program-id="{{ program.id }}" data-program-title="{{ program.title }}" data-toggle="modal" href="#submit_modal">Submit</a>
+        <a class="btn btn-small btn-danger delete-program" data-program-id="{{ program.id }}" data-toggle="modal" data-program-title="{{ program.title }}" href="#delete_modal">Delete</a>
       </td>
     </tr>
     {% endfor %}
   </table>
+</div>
+<div id="submit_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Submit program</h4>
+      </div>
+      <div class="modal-body">
+        <p>Submit the program <span id="submit_program_title">Untitled Program</span> for:</p>
+      </div>
+      <div class="modal-footer">
+        <button id="submit_ok" class="btn btn-success">Submit!</button>
+        <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="delete_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Delete program</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the program <span id="delete_program_title">Untitled Program</span>?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="delete_ok" class="btn btn-danger">Delete Forever</button>
+        <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
