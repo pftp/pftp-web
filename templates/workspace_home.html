@@ -9,10 +9,25 @@ Program List
 {% endblock %}
 
 {% block content %}
-<h3>Your Programs</h3>
-<ul>
-  {% for program in programs %}
-  <li><a href="/workspace/{{ program.id }}">{{ program.title }}</a></li>
-  {% endfor %}
-</ul>
+<div class="container">
+  <h3>Your Programs</h3>
+  <a href="/new_program/">New Program</a>
+  <table class="table">
+    <tr>
+      <th>Program Name</th>
+      <th>Last Modified</th>
+      <th>Actions</th>
+    </tr>
+    {% for program in programs %}
+    <tr>
+      <td><a href="/workspace/{{ program.id }}">{{ program.title }}</a></td>
+      <td>{{ program.last_modified }}</td>
+      <td>
+        <button class="btn btn-small btn-success">Submit</button>
+        <button class="btn btn-small btn-danger">Delete</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
 {% endblock %}

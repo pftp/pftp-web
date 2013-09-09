@@ -1,6 +1,7 @@
 import os
 import sys
 import sqlite3
+import datetime
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
@@ -97,8 +98,9 @@ class Grade(db.Model):
 class Program(db.Model):
   __tablename__ = 'program'
   id = db.Column(db.Integer(), primary_key = True)
-  title = db.Column(db.Text(), nullable = False)
-  code = db.Column(db.Text(), nullable = False)
+  title = db.Column(db.Text(), nullable = False, default = 'Untitled Program')
+  code = db.Column(db.Text(), nullable = False, default = '')
+  last_modified = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
 class Lesson(db.Model):
@@ -175,7 +177,7 @@ def practice(ex_id):
 @app.route('/workspace/')
 def workspace_home():
   if current_user.is_authenticated():
-    programs = Program.query.filter_by(user_id=current_user.id).all()
+    programs = Program.query.filter_by(user_id=current_user.id).order_by(Program.last_modified.desc()).all()
     return render_template('workspace_home.html', programs=programs)
   return render_template('workspace.html')
 
@@ -187,6 +189,14 @@ def workspace(prog_id):
     return redirect('/workspace/')
   return render_template('workspace.html', program=program)
 
+@app.route('/new_program/')
+@login_required
+def new_program():
+  program = Program(user_id=current_user.id)
+  db.session.add(program)
+  db.session.commit()
+  return redirect('/workspace/'+str(program.id))
+
 @app.route('/save_program/', methods=['POST'])
 @login_required
 def save_program():
@@ -197,6 +207,7 @@ def save_program():
     program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
     program.title = title
     program.code = code
+    program.last_modified = datetime.datetime.now()
   else:
     program = Program(title=title, code=code, user_id=current_user.id)
   db.session.add(program)
