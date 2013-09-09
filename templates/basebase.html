@@ -24,11 +24,10 @@
         </ul>
         <ul class="nav pull-right">
           <li><a href="/about">About</a></li>
-          <li><a href="/lessons/">Lessons</a></li>
           <li><a href="/practice/ex1">Practice</a></li>
-          <li><a href="/assignments">Assignments</a></li>
           <li><a href="/workspace">Workspace</a></li>
           {% if current_user.is_authenticated() %}
+          <li><a href="/dashboard">Dashboard</a></li>
           <li><a href="/logout">Logout</a></li>
           {% else %}
           <li><a href="/login">Login</a></li>

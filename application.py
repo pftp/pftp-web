@@ -91,7 +91,7 @@ class Assignment(db.Model):
   deadline = db.Column(db.DateTime(), nullable = False)
   points = db.Column(db.Integer(), nullable = False)
   grades = db.relationship('Grade', lazy='dynamic', backref='assignment')
-  grades = db.relationship('Submission', lazy='dynamic', backref='assignment')
+  submissions = db.relationship('Submission', lazy='dynamic', backref='assignment')
 
 class Grade(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
@@ -150,13 +150,7 @@ def register():
 ################################################################################
 @app.route('/')
 def index():
-  if current_user.is_authenticated():
-    if current_user.is_admin():
-      return redirect(url_for('admin_dashboard'))
-    else:
-      return redirect(url_for('user_dashboard'))
-  else:
-    return render_template('course_info.html')
+  return redirect('/about/')
 
 @app.route('/about/')
 def about():
