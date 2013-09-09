@@ -243,6 +243,14 @@ def save_program():
   db.session.commit()
   return str(program.id)
 
+@app.route('/delete_program/', methods=['POST'])
+@login_required
+def delete_program():
+  program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
+  db.session.delete(program)
+  db.session.commit()
+  return ''
+
 @app.route('/assignments/')
 def assignments_home():
   assignments = Assignment.query.all()
