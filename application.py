@@ -263,9 +263,10 @@ def user_dashboard():
       assignment['graded'] = True
       assignment['score'] = grade.score
       context['total_score'] += grade.score
-      context['total_points'] += assignment['points']
     else:
       assignment['graded'] = False
+
+    context['total_points'] += assignment['points']
 
   context['assignments'] = assignments
 
