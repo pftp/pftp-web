@@ -22,7 +22,7 @@ Program List
     {% for program in programs %}
     <tr>
       <td><a href="/workspace/{{ program.id }}">{{ program.title }}</a></td>
-      <td>{{ program.last_modified }}</td>
+      <td>{{ program.last_modified.strftime('%A, %B %d @ %I:%M%P') }}</td>
       <td>
         <a class="btn btn-small btn-success submit-program" data-program-id="{{ program.id }}" data-program-title="{{ program.title }}" data-toggle="modal" href="#submit_modal">Submit</a>
         <a class="btn btn-small btn-danger delete-program" data-program-id="{{ program.id }}" data-toggle="modal" data-program-title="{{ program.title }}" href="#delete_modal">Delete</a>
