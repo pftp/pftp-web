@@ -5,6 +5,7 @@ import datetime
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
+from flask.ext.login import logout_user
 from flask_security.forms import RegisterForm, TextField, Required
 
 from termcolor import colored
@@ -21,6 +22,11 @@ app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_REGISTER_URL'] = '/register'
 app.config['SECURITY_REGISTER_USER_TEMPLATE'] = 'register.html'
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
+
+app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'login.html'
+app.config['SECURITY_LOGIN_URL'] = '/login'
+# app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'base.html'
+
 
 ################################################################################
 # Database
