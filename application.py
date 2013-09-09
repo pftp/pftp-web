@@ -5,6 +5,7 @@ import datetime
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
+from flask_security.forms import RegisterForm, TextField, Required
 
 from termcolor import colored
 
@@ -16,7 +17,10 @@ app.config.from_object(__name__)
 app.config['DEBUG'] = 'PRODUCTION' not in os.environ
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'development_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp.db')
-
+app.config['SECURITY_REGISTERABLE'] = True
+app.config['SECURITY_REGISTER_URL'] = '/register'
+app.config['SECURITY_REGISTER_USER_TEMPLATE'] = 'register.html'
+app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 
 ################################################################################
 # Database
@@ -118,9 +122,19 @@ class Sublesson(db.Model):
   lesson_id = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
 
 
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+class ExtendedRegisterForm(RegisterForm):
+  firstname = TextField('First Name', [Required()])
+  lastname = TextField('Last Name', [Required()])
 
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
+
+################################################################################
+# Registration Routes
+################################################################################
+@app.route('/register', methods=['GET'])
+def register():
+  return render_template('register.html')
 
 ################################################################################
 # Student Routes
