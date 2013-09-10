@@ -18,3 +18,7 @@ pip install -r requirements.txt
 
 git submodule init
 git submodule update
+
+
+To Deploy to Website:
+cd pftp; fab build; cd ..; chown -R www-data:www-data pftp
