@@ -18,6 +18,9 @@ app.config.from_object(__name__)
 app.config['DEBUG'] = 'PRODUCTION' not in os.environ
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'development_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp.db')
+# TODO: Uncomment these lines once we migrate our plaintext passwords!
+#app.config['SECURITY_PASSWORD_HASH'] = 'bcrypt'
+#app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$skCRnkqE5L01bHEke678Ju'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_REGISTER_URL'] = '/register'
 app.config['SECURITY_REGISTER_USER_TEMPLATE'] = 'register.html'
