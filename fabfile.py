@@ -124,6 +124,7 @@ def generate_models():
   print colored("3 users added to database.", "green")
 
   assignment1 = Assignment(name='Homework 1', description='Draw something using at least 3 shapes and 3 colors. Have fun with it!',  points=10, deadline=datetime(2013,9,15,23,59))
+  lab1 = Assignment(name='Lab 1', description='Complete Lab 1',  points=10, deadline=datetime(2013,9,16,12,59))
   #assignment2 = Assignment(name='Homework 2', description='Finish exercises 6-10 before next class', points=10, deadline=datetime(2013,9,17))
   #assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30, deadline=datetime(2013,10,1))
   #assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10, deadline=datetime(2013,10,8))
@@ -134,6 +135,7 @@ def generate_models():
   #assignment9 = Assignment(name='Final Project', description='Build something cool', points=50, deadline=datetime(2013,11,29))
 
   db.session.add(assignment1)
+  db.session.add(lab1)
   #db.session.add(assignment2)
   #db.session.add(assignment3)
   #db.session.add(assignment4)
@@ -142,7 +144,7 @@ def generate_models():
   #db.session.add(assignment7)
   #db.session.add(assignment8)
   #db.session.add(assignment9)
-  print colored("9 assignments added to database.", "green")
+  print colored("Assignments added to database.", "green")
 
   db.session.commit()
 
