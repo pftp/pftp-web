@@ -14,10 +14,13 @@
     <audio id="i_got_the_power" src="{{ url_for('static', filename='snd/i_got_the_power.mp3') }}"></audio>
     <script type="text/javascript">
       var home = function() {
-        $('#i_got_the_power')[0].play();
-        setTimeout(function() {
+        if (Math.random() > 0.9) {
+          $('#i_got_the_power')[0].play();
+          setTimeout(function() {
+            document.location.href = '/';
+          }, 1700);
+        } else
           document.location.href = '/';
-        }, 1700);
       };
     </script>
 
