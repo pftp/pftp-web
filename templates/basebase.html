@@ -11,6 +11,15 @@
     <!-- TODO current using below for autocomplete but need to add actual jquery ui stuff later (choose a theme) -->
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <audio id="i_got_the_power" src="{{ url_for('static', filename='snd/i_got_the_power.mp3') }}"></audio>
+    <script type="text/javascript">
+      var home = function() {
+        $('#i_got_the_power')[0].play();
+        setTimeout(function() {
+          document.location.href = '/';
+        }, 1700);
+      };
+    </script>
 
     {% block head %}
     {% endblock %}
@@ -20,7 +29,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <ul class="nav">
-          <li><a id="logo-text" href="/">Programming: Feel the Power{% if current_user.is_authenticated() and current_user.is_admin() %}<span id="admin-logo">[Admin]</span>{% endif %}</a></li>
+          <li><a id="logo-text" onclick="home()">Programming: Feel the Power{% if current_user.is_authenticated() and current_user.is_admin() %}<span id="admin-logo">[Admin]</span>{% endif %}</a></li>
         </ul>
         <ul class="nav pull-right">
           <li><a href="/about">About</a></li>
