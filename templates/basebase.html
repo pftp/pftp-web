@@ -12,7 +12,12 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <audio id="i_got_the_power" src="{{ url_for('static', filename='snd/i_got_the_power.mp3') }}"></audio>
+
+    <!-- for fun -->
     <script type="text/javascript">
+      if ("{{ current_user.firstname }}" == "Robyn")
+        alert("Hi Robyn");
+
       var home = function() {
         if (Math.random() > 0.9) {
           $('#i_got_the_power')[0].play();
