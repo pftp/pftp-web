@@ -27,6 +27,7 @@ app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 
 app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'login.html'
 app.config['SECURITY_LOGIN_URL'] = '/login'
+app.config['SECURITY_CHANGEABLE'] = True
 # app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'base.html'
 
 
@@ -151,6 +152,13 @@ security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
 @app.route('/register', methods=['GET'])
 def register():
   return render_template('register.html')
+
+################################################################################
+# Settings Routes
+################################################################################
+@app.route('/settings', methods=['GET'])
+def register():
+  return render_template('settings.html')
 
 ################################################################################
 # Student Routes
