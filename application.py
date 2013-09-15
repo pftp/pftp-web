@@ -30,6 +30,13 @@ app.config['SECURITY_LOGIN_URL'] = '/login'
 app.config['SECURITY_CHANGEABLE'] = True
 # app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'base.html'
 
+# Fake emails for now
+class FakeMail(object):
+  def send(self, message):
+    pass
+
+app.extensions = getattr(app, 'extensions', {})
+app.extensions['mail'] = FakeMail()
 
 ################################################################################
 # Database
