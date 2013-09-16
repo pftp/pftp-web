@@ -15,8 +15,7 @@ winston.right(90)
 
 # We're big believers in "learning through pain", so we intentionally left out the key construct in programming that would allow you to circumvent this problem.
 # Do you want to know how to do it? Yes?
-# Ok good because programming is chock full of these powerful and time-saving ideas
-# and constructs, so you should prepare yourself for the ride.
+# Ok good because programming is chock full of these powerful and time-saving ideas and constructs, so you should prepare yourself for the ride.
 
 # Introducing variables, an integral part of programming that can and will save you lots of time editing values in your code.
 # The way variables work is simple: Each variable has a name, and a value which you can set and get.
