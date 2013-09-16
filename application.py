@@ -245,10 +245,10 @@ def workspace_home():
     return render_template('workspace_home.html', programs=programs)
   return render_template('workspace.html')
 
-@app.route('/workspace/<int:prog_id>')
+@app.route('/workspace/<int:program_id>')
 @login_required
-def workspace(prog_id):
-  program = Program.query.filter_by(id=prog_id, user_id=current_user.id).first()
+def workspace(program_id):
+  program = Program.query.filter_by(id=program_id, user_id=current_user.id).first()
   if program == None:
     return redirect('/workspace/')
   return render_template('workspace.html', program=program)
@@ -426,13 +426,42 @@ def admin_dashboard():
 
   return render_template('admin/dashboard.html', students=students, assignments=assignments)
 
+@app.route('/admin/submissions/<int:submission_id>')
+@roles_required('admin')
+def admin_submission(submission_id):
+  submission = Submission.query.filter_by(id=submission_id).first()
+  if submission == None:
+    return redirect('/admin/dashboard/')
+  assignment = Assignment.query.filter_by(id=submission.assignment_id).first()
+  user = User.query.filter_by(id=submission.user_id).first()
+  return render_template('admin_submission.html', submission=submission, assignment=assignment, user=user)
+
+@app.route('/admin/assignments/<int:assignment_id>')
+@roles_required('admin')
+def admin_assignment(assignment_id):
+  user_models = User.query.all()
+  users = map(lambda x: x.__dict__, user_models)
+  assignment = Assignment.query.filter_by(id=assignment_id).first()
+  for user in users:
+    grade = Grade.query.filter_by(user_id=user['id'], assignment_id=assignment.id).first()
+    submission = Submission.query.filter_by(user_id=user['id'], assignment_id=assignment.id).order_by(Submission.submit_time.desc()).first()
+    if grade != None:
+      user['grade_score'] = grade.score
+    if submission != None:
+      user['submission_id'] = submission.id
+  return render_template('admin_assignment.html', assignment=assignment, users=users)
 
 @app.route('/admin/submit_grade/', methods=['POST'])
 @roles_required('admin')
 def submit_grade():
-  assignment = Assignment.query.filter(Assignment.name==request.json['assignment_name']).first()
-  first_name = request.json['student_name'].rsplit(' ', 1)[0]
-  last_name = request.json['student_name'].rsplit(' ', 1)[1]
-  student = User.query.filter(User.firstname==first_name and User.lastname==last_name).first()
-  student.add_grade(assignment, int(request.json['score']))
+  score = int(request.form['score'])
+  assignment = Assignment.query.filter_by(id=request.form['assignment_id']).first()
+  user = User.query.filter_by(id=request.form['user_id']).first()
+  grade = Grade.query.filter_by(user_id=user.id, assignment_id=assignment.id).first()
+  if grade == None:
+    grade = Grade(assignment_id=assignment.id, user_id=user.id, score=score)
+  else:
+    grade.score = score
+  db.session.add(grade)
+  db.session.commit()
   return "success"
