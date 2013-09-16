@@ -215,9 +215,7 @@ def lesson(lesson_path):
 
 @app.route('/labs/<int:lab_id>')
 def lab(lab_id):
-  context = {}
-  context['id'] = lab_id
-  return render_template('lab.html', context=context)
+  return render_template('lab.html', id=lab_id)
 
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):
