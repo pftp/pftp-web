@@ -1,5 +1,6 @@
 *.pyc
 pftp.db
 templates/gen/*
+static/lab/*
 *~
 *#
