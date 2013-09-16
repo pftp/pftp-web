@@ -57,6 +57,7 @@ class User(db.Model, UserMixin):
       backref=db.backref('user', lazy='dynamic'))
   grades = db.relationship('Grade', lazy='dynamic', backref='user')
   programs = db.relationship('Program', lazy='dynamic', backref='user')
+  code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='user')
   submissions = db.relationship('Submission', lazy='dynamic', backref='user')
 
   def is_admin(self):
@@ -121,6 +122,7 @@ class CodeRevision(db.Model):
   title = db.Column(db.Text(), nullable = False)
   diff = db.Column(db.Text(), nullable = False)
   time = db.Column(db.DateTime(), nullable = False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
   program_id = db.Column(db.Integer(), db.ForeignKey('program.id'))
 
 class Submission(db.Model):
@@ -292,15 +294,18 @@ def save_program():
   time_now = datetime.datetime.now()
   if 'program_id' in request.form:
     program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
-    diff = compute_diff(program.code, code)
+    prev_revision_count = CodeRevision.query.filter_by(program_id=program.id, user_id=current_user.id).count()
+    if prev_revision_count > 0:
+      diff = compute_diff(program.code, code)
+    else:
+      diff = compute_diff('', code)
     program.title = title
     program.code = code
     program.last_modified = time_now
   else:
     diff = compute_diff('', code)
     program = Program(title=title, code=code, user_id=current_user.id, last_modified=time_now)
-
-  code_revision = CodeRevision(title=title, diff=diff, time=time_now, program_id=program.id)
+  code_revision = CodeRevision(title=title, diff=diff, time=time_now, program_id=program.id, user_id=current_user.id)
   db.session.add(program)
   db.session.add(code_revision)
   db.session.commit()
