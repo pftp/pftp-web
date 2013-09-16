@@ -17,6 +17,7 @@ About
     <tr>
       <th>Week</th>
       <th>Lessons</th>
+      <th>Lab</th>
       <th>Assignment</th>
       <th>Due date</th>
     </tr>
@@ -27,8 +28,11 @@ About
       <td> {{ week.id }} </td>
       <td>
         {% for sublesson in week.lesson.sublessons %}
-        <a href=/lessons/{{ sublesson.link }}> <h5> {{ sublesson.name }} </h5> </a>
+        <a href="/lessons/{{ sublesson.link }}"> <h5> {{ sublesson.name }} </h5> </a>
         {% endfor %}
+      </td>
+      <td>
+        <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a>
       </td>
       <td><a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a></td>
       <td>{{ week.assignment.deadline.strftime('%A, %B %d @ %I:%M%P') }}</td>
