@@ -28,7 +28,7 @@ About
       <td> {{ week.id }} </td>
       <td>
         {% for sublesson in week.lesson.sublessons %}
-        <a href="/lessons/{{ sublesson.link }}"> <h5> {{ sublesson.name }} </h5> </a>
+        <a href="/lessons/{{ sublesson.link }}"> {{ sublesson.name }} </a>
         {% endfor %}
       </td>
       <td>
