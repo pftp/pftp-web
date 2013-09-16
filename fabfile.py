@@ -221,6 +221,8 @@ def add_exercises():
 
 
 def generate_labs():
+  if not os.path.exists('static/lab'):
+    os.makedirs('static/lab')
   (_,_,labfiles) = os.walk('labs').next()
   for labfile in labfiles:
     lab = open('labs/' + labfile, 'r')
