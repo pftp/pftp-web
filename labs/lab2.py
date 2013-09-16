@@ -1,6 +1,6 @@
 # Welcome back! This time, you'll be chatting with Winston and helping him draw shapes!
-import turtle
-winston = turtle.Turtle()
+###import turtle
+###winston = turtle.Turtle()
 
 # If you remember from last lab, Winston can draw a square if you tell him the right things:
 winston.forward(100)
