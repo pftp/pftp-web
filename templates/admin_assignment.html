@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+Assignment
+{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='js/admin_assignment.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/admin_assignment.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div id="assignment_id" style="display:none;">{{ assignment.id }}</div>
+  <h3>Assignment {{ assignment.name }}</h3>
+  <p>{{ assignment.description }}</p>
+  <h4><a href="/admin/assignments/{{ assignment.id }}/submissions/">View Submissions</a></h4>
+  <table class="table">
+    <tr>
+      <th>User</th>
+      <th>Grade</th>
+      <th>Actions</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.firstname }} {{ user.lastname }}</a></td>
+      <td><input id="score{{ user.id }}" type="text" value="{{ user.grade }}"></td>
+      <td>
+        <a class="btn btn-small btn-danger submit-grade" data-user-id="{{ user.id }}" data-user-name="{{ user.firstname }} {{ user.lastname }}" href="#">Submit Grade</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<div id="submit_ok_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Submission successful</h4>
+      </div>
+      <div class="modal-body">
+        <p>Grade of <span id="score_display"></span> submitted for <span id="user_name_display"></span>!</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

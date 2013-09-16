@@ -13,7 +13,7 @@ def get_hmac(password):
 def encrypt_password(password):
   return bcrypt.encrypt(get_hmac(password))
 
-db = sqlite3.connect('pftp_prod.db')
+db = sqlite3.connect('pftp.db')
 users = db.execute('select id, password from user;')
 for user in users:
   new_password = encrypt_password(user[1])
