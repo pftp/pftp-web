@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Lab {{ id }}
+{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/builtin.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lab/lab' ~ id ~ '.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/lab.js')}}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/workspace.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="span12">
+      <h1>Lab {{ id }}</h1>
+      <div class="row">
+        <div class="span6">
+          <div style="height: 200px">
+            <div id="lab_text" style="overflow: auto; height: 195px;"></div></br>
+        </div>
+        <div style="margin: 10px 0;">
+          <button id="prev_section" class="btn btn-primary btn-small">Prev</button>
+          <button id="next_section" class="btn btn-primary btn-small">Next</button>
+        </div>
+        <textarea id="lab_code" style="display:none;"></textarea>
+        <button id="lab_run_code" class="btn btn-success" style="margin: 10px 0;">Run It!</button>
+        <pre id="lab_output"></pre>
+      </div>
+      <div class="span6" id="canvas_container">
+        <canvas id="turtle_canvas" width="500" height="500"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
