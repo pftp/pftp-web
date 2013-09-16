@@ -20,12 +20,14 @@ from application import app, db, user_datastore, Role, User, Assignment, Grade, 
 def clean():
   with settings(warn_only=True):
     local('rm -rf templates/gen')
+    local('rm -rf static/labs')
     local('rm pftp.db')
 
 @task
 def build():
   clean()
   generate_pages()
+  generate_labs()
   db.create_all()
   generate_models()
   add_exercises()
@@ -216,3 +218,56 @@ def add_exercises():
   db.commit()
   db.close()
   print colored("%s exercises added to database." % len(exercises), "green")
+
+
+def generate_labs():
+  (_,_,labfiles) = os.walk('labs').next()
+  for labfile in labfiles:
+    lab = open('labs/' + labfile, 'r')
+    steps = []
+    step = ['']
+    pre = False
+
+    i = 0
+    lines = lab.readlines()
+    for i in range(0, len(lines)):
+      line = lines[i]
+      if line == '\n':
+        if pre:
+          step[0] += '</pre>'
+          pre = False
+        steps.append(step)
+        step = ['']
+      else:
+        if line[0] == '#':
+          if pre:
+            step[0] += '</pre>'
+            pre = False
+          step[0] += process_line(line[1:].strip()) + '<br/>'
+        else:
+          if not pre:
+            pre = True
+            step[0] += '<pre>'
+          step[0] += line
+
+    with open('static/lab/' + labfile.replace('.py', '.js'), 'w') as out:
+      out.write('var lab_content = ')
+      out.write(str(steps))
+      out.write(';')
+
+def process_line(line):
+  if not '`' in line:
+    return line
+
+  chunks = line.split('`')
+  if len(chunks) % 2 == 0:
+    return line
+
+  result = ''
+  for i in range(0, len(chunks)):
+    result += chunks[i]
+    if i % 2 == 0 and i != len(chunks) - 1:
+      result += '<code>'
+    else:
+      result += '</code>'
+  return result
