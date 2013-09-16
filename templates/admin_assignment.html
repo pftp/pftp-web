@@ -14,17 +14,18 @@ Assignment
   <div id="assignment_id" style="display:none;">{{ assignment.id }}</div>
   <h3>Assignment {{ assignment.name }}</h3>
   <p>{{ assignment.description }}</p>
-  <h4><a href="/admin/assignments/{{ assignment.id }}/submissions/">View Submissions</a></h4>
   <table class="table">
     <tr>
       <th>User</th>
       <th>Grade</th>
+      <th>Submission</th>
       <th>Actions</th>
     </tr>
     {% for user in users %}
     <tr>
       <td>{{ user.firstname }} {{ user.lastname }}</a></td>
-      <td><input id="score{{ user.id }}" type="text" value="{{ user.grade }}"></td>
+      <td><input id="score{{ user.id }}" type="text" value="{{ user.grade_score }}"></td>
+      <td>{% if user.submission_id %}<a target="_blank" href="/admin/submissions/{{ user.submission_id }}">View Submission</a>{% endif %}</td>
       <td>
         <a class="btn btn-small btn-danger submit-grade" data-user-id="{{ user.id }}" data-user-name="{{ user.firstname }} {{ user.lastname }}" href="#">Submit Grade</a>
       </td>
