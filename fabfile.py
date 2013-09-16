@@ -130,7 +130,7 @@ def generate_models():
   print colored("3 users added to database.", "green")
 
   assignment1 = Assignment(name='Homework 1', description='Draw something using at least 3 shapes and 3 colors. Have fun with it!',  points=5, deadline=datetime(2013,9,15,23,59))
-  assignment2 = Assignment(name='Homework 2', description='Create a turtle chatbot that can <ul><li>Respond to at least 3 different things</li><li>Uses a number from raw_input (using the int() conversion)</li><li>Draw something when asked to draw (you can use your Homework 1 submission here!) with something new you learned about turtle graphics from the lab (turtle.write, turtle.circle, etc)</li></ul>', points=5, deadline=datetime(2013,9,22,23,59))
+  assignment2 = Assignment(name='Homework 2', description='Create a turtle chatbot that can <ul><li>Understand a conversation with at least 3 levels of questions</li><li>Uses a number from raw_input (using the int() conversion)</li><li>Draw something when asked to draw (you can use your Homework 1 submission here!) with something new you learned about turtle graphics from the lab (turtle.write, turtle.circle, etc)</li></ul>', points=5, deadline=datetime(2013,9,22,23,59))
   #assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30, deadline=datetime(2013,10,1))
   #assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10, deadline=datetime(2013,10,8))
   #assignment5 = Assignment(name='Homework 4', description='Finish exercises 16-20 before next class', points=10, deadline=datetime(2013,10,15))
