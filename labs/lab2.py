@@ -174,6 +174,15 @@ else:
 # <b>Checkoff Assignment</b>
 # Now its your turn - use a `raw_input` so Winston can ask what shape to draw, and another `raw_input` so Winston can ask what size shape to draw and then write an if statement to draw a triangle or square with the inputted size.
 # If the shape isn't recognized, then `print` your own error message like the example in the last step.
+# While you're waiting to get checked off, open a new tab and play around with some new turtle graphics!
+winston.forward(1)
+winston.pencolor("red") # sets the pen color to red
+winston.fillcolor("green") # sets the fill color to green
+winston.circle(11) # makes a circle with radius 11
+winston.write("Hi I'm Winston") # writes text to the screen
+winston.begin_fill() # any shapes between begin_fill and end_fill are filled
+winston.circle(50)
+winston.end_fill()
 ###import turtle
 ###winston = turtle.Turtle()
 
