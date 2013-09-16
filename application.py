@@ -123,7 +123,7 @@ class Program(db.Model):
   code = db.Column(db.Text(), nullable = False, default = '')
   last_modified = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
-  code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='program')
+  #code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='program')
 
 class CodeRevision(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
