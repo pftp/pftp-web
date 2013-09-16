@@ -24,6 +24,10 @@ def clean():
     local('rm pftp.db')
 
 @task
+def genlabs():
+  generate_labs()
+
+@task
 def build():
   clean()
   generate_pages()

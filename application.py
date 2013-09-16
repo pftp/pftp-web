@@ -315,6 +315,7 @@ def save_program():
   if 'program_id' in request.form:
     program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
     #prev_revision_count = CodeRevision.query.filter_by(program_id=program.id, user_id=current_user.id).count()
+    prev_revision_count = 1
     if prev_revision_count > 0:
       diff = compute_diff(program.code, code)
     else:
