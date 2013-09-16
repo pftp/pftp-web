@@ -227,23 +227,31 @@ def generate_labs():
     steps = []
     step = ['']
     pre = False
+    code = ''
 
     i = 0
     lines = lab.readlines()
+    lines.append('\n')
     for i in range(0, len(lines)):
       line = lines[i]
       if line == '\n':
         if pre:
           step[0] += '</pre>'
           pre = False
-        steps.append(step)
-        step = ['']
+        if code:
+          step.append(code)
+          code = ''
+        if step[0]:
+          steps.append(step)
+          step = ['']
       else:
-        if line[0] == '#':
+        if line[0:3] == '###':
+          code += line[3:]
+        elif line[0] == '#':
           if pre:
             step[0] += '</pre>'
             pre = False
-          step[0] += process_line(line[1:].strip()) + '<br/>'
+          step[0] += process_line(line[1:].strip()) + '<br/><br/>'
         else:
           if not pre:
             pre = True
