@@ -213,6 +213,12 @@ def lesson(lesson_path):
     return render_template('lesson_home.html', context=context)
   return redirect('/')
 
+@app.route('/labs/<int:lab_id>')
+def lab(lab_id):
+  context = {}
+  context['id'] = lab_id
+  return render_template('lab.html', context=context)
+
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):
   ex = Exercise.query.get(ex_id)
