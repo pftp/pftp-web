@@ -2,6 +2,7 @@ import os
 import sys
 import sqlite3
 import datetime
+import json
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
@@ -113,6 +114,14 @@ class Program(db.Model):
   code = db.Column(db.Text(), nullable = False, default = '')
   last_modified = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+  code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='program')
+
+class CodeRevision(db.Model):
+  id = db.Column(db.Integer(), primary_key = True)
+  title = db.Column(db.Text(), nullable = False)
+  diff = db.Column(db.Text(), nullable = False)
+  time = db.Column(db.DateTime(), nullable = False)
+  program_id = db.Column(db.Integer(), db.ForeignKey('program.id'))
 
 class Submission(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
@@ -230,20 +239,70 @@ def new_program():
   db.session.commit()
   return redirect('/workspace/'+str(program.id))
 
+def compute_diff(old_code, new_code):
+  memo = {}
+
+  def lcs_lines(old_lines, new_lines):
+    if len(old_lines) == 0 or len(new_lines) == 0:
+      return []
+    elif (len(old_lines), len(new_lines)) in memo:
+      return memo[(len(old_lines), len(new_lines))]
+    res = None
+    if old_lines[-1]['code'] == new_lines[-1]['code']:
+      common_line = {
+        'old_num': old_lines[-1]['linenum'],
+        'new_num': new_lines[-1]['linenum']
+      }
+      res = lcs_lines(old_lines[:-1], new_lines[:-1]) + [common_line]
+    else:
+      left_res = lcs_lines(old_lines[:-1], new_lines)
+      right_res = lcs_lines(old_lines, new_lines[:-1])
+      res = left_res if len(left_res) >= len(right_res) else right_res
+    memo[(len(old_lines), len(new_lines))] = res
+    return res
+
+  old_code_split = old_code.split('\n')
+  new_code_split = new_code.split('\n')
+  old_code_lines = [{'code': line, 'linenum': i + 1} for i,line in enumerate(old_code_split)]
+  new_code_lines = [{'code': line, 'linenum': i + 1} for i,line in enumerate(new_code_split)]
+  common_lines = lcs_lines(old_code_lines, new_code_lines)
+  common_lines.append({
+    'old_num': len(old_code_lines) + 1,
+    'new_num': len(new_code_lines) + 1
+  })
+  diff = {'old_code': [], 'new_code': []}
+  cur_old_num = 1
+  cur_new_num = 1
+  for line in common_lines:
+    if line['old_num'] > cur_old_num:
+      diff['old_code'] += old_code_lines[cur_old_num-1:line['old_num']-1]
+    if line['new_num'] > cur_new_num:
+      diff['new_code'] += new_code_lines[cur_new_num-1:line['new_num']-1]
+    cur_old_num = line['old_num'] + 1
+    cur_new_num = line['new_num'] + 1
+  return json.dumps(diff)
+
 @app.route('/save_program/', methods=['POST'])
 @login_required
 def save_program():
   title = request.form['title']
   code = request.form['code']
   program = None
+  diff = None
+  time_now = datetime.datetime.now()
   if 'program_id' in request.form:
     program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
+    diff = compute_diff(program.code, code)
     program.title = title
     program.code = code
-    program.last_modified = datetime.datetime.now()
+    program.last_modified = time_now
   else:
-    program = Program(title=title, code=code, user_id=current_user.id)
+    diff = compute_diff('', code)
+    program = Program(title=title, code=code, user_id=current_user.id, last_modified=time_now)
+
+  code_revision = CodeRevision(title=title, diff=diff, time=time_now, program_id=program.id)
   db.session.add(program)
+  db.session.add(code_revision)
   db.session.commit()
   return str(program.id)
 

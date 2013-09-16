@@ -129,7 +129,7 @@ int('THIS STRING DOES NOT HAVE ANY NUMBERS IN IT')
 
 # Now that's a lot to digest and it may seem stupid that Python does this, but the main
 # takeaways are that there are different types of data, and that sometimes
-# you can convery between them, and sometimes Python will be upset.
+# you can convert between them, and sometimes Python will be upset.
 
 # Lets get back to Winston! So we wanted to tell Winston to draw a square and have him ask what size it should be.
 # Let's start with something simpler: Winston should ask how far forward to move.
@@ -138,7 +138,7 @@ int('THIS STRING DOES NOT HAVE ANY NUMBERS IN IT')
 value = raw_input('How far should I move?')
 winston.forward(int(value))
 # You can see that if you run this and you type an integer in, it will work.
-# If you type in something that isn't an integer, the converstion to an integer type will fail
+# If you type in something that isn't an integer, the conversion to an integer type will fail
 # and Winston won't move!
 
 # Using the same idea, make Winston ask how big of a square to make before he draws it.
