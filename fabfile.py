@@ -262,6 +262,7 @@ def generate_labs():
       out.write('var lab_content = ')
       out.write(str(steps))
       out.write(';')
+  print colored("%s labs generated" % len(labfiles), "green")
 
 def process_line(line):
   if not '`' in line:
