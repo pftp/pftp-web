@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['DEBUG'] = 'PRODUCTION' not in os.environ
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'development_key')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp_prod.db')
 app.config['SECURITY_PASSWORD_HASH'] = 'bcrypt'
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$skCRnkqE5L01bHEke678Ju'
 app.config['SECURITY_REGISTERABLE'] = True
@@ -123,7 +123,7 @@ class Program(db.Model):
   code = db.Column(db.Text(), nullable = False, default = '')
   last_modified = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
-  #code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='program')
+  code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='program')
 
 class CodeRevision(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
@@ -135,7 +135,7 @@ class CodeRevision(db.Model):
 
 class Submission(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
-  #title = db.Column(db.Text(), nullable = False)
+  title = db.Column(db.Text(), nullable = False)
   code = db.Column(db.Text(), nullable = False)
   submit_time = db.Column(db.DateTime(), nullable = False, default = datetime.datetime.now)
   assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
@@ -314,7 +314,7 @@ def save_program():
   time_now = datetime.datetime.now()
   if 'program_id' in request.form:
     program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
-    #prev_revision_count = CodeRevision.query.filter_by(program_id=program.id, user_id=current_user.id).count()
+    prev_revision_count = CodeRevision.query.filter_by(program_id=program.id, user_id=current_user.id).count()
     prev_revision_count = 1
     if prev_revision_count > 0:
       diff = compute_diff(program.code, code)
@@ -326,9 +326,9 @@ def save_program():
   else:
     diff = compute_diff('', code)
     program = Program(title=title, code=code, user_id=current_user.id, last_modified=time_now)
-  #code_revision = CodeRevision(title=title, diff=diff, time=time_now, program_id=program.id, user_id=current_user.id)
+  code_revision = CodeRevision(title=title, diff=diff, time=time_now, program_id=program.id, user_id=current_user.id)
   db.session.add(program)
-  #db.session.add(code_revision)
+  db.session.add(code_revision)
   db.session.commit()
   return str(program.id)
 
@@ -357,8 +357,7 @@ def assignments(assignment_id):
 @login_required
 def submit_assignment():
   program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
-  #submission = Submission(title=program.title, code=program.code, assignment_id=request.form['assignment_id'], user_id=current_user.id)
-  submission = Submission(code=program.code, assignment_id=request.form['assignment_id'], user_id=current_user.id)
+  submission = Submission(title=program.title, code=program.code, assignment_id=request.form['assignment_id'], user_id=current_user.id)
   db.session.add(submission)
   db.session.commit()
   return ''
