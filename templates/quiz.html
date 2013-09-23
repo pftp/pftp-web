@@ -4,11 +4,13 @@
 {% endblock %}
 
 {% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='js/quiz.js')}}"></script>
 {% endblock %}
 {% block content %}
-<div class="container">
-<h2> {{ context.quiz_name }} </h2>
-{% for question in context.questions %}
+<div class="container" id="quiz_container">
+<h2> {{ quiz.name }} </h2>
+<br><br>
+{% for question in quiz.questions %}
 <h4> {{ question.question }} </h4>
 <div class="row">
   <div class="span1"></div>
@@ -16,17 +18,17 @@
     {% for answer_choice in question.answer_choices %}
     <div class="radio">
       <label>
-        <input type="radio" value="{{ question.id }},{{ answer_choice.id }}">
+        <input type="radio" name="{{ question.id }}" value="{{ question.id }},{{ answer_choice.id }}">
         {{ answer_choice.answer }}
-      </label>
       </label>
     </div>
     {% endfor %}
-    </div>
   </div>
   <div class="span2"></div>
 </div>
+<br><br>
 
 {% endfor %}
+<button type="submit" class="btn btn-default" id="submit_quiz"> I'm Done! </button>
 </div>
 {% endblock %}

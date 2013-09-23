@@ -40,7 +40,7 @@ def build():
   db.create_all()
   generate_models()
   add_exercises()
-  #add_quiz1()
+  add_quiz1()
 
 #XXX make this detect changes and automatically build
 @task
@@ -228,16 +228,19 @@ def add_exercises():
   print colored("%s exercises added to database." % len(exercises), "green")
 
 def add_quiz1():
-  quiz1 = Quiz(quiz_name="Week 3 Pop Quiz", week=3)
-  question1 = QuizQuestion(question="How many fingers am I holding up", answer_choices=json.dumps({'A': 5, 'B': 10, 'C': 11}), solution='A', quiz=quiz1.id)
-  question2 = QuizQuestion(question="How many hands am I holding up", answer_choices=json.dumps({'A': 2, 'B': 10, 'C': 11}), solution='A', quiz=quiz1.id)
-  question3 = QuizQuestion(question="How many thumbs am I holding up", answer_choices=json.dumps({'A': 2, 'B': 1, 'C': 11}), solution='B', quiz=quiz1.id)
-
+  quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
+  question1 = QuizQuestion(question="How many fingers am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '13'}, {'id': 'C', 'answer': '11'}]), solution='A', quiz=quiz1.id)
+  question2 = QuizQuestion(question="How many hands am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '2'}, {'id': 'B', 'answer': '13'}, {'id': 'C', 'answer': '11'}]), solution='A', quiz=quiz1.id)
+  question3 = QuizQuestion(question="How many thumbs am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '1'}, {'id': 'C', 'answer': '11'}]), solution='B', quiz=quiz1.id)
+  quiz1.questions.append(question1)
+  quiz1.questions.append(question2)
+  quiz1.questions.append(question3)
   db.session.add(quiz1)
   db.session.add(question1)
   db.session.add(question2)
   db.session.add(question3)
   db.session.commit()
+  print colored('quiz 1 added to database', "green")
 
 def generate_labs():
   if not os.path.exists('static/lab'):

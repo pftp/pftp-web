@@ -165,9 +165,9 @@ class ExtendedRegisterForm(RegisterForm):
 
 class Quiz(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  quiz_name = db.Column(db.String(30), nullable=False)
+  name = db.Column(db.String(30), nullable=False)
   week = db.Column(db.Integer(), nullable=False)
-  quiz_questions = db.relationship('QuizQuestion', lazy='dynamic', backref='quiz')
+  questions = db.relationship('QuizQuestion', lazy='dynamic', backref='quiz')
 
 class QuizQuestion(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
@@ -176,10 +176,10 @@ class QuizQuestion(db.Model):
   solution = db.Column(db.String(100), nullable=False)
   quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'))
 
-class QuizResponses(db.Model):
+class QuizResponse(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  quiz_question = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
-  user = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  question_id = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
   user_answer = db.Column(db.String(100), nullable=False)
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -251,16 +251,27 @@ def lesson(lesson_path):
     return render_template('lesson_home.html', context=context)
   return redirect('/')
 
-@app.route('/quiz/<int:quiz_id>')
+@app.route('/quiz/<int:quiz_id>/')
 def quiz(quiz_id):
-  first_quiz = Quiz.query.filter(Quiz.week==3).first()
-  first_quiz = map(lambda x: x.__dict__, first_quiz)
+  first_quiz = Quiz.query.filter(Quiz.week==quiz_id).first()
+  questions = map(lambda x: x.__dict__, first_quiz.questions)
+  for question in questions:
+    question['answer_choices'] = json.loads(question['answer_choices'])
+  first_quiz = first_quiz.__dict__
+  first_quiz['questions'] = questions
 
-
-  return render_template('quiz.html', context=context)
-@app.route('/quiz/<int:quiz_id>/submit')
+  return render_template('quiz.html', quiz=first_quiz)
+@app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
+@login_required
 def submit_quiz(quiz_id):
-  print quiz_id
+  answer_choices = request.form.getlist('selected[]')
+  for answer_choice in answer_choices:
+    question_id, answer = answer_choice.strip().split(',')
+    qr = QuizResponse(question_id=int(question_id), user_id=current_user.id, user_answer=answer)
+    db.session.add(qr)
+  db.session.commit()
+  return 'Submitted'
+
 
 @app.route('/labs/<int:lab_id>')
 def lab(lab_id):
