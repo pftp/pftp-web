@@ -8,9 +8,10 @@ from termcolor import colored
 from random import randrange, random
 from datetime import datetime
 
+
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion
 
 ################################################################################
 # Tasks
@@ -24,6 +25,10 @@ def clean():
     local('rm pftp.db')
 
 @task
+def addquiz1():
+  add_quiz1()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -35,6 +40,7 @@ def build():
   db.create_all()
   generate_models()
   add_exercises()
+  add_quiz1()
 
 #XXX make this detect changes and automatically build
 @task
@@ -221,6 +227,20 @@ def add_exercises():
   db.close()
   print colored("%s exercises added to database." % len(exercises), "green")
 
+def add_quiz1():
+  quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
+  question1 = QuizQuestion(question="How many fingers am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '13'}, {'id': 'C', 'answer': '11'}]), solution='A', quiz=quiz1.id)
+  question2 = QuizQuestion(question="How many hands am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '2'}, {'id': 'B', 'answer': '13'}, {'id': 'C', 'answer': '11'}]), solution='A', quiz=quiz1.id)
+  question3 = QuizQuestion(question="How many thumbs am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '1'}, {'id': 'C', 'answer': '11'}]), solution='B', quiz=quiz1.id)
+  quiz1.questions.append(question1)
+  quiz1.questions.append(question2)
+  quiz1.questions.append(question3)
+  db.session.add(quiz1)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.commit()
+  print colored('quiz 1 added to database', "green")
 
 def generate_labs():
   if not os.path.exists('static/lab'):
