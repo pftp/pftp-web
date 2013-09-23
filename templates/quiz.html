@@ -19,7 +19,7 @@
     <div class="radio">
       <label>
         <input type="radio" name="{{ question.id }}" value="{{ question.id }},{{ answer_choice.id }}">
-        {{ answer_choice.answer }}
+        {{ answer_choice.answer |safe}}
       </label>
     </div>
     {% endfor %}

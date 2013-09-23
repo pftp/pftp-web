@@ -219,6 +219,9 @@ def about():
   for week in weeks:
     week['assignment'] = Assignment.query.get(week['assignment'])
     week['lesson'] = Lesson.query.get(week['lesson'])
+    quiz = Quiz.query.filter(Quiz.week==week['id'])
+    if len(quiz.all()) == 1:
+      week['quiz'] = quiz.first()
   return render_template('about.html', weeks=weeks)
 
 @app.route('/lessons/')

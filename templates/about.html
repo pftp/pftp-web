@@ -34,7 +34,13 @@ About
       <td>
         <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a>
       </td>
-      <td><a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a></td>
+      <td>
+        {% if week.quiz is defined %}
+        <a href = "/quiz/{{ week.quiz.week }}">{{ week.quiz.name }} </a>
+        <br>
+        {% endif %}
+        <a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a>
+      </td>
       <td>{{ week.assignment.deadline.strftime('%A, %B %d @ %I:%M%P') }}</td>
     </tr>
   {% endfor %}

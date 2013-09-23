@@ -229,16 +229,39 @@ def add_exercises():
 
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
-  question1 = QuizQuestion(question="How many fingers am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '13'}, {'id': 'C', 'answer': '11'}]), solution='A', quiz=quiz1.id)
-  question2 = QuizQuestion(question="How many hands am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '2'}, {'id': 'B', 'answer': '13'}, {'id': 'C', 'answer': '11'}]), solution='A', quiz=quiz1.id)
-  question3 = QuizQuestion(question="How many thumbs am I holding up", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '1'}, {'id': 'C', 'answer': '11'}]), solution='B', quiz=quiz1.id)
+
+  question1 = QuizQuestion(question="Which of the following lines would make Winston the Turtle draw a square?", answer_choices=json.dumps([{'id': 'A', 'answer': 't = turtle.Turtle()<br>t.forward(100)<br>t.right(90)<br>t.forward(100)<br>t.right(90)<br>t.forward(100)<br>t.right(90)'}, {'id': 'B', 'answer': 't = turtle.Turtle()<br> t.forward(100)<br> t.right(60)<br>t.forward(100)<br>t.right(60)<br>t.right(100)<br>t.forward(100)'}, {'id': 'C', 'answer': 't = turtle.Turtle()<br>t.forward(100)<br>t.right(60)<br>t.right(30)<br>t.forward(100)<br>t.right(90)<br>t.forward(100)<br>t.right(90)<br>t.forward(100)'}]), solution='C', quiz=quiz1.id)
+  question2 = QuizQuestion(question="How do you take 2 numbers as user input and print the two numbers added together?", answer_choices=json.dumps([{'id': 'A', 'answer': 'x=?<br>y=?<br>print x + y'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='A', quiz=quiz1.id)
+  question3 = QuizQuestion(question="What is the proper way to make Winston the Turtle move forward a user inputted number of feet", answer_choices=json.dumps([{'id': 'A', 'answer': 't = turtle.Turtle() <br> t.forward(input)'}, {'id': 'B', 'answer': 't = turtle.Turtle() <br> x = raw_input("How much do you want to go forward") <br> t.forward(x)'}, {'id': 'C', 'answer': 't = turtle.Turtle() <br> x = raw_input("How much do you want to go forward") <br> t.forward(int(t))'}, {'id': 'D', 'answer': 't = turtle.Turtle() <br> y = raw_input("How much do you want to go forward") <br> t.forward(int(y))'}, {'id': 'E', 'answer' : 't = turtle.Turtle() <br> t.forward(raw_input())'}]), solution='D', quiz=quiz1.id)
+
+
+  question4 = QuizQuestion(question="How useful are lectures on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='A', quiz=quiz1.id)
+  question5 = QuizQuestion(question="How useful are lectures on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='A', quiz=quiz1.id)
+
+
+  question10 = QuizQuestion(question="How useful are lectures on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='_', quiz=quiz1.id)
+  question11 = QuizQuestion(question="How useful are labs on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='_', quiz=quiz1.id)
+  question12 = QuizQuestion(question="What do you think we should spend more time working on and preparing for?", answer_choices=json.dumps([{'id': 'A', 'answer': 'Better Lectures'}, {'id': 'B', 'answer': 'Better Lab'}, {'id': 'C', 'answer': 'Better Homework Assignments'}]), solution='_', quiz=quiz1.id)
+  question13 = QuizQuestion(question="How do you feel about the course load?", answer_choices=json.dumps([{'id': 'A', 'answer': 'Too light. I would like to learn more.'}, {'id': 'B', 'answer': 'Just right. I am spending the right amount of time for this class'}, {'id': 'C', 'answer': 'Too much work :('}]), solution='_', quiz=quiz1.id)
+
+
+
   quiz1.questions.append(question1)
   quiz1.questions.append(question2)
   quiz1.questions.append(question3)
+  quiz1.questions.append(question4)
+  quiz1.questions.append(question10)
+  quiz1.questions.append(question11)
+  quiz1.questions.append(question12)
+  quiz1.questions.append(question13)
   db.session.add(quiz1)
   db.session.add(question1)
   db.session.add(question2)
   db.session.add(question3)
+  db.session.add(question10)
+  db.session.add(question11)
+  db.session.add(question12)
+  db.session.add(question13)
   db.session.commit()
   print colored('quiz 1 added to database', "green")
 
