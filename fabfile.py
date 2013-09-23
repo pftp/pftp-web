@@ -137,6 +137,7 @@ def generate_models():
 
   assignment1 = Assignment(name='Homework 1', description='Draw something using at least 3 shapes and 3 colors. Have fun with it!',  points=5, deadline=datetime(2013,9,15,23,59))
   assignment2 = Assignment(name='Homework 2', description='Create a turtle chatbot that can <ul><li>Understand a conversation with at least 3 levels of questions</li><li>Uses a number from raw_input (using the int() conversion)</li><li>Draw something when asked to draw (you can use your Homework 1 submission here!) with something new you learned about turtle graphics from the lab (turtle.write, turtle.circle, etc)</li></ul>', points=5, deadline=datetime(2013,9,22,23,59))
+  assignment3 = Assignment(name='Homework 3', description="Draw a scene using at least 3 nested function calls. It should be something that you wouldn't want to try drawing line by line!", points=5, deadline=datetime(2013,9,29,23,59))
   #assignment3 = Assignment(name='Project 1', description='Build a turtle graphics game', points=30, deadline=datetime(2013,10,1))
   #assignment4 = Assignment(name='Homework 3', description='Finish exercises 11-15 before next class',  points=10, deadline=datetime(2013,10,8))
   #assignment5 = Assignment(name='Homework 4', description='Finish exercises 16-20 before next class', points=10, deadline=datetime(2013,10,15))
@@ -147,6 +148,7 @@ def generate_models():
 
   db.session.add(assignment1)
   db.session.add(assignment2)
+  db.session.add(assignment3)
   #db.session.add(assignment3)
   #db.session.add(assignment4)
   #db.session.add(assignment5)
@@ -231,13 +233,10 @@ def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
 
   question1 = QuizQuestion(question="Which of the following lines would make Winston the Turtle draw a square?", answer_choices=json.dumps([{'id': 'A', 'answer': 't = turtle.Turtle()<br>t.forward(100)<br>t.right(90)<br>t.forward(100)<br>t.right(90)<br>t.forward(100)<br>t.right(90)'}, {'id': 'B', 'answer': 't = turtle.Turtle()<br> t.forward(100)<br> t.right(60)<br>t.forward(100)<br>t.right(60)<br>t.right(100)<br>t.forward(100)'}, {'id': 'C', 'answer': 't = turtle.Turtle()<br>t.forward(100)<br>t.right(60)<br>t.right(30)<br>t.forward(100)<br>t.right(90)<br>t.forward(100)<br>t.right(90)<br>t.forward(100)'}]), solution='C', quiz=quiz1.id)
-  question2 = QuizQuestion(question="How do you take 2 numbers as user input and print the two numbers added together?", answer_choices=json.dumps([{'id': 'A', 'answer': 'x=?<br>y=?<br>print x + y'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='A', quiz=quiz1.id)
+  question2 = QuizQuestion(question="How do you take 2 numbers as user input and print the two numbers added together?", answer_choices=json.dumps([{'id': 'A', 'answer': 'x=?<br>y=?<br>print x + y'}, {'id': 'B', 'answer': 'x = raw_input("What is first number?")<br> y=raw_input("What is number 2")<br> print x + y'}, {'id': 'C', 'answer': 'x = raw_input("What is the first number?")<br>y=raw_input("What is the second number?")<br>int(x) + int(y)'}, {'id': 'D', 'answer': 'x=raw_input("What is the first number?")<br>y=raw_input("What is the second number?")<br>print int(x) + int(y)'}]), solution='D', quiz=quiz1.id)
   question3 = QuizQuestion(question="What is the proper way to make Winston the Turtle move forward a user inputted number of feet", answer_choices=json.dumps([{'id': 'A', 'answer': 't = turtle.Turtle() <br> t.forward(input)'}, {'id': 'B', 'answer': 't = turtle.Turtle() <br> x = raw_input("How much do you want to go forward") <br> t.forward(x)'}, {'id': 'C', 'answer': 't = turtle.Turtle() <br> x = raw_input("How much do you want to go forward") <br> t.forward(int(t))'}, {'id': 'D', 'answer': 't = turtle.Turtle() <br> y = raw_input("How much do you want to go forward") <br> t.forward(int(y))'}, {'id': 'E', 'answer' : 't = turtle.Turtle() <br> t.forward(raw_input())'}]), solution='D', quiz=quiz1.id)
-
-
-  question4 = QuizQuestion(question="How useful are lectures on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='A', quiz=quiz1.id)
-  question5 = QuizQuestion(question="How useful are lectures on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='A', quiz=quiz1.id)
-
+  question4 = QuizQuestion(question="What will the code below print? <br><br> print 1 + 2", answer_choices=json.dumps([{'id': 'A', 'answer': '5'}, {'id': 'B', 'answer': '3'}, {'id': 'C', 'answer': '7'}, {'id': 'D', 'answer': '12'}]), solution='B', quiz=quiz1.id)
+  question5 = QuizQuestion(question="What will the code below print? <br><br> print '1' + '2'", answer_choices=json.dumps([{'id': 'A', 'answer': '5'}, {'id': 'B', 'answer': '3'}, {'id': 'C', 'answer': '7'}, {'id': 'D', 'answer': '12'}]), solution='D', quiz=quiz1.id)
 
   question10 = QuizQuestion(question="How useful are lectures on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='_', quiz=quiz1.id)
   question11 = QuizQuestion(question="How useful are labs on a scale from 1-5 (1 being terrible and 5 being good)", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer' : '5'}]), solution='_', quiz=quiz1.id)
@@ -250,6 +249,7 @@ def add_quiz1():
   quiz1.questions.append(question2)
   quiz1.questions.append(question3)
   quiz1.questions.append(question4)
+  quiz1.questions.append(question5)
   quiz1.questions.append(question10)
   quiz1.questions.append(question11)
   quiz1.questions.append(question12)
@@ -258,6 +258,8 @@ def add_quiz1():
   db.session.add(question1)
   db.session.add(question2)
   db.session.add(question3)
+  db.session.add(question4)
+  db.session.add(question5)
   db.session.add(question10)
   db.session.add(question11)
   db.session.add(question12)
