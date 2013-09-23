@@ -6,6 +6,7 @@ import json
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
+from flask.ext.security.signals import user_registered
 from flask.ext.login import logout_user
 from flask_security.forms import RegisterForm, TextField, Required
 
@@ -164,6 +165,12 @@ class ExtendedRegisterForm(RegisterForm):
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
+
+@user_registered.connect_via(app)
+def user_registered_sighandler(app, user, confirm_token):
+  default_role = user_datastore.find_role("user")
+  user_datastore.add_role_to_user(user, default_role)
+  db.session.commit()
 
 ################################################################################
 # Registration Routes

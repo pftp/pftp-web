@@ -55,12 +55,16 @@ Teacher Dashboard
         {% endif %}
         {% endfor %}
         <td>
-          {% if student.total_score/student.total_points > 0.7 %}
-          <span class="badge badge-success">{{ student.total_score }}/{{ student.total_points }}</span>
-          {% elif student.total_score/student.total_points > 0.4 %}
-          <span class="badge badge-warning">{{ student.total_score }}/{{ student.total_points }}</span>
+          {% if student.total_points != 0 %}
+            {% if student.total_score/student.total_points > 0.7 %}
+            <span class="badge badge-success">{{ student.total_score }}/{{ student.total_points }}</span>
+            {% elif student.total_score/student.total_points > 0.4 %}
+            <span class="badge badge-warning">{{ student.total_score }}/{{ student.total_points }}</span>
+            {% else %}
+            <span class="badge badge-important">{{ student.total_score }}/{{ student.total_points }}</span>
+            {% endif %}
           {% else %}
-          <span class="badge badge-important">{{ student.total_score }}/{{ student.total_points }}</span>
+            <span class="badge badge-info">N/A</span>
           {% endif %}
         </td>
       </tr>
