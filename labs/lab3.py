@@ -1,41 +1,15 @@
-# Oh hey you're back! Winston is joining us and he also brought his friend Shelby!
-# Say hi to Shelby! She'll be helping us learn about abstraction this week.
-###import turtle
-###winston = turtle.Turtle()
-###winston.write("Hi, I'm Winston!")
-###shelby = turtle.Turtle()
-###shelby.setposition(50, 50)
-###shelby.write("Hi, I'm Shelby!")
-
-# You can control Winston and Shelby separately! Try making Winston and Shelby draw a square each.
-# It's kind of hard to tell Winston and Shelby apart, so make them different colors before they start drawing too.
-
-# Now there's a couple useful commands that you can use here:
+# Welcome back! Winston is ready to teach you about abstraction this week, but first, here's a couple of useful turtle graphics commands that you can use:
 # `winston.setposition(100, -50)` will move Winston to (100, -50). Try different numbers to see which direction is positive.
 # `winston.begin_fill()` and `winston.end_fill()` will fill every shape drawn in between the 2 calls.
 # `winston.fillcolor('green')` will only change the fill color, and not the line color.
-# Remeber that Winston and Shelby are different turtles so calling 1 command on Winston won't do anything to Shelby and vice versa!
-
-# Now try having Winston follow Shelby as she draws a square. You can have each line alternate between telling Winston and Shelby what to do. You may need to reposition Winston and Shelby to do tis!
-# This is just the beginning - you can have multiple turtles on the screen and each one can draw it's own shapes.
+###import turtle
+###winston = turtle.Turtle()
 
 # Cool! Now that we have that down, let's take a look at the motivation for all this abstraction.
 # Open up your Homework 1 and Homework 2 code in separate tabs and count how many lines they are. Is it 100 lines? 200 lines?
 # How many of those lines are `winston.forward`s? Probably a lot of them. If you drew a bunch of squares, you'll have a lot of `winston.right`s or `winston.left`s.
 
-# What about your `raw_input` code? It's probaby annoying to have to convert to integers all the time.
-# Let's see how we can make this more convenient to work with. Fortunately, there is an `isdigit` function provided by Python which tells you if a string only has numbers in it. Using this, we can write a function `int_input` which will give you back an integer from `raw_input` or `0` if the input wasn't an integer.
-def int_input(message):
-  value = raw_input(message)
-  if value.isdigit():
-    return int(value)
-  else:
-    return 0
-# Note that this function "returns" a value, so you can use it like so:
-integer_value = int_input("What year were you born in?")
-# and the number will be assigned to integer_value!
-
-# We can also use functions to "unduplicate" a lot of this code, just like we used variables to "unduplicate" a lot of numbers!
+# We can use functions to "unduplicate" a lot of this code, just like we used variables to "unduplicate" a lot of numbers!
 # Let's take a look at a function that will draw a triangle.
 def triangle():
   winston.forward(100)
@@ -45,7 +19,7 @@ def triangle():
   winston.forward(100)
   winston.right(120)
 # Notice that all the code inside the function is indented, just like for `if` statements.
-# If you add this to your code, you will notice that nothing happens. Why? Because this is just a <b>function definition</b>. In order to run or "call" a function, you need to say it's name followed by parentheses, with whatever input values it wants. You have been doing this all along since `winston.forward(100)` is a function call and the input you are giving it is 100!
+# If you add this to your code, you will notice that nothing happens. Why? Because this is just a function definition. In order to run or "call" a function, you need to say it's name followed by parentheses, with whatever input values it wants. You have been doing this all along since `winston.forward(100)` is a function call and the input you are giving it is 100!
 # Now try adding a call to the `triangle` function you just created and verify that it does in fact draw a triangle! Now this may seem not too revolutionary - in fact we just went from 4 lines to draw a triangle to 6 lines to define a triangle function and call it. Let's take a look at how functions can make things easier.
 
 # Well this triangle is quite boring - no matter what you do, it will draw a triangle in the same size. Fortunately, we can add a function input or "argument" that will let us change this:
@@ -91,9 +65,25 @@ def radioactive(size):
 # Another reason for doing this as opposed to having all 9 `winston.forward`s in `radioactive` is the DRY principle. DRY stands for "Don't repeat yourself" and is one of the most important ideas in programming that allows you to have a lot of control. Writing a function for every block of code that you use a lot is helpful because it not only eliminates the possibility of errors from copying and pasting, but it also allows you to compose functions together like in `radioactive`, leaving you with concise code that is understandable.
 # Right now `radioactive` is 7 lines of code, plus the 10 lines for `triangle`. How many lines would `radioactive` be if you didn't use the `triangle` function? The difference is apparent, and it will only get larger as you start composing functions together.
 
+# Now before we continue, take a look at your Homework 2 code and all the `raw_input` lines. It's probaby annoying to have to convert to integers all the time, so we're going to make it easier! Fortunately, there is an `isdigit` function provided by Python which tells you if a string only has numbers in it. Using this, we can write a function `int_input` which will give you back an integer from `raw_input` or `0` if the input wasn't an integer.
+def int_input(message):
+  value = raw_input(message)
+  if value.isdigit():
+    return int(value)
+  else:
+    return 0
+# Note that this function "returns" a value, so you can use it like so:
+integer_value = int_input("What year were you born in?")
+# and the number will be assigned to integer_value!
 
 # It's your turn! Define and call a function to draw a <a target="_blank" href='http://images.wikia.com/zelda/images/2/2a/Black_Triforce.svg'>triforce symbol</a>! You can do this by drawing 3 equal sized triangles or 2 different sized triangles but this is a little tricky because you need to reposition Winston in between `triangle` calls to get the triangles lined up properly. Make sure you can also make it different sizes, and make sure Winston starts and ends at the same position and angle!!
 # This is important because when we call the `triforce` function, we want it's behavior to be easy to work with, i.e. Winston starts and ends in the same place.
+# Your code should be called using `int_input` so you can ask the user for the size:
+size = int_input('How big should I make it?')
+triforce(size)
+
+
+# Cool! Now try writing a `triforce2` function by copying the `triforce` function and replacing `triangle` calls with `triforce` calls that are half the size. If your `triforce` code is correct, calling `triforce2` should give you something like <a target="_blank" href="http://tnellen.com/alt/sierp2.gif">this</a>. This is called a Sierpinski triangle and it is a type of fractal, which we will discuss next week.
 
 # <b>Checkoff Assignment:</b>
-# Cool! Now try writing a `triforce2` function by copying the `triforce` function and replacing `triangle(size, True)` with `triforce(s/2)`. If your `triforce` code is correct, calling `triforce2` should give you something like <a target="_blank" href="http://tnellen.com/alt/sierp2.gif">this</a>. This is called a Sierpinski triangle and it is a type of fractal, which we will discuss next week. If you're feeling particularly adventurous, try writing a `triforce3` function by copying the `triforce2` code and replacing `triforce` with `triforce2`. You should get a pretty rad drawing using way less lines of code than if you were to write that line by line!
+# Now try writing a `triforce3` function by copying the `triforce2` code and replacing `triforce` with `triforce2`. You should get a pretty rad drawing using way less lines of code than if you were to write that line by line!
