@@ -7,11 +7,32 @@
 # You can control Winston and Shelby separately! Try making Winston and Shelby draw a square each.
 # It's kind of hard to tell Winston and Shelby apart, so make them different colors before they start drawing too.
 
+# Now try having Winston follow Shelby as she draws a square. You can have each line alternate between telling Winston and Shelby what to do.
+# This is just the beginning - you can have multiple turtles on the screen and each one can draw it's own shapes.
+
+# Now there's a couple useful commands that you can use here:
+# `winston.setposition(100, -50)` will move Winston to (100, -50). Try different numbers to see which direction is positive.
+# `winston.begin_fill()` and `winston.end_fill()` will fill every shape drawn in between the 2 calls.
+# `winston.fillcolor('green')` will only change the fill color, and not the line color.
+# Remeber that Winston and Shelby are different turtles so calling 1 command on Winston won't do anything to Shelby and vice versa!
+
 # Cool! Now that we have that down, let's take a look at the motivation for all this abstraction.
 # Open up your Homework 1 and Homework 2 code in separate tabs and count how many lines they are. Is it 100 lines? 200 lines?
 # How many of those lines are `winston.forward`s? Probably a lot of them. If you drew a bunch of squares, you'll have a lot of `winston.right`s or `winston.left`s.
 
-# We can use functions to "unduplicate" a lot of this code, just like we used variables to "unduplicate" a lot of numbers!
+# What about your `raw_input` code? It's probaby annoying to have to convert to integers all the time.
+# Let's see how we can make this more convenient to work with. Fortunately, there is an `isdigit` function provided by Python which tells you if a string only has numbers in it. Using this, we can write a function `int_input` which will give you back an integer from `raw_input` or `0` if the input wasn't an integer.
+def int_input(message):
+  value = raw_input(message)
+  if value.isdigit():
+    return int(value)
+  else:
+    return 0
+# Note that this function "returns" a value, so you can use it like so:
+integer_value = int_input("What year were you born in?")
+# and the number will be assigned to integer_value!
+
+# We can also use functions to "unduplicate" a lot of this code, just like we used variables to "unduplicate" a lot of numbers!
 # Let's take a look at a function that will draw a triangle.
 def triangle():
   winston.forward(100)
