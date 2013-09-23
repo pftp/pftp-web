@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['DEBUG'] = 'PRODUCTION' not in os.environ
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'development_key')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp_prod.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQL_DATABASE_URI', 'sqlite:///pftp.db')
 app.config['SECURITY_PASSWORD_HASH'] = 'bcrypt'
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$skCRnkqE5L01bHEke678Ju'
 app.config['SECURITY_REGISTERABLE'] = True
@@ -162,6 +162,25 @@ class ExtendedRegisterForm(RegisterForm):
   firstname = TextField('First Name', [Required()])
   lastname = TextField('Last Name', [Required()])
 
+class Quiz(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  quiz_name = db.Column(db.String(30), nullable=False)
+  week = db.Column(db.Integer(), nullable=False)
+  quiz_questions = db.relationship('QuizQuestion', lazy='dynamic', backref='quiz')
+
+class QuizQuestion(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  question = db.Column(db.String(1000), nullable=False)
+  answer_choices = db.Column(db.String(7000), nullable=False)
+  solution = db.Column(db.String(100), nullable=False)
+  quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'))
+
+class QuizResponses(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  quiz_question = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
+  user = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  user_answer = db.Column(db.String(100), nullable=False)
+
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
 
@@ -224,6 +243,17 @@ def lesson(lesson_path):
     context['lesson_name'] = lesson.name
     return render_template('lesson_home.html', context=context)
   return redirect('/')
+
+@app.route('/quiz/<int:quiz_id>')
+def quiz(quiz_id):
+  first_quiz = Quiz.query.filter(Quiz.week==3).first()
+  first_quiz = map(lambda x: x.__dict__, first_quiz)
+
+
+  return render_template('quiz.html', context=context)
+@app.route('/quiz/<int:quiz_id>/submit')
+def submit_quiz(quiz_id):
+  print quiz_id
 
 @app.route('/labs/<int:lab_id>')
 def lab(lab_id):
