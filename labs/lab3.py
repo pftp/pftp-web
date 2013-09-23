@@ -2,19 +2,22 @@
 # Say hi to Shelby! She'll be helping us learn about abstraction this week.
 ###import turtle
 ###winston = turtle.Turtle()
+###winston.write("Hi, I'm Winston!")
 ###shelby = turtle.Turtle()
+###shelby.setposition(50, 50)
+###shelby.write("Hi, I'm Shelby!")
 
 # You can control Winston and Shelby separately! Try making Winston and Shelby draw a square each.
 # It's kind of hard to tell Winston and Shelby apart, so make them different colors before they start drawing too.
-
-# Now try having Winston follow Shelby as she draws a square. You can have each line alternate between telling Winston and Shelby what to do.
-# This is just the beginning - you can have multiple turtles on the screen and each one can draw it's own shapes.
 
 # Now there's a couple useful commands that you can use here:
 # `winston.setposition(100, -50)` will move Winston to (100, -50). Try different numbers to see which direction is positive.
 # `winston.begin_fill()` and `winston.end_fill()` will fill every shape drawn in between the 2 calls.
 # `winston.fillcolor('green')` will only change the fill color, and not the line color.
 # Remeber that Winston and Shelby are different turtles so calling 1 command on Winston won't do anything to Shelby and vice versa!
+
+# Now try having Winston follow Shelby as she draws a square. You can have each line alternate between telling Winston and Shelby what to do. You may need to reposition Winston and Shelby to do tis!
+# This is just the beginning - you can have multiple turtles on the screen and each one can draw it's own shapes.
 
 # Cool! Now that we have that down, let's take a look at the motivation for all this abstraction.
 # Open up your Homework 1 and Homework 2 code in separate tabs and count how many lines they are. Is it 100 lines? 200 lines?
