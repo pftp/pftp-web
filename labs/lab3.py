@@ -1,8 +1,8 @@
 # Oh hey you're back! Winston is joining us and he also brought his friend Shelby!
 # Say hi to Shelby! She'll be helping us learn about abstraction this week.
-##import turtle
-##winston = turtle.Turtle()
-##shelby = turtle.Turtle()
+###import turtle
+###winston = turtle.Turtle()
+###shelby = turtle.Turtle()
 
 # You can control Winston and Shelby separately! Try making Winston and Shelby draw a square each.
 # It's kind of hard to tell Winston and Shelby apart, so make them different colors before they start drawing too.
@@ -51,7 +51,7 @@ def triangle(size, fill=False):
   if fill:
     winston.end_fill()
 # Notice that we added a fill argument to the `triangle` function, but it looks like we're assigning a value to it! This says that `fill` is an argument to the function, but if you don't give a value for `fill`, it will default to False.
-# Try running `triangle(50)`, `triangle(50, False)`, `triangle(50, True)` to get a sense of how the arguments work.
+# Try running `triangle(50)`, `triangle(60, False)`, `triangle(70, True)` to get a sense of how the arguments work.
 
 # Now let's try something a little more complicated. What if we want to make one of them fancy radioactive signs?
 # Well we have a convenient `triangle` function which we can use, so let's take a shot at it.
@@ -62,7 +62,14 @@ def radioactive(size):
   winston.right(120)
   triangle(size, True)
   winston.right(120)
-# Now this is cool! You can call `radioactive` with different sizes and it will draw the correct size shape! Notice how short the function is - since we defined `triangle` earlier, we can now use it as if it were an instruction that Winston (and Shelby) understand.
-# Another reason for doing this as opposed to having all 9 `winston.forward`s in `radioactive` is the DRY principle. DRY stands for "Don't repeat yourself" and is one of the most important ideas in programming that allows you to have a lot of control. Writing a function for every block of code that you use a lot is helpful because it not only eliminates the possibility of errors from copying and pasting, but it also allows you to compose functions together like in `radioactive`, leaving you with concise code that is understandable.
+# Now this is cool! You can call `radioactive` with different sizes and it will draw the correct size shape! Notice how short the function is - since we defined `triangle` earlier, we can now use it as if it were an instruction that Winston (and Shelby) understand. This is abstraction at work - `triangle` represents a bunch of code to draw a triangle, but all we need to do is just call it by it's name instead of typing `winston.right(120)` a bunch of times.
 
-# It's your turn! Define and call a function to draw a <a target="_blank" href='http://zelda.wikia.com/wiki/File:Black_Triforce.svg'>triforce symbol</a>! You can do this by drawing 3 equal sized triangles or 2 different sized triangles but this is a little tricky because you need to reposition Winston in between `triangle` calls to get the triangles lined up properly. Make sure you can also make it different sizes!
+# Another reason for doing this as opposed to having all 9 `winston.forward`s in `radioactive` is the DRY principle. DRY stands for "Don't repeat yourself" and is one of the most important ideas in programming that allows you to have a lot of control. Writing a function for every block of code that you use a lot is helpful because it not only eliminates the possibility of errors from copying and pasting, but it also allows you to compose functions together like in `radioactive`, leaving you with concise code that is understandable.
+# Right now `radioactive` is 7 lines of code, plus the 10 lines for `triangle`. How many lines would `radioactive` be if you didn't use the `triangle` function? The difference is apparent, and it will only get larger as you start composing functions together.
+
+
+# It's your turn! Define and call a function to draw a <a target="_blank" href='http://images.wikia.com/zelda/images/2/2a/Black_Triforce.svg'>triforce symbol</a>! You can do this by drawing 3 equal sized triangles or 2 different sized triangles but this is a little tricky because you need to reposition Winston in between `triangle` calls to get the triangles lined up properly. Make sure you can also make it different sizes, and make sure Winston starts and ends at the same position and angle!!
+# This is important because when we call the `triforce` function, we want it's behavior to be easy to work with, i.e. Winston starts and ends in the same place.
+
+# <b>Checkoff Assignment:</b>
+# Cool! Now try writing a `triforce2` function by copying the `triforce` function and replacing `triangle(size, True)` with `triforce(s/2)`. If your `triforce` code is correct, calling `triforce2` should give you something like <a target="_blank" href="http://tnellen.com/alt/sierp2.gif">this</a>. This is called a Sierpinski triangle and it is a type of fractal, which we will discuss next week. If you're feeling particularly adventurous, try writing a `triforce3` function by copying the `triforce2` code and replacing `triforce` with `triforce2`. You should get a pretty rad drawing using way less lines of code than if you were to write that line by line!
