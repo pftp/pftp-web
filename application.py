@@ -256,6 +256,8 @@ def lesson(lesson_path):
 
 @app.route('/quiz/<int:quiz_id>/')
 def quiz(quiz_id):
+  if not current_user.is_authenticated():
+    return render_template('message.html', message='You need to log in first')
   first_quiz = Quiz.query.filter(Quiz.week==quiz_id).first()
   questions = map(lambda x: x.__dict__, first_quiz.questions)
   for question in questions:
