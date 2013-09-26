@@ -395,7 +395,7 @@ def delete_program():
 
 @app.route('/assignments/')
 def assignments_home():
-  assignments = Assignment.query.all()
+  assignments = Assignment.query.order_by(Assignment.deadline).all()
   return render_template('assignment_home.html', assignments=assignments)
 
 @app.route('/assignments/<int:assignment_id>')
@@ -425,7 +425,7 @@ def user_dashboard():
   context = {}
   context['total_score'] = 0
   context['total_points'] = 0
-  assignment_models = Assignment.query.all()
+  assignment_models = Assignment.query.order_by(Assignment.deadline).all()
   assignments = map(lambda x: x.__dict__, assignment_models)
   for assignment in assignments:
     submission = Submission.query.filter_by(assignment_id=assignment['id'], user_id=current_user.id).order_by(Submission.submit_time.desc()).first()
@@ -456,7 +456,7 @@ def user_dashboard():
 @roles_required('admin')
 def admin_dashboard():
   student_models = User.query.filter(User.roles.any(Role.name == 'user'))
-  assignments = Assignment.query.all()
+  assignments = Assignment.query.order_by(assignment.deadline).all()
 
   students = map(lambda x: x.__dict__, student_models)
   for student in students:
