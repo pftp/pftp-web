@@ -306,6 +306,28 @@ def workspace(program_id):
     return redirect('/workspace/')
   return render_template('workspace.html', program=program)
 
+@app.route('/workspace/<int:program_id>/revision/<int:revision_id>')
+@login_required
+def program_revision(program_id, revision_id):
+  program = Program.query.filter_by(id=program_id, user_id=current_user.id).first()
+  if program == None:
+    return redirect('/workspace/')
+  target_revision = CodeRevision.query.filter_by(id=revision_id, program_id=program.id, user_id=current_user.id).first()
+  if target_revision == None:
+    return redirect('/workspace/' + str(program.id))
+  revisions = CodeRevision.query.order_by(CodeRevision.time).filter(CodeRevision.time <= target_revision.time).all()
+  codelines = ['']
+  for revision in revisions:
+    diff = json.loads(revision.diff)
+    old_code = diff['old_code']
+    old_code.reverse()
+    for removal in old_code:
+      del codelines[removal['linenum']-1]
+    for addition in diff['new_code']:
+      codelines.insert(addition['linenum']-1, addition['code'])
+  program.code = '\n'.join(codelines)
+  return render_template('workspace.html', program=program)
+
 @app.route('/new_program/')
 @login_required
 def new_program():
