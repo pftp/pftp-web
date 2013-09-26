@@ -15,8 +15,11 @@
 
     <!-- for fun -->
     <script type="text/javascript">
-      if ("{{ current_user.firstname }}" == "Robyn")
-        alert("Hi Robyn");
+      if ("{{ current_user.firstname }}" == "Robyn") {
+	var shitty_background_colors = ['aqua', 'blue', 'chartreuse', 'crimson', 'fuschia', 'redorange', 'pink', 'green', 'cream', 'beige', 'grey'];
+	var color = shitty_background_colors[Math.floor(Math.random() * shitty_background_colors.length)];
+	$('head').append('<style>body{background-color:' + color + ';}</style>');
+      }
 
       var home = function() {
         if (Math.random() > 0.9) {
