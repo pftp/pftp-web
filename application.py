@@ -456,7 +456,7 @@ def user_dashboard():
 @roles_required('admin')
 def admin_dashboard():
   student_models = User.query.filter(User.roles.any(Role.name == 'user'))
-  assignments = Assignment.query.order_by(assignment.deadline).all()
+  assignments = Assignment.query.order_by(Assignment.deadline).all()
 
   students = map(lambda x: x.__dict__, student_models)
   for student in students:
