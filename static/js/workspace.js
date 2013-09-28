@@ -92,6 +92,18 @@ $(function() {
       data: codeRunData
     });
   });
+  $('#run_server_code').click(function(e) {
+    $.ajax({
+      type: 'POST',
+      url: '/run_server_code/',
+      data: {
+        title: $('#program_title').text(),
+        code: editor.getValue().replace(/\t/g, '    ')
+      }
+    }).done(function(output) {
+      $('#output').text(output);
+    });
+  });
   $('#save_code').click(function(e) {
     saveCode();
   });
