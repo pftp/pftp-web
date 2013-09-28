@@ -134,6 +134,16 @@ class CodeRevision(db.Model):
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
   program_id = db.Column(db.Integer(), db.ForeignKey('program.id'))
 
+class CodeRun(db.Model):
+  id = db.Column(db.Integer(), primary_key = True)
+  title = db.Column(db.Text(), nullable = False)
+  code = db.Column(db.Text(), nullable = False)
+  output = db.Column(db.Text())
+  error = db.Column(db.Text())
+  time = db.Column(db.DateTime(), nullable = False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+  program_id = db.Column(db.Integer(), db.ForeignKey('program.id'))
+
 class Submission(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
   title = db.Column(db.Text(), nullable = False)
@@ -412,6 +422,21 @@ def save_program():
 def delete_program():
   program = Program.query.filter_by(id=request.form['program_id'], user_id=current_user.id).first()
   db.session.delete(program)
+  db.session.commit()
+  return ''
+
+@app.route('/save_code_run/', methods=['POST'])
+def save_code_run():
+  code_run = CodeRun(title=request.form['title'], code=request.form['code'], time=datetime.datetime.now())
+  if 'output' in request.form:
+    code_run.output = request.form['output']
+  if 'error' in request.form:
+    code_run.error = request.form['error']
+  if current_user.is_authenticated():
+    code_run.user_id = current_user.id
+  if request.form['program_id'] != '-1':
+    code_run.program_id = request.form['program_id']
+  db.session.add(code_run)
   db.session.commit()
   return ''
 
