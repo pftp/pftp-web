@@ -5,16 +5,15 @@ Teacher Dashboard
 {% endblock %}
 
 {% block head %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
 <script type="text/javascript">
+  var students = [];
+  var id_map = {};
   {% for student in students %}
   students.push("{{ student.firstname }} {{ student.lastname }}");
-  {% endfor %}
-  var assignment_to_score = {};
-  {% for assignment in assignments %}
-  assignment_to_score["{{ assignment.name }}"] = {{ assignment.points }};
+  id_map[{{ student.id }}] = "{{ student.firstname }} {{ student.lastname }}";
   {% endfor %}
 </script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -80,10 +79,10 @@ Teacher Dashboard
       <div class="control-group">
         <label class="control-label" for="assignment_name">Assignment</label>
         <div class="controls">
-          <select id="assignment_name">
+          <select id="assignment_id">
             <option> Choose an assignment </option>
             {% for assignment in assignments %}
-            <option value="{{ assignment.name }}"> {{ assignment.name }} </option>
+            <option value="{{ assignment.id }}"> {{ assignment.name }} ({{ assignment.points }})</option>
             {% endfor %}
           </select>
         </div>
@@ -100,11 +99,10 @@ Teacher Dashboard
         <label class="control-label" for="assignment_score">Score</label>
         <div class="controls">
           <input type="text" id="assignment_score" placeholder="Score (press enter to submit)">
-          <div id="max_score">
-            out of 50
-          </div>
         </div>
       </div>
+
+      <a class="btn btn-medium btn-success" id="submit_grade">Submit</a>
     </form>
   </div>
 </div>
