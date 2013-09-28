@@ -28,13 +28,15 @@ var executeCode = function(execObj) {
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code};
+  var runObj = {'input': code}, outText = '';
   executeCode(runObj);
   if (runObj['output'] !== undefined) {
-    $('#output').text(runObj['output']);
-  } else {
-    $('#output').text(runObj['error']);
+    outText += runObj['output'];
   }
+  if (runObj['error'] !== undefined) {
+    outText += runObj['error'];
+  }
+  $('#output').text(outText);
   return runObj;
 };
 var saveCode = function() {
@@ -59,6 +61,9 @@ var saveCode = function() {
 $(function() {
   var execObj, execHistory = [];
   programId = $('#program_id').text();
+  if (isNaN(programId)) {
+    programId = '-1';
+  }
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'output';
   editor = CodeMirror.fromTextArea(document.getElementById('code_area'), {
@@ -70,10 +75,22 @@ $(function() {
     mode: 'python'
   });
   $('#run_code').click(function(e) {
-    var runObj, testObjs, correct,
+    var runObj, testObjs, correct, codeRunData,
     code = editor.getValue().replace(/\t/g, '    ');
     $('#output').text('');
     runObj = runit(code);
+    codeRunData = {
+      title: $('#program_title').text(),
+      code: code,
+      output: runObj['output'],
+      error: runObj['error'],
+      program_id: programId
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/save_code_run/',
+      data: codeRunData
+    });
   });
   $('#save_code').click(function(e) {
     saveCode();
