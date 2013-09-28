@@ -4,46 +4,14 @@ body {
 #container {
 	margin: 0 auto;
 }
-
 .italic {
-	font-style: italic;
+        font-style: italic;
 }
+
 .navbar-inner {
 	background-image: none;
 	background-color: rgba(0,0,0,0.6);
 	background-border: none;
-}
-
-/* Parallax */
-.parallax_block {
-	height: 50%;
-	padding-top: 20%;
-	background-size: cover;
-}
-.parallax_block p {
-	font-size: 300%;
-	width: 50%;
-	color: #FFF;
-	margin-left: 10%;
-	line-height: 100%;
-}
-div.bg1 {
-	background-image: url('/static/img/parallax/1.jpg');
-}
-div.bg2 {
-	background-image: url('/static/img/parallax/2.jpg');
-}
-div.bg3 {
-	background-image: url('/static/img/parallax/3.jpg');
-}
-div.bg4 {
-	background-image: url('/static/img/parallax/4.jpg');
-}
-div.bg5 {
-	background-image: url('/static/img/parallax/5.jpg');
-}
-div.bg6 {
-	background-image: url('/static/img/parallax/6.jpg');
 }
 
 /* Intro */
