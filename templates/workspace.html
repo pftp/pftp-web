@@ -25,6 +25,9 @@ Workspace
       <textarea id="code_area" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
       <div id="run_container">
         <button id="run_code" class="btn btn-success">Run It!</button>
+        {% if current_user.has_role('admin') %}
+        <button id="run_server_code" class="btn btn-success">Run It On Server!</button>
+        {% endif %}
         {% if current_user.is_authenticated() %}
         <span id="save_msg">All changes saved</span>
         {% else %}

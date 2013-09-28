@@ -1,8 +1,4 @@
-import os
-import sys
-import sqlite3
-import datetime
-import json
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
@@ -439,6 +435,25 @@ def save_code_run():
   db.session.add(code_run)
   db.session.commit()
   return ''
+
+@app.route('/run_server_code/', methods=['POST'])
+@roles_required('admin')
+def run_server_code():
+  title = request.form['title']
+  code = request.form['code']
+  folder_name = 'tmp_' + str(uuid.uuid4()) + '/'
+  if not os.path.exists(folder_name):
+    os.makedirs(folder_name)
+  f = open(folder_name + title, 'w')
+  f.write(code)
+  f.close()
+  output_name = folder_name + 'output_' + str(uuid.uuid4())
+  subprocess.call('python ' + folder_name + pipes.quote(title) + ' > ' + output_name + ' 2>&1', shell=True)
+  outf = open(output_name, 'r')
+  output = outf.read()
+  outf.close()
+  shutil.rmtree(folder_name)
+  return output
 
 @app.route('/assignments/')
 def assignments_home():
