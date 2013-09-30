@@ -27,13 +27,15 @@ var executeCode = function(execObj) {
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code};
+  var runObj = {'input': code}, outText = '';
   executeCode(runObj);
   if (runObj['output'] !== undefined) {
-    $('#lab_output').text(runObj['output']);
-  } else {
-    $('#lab_output').text(runObj['error']);
+    outText += runObj['output'];
   }
+  if (runObj['error'] !== undefined) {
+    outText += runObj['error'];
+  }
+  $('#lab_output').text(outText);
   return runObj;
 };
 
@@ -43,6 +45,7 @@ $(function() {
   var editor, execObj, execHistory = [];
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'lab_output';
+  Sk.execLimit = 5;
   editor = CodeMirror.fromTextArea(document.getElementById('lab_code'), {
     autofocus: true,
     theme: 'cobalt',
@@ -51,9 +54,9 @@ $(function() {
     mode: 'python'
   });
   $('#lab_run_code').click(function(e) {
-    var runObj, testObjs, correct,
-      code = editor.getValue().replace(/\t/g, '    ');
-    runObs = runit(code);
+    var code = editor.getValue().replace(/\t/g, '    ');
+    $('#lab_output').text('');
+    runit(code);
   });
   $('#next_section').click(function() {
     if (section < lab_content.length - 1) {

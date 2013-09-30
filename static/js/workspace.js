@@ -75,8 +75,7 @@ $(function() {
     mode: 'python'
   });
   $('#run_code').click(function(e) {
-    var runObj, testObjs, correct, codeRunData,
-    code = editor.getValue().replace(/\t/g, '    ');
+    var runObj, codeRunData, code = editor.getValue().replace(/\t/g, '    ');
     $('#output').text('');
     runObj = runit(code);
     codeRunData = {
