@@ -269,16 +269,17 @@ def lesson(lesson_path):
 
 @app.route('/quiz/<int:quiz_id>/')
 def quiz(quiz_id):
-  if not current_user.is_authenticated():
-    return render_template('message.html', message='You need to log in first')
+  #if not current_user.is_authenticated():
+  #  return render_template('message.html', message='You need to log in first')
   first_quiz = Quiz.query.filter(Quiz.week==quiz_id).first()
   questions = map(lambda x: x.__dict__, first_quiz.questions)
   for question in questions:
     question['answer_choices'] = json.loads(question['answer_choices'])
   first_quiz = first_quiz.__dict__
   first_quiz['questions'] = questions
-
   return render_template('quiz.html', quiz=first_quiz)
+
+
 @app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
 @login_required
 def submit_quiz(quiz_id):

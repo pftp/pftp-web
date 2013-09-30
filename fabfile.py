@@ -7,6 +7,7 @@ from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
 from datetime import datetime
+from scripts.encrypt_passwords import encrypt_password
 
 
 from fabric.api import local, task, settings
@@ -29,6 +30,10 @@ def addquiz1():
   add_quiz1()
 
 @task
+def addquiz2():
+  add_quiz2()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -41,6 +46,7 @@ def build():
   generate_models()
   add_exercises()
   add_quiz1()
+  add_quiz2()
 
 #XXX make this detect changes and automatically build
 @task
@@ -133,6 +139,7 @@ def generate_models():
   db.session.add(admin_user)
   db.session.add(test_user1)
   db.session.add(test_user2)
+
   print colored("3 users added to database.", "green")
 
   assignment1 = Assignment(name='Homework 1', description='Draw something using at least 3 shapes and 3 colors. Have fun with it!',  points=5, deadline=datetime(2013,9,15,23,59))
@@ -214,7 +221,6 @@ def generate_models():
     db.session.add(week)
   db.session.commit()
 
-
 def add_exercises():
   exercises_file = open('static/js/practice/exercises.json', 'r')
   exercises = json.loads(exercises_file.read())
@@ -224,7 +230,6 @@ def add_exercises():
                  'solution) values (?, ?, ?, ?)',
                  [ex['prompt'], ex['hint'], json.dumps(ex['test_cases']),
                      ex['solution']])
-
   db.commit()
   db.close()
   print colored("%s exercises added to database." % len(exercises), "green")
@@ -266,6 +271,47 @@ def add_quiz1():
   db.session.add(question13)
   db.session.commit()
   print colored('quiz 1 added to database', "green")
+
+def add_quiz2():
+  quiz2 = Quiz(name="Week 4 Pop Quiz", week=4)
+
+
+  question1 = QuizQuestion(question="What does the following print? <pre>def multiply_by_2(n):\n\treturn n * 2\nprint multiply_by_2(multiply_by_2(multiply_by_2(5)))</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '5'}, {'id': 'B', 'answer': '8'}, {'id': 'C', 'answer': '10'}, {'id': 'D', 'answer': '40'}, {'id': 'E', 'answer': '80'}]), solution='D', quiz=quiz2.id)
+  question2 = QuizQuestion(question="What will the following code print? <pre>def fibonacci(n):\n\tif n == 1 or n == 2:\n\t\treturn 1\n\treturn fibonacci(n - 1) + fibonacci(n - 2)\n\nfibonacci(5)</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer': '5'}, {'id': 'F', 'answer': 'Will not print anything'}]), solution='F', quiz=quiz2.id)
+  question3 = QuizQuestion(question="What will the following code print? <pre>def fibonacci(n):\n\tif n == 1 or n == 2:\n\t\treturn 1\n\treturn fibonacci(n - 1) + fibonacci(n - 2)\n\nprint fibonacci(4)</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer': '5'}, {'id': 'F', 'answer': 'Will not print anything'}]), solution='C', quiz=quiz2.id)
+  question4 = QuizQuestion(question="What will the following code print? <pre>def summation(n):\n\tif n < 0:\n\t\treturn 0\n\treturn n + summation(n - 1)\n\nprint summation(7)", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '7'}, {'id': 'C', 'answer': '32'}, {'id': 'D', 'answer': '28'}, {'id': 'E', 'answer': 'Error: this will never return anything.'}]), solution='D', quiz=quiz2.id)
+  question5 = QuizQuestion(question="What will the following code print? <pre>def big_summation(n):\n\tif n < 0:\n\t\treturn 0\n\treturn n + summation(n + 1)\n\nprint big_summation(7)", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '7'}, {'id': 'C', 'answer': '32'}, {'id': 'D', 'answer': '28'}, {'id': 'E', 'answer': 'Error: this will never return anything.'}]), solution='E', quiz=quiz2.id)
+  question6 = QuizQuestion(question="The code below may have an error. What line is the error on? <pre>def test:\n\treturn 1 + 8 * 9\nprint test()", answer_choices=json.dumps([{'id': 'A', 'answer': 'def test:'}, {'id': 'B', 'answer': 'return 1 + 8 * 9'}, {'id': 'C', 'answer': 'print test()'}, {'id': 'D', 'answer': 'No error!!'}]), solution='A', quiz=quiz2.id)
+  question7 = QuizQuestion(question="The code below may have an error. What line is the error on? <pre>def bigger_than_10(n):\n\tif n > 10\n\t\treturn True\n\telse:\n\t\treturn False", answer_choices=json.dumps([{'id': 'A', 'answer': 'def bigger_than_10(n):'}, {'id': 'B', 'answer': 'if n > 10'}, {'id': 'C', 'answer': 'return True'}, {'id': 'D', 'answer': 'else:'}, {'id': 'E', 'answer': 'return False'}, {'id': 'F', 'answer': 'No Error!!'}]), solution='B', quiz=quiz2.id)
+  question8 = QuizQuestion(question="What will the following print? <pre> def maybe_make_negative(n, make_negative=False):\n\tif make_negative:\n\t\treturn -1 * n\n\treturn n\nprint maybe_make_negative(5)\nprint maybe_make_negative(6, False)\nprint maybe_make_negative(6, True)\nprint maybe_make_negative(maybe_make_negative(7, True))</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '5<br>6<br>6<br>7'}, {'id': 'B', 'answer': '-5<br>6<br>-6<br>7'}, {'id': 'C', 'answer': '5<br>6<br>-6<br>-7'}, {'id': 'D', 'answer': '5<br>6<br>-6<br>7'}]), solution='C', quiz=quiz2.id)
+  question9 = QuizQuestion(question="What will the following print? <pre> print 5 / 2 </pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '2.5'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': 'This will return an error'}]), solution='B', quiz=quiz2.id)
+
+
+
+  quiz2.questions.append(question1)
+  quiz2.questions.append(question2)
+  quiz2.questions.append(question3)
+  quiz2.questions.append(question4)
+  quiz2.questions.append(question5)
+  quiz2.questions.append(question6)
+  quiz2.questions.append(question7)
+  quiz2.questions.append(question8)
+  quiz2.questions.append(question9)
+
+  db.session.add(quiz2)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.add(question4)
+  db.session.add(question5)
+  db.session.add(question6)
+  db.session.add(question7)
+  db.session.add(question8)
+  db.session.add(question9)
+  db.session.commit()
+  print colored('quiz 2 added to database', "green")
+
+
 
 def generate_labs():
   if not os.path.exists('static/lab'):
