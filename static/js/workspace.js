@@ -59,7 +59,6 @@ var saveCode = function() {
   });
 };
 $(function() {
-  var execObj, execHistory = [];
   programId = $('#program_id').text();
   if (isNaN(programId)) {
     programId = '-1';
@@ -103,11 +102,7 @@ $(function() {
       $('#output').text(output);
     });
   });
-  $('#save_code').click(function(e) {
-    saveCode();
-  });
   $('#program_title').tooltip();
-  $('#save_code_disabled').tooltip();
   $('#program_title').click(function(e) {
     $('#new_program_title').val($('#program_title').text());
     $('#rename_modal').modal('show');

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Lab {{ id }}
+Lab {{ lab_id }}
 {% endblock %}
 
 {% block head %}
@@ -9,7 +9,7 @@ Lab {{ id }}
 <script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='lab/lab' ~ id ~ '.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lab/lab' ~ lab_id ~ '.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/lab.js')}}"></script>
 
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
@@ -21,8 +21,11 @@ Lab {{ id }}
 {% block content %}
 <div class="container">
   <div class="row">
+    <div id="lab_id" style="display:none;">{{ lab_id }}</div>
+    <div id="program_id" style="display:none;">{% if program %}{{ program.id }}{% else %}-1{% endif %}</div>
+    <div id="section" style="display:none;">{{ section }}</div>
     <div class="span12">
-      <h1>Lab {{ id }}</h1>
+      <h1>Lab {{ lab_id }}</h1>
       <div class="row">
         <div class="span6">
           <div style="height: 200px">
@@ -32,8 +35,13 @@ Lab {{ id }}
           <button id="prev_section" class="btn btn-primary btn-small">Prev</button>
           <button id="next_section" class="btn btn-primary btn-small">Next</button>
         </div>
-        <textarea id="lab_code" style="display:none;"></textarea>
+        <textarea id="lab_code" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
         <button id="lab_run_code" class="btn btn-success" style="margin: 10px 0;">Run It!</button>
+        {% if current_user.is_authenticated() %}
+        <span id="save_msg">All changes saved</span>
+        {% else %}
+        <span>Login to Save Code</span>
+        {% endif %}
         <pre id="lab_output"></pre>
       </div>
       <div class="span6" id="canvas_container">

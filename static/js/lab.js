@@ -1,3 +1,4 @@
+var editor, saveTimer, programId, section;
 var builtinRead = function(x) {
   if (Sk.builtinFiles === undefined ||
       Sk.builtinFiles['files'][x] === undefined)
@@ -38,11 +39,41 @@ var runit = function(code) {
   $('#lab_output').text(outText);
   return runObj;
 };
-
-var section = 0;
-
+var saveCode = function() {
+  var saveData = {
+    title: 'Lab ' + $('#lab_id').text(),
+    code: editor.getValue(),
+    section: section,
+    lab_id: $('#lab_id').text()
+  };
+  if (programId !== '-1') {
+    saveData['program_id'] = programId;
+  }
+  $('#save_msg').text('Saving...');
+  clearTimeout(saveTimer);
+  $.ajax({
+    type: 'POST',
+    url: '/save_program/',
+    data: saveData
+  }).done(function(pid) {
+    programId = pid;
+    $('#save_msg').text('All changes saved');
+  });
+};
+var update = function(section) {
+  $('#lab_text').html(lab_content[section][0]);
+  if (lab_content[section][1])
+    editor.setValue(lab_content[section][1]);
+};
 $(function() {
-  var editor, execObj, execHistory = [];
+  programId = $('#program_id').text();
+  if (isNaN(programId)) {
+    programId = '-1';
+  }
+  section = parseInt($('#section').text());
+  if (isNaN(section)) {
+    section = 0;
+  }
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'lab_output';
   editor = CodeMirror.fromTextArea(document.getElementById('lab_code'), {
@@ -61,19 +92,20 @@ $(function() {
     if (section < lab_content.length - 1) {
       section++;
       update(section);
+      saveCode();
     }
   });
   $('#prev_section').click(function() {
     if (section > 0) {
       section--;
       update(section);
+      saveCode();
     }
   });
-  var update = function(section) {
-    $('#lab_text').html(lab_content[section][0]);
-    if (lab_content[section][1])
-      editor.setValue(lab_content[section][1]);
-  };
-
   update(section);
+  editor.on('change', function(cm, changeObj) {
+    $('#save_msg').text('Saving...');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveCode, 1000);
+  });
 });
