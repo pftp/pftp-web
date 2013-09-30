@@ -100,7 +100,7 @@ winston.setposition(-250, -250)
 sierpinski(500)
 
 # Holy guacamole how does this one work? If you try to trace through sierpinski the same way we traced through spiral, your head might explode. Instead, just assume that every call to `sierpinski(size/2)` will indeed make a smaller sierpinski and look at one run-through. Between every smaller sierpinski the instructions are actually quite simple, we just move to the position that we need to draw the next sierpinski and then draw it.
-# Now notice a very important fact: after each call to sierpinski we reposition Winston so that he's at exactly the same position AND orientation that he started! Therefore, whenever we make a recursive call to sierpinski we know Winston can pick up right where he left off afterwards.
+# Now notice a very important fact: at the end of each call to sierpinski we reposition Winston so that he's at exactly the same position AND orientation that he started! Therefore, whenever we make a recursive call to sierpinski we know Winston can pick up right where he left off afterwards.
 # Try changing the base case size and see what happens. Also, try commenting out `winston.speed(0)` so you can actually watch Winston work! Do you see a pattern in his movements?
 
 # <b>Checkoff Assignment:</b>
