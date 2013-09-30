@@ -54,4 +54,9 @@ $(function() {
     $('#output').text('');
     runObj = runit(code);
   });
+
+  $('#save_canvas').click(function() {
+    var uri = $('#turtle_canvas')[0].toDataURL();
+    window.open(uri, '_blank');
+  });
 });
