@@ -123,4 +123,9 @@ $(function() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(saveCode, 1000);
   });
+
+  $('#save_canvas').click(function() {
+    var uri = $('#turtle_canvas')[0].toDataURL();
+    window.open(uri, '_blank');
+  });
 });
