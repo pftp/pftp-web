@@ -59,7 +59,6 @@ var saveCode = function() {
   });
 };
 $(function() {
-  var execObj, execHistory = [];
   programId = $('#program_id').text();
   if (isNaN(programId)) {
     programId = '-1';
@@ -75,8 +74,7 @@ $(function() {
     mode: 'python'
   });
   $('#run_code').click(function(e) {
-    var runObj, testObjs, correct, codeRunData,
-    code = editor.getValue().replace(/\t/g, '    ');
+    var runObj, codeRunData, code = editor.getValue().replace(/\t/g, '    ');
     $('#output').text('');
     runObj = runit(code);
     codeRunData = {
@@ -104,11 +102,7 @@ $(function() {
       $('#output').text(output);
     });
   });
-  $('#save_code').click(function(e) {
-    saveCode();
-  });
   $('#program_title').tooltip();
-  $('#save_code_disabled').tooltip();
   $('#program_title').click(function(e) {
     $('#new_program_title').val($('#program_title').text());
     $('#rename_modal').modal('show');

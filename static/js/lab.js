@@ -1,3 +1,4 @@
+var editor, saveTimer, programId, section;
 var builtinRead = function(x) {
   if (Sk.builtinFiles === undefined ||
       Sk.builtinFiles['files'][x] === undefined)
@@ -27,20 +28,52 @@ var executeCode = function(execObj) {
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code};
+  var runObj = {'input': code}, outText = '';
   executeCode(runObj);
   if (runObj['output'] !== undefined) {
-    $('#lab_output').text(runObj['output']);
-  } else {
-    $('#lab_output').text(runObj['error']);
+    outText += runObj['output'];
   }
+  if (runObj['error'] !== undefined) {
+    outText += runObj['error'];
+  }
+  $('#lab_output').text(outText);
   return runObj;
 };
-
-var section = 0;
-
+var saveCode = function() {
+  var saveData = {
+    title: 'Lab ' + $('#lab_id').text(),
+    code: editor.getValue(),
+    section: section,
+    lab_id: $('#lab_id').text()
+  };
+  if (programId !== '-1') {
+    saveData['program_id'] = programId;
+  }
+  $('#save_msg').text('Saving...');
+  clearTimeout(saveTimer);
+  $.ajax({
+    type: 'POST',
+    url: '/save_program/',
+    data: saveData
+  }).done(function(pid) {
+    programId = pid;
+    $('#save_msg').text('All changes saved');
+  });
+};
+var update = function(section) {
+  $('#lab_text').html(lab_content[section][0]);
+  if (lab_content[section][1])
+    editor.setValue(lab_content[section][1]);
+};
 $(function() {
-  var editor, execObj, execHistory = [];
+  programId = $('#program_id').text();
+  if (isNaN(programId)) {
+    programId = '-1';
+  }
+  section = parseInt($('#section').text());
+  if (isNaN(section)) {
+    section = 0;
+  }
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'lab_output';
   editor = CodeMirror.fromTextArea(document.getElementById('lab_code'), {
@@ -51,33 +84,32 @@ $(function() {
     mode: 'python'
   });
   $('#lab_run_code').click(function(e) {
-    var runObj, testObjs, correct,
-      code = editor.getValue().replace(/\t/g, '    ');
-    runObs = runit(code);
+    var code = editor.getValue().replace(/\t/g, '    ');
+    $('#lab_output').text('');
+    runit(code);
   });
   $('#next_section').click(function() {
     if (section < lab_content.length - 1) {
       section++;
       update(section);
+      saveCode();
     }
   });
   $('#prev_section').click(function() {
     if (section > 0) {
       section--;
       update(section);
+      saveCode();
     }
   });
-  var update = function(section) {
-    $('#lab_text').html(lab_content[section][0]);
-    if (lab_content[section][1])
-      editor.setValue(lab_content[section][1]);
-  };
-
   update(section);
-
-
   $('#save_canvas').click(function() {
     var uri = $('#turtle_canvas')[0].toDataURL();
     window.open(uri, '_blank');
+  });
+  editor.on('change', function(cm, changeObj) {
+    $('#save_msg').text('Saving...');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveCode, 1000);
   });
 });

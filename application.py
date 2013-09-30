@@ -122,6 +122,13 @@ class Program(db.Model):
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
   code_revisions = db.relationship('CodeRevision', lazy='dynamic', backref='program')
 
+class LabProgram(db.Model):
+  id = db.Column(db.Integer(), primary_key = True)
+  section = db.Column(db.Integer(), nullable = False)
+  lab_id = db.Column(db.Integer(), nullable = False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+  program_id = db.Column(db.Integer(), db.ForeignKey('program.id'))
+
 class CodeRevision(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
   title = db.Column(db.Text(), nullable = False)
@@ -286,7 +293,16 @@ def submit_quiz(quiz_id):
 
 @app.route('/labs/<int:lab_id>')
 def lab(lab_id):
-  return render_template('lab.html', id=lab_id)
+  section = 0
+  program = None
+  if current_user.is_authenticated():
+    lab_program = LabProgram.query.filter_by(lab_id=lab_id, user_id=current_user.id).first()
+    if lab_program != None:
+      section = lab_program.section
+      program = Program.query.filter_by(id=lab_program.program_id, user_id=current_user.id).first()
+  if program != None:
+    return render_template('lab.html', lab_id=lab_id, section=section, program=program)
+  return render_template('lab.html', lab_id=lab_id, section=section)
 
 @app.route('/practice/ex<int:ex_id>')
 def practice(ex_id):
@@ -408,6 +424,14 @@ def save_program():
     diff = compute_diff('', code)
     program = Program(title=title, code=code, user_id=current_user.id, last_modified=time_now)
   code_revision = CodeRevision(title=title, diff=diff, time=time_now, program_id=program.id, user_id=current_user.id)
+  if 'lab_id' in request.form:
+    lab_program = LabProgram.query.filter_by(lab_id=request.form['lab_id'], user_id=current_user.id).first()
+    if lab_program == None:
+      lab_program = LabProgram(section=request.form['section'], lab_id=request.form['lab_id'], user_id=current_user.id, program_id=program.id)
+    else:
+      lab_program.section = request.form['section']
+      lab_program.program_id = program.id
+    db.session.add(lab_program)
   db.session.add(program)
   db.session.add(code_revision)
   db.session.commit()

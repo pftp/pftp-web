@@ -3,4 +3,4 @@
 	url = git@github.com:marijnh/CodeMirror.git
 [submodule "static/lib/skulpt"]
 	path = static/lib/skulpt
-	url = git@github.com:bnmnetp/skulpt.git
+	url = git@github.com:bsklaroff/skulpt.git
