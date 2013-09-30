@@ -7,7 +7,6 @@ from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
 from datetime import datetime
-from scripts.encrypt_passwords import encrypt_password
 
 
 from fabric.api import local, task, settings
