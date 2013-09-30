@@ -45,7 +45,6 @@ $(function() {
   var editor, execObj, execHistory = [];
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'lab_output';
-  Sk.execLimit = 5;
   editor = CodeMirror.fromTextArea(document.getElementById('lab_code'), {
     autofocus: true,
     theme: 'cobalt',
