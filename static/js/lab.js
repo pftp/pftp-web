@@ -60,9 +60,9 @@ var saveCode = function() {
     $('#save_msg').text('All changes saved');
   });
 };
-var update = function(section) {
+var update = function(section, updateCode) {
   $('#lab_text').html(lab_content[section][0]);
-  if (lab_content[section][1])
+  if (updateCode && lab_content[section][1])
     editor.setValue(lab_content[section][1]);
 };
 $(function() {
@@ -91,18 +91,18 @@ $(function() {
   $('#next_section').click(function() {
     if (section < lab_content.length - 1) {
       section++;
-      update(section);
+      update(section, true);
       saveCode();
     }
   });
   $('#prev_section').click(function() {
     if (section > 0) {
       section--;
-      update(section);
+      update(section, false);
       saveCode();
     }
   });
-  update(section);
+  update(section, true);
   $('#save_canvas').click(function() {
     var uri = $('#turtle_canvas')[0].toDataURL();
     window.open(uri, '_blank');
