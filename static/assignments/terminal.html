@@ -1,0 +1,115 @@
+
+<h3> Welcome to Lab 5! We are going to learn about the Terminal and for loops today. Hit the 'Next' button to get started. </h3>
+<br><br>
+For the past couple weeks, you have been using the built in Python editor on the website.
+Now its time to introduce you to your new best friend! The terminal. This will make you
+approximately %1337 more hardcore and you can have one of those screens with tiny green
+text on a black background and start hacking into mainframes and so on.
+<br><br>
+Ok just kidding. But you will be able to use a terminal, which is a pretty useful skill,
+as we'll get into later.
+<br><br>
+You can think of the terminal as the hood of a car. Most of the things that you can
+do with a car can be done without opening the hood, but if you want to be able to harness
+the full power of the car, you'll need to pop the hood and take a look at the engine inside!
+The terminal is your point of access to all the functionality of the computer, albeit in
+text form. This can be a little intimidating at first, but once you get the hang of it,
+you'll notice that it's significantly faster to type some things into a terminal than it
+is to click around with your mouse.
+<br><br>
+Let's take a look at what you can do with a terminal. Open up a new terminal by clicking
+on the magnifying glass in the top right of the screen and typing 'Terminal' into
+the search bar. You should get a white window with some text like `haas [1] ~ >`.
+This is the prompt of the terminal which waits for you to type something and hit enter to run it.
+<br><br>
+Try typing `ls` and hit enter. This should list all the folders in the current
+folder for you.
+Now try typing `cd Downloads` and hit enter. This should let you enter the Downloads folder.
+If you run `ls` now, you should see that it will list the contents of the Downloads folder.
+<br><br>
+Now you can move up a folder by typing `cd ..`.
+Heres a cool trick: if you type `cd Dow` and hit tab, the terminal
+will try to autocomplete the command with folders that start with 'Dow'.
+You can also move several folders deep by typing `cd folder1/folder2/folder3`
+(you can type a couple letters for each on and hit tab to complete the folder name)
+<br><br>
+Using these commands, you can navigate around folders on your computer!
+Practice navigating around the computer until you're comfortable with it.
+If you're a fast typer, you'll notice that it's faster to move around folders like
+this than it is to click on them in a file navigator window.
+<br><br>
+Here's some more useful commands: `rm FILENAME` will delete the file
+FILENAME and `rm -rf FOLDER` will delete the folder FOLDER.
+<b>NOT SO FUN FACT:</b> The `rm -rf` command is EXTREMELY DANGEROUS. It
+will PERMANENTLY delete the folder you use it on as well as any folders inside that
+folder. You can delete your entire file system using this command. So use it with
+utmost caution.
+<b>FUN FACT:</b> The r in `-rf` tells the `rm`
+command to <b>recursively</b> delete the folder and all it's subfolders.
+If you're curious, the code for this would look something like:
+<pre>
+def delete(folder):
+  if empty(folder):
+    #some code to delete the empty folder
+  else:
+    #recursively delete all it's contents first
+    delete(folder.subfolder1)
+    delete(folder.subfolder2)
+    delete(folder.subfolder3) #...etc
+    #some code to delete folder after you emptied it
+</pre>
+<br><br>
+Now you can also create folders using the `mkdir` command.
+Type `cd` and hit enter. When you don't provide a folder after `cd`,
+it will move to your home folder. In this folder, type `mkdir lab5`, which will
+create a folder called 'lab5'. Then `cd` into the lab5 folder. If you `ls`
+in this folder, you'll notice that it is empty. We'll fix that now.
+<br><br>
+This is where you will be working on your code for this lab. Now we want to create
+a file and start putting some Python code into it. Type `touch first.py`
+The `touch` command will create an empty file named 'first.py'. The file
+extension for Python files is .py, so we generally put that at the end of the filename.
+<br><br>
+Now we should put some code inside this file! Break out your favorite text editor
+(Aquamacs, TextEdit, Notepad, but not Word) and add the following code:
+
+<pre>print 'I am so h4x I can use the terminal like a G'</pre>
+and then save the file.
+<br><br>
+Now going back to your terminal, you can check the contents of the file using
+`cat first.py`, which will just print the contents of the file into the
+terminal. If you saved the file, it should be exactly what you typed.
+Now for the fun part. Let's run this code! The command for that is (surprisingly)
+`python first.py`, which should run the code and print out
+'I am so h4x I can use the terminal like a G'
+<br><br>
+Coolio, you just ran your first Python program locally! This is extremely powerful
+because now you can write programs and have them run on your own computer and interact
+with your own files, instead of just running them on the website.
+Now try copying an existing program or homework from the website into a file and run it
+with the `python` command.
+<br><br>
+Awesome, now there's one more feature of Python which we haven't seen yet: the interpreter.
+If you type `python` with no filename, you will end up in the Python interpreter.
+You should see it print some information like the version of python and then
+a `>>>` prompt will appear. You interact with this similar to how you interact
+with the terminal, but this prompt understands Python code! It will run each
+line that you type. Try typing the following lines, hitting enter in between:
+<pre>
+print 'hi'
+a = 1
+a
+f = a * 3
+print f
+import turtle
+winston = turtle.Turtle()
+winston.forward(100)
+winston.write('hi im in an interpreter')
+</pre>
+<br><br>
+You can hit Ctrl-D or type `exit()` to quit the interpreter and go back to t
+to the terminal.
+<br><br>
+Now that you know how to use a terminal, go post a facebook
+status/tweet/vine/whatever you kids do these days with a picture of your terminal
+and show off your hacker skillz, yo
