@@ -32,6 +32,14 @@ def addquiz2():
   add_quiz2()
 
 @task
+def addquiz3():
+  add_quiz3()
+
+@task
+def addassignment5():
+  add_assignment5()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -45,6 +53,8 @@ def build():
   add_exercises()
   add_quiz1()
   add_quiz2()
+  add_quiz3()
+  add_assignment5()
 
 #XXX make this detect changes and automatically build
 @task
@@ -309,6 +319,50 @@ def add_quiz2():
   db.session.commit()
   print colored('quiz 2 added to database', "green")
 
+
+def add_quiz3():
+  quiz3 = Quiz(name="Week 5 Pop Quiz", week=5)
+
+
+  question1 = QuizQuestion(question="What does the following print? <pre>def multiply_by_3(n):\n\treturn n * 3\nprint multiply_by_3(multiply_by_3(multiply_by_3(5)))</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '5'}, {'id': 'B', 'answer': '125'}, {'id': 'C', 'answer': '135'}, {'id': 'D', 'answer': '40'}, {'id': 'E', 'answer': '80'}]), solution='C', quiz=quiz3.id)
+  question2 = QuizQuestion(question="What will the following code print? <pre>def fibonacci(n):\n\tif n == 1 or n == 2:\n\t\treturn 1\n\treturn fibonacci(n - 1) + fibonacci(n - 2)\n\nprint fibonacci(3)</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer': '5'}, {'id': 'F', 'answer': 'Will not print anything'}]), solution='B', quiz=quiz3.id)
+  question3 = QuizQuestion(question="What will the following code print? <pre>def factorial(n):\n\tif n < 0:\n\t\treturn 1\n\treturn n * factorial(n - 1)\n\nprint factorial(4)", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '12'}, {'id': 'C', 'answer': '24'}, {'id': 'D', 'answer': '48'}, {'id': 'E', 'answer': 'Error: this will never return anything.'}]), solution='C', quiz=quiz3.id)
+
+  question4 = QuizQuestion(question="What will the following print?<br><pre>sum = 0\nfor i in range(1, 10):\n\tsum = sum + i\nprint sum</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '10'}, {'id': 'C', 'answer': '25'}, {'id': 'D', 'answer': '55'}, {'id': 'E', 'answer': 'Error: Will not finish running'}]), solution='D', quiz=quiz3.id)
+  question5 = QuizQuestion(question="What will the following print?<br><pre>sum = 0\nwhile(True):\n\tsum = sum  + sum\nprint sum</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '10'}, {'id': 'C', 'answer': '25'}, {'id': 'D', 'answer': '55'}, {'id': 'E', 'answer': 'Error: Will not finish running'}]), solution='E', quiz=quiz3.id)
+
+  quiz3.questions.append(question1)
+  quiz3.questions.append(question2)
+  quiz3.questions.append(question3)
+  quiz3.questions.append(question4)
+  quiz3.questions.append(question5)
+
+  db.session.add(quiz3)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.add(question4)
+  db.session.add(question5)
+  db.session.commit()
+  print colored('quiz 3 added to database', "green")
+
+def add_assignment5():
+  assignment5 = Assignment(name='Homework 5', description="""<b> We\'ll be doing our homeworks inside of the terminal from now on!</b> <a href="http://programmingfeelthepower.com/static/assignments/chat_bot.zip"> Click here </a> to download the assignment. chat_bot.zip should be in your Downloads directory now. Unzip the file by double clicking on the chat_bot.zip file and move the folder into your work directory. Type the command <b>cd work/chat_bot</b> to get inside the directory. ls to see what files it contains. Remember, cd means change directory and it's simply a way change folders on your computer. Run the chat_bot program by typing python chat_bot.py into the terminal. If you type "hello" and press RETURN, what happens? What about "bye"? Now try "tell me why".
+To quit the program, type "quit". Alternately you can do CTRL+C. In fact, CTRL+C will quit most programs in the Terminal.
+<br><br>
+Now let\'s see how this stuff works.
+The only file you need to edit is "chat_bot.py". Open this file in Aquamacs.
+<br><br>
+The line "def respond(text):" at the top of the file is a function. Everyting indented after this line is part of the "respond" function. The variable "text" is called an argument to this function. For now, all you need to know is that "text" is a string that the user types as input.
+<br><br>
+In order to leave a function, we use "return". In addition, our respond function has an output (the response to the input text), so we have to return a response. For example, when we return "hello", our chat bot will respond with "hello" to the given input.
+<br><br>
+Read through the "respond" function in chat_bot.py line by line. Make sure you understand how literally every line in this function works. If anything is mysterious to you, ask us to explain!
+""", points=5, deadline=datetime(2013,9,29,23,59))
+  week5 = Week(assignment=assignment5.id, lesson=5)
+  db.session.add(assignment5)
+  db.session.add(week5)
+  db.session.commit()
 
 
 def generate_labs():
