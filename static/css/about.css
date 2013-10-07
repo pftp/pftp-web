@@ -1,24 +1,3 @@
-body {
-}
-
-#container {
-	margin: 0 auto;
-}
-.italic {
-        font-style: italic;
-}
-
-.navbar-inner {
-	background-image: none;
-	background-color: rgba(0,0,0,0.6);
-	background-border: none;
-}
-
-/* Intro */
-#container.intro {
-	margin-bottom: 30px;
-}
-
 /* FAQ Container */
 #faq_container {
 	padding: 30px 50px 60px;
@@ -37,9 +16,7 @@ body {
 }
 
 
-/* About */
-
-/* logistics */
+/* Logistics */
 #logistics, #more_info {
 	margin: 0 auto;
 	text-align: center;

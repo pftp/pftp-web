@@ -62,6 +62,7 @@ var saveCode = function() {
 };
 var update = function(section, updateCode) {
   $('#lab_text').html(lab_content[section][0]);
+  $('#lab_text').scrollTop(0);
   if (updateCode && lab_content[section][1])
     editor.setValue(lab_content[section][1]);
 };
