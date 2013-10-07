@@ -36,6 +36,9 @@ About
         <a href = "/quiz/{{ week.quiz.week }}">{{ week.quiz.name }} </a>
         <br>
         {% endif %}
+	{% if week.id == 3%}
+	<a href="/assignments/terminal.html"}}> Terminal Lab </a>
+	{% endif %}
         <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a>
       </td>
       <td>
