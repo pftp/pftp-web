@@ -1,6 +1,6 @@
 # Welcome back! Today we're going to tackle loops! We use loops in Python to make code repeat so we don't have to write it over and over again. There are two types of loops, the "for loop" and the "while loop", and we're going to learn about both today.
 # Also I'm tired of typing winston all the time so today we're going to call him "w" for short.
-###import Turtle
+###import turtle
 ###w = turtle.Turtle()
 
 # For loops are useful if we already know how many times we want to repeat some action.
