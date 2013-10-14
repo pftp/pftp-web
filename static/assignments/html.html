@@ -1,0 +1,186 @@
+
+Now we're going to learn HTML! For this entire section, keep in mind that
+HTML is an entirely new language. It has nothing to do with Python!
+HTML stands for "HyperText Markup Language", and it is the stuff webpages
+are made of.
+<br><br>
+Get started by downloading the file
+<a href="my_fantastic_webpage.html">my_fantastic_webpage.html</a>.
+In order to download it, right-click and click on <b>Save Link As...</b>
+Then specify an appropriate folder to save it in.
+<br><br>
+Now, in the Terminal, navigate to where you just downloaded the file
+and type <b>open my_fantastic_webpage.html</b>. The file should open in
+a web browser, and you should see just the word "Awesomesauce!" at the top
+of the page. Also, the browser tab should be titled "Look I'm the Tab
+Name!".
+<br><br>
+IMPORTANT: The URL should start with "file:///" as opposed to
+"http://". This is how you know you're opening the file on your own
+machine rather than on the Internet.
+<br><br>
+Now, open my_fantastic_webpage.html in a text editor of your choice (such as
+AquaMacs). It should look like this:
+<pre class="prettyprint linenums lang-html">
+&#60;html&#62;
+
+&#60;head&#62;
+&#60;title&#62;Look I'm the Title!&#60;/title&#62;
+&#60;/head&#62;
+
+&#60;body&#62;
+Awesomesauce!
+&#60;/body&#62;
+
+&#60;/html&#62;</pre>
+First, notice that every html command is enclosed within the '&#60;' and
+'&#62;' symbols. We call these commands "tags". Notice that the tags are
+all paired! Each html block starts with "&#60some_tag_name&#62" and ends with
+"&#60/some_tag_name&#62". For example, we put "Look I'm the Title!" inside the
+start and end "title" tags, so that means it's the title.
+<br><br>
+Also, we can nest these tags. Notice how the title tags are nested inside
+the head tags, which in turn are nested inside the html tags that enclose
+the entire document!
+<br><br>
+Now, most of the action goes on inside the body tag of our HTML files.
+This is what actually gets displayed in the body of the page. In
+our file we currently have only a single word (Awesomesauce!) inside our
+body.
+<br><br>
+Let's change that. Replace the line "Awesomesauce!" with
+"&#60;h1&#62;Awesomesauce!&#60;/h1&#62;". Save your file in your text editor,
+and reload the webpage in your browser. The word "Awesomesauce!" should have
+gotten a lot bigger. The "h1" tag stands for "header 1". There are
+actually six different sizes of headers in HTML, h1 through h6. Try them
+out!
+<br><br>
+Now let's learn some more tags! Change your HTML file to look like this:
+<pre class="prettyprint linenums lang-html">
+&#60;html&#62;
+
+&#60;head&#62;
+&#60;title&#62;Look I'm the Title!&#60;/title&#62;
+&#60;/head&#62;
+
+&#60;body&#62;
+&#60;h1&#62;Awesomesauce!&#60;/h1&#62;
+&#60;h4 style="color:red;"&#62;Redsauce!&#60;/h4&#62;
+&#60;p&#62;
+This is text inside a paragraph.&#60;br&#62;
+This is more text inside the paragraph.
+&#60;/p&#62;
+&#60;a href="http://www.google.com"&#62;Click me to go to Google&#60;/a&#62;
+&#60;/body&#62;
+
+&#60;/html&#62;</pre>
+Here we introduced a few new tags. The "p" tag denotes a paragraph where
+we can put multiple lines of text. The "br" tag makes a new line on our
+webpage. Note that "br" is an exception to the "tags are paired"
+rule, since it simply creates a newline and therefore does not have to
+enclose anything. Finally, the "a" tag specifies a link to another
+webpage.
+<br><br>
+Here we also introduced tag attributes, which are very important! A tag
+attribute is something other than the tag name inside the tag which
+changes the default behavior of the tag in some way. Above, we put
+'style="color:red;"' inside the "h4" tag to turn the text red, and we put
+'href="http://www.google.com"' inside the "a" tag to specify that the link
+will take us to the Google homepage.
+<br><br>
+Note that tag attributes are always in the starting tag, and always follow
+the same pattern (attribute="something"). We can also have multiple
+attributes inside a single tag! For example try changing the "a" tag to
+read
+<pre>
+      &#60;a style="color:green;" href="http://www.google.com"&#62;Click me to go to Google&#60;/a&#62;</pre>
+We only have a couple more things to learn. Update your HTML file again:
+<pre class="prettyprint linenums lang-html">
+&#60;html&#62;
+
+&#60;head&#62;
+&#60;title&#62;Look I'm the Title!&#60;/title&#62;
+&#60;/head&#62;
+
+&#60;body&#62;
+&#60;h1&#62;Awesomesauce!&#60;/h1&#62;
+&#60;h4 style="color:red;"&#62;Redsauce!&#60;/h4&#62;
+&#60;p&#62;
+This is text inside a paragraph.&#60;br&#62;
+This is more text inside the paragraph.
+&#60;/p&#62;
+&#60;a style="color:green;" href="http://www.google.com"&#62;Click me to go to Google&#60;/a&#62;
+&#60;div id="my-div" style="border:2px solid yellow;"&#62;
+  &#60;span class="happy-fun-class" style="color:red;font-style:italic;"&#62;Hooray!&#60;/span&#62;
+  &#60;span class="sad-boring-class" style="color:blue;"&#62;Sadface :(&#60;/span&#62;
+&#60;/div&#62;
+&#60;/body&#62;
+
+&#60;/html&#62;</pre>
+We've introduced the "div" and "span" tags. These are important because
+they make up the bulk of most modern webpages. A "div" specifies a
+bounding box for content to go in. Notice that we put a yellow border
+around it so you can see exactly how far it extends. A "span" delimits a
+segment of text. Notice that our two spans are right next to each other on
+the page, but we can still style them differently!
+<br><br>
+We also intrduced the "id" and "class" attributes here. For web scraping,
+these attributes are very useful because they tend to identify similar
+things on a given page. But we'll get into web scraping next week.
+<br><br>
+Finally, let's add an image to our page. First, download this image:
+<a href="hurshal.jpg">hurshal.jpg</a>. Remember, right-click and select
+<b>Save Link As...</b> to download the image. Make sure to save it in the same
+folder as your html file! Then, update your html:
+<pre class="prettyprint linenums lang-html">
+&#60;html&#62;
+
+&#60;head&#62;
+&#60;title&#62;Look I'm the Title!&#60;/title&#62;
+&#60;/head&#62;
+
+&#60;body&#62;
+&#60;h1&#62;Awesomesauce!&#60;/h1&#62;
+&#60;h4 style="color:red;"&#62;Redsauce!&#60;/h4&#62;
+&#60;p&#62;
+This is text inside a paragraph.&#60;br&#62;
+This is more text inside the paragraph.
+&#60;/p&#62;
+&#60;a style="color:green;" href="http://www.google.com"&#62;Click me to go to Google&#60;/a&#62;
+&#60;div id="my-div" style="border:2px solid yellow;"&#62;
+  &#60;span class="happy-fun-class" style="color:red;font-style:italic;"&#62;Hooray!&#60;/span&#62;
+  &#60;span class="sad-boring-class" style="color:blue;"&#62;Sadface :(&#60;/span&#62;
+&#60;/div&#62;
+&#60;h3&#62;Haha look it's Hurshal!&#60;/h3&#62;
+&#60;img src="hurshal.jpg" width="800" /&#62;
+&#60;/body&#62;
+
+&#60;/html&#62;</pre>
+Note that the image tag is another exception to the "tags are paired" rule. All
+image tags must have a "src" attribute, which is the path for the desired image.
+Also, we can optionally specify a width and/or height for our images (we
+had to do that in this case because otherwise the image of Hurshal is too big).
+<br><br>
+To learn a bit more HTML, check out
+<a href="another_fantastic_webpage.html">another_fantastic_webpage.html</a>.
+Remember, right-click and select <b>Save Link As...</b> to download the
+HTML file. There's a lot of new stuff in there, including a little bit of
+CSS for styling! Feel free to play around and ask us if you want to learn
+more about anything!
+<br><br>
+<b>Checkoff Assignment</b>
+<br>
+Make your own personal webpage!
+<ol>
+  <li>Make a header with your name.</li>
+  <li>Make a smaller header with your year and major at Cal.</li>
+  <li>Include a paragraph about what your favorite animal is and why.</li>
+  <li>Include a numbered list of the top three superpowers you would have if
+  you could choose any and a bullet list under each number of what you would use
+  that superpower for.<ul><li>in other words, nest your lists</li><li>like this!</li></ul></li>
+  <li>Put at least one image on your page (perhaps of you, perhaps of your
+  favorite animal, or of anything else) and make the image a link, so clicking
+  on it takes you somewhere else on the interwebs (perhaps to an educational
+  youtube video).</li>
+</ol>
+
