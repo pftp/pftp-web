@@ -40,6 +40,10 @@ def addassignment5():
   add_assignment5()
 
 @task
+def addweek6():
+  add_week6()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -362,6 +366,18 @@ Read through the "respond" function in chat_bot.py line by line. Make sure you u
   week5 = Week(assignment=assignment5.id, lesson=5)
   db.session.add(assignment5)
   db.session.add(week5)
+  db.session.commit()
+
+def add_week6():
+  lesson6 = Lesson(name="Week6", link="week6")
+  sublesson6 = Sublesson(name="Lecture 6", link="week6/lecture_6.pdf", lesson_id=lesson6.id)
+  lab6 = Assignment(name="HTML Lab", description="""Complete the HTML Lab""")
+  assignment6 = Assignment(name="Homework 6", description="""Complete Lab 6 on lists and string manipulation""", points=5, deadline=datetime(2013,10,20,23,59))
+  week6 = Week(assignment=assignment6.id, lesson=6)
+  db.session.add(lesson6)
+  db.session.add(sublesson6)
+  db.session.add(assignment6)
+  db.session.add(week6)
   db.session.commit()
 
 
