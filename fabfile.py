@@ -48,6 +48,10 @@ def addquiz4():
   add_quiz4()
 
 @task
+def addweek7():
+  add_week7()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -234,9 +238,9 @@ def generate_models():
   for lesson in Lesson.query.all():
     id = lesson.id
     assignment = Assignment.query.get(id)
-    if assignment is not None:
+    if assignment:
       week = Week(assignment=assignment.id, lesson=lesson.id)
-    db.session.add(week)
+      db.session.add(week)
   db.session.commit()
 
 def add_exercises():
@@ -428,16 +432,29 @@ Read through the "respond" function in chat_bot.py line by line. Make sure you u
 
 def add_week6():
   lesson6 = Lesson(name="Week6", link="week6")
-  sublesson6 = Sublesson(name="Lecture 6", link="week6/lecture_6.pdf", lesson_id=lesson6.id)
-  lab6 = Assignment(name="HTML Lab", description="""Complete the HTML Lab""")
-  assignment6 = Assignment(name="Homework 6", description="""Complete Lab 6 on lists and string manipulation""", points=5, deadline=datetime(2013,10,20,23,59))
-  week6 = Week(assignment=assignment6.id, lesson=6)
+  lab6 = Assignment(name="HTML Lab", description="Complete the HTML Lab", points=5, deadline=datetime(2013,10,14,4,59))
+  assignment6 = Assignment(name="Homework 6", description="Complete Lab 6 on lists and string manipulation", points=5, deadline=datetime(2013,10,20,23,59))
   db.session.add(lesson6)
-  db.session.add(sublesson6)
+  db.session.add(lab6)
   db.session.add(assignment6)
+  db.session.commit()
+  sublesson6 = Sublesson(name="Lecture 6", link="week6/lecture_6.pdf", lesson_id=lesson6.id)
+  week6 = Week(assignment=assignment6.id, lesson=lesson6.id)
+  db.session.add(sublesson6)
   db.session.add(week6)
   db.session.commit()
 
+def add_week7():
+  lesson7 = Lesson(name="Week7", link="week7")
+  lab7 = Assignment(name="Lab 7", description="Complete Lab 7", points=5, deadline=datetime(2013,10,21,4,59))
+  db.session.add(lesson7)
+  db.session.add(lab7)
+  db.session.commit()
+  sublesson7 = Sublesson(name="Lecture 7", link="week7/lecture_7.pdf", lesson_id=lesson7.id)
+  week7 = Week(assignment=assignment7.id, lesson=lesson7.id)
+  db.session.add(sublesson7)
+  db.session.add(week7)
+  db.session.commit()
 
 def generate_labs():
   if not os.path.exists('static/lab'):
