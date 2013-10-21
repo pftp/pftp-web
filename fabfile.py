@@ -44,6 +44,10 @@ def addweek6():
   add_week6()
 
 @task
+def addquiz4():
+  add_quiz4()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -59,6 +63,7 @@ def build():
   add_quiz2()
   add_quiz3()
   add_assignment5()
+  add_quiz4()
 
 #XXX make this detect changes and automatically build
 @task
@@ -229,7 +234,8 @@ def generate_models():
   for lesson in Lesson.query.all():
     id = lesson.id
     assignment = Assignment.query.get(id)
-    week = Week(assignment=assignment.id, lesson=lesson.id)
+    if assignment is not None:
+      week = Week(assignment=assignment.id, lesson=lesson.id)
     db.session.add(week)
   db.session.commit()
 
@@ -349,6 +355,58 @@ def add_quiz3():
   db.session.add(question5)
   db.session.commit()
   print colored('quiz 3 added to database', "green")
+
+
+
+
+#question1 = QuizQuestion(question="<pre></pre>", answer_choices=json.dumps([{'id': 'A', 'answer': ''}, {'id': 'B', 'answer': ''}, {'id': 'C', 'answer': ''}, {'id': 'D', 'answer': ''}, {'id': 'E', 'answer': ''}]), solution='E', quiz=quiz4.id)
+def add_quiz4():
+  quiz4 = Quiz(name="Week 7 Pop Quiz", week=7)
+
+
+  question1 = QuizQuestion(question="What does the following print? <pre>def multiply_by_2(n):\n\treturn n * 2\nprint multiply_by_2(multiply_by_2(multiply_by_2(5)))</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '10'}, {'id': 'B', 'answer': '15'}, {'id': 'C', 'answer': '20'}, {'id': 'D', 'answer': '30'}, {'id': 'E', 'answer': '40'}]), solution='E', quiz=quiz4.id)
+  question2 = QuizQuestion(question="What will the following code print? <pre>def fibonacci(n):\n\tif n == 1 or n == 2:\n\t\treturn 1\n\treturn fibonacci(n - 1) + fibonacci(n - 2)\n\nprint fibonacci(2)</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '1'}, {'id': 'B', 'answer': '2'}, {'id': 'C', 'answer': '3'}, {'id': 'D', 'answer': '4'}, {'id': 'E', 'answer': '5'}, {'id': 'F', 'answer': 'Will not print anything'}]), solution='A', quiz=quiz4.id)
+
+  question3 = QuizQuestion(question="What will the following print?<br><pre>sum = 0\nfor i in range(1, 10):\n\tsum = sum + i\nprint sum</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '10'}, {'id': 'C', 'answer': '25'}, {'id': 'D', 'answer': '55'}, {'id': 'E', 'answer': 'Error: Will not finish running'}]), solution='D', quiz=quiz4.id)
+  question4 = QuizQuestion(question="What will the following code print?<br><pre>sum = 0\nwhile(True):\n\tsum = sum  + sum\nprint sum</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '0'}, {'id': 'B', 'answer': '10'}, {'id': 'C', 'answer': '25'}, {'id': 'D', 'answer': '55'}, {'id': 'E', 'answer': 'Error: Will not finish running'}]), solution='E', quiz=quiz4.id)
+  question5 = QuizQuestion(question="What will the following code print <pre>my_list = [1, 2, 3, 4]\nfor x in my_list:\n\tprint x</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '[1,2,3,4]'}, {'id': 'B', 'answer': '1,<br>2,<br>3,<br>4,'}, {'id': 'C', 'answer': '1<br>2<br>3<br>4'}, {'id': 'D', 'answer': 'This will not print anything'}, {'id': 'E', 'answer': 'None of the above'}]), solution='C', quiz=quiz4.id)
+  question6 = QuizQuestion(question="What will the following code print?<pre>my_list = [1,2,3,4]\nfor x in my_list:\n\tprint x * x</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': '[1,2,3,4]'}, {'id': 'B', 'answer': '1,<br>2,<br>3,<br>4,'}, {'id': 'C', 'answer': '1<br>2<br>3<br>4'}, {'id': 'D', 'answer': '1<br>4<br>9<br>16'}, {'id': 'E', 'answer': 'Will not print anything'}]), solution='E', quiz=quiz4.id)
+  question7 = QuizQuestion(question="What will the following code print?<pre>a_string = 'Cat in the hat spinning a bat'\nprint a_string.split('in')</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': "['Cat ', 'the hat spinning a bat']"}, {'id': 'B', 'answer': "['Cat ', ' the hat sp', 'n', 'g a bat']"}, {'id': 'C', 'answer': 'Cat<br>the hat spinning a bat'}, {'id': 'D', 'answer': 'Cat<br>the hat sp<br>n<br>g a bat'}]), solution='B', quiz=quiz4.id)
+  question8 = QuizQuestion(question="What will the following code print?<pre>a_string = 'Cat in the hat spinning a bat'\nprint a_string.split(' in ')</pre>", answer_choices=json.dumps([{'id': 'A', 'answer': "['Cat ', 'the hat spinning a bat']"}, {'id': 'B', 'answer': "['Cat ', ' the hat sp', 'n', 'g a bat']"}, {'id': 'C', 'answer': 'Cat<br>the hat spinning a bat'}, {'id': 'D', 'answer': 'Cat<br>the hat sp<br>n<br>g a bat'}]), solution='A', quiz=quiz4.id)
+
+  question9 = QuizQuestion(question="Which of the following function returns the title of a webpage which will be enclosed in the &lt;title&gt; &lt;/title&gt; tag? We will call our function like this<pre>\nsome_html = \"&lt;title&gt; This is my title! &lt;/title&gt; This is my webpage.\"\nprint get_title(some_html)</pre>This code should print \"This is my title!\" (Hint string.find('abc') returns the first occurence of 'abc' in your string and returns index (the element number) of 'a'", answer_choices=json.dumps([{'id': 'A', 'answer': 'def get_title(html):<br>&nbsp&nbsp&nbsp return html.get_title()'}, {'id': 'B', 'answer': 'def get_title(html): <br>&nbsp&nbsp&nbsp begin_title = html.find("<title>")<br>&nbsp&nbsp&nbsp end_title = html.find("</title>")<br>&nbsp&nbsp&nbsp return html[begin_title:end_title]'}, {'id': 'C', 'answer': 'def get_title(html): <br>&nbsp&nbsp&nbsp begin_title = html.find("<title>") + 7<br>&nbsp&nbsp&nbsp end_title = html.find("</title>")<br>&nbsp&nbsp&nbsp return html[begin_title:end_title]'}, {'id': 'D', 'answer': 'def get_title(html): <br>&nbsp&nbsp&nbsp begin_title = html.find("<title>")<br>&nbsp&nbsp&nbsp end_title = html.find("</title>") + 8<br>&nbsp&nbsp&nbsp return html[begin_title:end_title]'}]), solution='C', quiz=quiz4.id)
+
+
+  question10 = QuizQuestion(question="Using our get_title function that we created above, which of the following pieces of code will print the first word in the title tag", answer_choices=json.dumps([{'id': 'A', 'answer': 'print get_title(another_html)[0]'}, {'id': 'B', 'answer': 'print get_title(another_html)[1]'}, {'id': 'C', 'answer': 'title = get_title(another_html)<br>title_split_by_spaces = title.split(' ')<br>print title_split_by_spaces[1]'}, {'id': 'D', 'answer': 'title = get_title(another_html)<br>title_split_by_spaces = title.split(' ')<br>print title_split_by_spaces[0]'}, {'id': 'E', 'answer': 'What?'}]), solution='D', quiz=quiz4.id)
+
+
+  quiz4.questions.append(question1)
+  quiz4.questions.append(question2)
+  quiz4.questions.append(question3)
+  quiz4.questions.append(question4)
+  quiz4.questions.append(question5)
+  quiz4.questions.append(question6)
+  quiz4.questions.append(question7)
+  quiz4.questions.append(question8)
+  quiz4.questions.append(question9)
+  quiz4.questions.append(question10)
+
+
+  db.session.add(quiz4)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.add(question4)
+  db.session.add(question5)
+  db.session.add(question6)
+  db.session.add(question7)
+  db.session.add(question8)
+  db.session.add(question9)
+  db.session.add(question10)
+  db.session.commit()
+  print colored('quiz 4 added to database', "green")
+
+
 
 def add_assignment5():
   assignment5 = Assignment(name='Homework 5', description="""<b> We\'ll be doing our homeworks inside of the terminal from now on!</b> <a href="http://programmingfeelthepower.com/static/assignments/chat_bot.zip"> Click here </a> to download the assignment. chat_bot.zip should be in your Downloads directory now. Unzip the file by double clicking on the chat_bot.zip file and move the folder into your work directory. Type the command <b>cd work/chat_bot</b> to get inside the directory. ls to see what files it contains. Remember, cd means change directory and it's simply a way change folders on your computer. Run the chat_bot program by typing python chat_bot.py into the terminal. If you type "hello" and press RETURN, what happens? What about "bye"? Now try "tell me why".
