@@ -451,7 +451,7 @@ def add_week7():
   db.session.add(lab7)
   db.session.commit()
   sublesson7 = Sublesson(name="Lecture 7", link="week7/lecture_7.pdf", lesson_id=lesson7.id)
-  week7 = Week(assignment=assignment7.id, lesson=lesson7.id)
+  week7 = Week(assignment=lab7.id, lesson=lesson7.id)
   db.session.add(sublesson7)
   db.session.add(week7)
   db.session.commit()
