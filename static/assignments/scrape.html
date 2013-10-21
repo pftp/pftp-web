@@ -1,0 +1,118 @@
+This week's lab will teach you how to scrape HTML from the internet! This will
+let you write programs to perform tasks on website content that would otherwise be
+tedious or downright stupid for you to do yourself.</br>
+<hr>
+Now for this lab, we will be building an<br>
+<h1><marquee>Automatic Telebears Class Finder!</marquee></h1>
+a.k.a. NinjaCourses.<br/>
+
+Well, sort of. We'll be working on the basics, which is scraping the content from
+the abomination that is schedule.berkeley.edu. By scraping, we mean that we will write
+a program which will download the webpage (just like your browser does), but instead of
+displaying the content, we will process the text in a program and possibly perform
+some actions.<br>
+
+Our goal here is to get a list of all offered classes for a particular department,
+but first let's take a look at what <a href="schedule.berkeley.edu">schedule.berkeley.edu</a>
+does. Open this link in Chrome or Safari (these browsers have particularly good built-in
+tools for inspecting HTML). Now search for courses in the Computer Science department
+and observe the url that is in the bar. It should look something like this:
+<p style="font-family:monospace;">
+  http://osoc.berkeley.edu/OSOC/osoc?p_term=SP&x=34&p_classif=--+Choose+a+Course+Classification+--&p_deptname=Computer+Science&p_presuf=--+Choose+a+Course+Prefix%2fSuffix+--&y=0
+</p>
+
+Now for a short lesson in HTML and server technologies. As you'll notice, this url is
+particularly long and filled with some obscure information, but we will break it down
+and understand what each portion is doing.
+<ul>
+  <li><span style="font-family:monospace;">http://</span><br>This specifies the protocol
+    that is used to download this file. HTTP is the standard for websites, and HTTPS
+    is the encryped equivalent. You'll notice HTTPS used on pages with credit card
+    transations, personal information, or anything that would need to be encrypted.
+  </li>
+  <li><span style="font-family:monospace;">osoc.berkeley.edu</span><br>This specifies the
+    name of the website, also called the hostname. When you request a page, Good Guy Internet
+    will take the hostname that you gave it and tell you what IP address the server is
+    located at. You can think of this like the post office giving you GPS coordinates
+    when you tell them where you want to mail something. This service is in place because
+    hostnames are much easier to communicate and memorize than IP addresses, although
+    you can also enter an IP address to visit a website! Try visiting <a href="http://74.125.224.72/">Google</a>
+    and notice that the url is the IP address! Google is a huge service so they actually
+    have several (thousand) IP addresses, and this is one of them.
+  </li>
+  <li><span style="font-family:monospace;">/OSOC/osoc</span><br>This specifies the
+    action you want to perform or the file that you are requesting from the server.
+  </li>
+  <li><span style="font-family:monospace;">?p_term=SP&x=34&p_classif=--+Choose+a+Course+Classification+--&p_deptname=Computer+Science&p_presuf=--+Choose+a+Course+Prefix%2fSuffix+--&y=0</span><br>This specifies all the parameters that you want to pass to the action.
+      You can think of /OSOC/osoc as a function, and this jumble of characters is a list of
+      all the arguments that you are giving it. The '?' designates the start of your
+      list of parameters, and the '&amp;' separates parameters. A list like
+      '?a=1&b=hello' is passing a parameter a whose value is 1 and a parameter b whose value is 'hello'.
+      Notice that the list given has two parameters of interest: p_term is set to 'SP', 
+      and p_deptname is set to 'Computer+Science'. Presumably 'SP' stands for spring 
+      semester, and is used to only get classes offered then. The p_deptname is
+      the department name (surprise), but with all spaces replaced with '+'. This is
+      because url's cannot have spaces so another character is used to delimit words.
+      I have no idea what the rest of the paramters do, but it turns out that you can
+      remove them and the search still works.
+  </li>
+</ul>
+
+A simplified url for this should look like:
+<p style="font-family:monospace;">
+  http://osoc.berkeley.edu/OSOC/osoc?p_term=SP&p_deptname=Computer+Science
+</p>
+Try replacing Computer Science with American Studies and verify that the url does in
+fact return the correct search terms!<br>
+
+Now we'll write a simple program to take this url and print a list of classes. The first
+step would be to get the text of the page. Fortunately, Python provides us some libraries
+which do most of the heavy lifting here. The 'urllib2' library will download a page given
+a url and return it's contents.<br>
+
+Open a new file in AquaMacs or your favorite text editor and type the following:
+<pre>import urllib2
+url = 'http://osoc.berkeley.edu/OSOC/osoc?p_term=SP&p_deptname=Computer+Science'
+page = urllib2.urlopen(url)
+html = page.read()
+print html</pre><br>
+
+When you run this you should see that the Python program will print a giant string which
+contains a bunch of text and HTML tags and whatnot. Now this is not useful to us at all
+because humans suck at reading HTML. What we want to do is use some string manipulation
+to extract the course titles from the page text!<br>
+
+  Now going back to your browser, visit the Computer Science search results and right click on one of the course titles. Click on "Inspect Element", which should open up a window at the bottom of the browser. This is a developer tool avavailable in Chrome and Safari (there is something similar in Firefox as well) that enables you to perform various debugging and performance tasks. It also makes viewing HTML bearable as you can see. There are arrows next to each HTML tag, which allow you to collapse or expand its content. You'll notice that by clicking Inspect Element while your cursor was over a course title, there will be a single HTML line which is highlighted that corresponds to what you clicked on. When you hover over it, the text in the browser should be hightlighted as well. We can see here that every course title is of the form
+  <pre>&lt;b&gt;COMPUTER SCIENCE ... &lt;/b&gt;</pre> where ... is the course number and section type (LEC, DIS, LAB), so this is what we will search for in the text.<br>
+
+    Let's remove the 'print html' line and instead manipulate the string. Using the find() function, we can get the position of these occurences in the string. In the Python terminal, try the following:
+    <pre>text = "ajskdgasfdl&lt;B&gt;COMPUTER SCIENCE 12 LEC&lt;/B&gt;lolwut extra text"
+i = text.find('&lt;B&gt;COMPUTER SCIENCE')</pre>
+  and you should get back the number 11. This tells you that the 11th index (the 12th character) in that string is where "&lt;B&gt;COMPUTER SCIENCE" begins. If you were to perform
+  <pre>j = text.find('&lt;/B&gt;')</pre>
+  should give you the index 37. Now using these 2 numbers 11 and 37, we can select just the portion of the string that we want:
+  <pre>text[i:j]</pre>
+Which should give you back
+<pre>&lt;B&gt;COMPUTER SCIENCE...</pre>
+in which case we can remove the preceding tag by using text[i+3:j] instead.<br>
+
+Now we want to do this for all occurences in the page, not just the first one! What we can do is find the first occurence and print it, and then take the rest of the string and repeat it. THis should work something like this:
+<pre>text = 'asdfFOO asdfasdf BAR asdfasdfadsf FOO asdfasdfas BAR asdfasdf FOO asdfasdfasd BAR'
+while True:
+  i = text.find('FOO')
+  j = text.find('BAR')
+  if i == -1 or j == -1:
+    #Neither one was found, so exit
+    break
+  else:
+    print text[i:j]
+    text = text[j:]</pre><br>
+
+The line 'text = text[j:]' is what sets the string to be everything after the first occurence,
+and the while loop allows you to repeat this process until the string is empty or has no occurences.<br>
+
+<b>Checkoff Assignment</b>:<br>
+Now apply this technique to your scraping program and print out the first page of Computer Science 
+classes from schedule.berkeley.edu. If you're feeling particularly adventurous, try to see if you can
+find a url parameter which will allow you to see the second page of results, and so on and print out
+every listed Computer Science class.
