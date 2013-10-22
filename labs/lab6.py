@@ -120,7 +120,7 @@ for s in shapes:
 user_input = raw_input('Enter a comma-separated list of shapes in the format: &lt;color&gt; &lt;shape&gt;')
 shapes = user_input.split(',')
 # Replace the `shapes = ...` line at the top of your program with these two lines.
-# Now, you can type something like `"yellow septagon,black octagon,purple triangle"` as input, and the program will draw multiple shapes!
+# Now, you can type something like `yellow septagon,black octagon,purple triangle` as input, and the program will draw multiple shapes!
 
 # <b>Checkoff Assignment</b>
 # Finish the shape-drawing program, and also allow the user to specify the size and xy-coordinates of each shape to draw.
