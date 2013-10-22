@@ -89,7 +89,7 @@ print get_product(other_numbers)
 # Okay, what's going on? Our product just stays at 0 the entire time! Figure out why this is happening and fix the bug!
 
 # Coolio, interlude over! Now, write a function that returns the product of only the even elements of a given list. So for some_numbers it should return -16 and for other_numbers it should return 1234. HINT: To check if a number is even, you can write `if num % 2 == 0`, since `%` is the modulus operator which means it gives you the division remainder.
-# Then, write a function that returns the product of only the even INDEXED elements of the list. So for some_numbers it should multiply the 0th, 2nd, and 4th elements and return -48 and for other_numbers it should multiply the 0th and 2nd elements and return -2345. HINT: You may want to start your for loop with something like `for i in range(len(lst)):`, which will iterate through all the numbers between 0 and one less than the length of your list. Then, use the syntax we taught you to access individual list items, but only if the current list index is even!
+# Then, write a function that returns the product of only the even INDEXED elements of the list. So for some_numbers it should multiply the 0th, 2nd, and 4th elements and return -48 and for other_numbers it should multiply the 0th and 2nd elements and return -2345. HINT: You may want to start your for loop with something like `for i in range(len(lst)):`, which will iterate through all the numbers between 0 and one less than the length of your list. Then, use `lst[i]` to access each item. But only multiply it if the current list index is even!
 # Finally, write a function that returns a new list with every item of the initial list doubled. So for some_numbers it should return [6, 10, 4, 6, -16] and for other_numbers it should return [4690, 2468, -2]. HINT: You may want to use the `append` function we taught you earlier!
 
 # Now lets get our graphics skills involved. Import the turtle module and create a new turtle, you can name the turtle whatever you want this time. Then, given a list of shapes, make your turtle draw each shape one by one:
@@ -100,7 +100,11 @@ for shape in shapes:
   elif shape == 'square':
     # make your turtle draw a square
   # etc. for pentagon, hexagon, septagon, and octagon
-# You may find it useful to use the 'shape' function we defined in a previous lab, which takes an arbitrary number of sides and draws a shape with that many sides
+# You may find it useful to use the 'draw_shape' function we defined in lab 5. You may have to edit it depending on what you named your turtle:
+def draw_shape(size, sides):
+  for i in range(sides):
+    w.forward(size)
+    w.left(360./sides)
 
 # Next, we're going to add the ability to specify a color for each of our shapes:
 shapes = ['red square', 'blue triangle', 'orange pentagon', 'green hexagon']
@@ -114,7 +118,7 @@ for s in shapes:
   elif shape_pair[1] == 'square':
     # make your turtle draw a square of the correct color
   # etc. for pentagon, hexagon, septagon, and octagon
-# Now, when we do `s.split(' ')` it splits our shape string into a LIST of the strings that were previously separated by the space character. So, for example, it splits `"red square"` into `["red", "square"]`. Now, we can access each item of this list separately! Finish off the above code and make your program draw each shape in the proper color. It may be easiest to modify your shape function to do this. Use debugging print statements to help!
+# Now, when we do `s.split(' ')` it splits our shape string into a LIST of the strings that were previously separated by the space character. So, for example, it splits `"red square"` into `["red", "square"]`. Now, we can access each item of this list separately! Finish off the above code and make your program draw each shape in the proper color. It may be easiest to modify your draw_shape function to do this. Use debugging print statements to help!
 
 # It would be nice if the user of our program didn't actually have to modify the code to draw different shapes. Instead, we'll set up a nice `raw_input` box for them and let them specify the shapes that way! Here's how we'll get user input:
 user_input = raw_input('Enter a comma-separated list of shapes in the format: &lt;color&gt; &lt;shape&gt;')
