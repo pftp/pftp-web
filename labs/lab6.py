@@ -118,7 +118,9 @@ for s in shapes:
 
 # It would be nice if the user of our program didn't actually have to modify the code to draw different shapes. Instead, we'll set up a nice `raw_input` box for them and let them specify the shapes that way! Here's how we'll get user input:
 user_input = raw_input('Enter a comma-separated list of shapes in the format: &lt;color&gt; &lt;shape&gt;')
-# Replace the `shapes = ...` line at the top of your program with this user_input line. After the user types in a list of shapes, `user_input` will be something like `"yellow septagon,black octagon,purple triangle"`. Now it's your turn to use the split function to break up this string into a list of shapes to draw! But this time note that you'll have to split on commas instead of spaces.
+shapes = user_input.split(',')
+# Replace the `shapes = ...` line at the top of your program with these two lines.
+# Now, you can type something like `"yellow septagon,black octagon,purple triangle"` as input, and the program will draw multiple shapes!
 
 # <b>Checkoff Assignment</b>
 # Finish the shape-drawing program, and also allow the user to specify the size and xy-coordinates of each shape to draw.
