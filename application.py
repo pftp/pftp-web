@@ -542,28 +542,37 @@ def user_dashboard():
 @app.route('/admin/')
 @roles_required('admin')
 def admin_dashboard():
-  student_models = User.query.filter(User.roles.any(Role.name == 'user'))
+  student_models = User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal'))
+  user_models = User.query.filter(User.roles.any(Role.name == 'user'))
+  student_set = set(student_models.all())
+  nonstudent_set = set(user_models.all()) - student_set
+
   assignments = Assignment.query.order_by(Assignment.deadline).all()
 
-  students = map(lambda x: x.__dict__, student_models)
-  for student in students:
-    student['grades'] = []
-    student['total_points'] = 0
-    student['total_score'] = 0
-    for assignment in assignments:
-      grade = Grade.query.filter_by(user_id=student['id'], assignment_id=assignment.id).all()
-      if len(grade) >= 1:
-        # take the most recently updated grade
-        grade = grade[-1].__dict__
-        grade['completed'] = True
-        grade['points'] = assignment.points
-        student['total_points'] += assignment.points
-        student['total_score'] += grade['score']
-        student['grades'].append(grade)
-      else:
-        student['grades'].append({'completed': False})
+  def templatize_data(models):
+    students = map(lambda x: x.__dict__, models)
+    for student in students:
+      student['grades'] = []
+      student['total_points'] = 0
+      student['total_score'] = 0
+      for assignment in assignments:
+        grade = Grade.query.filter_by(user_id=student['id'], assignment_id=assignment.id).all()
+        if len(grade) >= 1:
+          # take the most recently updated grade
+          grade = grade[-1].__dict__
+          grade['completed'] = True
+          grade['points'] = assignment.points
+          student['total_points'] += assignment.points
+          student['total_score'] += grade['score']
+          student['grades'].append(grade)
+        else:
+          student['grades'].append({'completed': False})
+    return students
 
-  return render_template('admin/dashboard.html', students=students, assignments=assignments)
+  students = templatize_data(student_set)
+  nonstudents = templatize_data(nonstudent_set)
+
+  return render_template('admin/dashboard.html', students=students, nonstudents=nonstudents, assignments=assignments)
 
 @app.route('/admin/submissions/<int:submission_id>')
 @roles_required('admin')

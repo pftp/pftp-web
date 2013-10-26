@@ -52,6 +52,10 @@ def addweek7():
   add_week7()
 
 @task
+def adddecalrole():
+  add_decal_role()
+
+@task
 def genlabs():
   generate_labs()
 
@@ -455,6 +459,17 @@ def add_week7():
   db.session.add(sublesson7)
   db.session.add(week7)
   db.session.commit()
+
+def add_decal_role():
+  decal_role = user_datastore.create_role(name="decal")
+  for user in User.query.all():
+    print user.id, user.firstname, user.lastname, user.email
+    ans = raw_input('Add as DeCal student? [y/n]')
+    if ans is 'y':
+      user_datastore.add_role_to_user(user, decal_role)
+      db.session.add(user)
+  db.session.commit()
+
 
 def generate_labs():
   if not os.path.exists('static/lab'):

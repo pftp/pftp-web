@@ -18,6 +18,7 @@ Teacher Dashboard
 
 {% block content %}
 <div style="width:90%; margin:auto">
+  <h2>Students</h2>
   <table class="table table-bordered table-striped table-hover sortable">
     <thead>
       <tr>
@@ -40,6 +41,7 @@ Teacher Dashboard
         <td>{{ student.lastname }}</td>
         {% for grade in student.grades %}
         {% if grade.completed %}
+
         <td>
           {% if grade.score/grade.points > 0.7 %}
           <span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span>
@@ -105,5 +107,59 @@ Teacher Dashboard
       <a class="btn btn-medium btn-success" id="submit_grade">Submit</a>
     </form>
   </div>
+
+  <h2>Not students</h2>
+  <table class="table table-bordered table-striped table-hover sortable">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Email</th>
+        <th>First</th>
+        <th>Last</th>
+        {% for assignment in assignments %}
+        <th>{{ assignment.name }} ({{ assignment.points }})</th>
+        {% endfor %}
+        <th>Course Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for nonstudent in nonstudents %}
+      <tr>
+        <td>{{ nonstudent.id }}</td>
+        <td>{{ nonstudent.email }}</td>
+        <td>{{ nonstudent.firstname }}</td>
+        <td>{{ nonstudent.lastname }}</td>
+        {% for grade in nonstudent.grades %}
+        {% if grade.completed %}
+        <td>
+          {% if grade.score/grade.points > 0.7 %}
+          <span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span>
+          {% elif grade.score/grade.points > 0.4 %}
+          <span class="badge badge-warning">{{ grade.score }}/{{ grade.points }}</span>
+          {% else %}
+          <span class="badge badge-important">{{ grade.score }}/{{ grade.points }}</span>
+          {% endif %}
+        </td>
+        {% else %}
+        <td><span class="badge badge-info">N/A</span></td>
+        {% endif %}
+        {% endfor %}
+        <td>
+          {% if nonstudent.total_points != 0 %}
+            {% if nonstudent.total_score/nonstudent.total_points > 0.7 %}
+            <span class="badge badge-success">{{ nonstudent.total_score }}/{{ nonstudent.total_points }}</span>
+            {% elif nonstudent.total_score/nonstudent.total_points > 0.4 %}
+            <span class="badge badge-warning">{{ nonstudent.total_score }}/{{ nonstudent.total_points }}</span>
+            {% else %}
+            <span class="badge badge-important">{{ nonstudent.total_score }}/{{ nonstudent.total_points }}</span>
+            {% endif %}
+          {% else %}
+            <span class="badge badge-info">N/A</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
