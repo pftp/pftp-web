@@ -1,0 +1,4 @@
+The syntax for the function add_5 is
+<pre>def add(num):
+  return num + 5
+</pre>
