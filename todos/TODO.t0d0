@@ -1,7 +1,23 @@
-TODO
-[ ] prettyprint for syntax highlighting
+Schema
 [ ] Possibly integrate Lessons and assignments on the same page: or link lessons to corresponding assignments
+[ ] rewrite schema
+
+Grading
+[ ] Make syllabus (grading)
+
+UI
+[ ] fix login ui
+[ ] prettyprint for syntax highlighting
+
+Jank code
+
+[ ] unjankify fullscreen labs
+
+Process
 [ ] online checkoff
 [ ] make adding new weeks easier
-[ ] Make syllabus (grading)
-[ ] maybe fix login ui (MAYBE)
+
+DB
+[ ] do actual db backups
+[ ]   remove db from git history
+[ ]   make repo public again
