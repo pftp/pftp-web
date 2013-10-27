@@ -212,7 +212,7 @@ class Quiz(db.Model):
   def to_dict(self):
     return {
         'name': self.name,
-        'questions': 'Nah dude we aren\' gonna give you those'
+        'questions': 'Nah dude we aren\'t gonna give you those'
         }
 
 class QuizQuestion(db.Model):
