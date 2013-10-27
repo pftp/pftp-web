@@ -502,6 +502,11 @@ def generate_labs():
 
     i = 0
     lines = lab.readlines()
+    if '#%fullscreen' in lines[0]:
+      fullscreen_state = 'var lab_fullscreen = true;'
+      lines.pop(0)
+    else:
+      fullscreen_state = 'var lab_fullscreen = false;'
     lines.append('\n')
     for i in range(0, len(lines)):
       line = lines[i]
@@ -530,6 +535,7 @@ def generate_labs():
           step[0] += line
 
     with open('static/lab/' + labfile.replace('.py', '.js'), 'w') as out:
+      out.write(fullscreen_state)
       out.write('var lab_content = ')
       out.write(str(steps))
       out.write(';')

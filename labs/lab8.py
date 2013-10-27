@@ -1,3 +1,4 @@
+#%fullscreen
 # Welcome back! This week's lab will cover file I/O and dictionaries.
 
 # By now you have a good understanding of the basics of Python, and you're ready to start writing some practical programs. If you think about most programs on your computer that you use on a daily basis like a word processor, a browser, and maybe a multimedia player, you'll notice something in common. Yes, it's true that they are all programs, but what we're interested in the program's interaction with files. Most programs have some sort of functionality to open or save files, which corresponds to reading the text from a file, and writing text to a file. When we say file I/O, we mean file INput/OUTput, which is exactly this functionality. Luckily, Python makes this incredibly easy.
