@@ -52,6 +52,10 @@ def addweek7():
   add_week7()
 
 @task
+def addweek8():
+  add_week8()
+
+@task
 def adddecalrole():
   add_decal_role()
 
@@ -458,6 +462,20 @@ def add_week7():
   week7 = Week(assignment=lab7.id, lesson=lesson7.id)
   db.session.add(sublesson7)
   db.session.add(week7)
+  db.session.commit()
+
+def add_week8():
+  lesson8 = Lesson(name="Week8", link="week8")
+  lab8 = Assignment(name="Lab 8", description="Complete Lab 8", points=5, deadline=datetime(2013,10,28,4,59))
+  assignment8 = Assignment(name="Homework 8", description="Complete at least 5 out of the 7 dictionary exercises emailed to you each day this week", points=5, deadline=datetime(2013,11,3,23,59))
+  db.session.add(lesson8)
+  db.session.add(lab8)
+  db.session.add(assignment8)
+  db.session.commit()
+  sublesson8 = Sublesson(name="Lecture 8", link="week8/lecture_8.pdf", lesson_id=lesson8.id)
+  week8 = Week(assignment=lab8.id, lesson=lesson8.id)
+  db.session.add(sublesson8)
+  db.session.add(week8)
   db.session.commit()
 
 def add_decal_role():
