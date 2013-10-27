@@ -1,5 +1,5 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil
-from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi
+from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 from flask.ext.security.signals import user_registered
@@ -108,6 +108,14 @@ class Assignment(db.Model):
   grades = db.relationship('Grade', lazy='dynamic', backref='assignment')
   submissions = db.relationship('Submission', lazy='dynamic', backref='assignment')
 
+  def to_dict(self):
+    return {
+        'name': self.name,
+        'description': self.description,
+        'deadline': str(self.deadline),
+        'points': self.points
+        }
+
 class Grade(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
   score = db.Column(db.Integer(), nullable = False)
@@ -161,16 +169,35 @@ class Lesson(db.Model):
   link = db.Column(db.String(30), nullable=False, index = True)
   sublessons = db.relationship('Sublesson', lazy='dynamic', backref='lesson')
 
+  def to_dict(self):
+    return {
+        'name': self.name,
+        'link': self.link,
+        'sublessons': map(lambda x: x.to_dict(), self.sublessons)
+        }
+
 class Sublesson(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   name = db.Column(db.String(30), nullable=False)
   link = db.Column(db.String(30), nullable=False)
   lesson_id = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
 
+  def to_dict(self):
+    return {
+        'name': self.name,
+        'link': self.link
+        }
+
 class Week(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   lesson = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
   assignment = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
+  
+  def to_dict(self):
+    return {
+        'lesson': self.lesson,
+        'assignment': self.assignment.to_dict()
+        }
 
 class ExtendedRegisterForm(RegisterForm):
   firstname = TextField('First Name', [Required()])
@@ -181,6 +208,12 @@ class Quiz(db.Model):
   name = db.Column(db.String(30), nullable=False)
   week = db.Column(db.Integer(), nullable=False)
   questions = db.relationship('QuizQuestion', lazy='dynamic', backref='quiz')
+
+  def to_dict(self):
+    return {
+        'name': self.name,
+        'questions': 'Nah dude we aren\' gonna give you those'
+        }
 
 class QuizQuestion(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
@@ -613,3 +646,29 @@ def submit_grade():
   db.session.add(grade)
   db.session.commit()
   return "success"
+
+###############################################################################
+# Public API Routes
+################################################################################
+@app.route('/api.public/course_info')
+def show_schedule():
+  weeks_sql = map(lambda x:x.__dict__, Week.query.all())
+  weeks = []
+  for week_obj in weeks_sql:
+    week = {}
+    week['assignment'] = Assignment.query.get(week_obj['assignment']).to_dict()
+    week['lesson'] = Lesson.query.get(week_obj['lesson']).to_dict()
+    quiz = Quiz.query.filter(Quiz.week==week_obj['id'])
+    if len(quiz.all()) == 1:
+      week['quiz'] = quiz.first().to_dict()
+    weeks.append(week)
+
+  data = {
+      'schedule': weeks,
+      'title': 'Programming: Feel the Power',
+      'course': 'CS 98/198',
+      'units': 2,
+      'What da fox say?': 'Ring-ding-ding-ding-dingeringeding!'
+      }
+
+  return Response(response=cgi.escape(json.dumps(data)), status=200, mimetype="application/json")
