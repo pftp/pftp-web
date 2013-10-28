@@ -1,0 +1,1 @@
+Given a list of words, write a function called get_word_counts(list_of_words) that returns a dictionary of the word counts of the list of words. Ex: get_word_counts(["hello", "my", "name", "is", "joe", "hello", "joe"]) = {"hello": 2, "my": 1, "name": 1, "is": 1, "joe": 2}

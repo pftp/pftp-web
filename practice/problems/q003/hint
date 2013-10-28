@@ -1,0 +1,8 @@
+The syntax for the function create_entry_for_each_word that has the key value word: True for each word in the list
+<pre>def create_entry_for_each_word(list_of_words):
+  words = {}
+  for word in list_of_words:
+    if word not in words:
+      words[word] = True
+  return words
+</pre>
