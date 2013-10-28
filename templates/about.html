@@ -28,7 +28,12 @@ About
       <td>
         {% for sublesson in week.lesson.sublessons %}
         <a href="/lessons/{{ sublesson.link }}"> {{ sublesson.name }} </a>
+        <br>
         {% endfor %}
+        {% if week.id == 8%}
+        <a href="/static/assignments/tom_sawyer.txt"}}> tom_sawyer.txt </a>
+        <br>
+        {% endif %}
       </td>
       <td>
         {% if week.quiz is defined %}
