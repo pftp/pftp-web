@@ -23,3 +23,7 @@
 #save_msg {
   margin: 0 5px;
 }
+
+#fullscreen_col {
+  background-color: rgba(255,255,255, 0.6);
+}
