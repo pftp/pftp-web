@@ -40,6 +40,15 @@ def replace_template_vars(template, template_vars):
     return template
 
 
+def get_expected(solution, test):
+    temp = sys.stdout
+    sys.stdout = open('temp_expected', 'w')
+    #create expected
+    exec(solution + '\n' + test)
+    sys.stdout = temp
+    expected = open('temp_expected', 'r').read()
+    return expected
+
 """ generate the problems using templating """
 all_problems = []
 
@@ -55,23 +64,17 @@ for problem_info in all_problem_info:
             #expected = eval_template(replace_template_vars(problem_info['expected'], template_vars))
             solution = eval_template(replace_template_vars(problem_info['solution'], template_vars))
             test = replace_template_vars(problem_info['test'], template_vars)
-            temp = sys.stdout
-            sys.stdout = open(PARENT_PROBLEM_DIR + '/' + problem_info['problem_dir'] + '/expected', 'w')
-            #create expected
-            exec(solution + '\n' + test)
-            sys.stdout = temp
-            expected = open(PARENT_PROBLEM_DIR +'/' + problem_info['problem_dir'] + '/expected', 'r').read()
+            expected = get_expected(solution, test)
             hint = problem_info['hint']
             templated_problems.append({'prompt': prompt, 'expected': expected, 'solution': solution, 'test': test, 'hint': hint, 'problem_dir': problem_info['problem_dir']})
     else:
         solution = problem_info['solution']
         test = replace_template_vars(problem_info['test'], template_vars)
-        temp = sys.stdout
-        sys.stdout = open(PARENT_PROBLEM_DIR + '/' + problem_info['problem_dir'] + '/expected', 'w')
-        #create expected
-        exec(problem_info['solution'] + '\n' + test)
-        sys.stdout = temp
-        templated_problems.append({'prompt': problem_info['prompt'], 'solution': problem_info['solution'], 'test': test, 'problem_dir': problem_info['problem_dir']})
+        expected = get_expected(solution, test)
+        templated_problems.append({'prompt': problem_info['prompt'], 'expected': expected, 'solution': problem_info['solution'], 'test': test, 'hint': hint, 'problem_dir': problem_info['problem_dir']})
     all_problems.append(templated_problems)
 print '\n'
 for x in all_problems: print x, '\n\n'
+practice_problems = open('practice_problems.json', 'w')
+practice_problems.write(json.dumps(all_problems))
+practice_problems.close()

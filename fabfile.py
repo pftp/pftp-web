@@ -10,7 +10,7 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblem
 
 ################################################################################
 # Tasks
@@ -22,6 +22,12 @@ def clean():
     local('rm -rf templates/gen')
     local('rm -rf static/labs')
     local('rm pftp.db')
+
+@task
+def addpractice():
+  add_practice_problems()
+
+
 
 @task
 def addquiz1():
@@ -71,6 +77,7 @@ def build():
   db.create_all()
   generate_models()
   add_exercises()
+  add_practice_problems()
   add_quiz1()
   add_quiz2()
   add_quiz3()
@@ -263,6 +270,16 @@ def add_exercises():
   db.commit()
   db.close()
   print colored("%s exercises added to database." % len(exercises), "green")
+
+def add_practice_problems():
+  practice_problems = json.load(open('practice/practice_problems.json', 'r'))
+  for practice_problems_for_template in practice_problems:
+    template = PracticeProblemTemplate(problem_dir=practice_problems_for_template[0]['problem_dir'], hint=practice_problems_for_template[0]['hint'])
+    db.session.add(template)
+    for practice_problem in practice_problems_for_template:
+      db.session.add(PracticeProblem(template_problem_dir=practice_problem['problem_dir'], prompt=practice_problem['prompt'], expected=practice_problem['expected'], solution=practice_problem['solution'], test=practice_problem['test']))
+  db.session.commit()
+  print colored("%d practice problems added to database." % sum(map(len, practice_problems)), 'green')
 
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
