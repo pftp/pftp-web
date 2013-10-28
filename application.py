@@ -192,7 +192,7 @@ class Week(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   lesson = db.Column(db.Integer(), db.ForeignKey('lesson.id'))
   assignment = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
-  
+
   def to_dict(self):
     return {
         'lesson': self.lesson,
@@ -212,7 +212,7 @@ class Quiz(db.Model):
   def to_dict(self):
     return {
         'name': self.name,
-        'questions': 'Nah dude we aren\'t gonna give you those'
+        'questions': map(lambda x: x.to_dict(), self.questions)
         }
 
 class QuizQuestion(db.Model):
@@ -221,12 +221,31 @@ class QuizQuestion(db.Model):
   answer_choices = db.Column(db.String(7000), nullable=False)
   solution = db.Column(db.String(100), nullable=False)
   quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'))
+  def to_dict(self):
+    return {'question': self.question, 'answer_choices': self.answer_choices, 'solution': self.solution, 'quiz_id': self.quiz_id}
 
 class QuizResponse(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   question_id = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
   user_answer = db.Column(db.String(100), nullable=False)
+
+class PracticeProblemTemplate(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  problem_dir = db.Column(db.String(20), nullable=False)
+
+class PracticeProblem(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  template_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'), nullable=False)
+  prompt = db.Column(db.String(500), nullable=False)
+  expected = db.Column(db.String(500), nullable=False)
+  solution = db.Column(db.String(500), nullable=False)
+  test = db.Column(db.String(500), nullable=False)
+
+class PracticeProblemSubmissions(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem.id'))
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)

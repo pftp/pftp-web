@@ -71,8 +71,6 @@ for problem_info in all_problem_info:
         #create expected
         exec(problem_info['solution'] + '\n' + test)
         sys.stdout = temp
-
-
         templated_problems.append({'prompt': problem_info['prompt'], 'solution': problem_info['solution'], 'test': test, 'problem_dir': problem_info['problem_dir']})
     all_problems.append(templated_problems)
 print '\n'
