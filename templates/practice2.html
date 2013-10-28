@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Python Practice
+{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/practice/practice.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3>{{problem.prompt}}</h3>
+  <textarea id="practice_code" style="display:none;"></textarea>
+  <div id="run_container">
+    <button id="practice_run_code" class="btn btn-success">Run It!</button>
+    <button id="next_exercise" href="/practice/{{problem.id+1}}" class="btn btn-success" style="display:none;">Next Exercise</button>
+  </div>
+  <pre id="practice_output"></pre>
+  <button id="show_hint" class="btn btn-small">Get hint</button>
+  <button id="show_solution" class="btn btn-small" style="display:none;">Get solution</button>
+  <div id="hint_wrapper" style="display:none;">
+    <b>Hint:</b>
+    <div id="hint">{{problem.hint |safe}}</div>
+  </div>
+  <div id="solution_wrapper" style="display:none;">
+    <b>Solution:</b>
+    <div id="solution"><pre>{{problem.solution}}</pre></div>
+  </div>
+  <div id="test_cases" style="display:none;">
+    {{problem.test}}
+  </div>
+</div>
+{% endblock %}

@@ -211,6 +211,7 @@ class Quiz(db.Model):
 
   def to_dict(self):
     return {
+        'id': self.id,
         'name': self.name,
         'questions': map(lambda x: x.to_dict(), self.questions)
         }
@@ -222,7 +223,7 @@ class QuizQuestion(db.Model):
   solution = db.Column(db.String(100), nullable=False)
   quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'))
   def to_dict(self):
-    return {'question': self.question, 'answer_choices': self.answer_choices, 'solution': self.solution, 'quiz_id': self.quiz_id}
+    return {'id': self.id, 'question': self.question, 'answer_choices': self.answer_choices, 'solution': self.solution, 'quiz_id': self.quiz_id}
 
 class QuizResponse(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
@@ -232,20 +233,40 @@ class QuizResponse(db.Model):
 
 class PracticeProblemTemplate(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  problem_dir = db.Column(db.String(20), nullable=False)
+  problem_dir = db.Column(db.String(20), nullable=False, unique=True)
+  hint = db.Column(db.String(500), nullable=False)
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'problem_dir': self.problem_dir,
+      'hint': self.hint
+    }
 
 class PracticeProblem(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  template_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'), nullable=False)
+  template_problem_dir = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.problem_dir'), nullable=False)
   prompt = db.Column(db.String(500), nullable=False)
   expected = db.Column(db.String(500), nullable=False)
   solution = db.Column(db.String(500), nullable=False)
   test = db.Column(db.String(500), nullable=False)
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'template_problem_dir': self.template_problem_dir,
+      'prompt': self.prompt,
+      'expected': self.expected,
+      'solution': self.solution,
+      'test': self.test,
+    }
 
 class PracticeProblemSubmissions(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem.id'))
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  got_hint = db.Column(db.Boolean(), nullable=False)
+  correct = db.Column(db.Boolean(), nullable=False)
+  started = db.Column(db.Float(), nullable=False)
+  submitted = db.Column(db.DateTime(), nullable=False)
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
@@ -365,6 +386,19 @@ def practice(ex_id):
     return render_template('practice.html', ex=ex)
   else:
     return redirect('/practice/ex1')
+
+@app.route('/practice2/<int:ex_id>')
+def practice2(ex_id):
+  problem = PracticeProblem.query.get(ex_id).to_dict()
+  if problem is not None:
+    problem['hint'] = PracticeProblemTemplate.query.filter_by(problem_dir=problem['template_problem_dir'])[0].hint
+    return render_template('practice2.html', problem=problem)
+  else:
+    return redirect('/practice/1')
+
+@app.route('/practice/<int:ex_id>/submit')
+def submit_practice(ex_id):
+  pass
 
 @app.route('/workspace/')
 def workspace_home():
