@@ -440,7 +440,7 @@ Read through the "respond" function in chat_bot.py line by line. Make sure you u
 
 def add_week6():
   lesson6 = Lesson(name="Week6", link="week6")
-  lab6 = Assignment(name="HTML Lab", description="Complete the HTML Lab", points=5, deadline=datetime(2013,10,14,4,59))
+  lab6 = Assignment(name="HTML Lab", description="Complete the HTML Lab", points=5, deadline=datetime(2013,10,14,14,59))
   assignment6 = Assignment(name="Homework 6", description="Complete Lab 6 on lists and string manipulation", points=5, deadline=datetime(2013,10,20,23,59))
   db.session.add(lesson6)
   db.session.add(lab6)
@@ -454,7 +454,7 @@ def add_week6():
 
 def add_week7():
   lesson7 = Lesson(name="Week7", link="week7")
-  lab7 = Assignment(name="Lab 7", description="Complete Lab 7", points=5, deadline=datetime(2013,10,21,4,59))
+  lab7 = Assignment(name="Lab 7", description="Complete Lab 7", points=5, deadline=datetime(2013,10,21,14,59))
   db.session.add(lesson7)
   db.session.add(lab7)
   db.session.commit()
@@ -466,14 +466,14 @@ def add_week7():
 
 def add_week8():
   lesson8 = Lesson(name="Week8", link="week8")
-  lab8 = Assignment(name="Lab 8", description="Complete Lab 8", points=5, deadline=datetime(2013,10,28,4,59))
+  lab8 = Assignment(name="Lab 8", description="Complete Lab 8", points=5, deadline=datetime(2013,10,28,14,59))
   assignment8 = Assignment(name="Homework 8", description="Complete at least 5 out of the 7 dictionary exercises emailed to you each day this week", points=5, deadline=datetime(2013,11,3,23,59))
   db.session.add(lesson8)
   db.session.add(lab8)
   db.session.add(assignment8)
   db.session.commit()
   sublesson8 = Sublesson(name="Lecture 8", link="week8/lecture_8.pdf", lesson_id=lesson8.id)
-  week8 = Week(assignment=lab8.id, lesson=lesson8.id)
+  week8 = Week(assignment=assignment8.id, lesson=lesson8.id)
   db.session.add(sublesson8)
   db.session.add(week8)
   db.session.commit()
