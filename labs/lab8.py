@@ -33,7 +33,7 @@ for item in foods:
   groceries.write("\n") #this is the newline character!
 groceries.close()
 # Note that we are writing a `\n` character after each item. This is how we represent "newlines", which tell the computer or whatever is displaying the string when to start on the next line instead of continuing on the previous one. If we didn't write this to the file in between each food, our file would look like
-'appleslettucetomatoespoptarsmore poptarts'
+'appleslettucetomatoespoptartsmore poptarts'
 # which is pretty useless as a grocery list.
 
 # Now these features will let you write persistent programs - or programs which remember things in between each time they are run. You've learned about lists which let you store things sequentially, but sometimes you need a different structure to store your information. Let's take a look at dictionaries!
