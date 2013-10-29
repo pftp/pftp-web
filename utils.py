@@ -32,14 +32,14 @@ def replace_random_syntax(text, begin):
         text = text.replace(random_variable_name, 'REPLACED')
     return text, random_variable_name
 
-def fill_random_template_vars(prompt, solution, test, template_vars):
+def get_random_template_vars(prompt, solution, test, template_vars):
     text = prompt + '\n' + solution + '\n' + test
     while(True):
         replaced = False
         for random_type, values_list in random_type_to_values_list.items():
             text, random_variable_name = replace_random_syntax(text, '{{ ' + random_type + ':')
             if random_variable_name is not None:
-                template_vars[random_variable_name] = choice(values_list)
+                template_vars[random_variable_name] = [choice(values_list),]
                 replaced = True
                 break
         # gone through all of the possible random template tags and found nothing to replace
@@ -47,8 +47,16 @@ def fill_random_template_vars(prompt, solution, test, template_vars):
             break
     return template_vars
 
+def choose_nonrandom_template_vars(template_vars, specific_index):
+    for template_string, value in template_vars.items():
+        if len(value) != 1:
+            template_vars[template_string] = [value[specific_index]]
+    return template_vars
+
+
 def replace_template_vars(template, template_vars):
     for template_string, value in template_vars.items():
+        value = value[0]
         template = template.replace('{{ ' + template_string + ' }}', value if isinstance(value, str) or isinstance(value, unicode) else json.dumps(value))
     return template
 
@@ -59,7 +67,7 @@ def eval_template(template):
         template = template.replace('eval(((' + to_eval + ')))', str(evaluated_result))
     return template
 
-def get_expected(solution, test):
+def get_expected(solution, test=''):
     old_stdout = sys.stdout
     sys.stdout = StringIO()
     #create expected
@@ -69,10 +77,20 @@ def get_expected(solution, test):
     return expected
 
 
-def get_problem(problem):
-    problem['template_vars'] = fill_random_template_vars(problem['prompt'], problem['solution'], problem['test'], json.loads(problem['template_vars']))
+def get_problem(problem, fill_random=True):
+    specific_index = None
+    if fill_random:
+        problem['template_vars'] = json.loads(problem['template_vars'])
+        if len(problem['template_vars']) > 0:
+            specific_index = randint(0, len(problem['template_vars'].values()[0]) - 1)
+        problem['template_vars'] = get_random_template_vars(problem['prompt'], problem['solution'], problem['test'], problem['template_vars'])
+        problem['template_vars'] = choose_nonrandom_template_vars(problem['template_vars'], specific_index)
+    else:
+        problem['template_vars'] = json.loads(problem['template_vars'])
     problem['prompt'] = eval_template(replace_template_vars(problem['prompt'], problem['template_vars']))
     problem['solution'] = eval_template(replace_template_vars(problem['solution'], problem['template_vars']))
     problem['test'] = replace_template_vars(problem['test'], problem['template_vars'])
-    problem['expected'] = get_expected(problem['solution'], problem['test'])
+    problem['hint'] = replace_template_vars(problem['hint'], problem['template_vars'])
+    problem['expected_test'] = get_expected(problem['solution'], problem['test'])
+    problem['expected_no_test'] = get_expected(problem['solution'])
     return problem

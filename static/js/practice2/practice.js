@@ -75,19 +75,19 @@ $(function() {
     indentUnit: 4,
     mode: 'python'
   });
-
+  window.editor = editor;
   $('#practice_run_code').click(function(e) {
     var runObj, testObjs, correct,
       code = editor.getValue().replace(/\t/g, '    ');
     $('#practice_output').text('');
     runObj = runit(code);
-    testObjs = testit(code);
-    correct = testObjs.reduce(function(acc, testObj) {
-      return acc && testObj['correct'];
-    }, true);
-    if (correct) {
-      $('#next_exercise').show();
-    }
+    //testObjs = testit(code);
+    //correct = testObjs.reduce(function(acc, testObj) {
+    //  return acc && testObj['correct'];
+    //}, true);
+    //if (correct) {
+    //$('#next_exercise').show();
+    //}
   });
   $('#next_exercise').click(function(e) {
     window.location.href = $('#next_exercise').attr('href');
