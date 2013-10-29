@@ -17,7 +17,7 @@ Python Practice
 
 {% block content %}
 <div class="container">
-  <h3>{{problem.prompt}}</h3>
+  <h3>{{problem.prompt |safe}}</h3>
   <textarea id="practice_code" style="display:none;"></textarea>
   <div id="run_container">
     <button id="practice_run_code" class="btn btn-success">Run It!</button>
