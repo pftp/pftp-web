@@ -15,6 +15,7 @@ template_variables.json is in the form of {"variable_name1": ["value1, "value2",
 Template Syntax
 {{ variable_name }} must be in template_variables.json
 {{ random_int:variable_name }} will replace all instances of variable_name inside your code with the same random integer
+{{ random_small_int:variable_name }} will replace all instances of variable_name inside your code with the same random integer between 1 and 10
 {{ random_int_list:variable_name }}
 {{ random_string_list:variable_name }}
 {{ random_word:variable_name }}
