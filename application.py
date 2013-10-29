@@ -257,7 +257,8 @@ class PracticeProblemSubmissions(db.Model):
   problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'))
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
   code = db.Column(db.String(500), nullable=False)
-  results = db.Column(db.String(500), nullable=False)
+  result_test = db.Column(db.String(500), nullable=False)
+  result_no_test = db.Column(db.String(500), nullable=False)
   got_hint = db.Column(db.Boolean(), nullable=False)
   correct = db.Column(db.Boolean(), nullable=False)
   started = db.Column(db.DateTime(), nullable=False)
@@ -268,7 +269,8 @@ class PracticeProblemSubmissions(db.Model):
       'problem_id': self.problem_id,
       'user_id': self.user_id,
       'code': self.code,
-      'results': self.results,
+      'result_test': self.result_test,
+      'result_no_test': self.result_no_test,
       'got_hint': self.got_hint,
       'correct': self.correct,
       'started': self.started,
@@ -394,24 +396,45 @@ def practice(ex_id):
   else:
     return redirect('/practice/ex1')
 
-@app.route('/practice2/<int:ex_id>')
+@app.route('/practice2/<int:ex_id>/')
 def practice2(ex_id):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
-  print "q%03d" % ex_id
-  problem = PracticeProblemTemplate.query.filter_by(problem_dir="q004", is_current=True).first()
+  problem = PracticeProblemTemplate.query.filter_by(problem_dir="q%03d" % ex_id, is_current=True).first()
 
 
   if problem is not None:
     problem = get_problem(problem.to_dict())
-    print problem
+    problem['template_vars'] = json.dumps(problem['template_vars'])
     return render_template('practice2.html', problem=problem)
   else:
     return redirect('/practice2/1')
 
-@app.route('/practice/<int:ex_id>/submit')
+@app.route('/practice2/<int:ex_id>/submit/', methods=['POST'])
+@login_required
 def submit_practice(ex_id):
-  pass
+  code = request.form['code']
+  result_test = request.form['result_test']
+  result_no_test = request.form['result_no_test']
+  start_time = datetime.datetime.fromtimestamp(int(float(request.form['start_time'])))
+  submit_time = datetime.datetime.fromtimestamp(int(float(request.form['submit_time'])))
+  template_vars = request.form['template_vars']
+  problem = PracticeProblemTemplate.query.filter_by(problem_dir="q%03d" % ex_id, is_current=True).first().to_dict()
+  got_hint = True if request.form['got_hint'] == 'true' else False
+  problem['template_vars'] = template_vars
+  problem = get_problem(problem, fill_random=False)
+  correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
+  print 'start'
+  print problem['expected_test'], problem['expected_no_test']
+  print 'start'
+  print result_test, result_no_test
+  submission = PracticeProblemSubmissions(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time)
+  db.session.add(submission)
+  db.session.commit()
+  if correct:
+    return 'correct'
+  else:
+    return 'incorrect'
 
 @app.route('/workspace/')
 def workspace_home():

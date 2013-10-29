@@ -2,9 +2,6 @@ Files that allow template syntax
 prompt
 solution.py
 test.py
-
-
-Files that don't allow template syntax
 hint
 
 
