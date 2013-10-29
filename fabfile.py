@@ -276,7 +276,8 @@ def add_practice_problems():
   # convert all values to strings
   for p in practice_problems:
     for k, v in p.items():
-      p[k] = json.dumps(v)
+      if not isinstance(v, str) and not isinstance(v, unicode):
+        p[k] = json.dumps(v)
   count_add = 0
   count_update = 0
   for practice_problem in practice_problems:

@@ -7,7 +7,7 @@ from flask.ext.login import logout_user
 from flask_security.forms import RegisterForm, TextField, Required
 
 from termcolor import colored
-
+from utils import get_problem
 ################################################################################
 # Config
 ################################################################################
@@ -260,8 +260,20 @@ class PracticeProblemSubmissions(db.Model):
   results = db.Column(db.String(500), nullable=False)
   got_hint = db.Column(db.Boolean(), nullable=False)
   correct = db.Column(db.Boolean(), nullable=False)
-  started = db.Column(db.Float(), nullable=False)
+  started = db.Column(db.DateTime(), nullable=False)
   submitted = db.Column(db.DateTime(), nullable=False)
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'problem_id': self.problem_id,
+      'user_id': self.user_id,
+      'code': self.code,
+      'results': self.results,
+      'got_hint': self.got_hint,
+      'correct': self.correct,
+      'started': self.started,
+      'submitted': self.submitted
+    }
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
@@ -337,8 +349,8 @@ def lesson(lesson_path):
 
 @app.route('/quiz/<int:quiz_id>/')
 def quiz(quiz_id):
-  #if not current_user.is_authenticated():
-  #  return render_template('message.html', message='You need to log in first')
+  if not current_user.is_authenticated():
+    return render_template('message.html', message='You need to log in first')
   first_quiz = Quiz.query.filter(Quiz.week==quiz_id).first()
   questions = map(lambda x: x.__dict__, first_quiz.questions)
   for question in questions:
@@ -384,12 +396,18 @@ def practice(ex_id):
 
 @app.route('/practice2/<int:ex_id>')
 def practice2(ex_id):
-  problem = PracticeProblem.query.get(ex_id).to_dict()
+  if not current_user.is_authenticated():
+    return render_template('message.html', message='You need to log in first')
+  print "q%03d" % ex_id
+  problem = PracticeProblemTemplate.query.filter_by(problem_dir="q004", is_current=True).first()
+
+
   if problem is not None:
-    problem['hint'] = PracticeProblemTemplate.query.filter_by(problem_dir=problem['template_problem_dir'])[0].hint
+    problem = get_problem(problem.to_dict())
+    print problem
     return render_template('practice2.html', problem=problem)
   else:
-    return redirect('/practice/1')
+    return redirect('/practice2/1')
 
 @app.route('/practice/<int:ex_id>/submit')
 def submit_practice(ex_id):
