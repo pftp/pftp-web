@@ -233,36 +233,31 @@ class QuizResponse(db.Model):
 
 class PracticeProblemTemplate(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  problem_dir = db.Column(db.String(20), nullable=False, unique=True)
+  problem_dir = db.Column(db.String(20), nullable=False)
+  prompt = db.Column(db.String(500), nullable=False)
+  solution = db.Column(db.String(500), nullable=False)
+  test = db.Column(db.String(500), nullable=False)
   hint = db.Column(db.String(500), nullable=False)
+  template_vars = db.Column(db.String(500), nullable=False)
+  is_current = db.Column(db.Boolean(), nullable=False)
   def to_dict(self):
     return {
       'id': self.id,
       'problem_dir': self.problem_dir,
-      'hint': self.hint
-    }
-
-class PracticeProblem(db.Model):
-  id = db.Column(db.Integer(), primary_key=True)
-  template_problem_dir = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.problem_dir'), nullable=False)
-  prompt = db.Column(db.String(500), nullable=False)
-  expected = db.Column(db.String(500), nullable=False)
-  solution = db.Column(db.String(500), nullable=False)
-  test = db.Column(db.String(500), nullable=False)
-  def to_dict(self):
-    return {
-      'id': self.id,
-      'template_problem_dir': self.template_problem_dir,
       'prompt': self.prompt,
-      'expected': self.expected,
       'solution': self.solution,
       'test': self.test,
+      'hint': self.hint,
+      'template_vars': self.template_vars,
+      'is_current': self.is_current
     }
 
 class PracticeProblemSubmissions(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem.id'))
+  problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'))
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  code = db.Column(db.String(500), nullable=False)
+  results = db.Column(db.String(500), nullable=False)
   got_hint = db.Column(db.Boolean(), nullable=False)
   correct = db.Column(db.Boolean(), nullable=False)
   started = db.Column(db.Float(), nullable=False)

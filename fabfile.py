@@ -10,7 +10,7 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblem
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate
 
 ################################################################################
 # Tasks
@@ -273,13 +273,40 @@ def add_exercises():
 
 def add_practice_problems():
   practice_problems = json.load(open('practice/practice_problems.json', 'r'))
-  for practice_problems_for_template in practice_problems:
-    template = PracticeProblemTemplate(problem_dir=practice_problems_for_template[0]['problem_dir'], hint=practice_problems_for_template[0]['hint'])
-    db.session.add(template)
-    for practice_problem in practice_problems_for_template:
-      db.session.add(PracticeProblem(template_problem_dir=practice_problem['problem_dir'], prompt=practice_problem['prompt'], expected=practice_problem['expected'], solution=practice_problem['solution'], test=practice_problem['test']))
+  # convert all values to strings
+  for p in practice_problems:
+    for k, v in p.items():
+      p[k] = json.dumps(v)
+  count_add = 0
+  count_update = 0
+  for practice_problem in practice_problems:
+    new_template = PracticeProblemTemplate(problem_dir=practice_problem['problem_dir'], prompt=practice_problem['prompt'], solution=practice_problem['solution'], test=practice_problem['test'], hint=practice_problem['hint'], template_vars=practice_problem['template_vars'], is_current=True)
+    if PracticeProblemTemplate.query.filter_by(problem_dir=practice_problem['problem_dir']).filter_by(is_current=True).count() == 0:
+      db.session.add(new_template)
+      count_add += 1
+    else:
+      old_template = PracticeProblemTemplate.query.filter_by(problem_dir=practice_problem['problem_dir']).filter_by(is_current=True)[0]
+      add_new_template = False
+      # check if we need to completely scratch the old template and add a new template (the structure of the problem has changed)
+      for k in ['prompt', 'solution', 'test']:
+        if old_template.to_dict()[k] != new_template.to_dict()[k]:
+          add_new_template = True
+      if add_new_template:
+        db.session.add(new_template)
+        count_add += 1
+        old_template.is_current = False
+        continue
+      # update template variables and hint if they have been modified, since it doesn't change how the problem will actually be like
+      if old_template.template_vars != new_template.template_vars:
+        old_template.template_vars = new_template.template_vars
+        count_update += 1
+      if old_template.hint != new_template.hint:
+        old_template.hint = new_template.hint
+        count_update += 1
+
+
   db.session.commit()
-  print colored("%d practice problems added to database." % sum(map(len, practice_problems)), 'green')
+  print colored("%d practice problems added to database. %d problems updated with changed hint or template variables" % (count_add, count_update), 'green')
 
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
