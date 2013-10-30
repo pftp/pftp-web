@@ -263,6 +263,7 @@ class PracticeProblemSubmissions(db.Model):
   correct = db.Column(db.Boolean(), nullable=False)
   started = db.Column(db.DateTime(), nullable=False)
   submitted = db.Column(db.DateTime(), nullable=False)
+  template_vars = db.Column(db.String(500))
   def to_dict(self):
     return {
       'id': self.id,
@@ -274,7 +275,8 @@ class PracticeProblemSubmissions(db.Model):
       'got_hint': self.got_hint,
       'correct': self.correct,
       'started': self.started,
-      'submitted': self.submitted
+      'submitted': self.submitted,
+      'template_vars': self.template_vars
     }
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -424,11 +426,7 @@ def submit_practice(ex_id):
   problem['template_vars'] = template_vars
   problem = get_problem(problem, fill_random=False)
   correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
-  print 'start'
-  print problem['expected_test'], problem['expected_no_test']
-  print 'start'
-  print result_test, result_no_test
-  submission = PracticeProblemSubmissions(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time)
+  submission = PracticeProblemSubmissions(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=json.dumps(problem['template_vars']))
   db.session.add(submission)
   db.session.commit()
   if correct:
