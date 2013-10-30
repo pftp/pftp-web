@@ -19,7 +19,7 @@ random_type_to_values_list = {'random_int': RANDOM_INT, 'random_small_int': RAND
 
 for i in range(20):
     current = {}
-    for x in range(randint(3, 6)):
+    for x in range(randint(3, 8)):
         current[choice(RANDOM_WORD)]= randint(3, 10)
     RANDOM_S_I_DICTIONARY.append(current)
 
@@ -33,13 +33,20 @@ def replace_random_syntax(text, begin):
     return text, random_variable_name
 
 def get_random_template_vars(prompt, solution, test, template_vars):
+    chosen_vars = []
     text = prompt + '\n' + solution + '\n' + test
     while(True):
         replaced = False
         for random_type, values_list in random_type_to_values_list.items():
             text, random_variable_name = replace_random_syntax(text, '{{ ' + random_type + ':')
             if random_variable_name is not None:
-                template_vars[random_variable_name] = [choice(values_list),]
+                while True:
+                    # we want unique variables
+                    chosen_var = choice(values_list)
+                    if chosen_var not in chosen_vars:
+                        chosen_vars.append(chosen_var)
+                        template_vars[random_variable_name] = [chosen_var,]
+                        break
                 replaced = True
                 break
         # gone through all of the possible random template tags and found nothing to replace
