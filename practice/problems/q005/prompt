@@ -1,0 +1,1 @@
+Print the word '{{ random_word:w2 }}' {{ random_int:i1 }} times. Your code should not be longer than 4 lines.
