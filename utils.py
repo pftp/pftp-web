@@ -6,8 +6,8 @@ import json
 # e.g. if template vars contains the json {'to_print': ['hello', 'world']}, there will be two problems generated. the first problem will have {{ to_print }} be replaced with hello (no quotes, if you want quotes include it in solution/prompt/expected)
 # anything within eval((( anything inside here))) is autoevaluated and returned inside the solution and the result after the template variables are replaced. There will be a regular expression to evalute
 
-RANDOM_INT = range(1, 1000)
-RANDOM_SMALL_INT = range(1, 10)
+RANDOM_INT = range(4, 1000)
+RANDOM_SMALL_INT = range(4, 10)
 RANDOM_INT_LIST = [[randint(0, 20) for i in range(randint(5, 15)) for x in range(20)]]
 
 RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'ping-pong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
