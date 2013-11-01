@@ -1,0 +1,1 @@
+Write a function called first_word that takes in a sentence as the argument and returns the first word of the sentence. Then write the following line to test if your function works "print first_word('{{ random_sentence:s1 }}')".
