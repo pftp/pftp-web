@@ -1,3 +1,9 @@
 #run_container {
   margin: 10px 0;
 }
+
+.cm-tab {
+  background: url(/static/img/tab.png);
+  background-position: right;
+  background-repeat: no-repeat;
+}
