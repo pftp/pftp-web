@@ -73,7 +73,8 @@ $(function() {
     theme: 'cobalt',
     lineNumbers: true,
     indentUnit: 4,
-    mode: 'python'
+    mode: 'python',
+    extraKeys: {"Enter": false}
   });
 
   $('#practice_run_code').click(function(e) {

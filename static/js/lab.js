@@ -82,7 +82,8 @@ $(function() {
     theme: 'cobalt',
     lineNumbers: true,
     indentUnit: 4,
-    mode: 'python'
+    mode: 'python',
+    extraKeys: {"Enter": false}
   });
   $('#lab_run_code').click(function(e) {
     var code = editor.getValue().replace(/\t/g, '    ');

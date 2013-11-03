@@ -46,7 +46,8 @@ $(function() {
     theme: 'cobalt',
     lineNumbers: true,
     indentUnit: 4,
-    mode: 'python'
+    mode: 'python',
+    extraKeys: {"Enter": false}
   });
   $('#run_code').click(function(e) {
     var runObj, testObjs, correct,
