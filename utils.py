@@ -11,7 +11,7 @@ RANDOM_SMALL_INT = range(4, 10)
 RANDOM_INT_LIST = [[randint(0, 20) for i in range(randint(5, 15)) for x in range(20)]]
 
 RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'lu' 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'ping-pong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
-RANDOM_SENTENCE = ['i want it that way', 'breaking bad is awesome', 'terra nova is the best tv show', 'cows moo but chickens bawk', 'bunnies are cute', 'you are my fire my one desire', 'harry potter harry potter ron weasley', 'lol its frodo baggins', "im going to make him an offer her can't refuse", 'may the force be with you', "ill be back", 'mama always said life was like a box of chocolates', 'The best time to plant a tree was 20 years ago The second best time is now', 'mark twain once said something about lightning bugs and lightning']
+RANDOM_SENTENCE = ['i want it that way', 'breaking bad is awesome', 'terra nova is the best tv show', 'cows moo but chickens bawk', 'bunnies are cute', 'you are my fire my one desire', 'harry potter harry potter ron weasley', 'lol its frodo baggins', "im going to make him an offer he cant refuse", 'may the force be with you', "ill be back", 'mama always said life was like a box of chocolates', 'The best time to plant a tree was 20 years ago The second best time is now', 'mark twain once said something about lightning bugs and lightning']
 RANDOM_STRING_LIST = [x.split() for x in RANDOM_SENTENCE]
 RANDOM_S_I_DICTIONARY = []
 
