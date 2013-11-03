@@ -24,8 +24,7 @@ $(function() {
     var result_no_test = '';
     var result_test = '';
     var submit_time = new Date().getTime() / 1000;
-    runObj = {'input': code};
-    executeCode(runObj);
+    runObj = runit(code);
     if (runObj['output'] !== undefined) {
       result_no_test = runObj['output'];
     } else {
