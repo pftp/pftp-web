@@ -37,26 +37,30 @@ $(function() {
     } else {
         result_test = '';
     }
-    $.ajax({
-      type: 'POST',
-      url: 'submit/',
-      data: {
-        code: code,
-        result_test: result_test,
-        result_no_test: result_no_test,
-        start_time: start_time,
-        submit_time: submit_time,
-        got_hint: got_hint,
-        template_vars: template_vars
-      },
-      success: function(data) {
-        if (data == "correct") {
-          alert("Nice Job! You're done");
-        } else {
-          alert(data);
+    //only submit error free code
+    if (!runObj['error']) {
+      $.ajax({
+        type: 'POST',
+        url: 'submit/',
+        data: {
+          code: code,
+          result_test: result_test,
+          result_no_test: result_no_test,
+          start_time: start_time,
+          submit_time: submit_time,
+          got_hint: got_hint,
+          template_vars: template_vars
+        },
+        success: function(data) {
+          if (data == "correct") {
+            alert("Nice Job! You're done");
+          } else {
+            alert(data);
+          }
         }
-      }
-    });
+      });
+    } else
+      alert('oops theres an error in your code! ' + runObj['error']);
   });
 });
 
