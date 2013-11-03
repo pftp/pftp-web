@@ -27,9 +27,3 @@
 #fullscreen_col {
   background-color: rgba(255,255,255, 0.6);
 }
-
-.cm-tab {
-  background: url(/static/img/tab.png);
-  background-position: right;
-  background-repeat: no-repeat;
-}
