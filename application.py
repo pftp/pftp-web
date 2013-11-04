@@ -626,6 +626,10 @@ def submit_assignment():
 def cheatsheet():
   return render_template('cheatsheet.html')
 
+@app.route('/jscheatsheet.html')
+def cheatsheet():
+  return render_template('jscheatsheet.html')
+
 @app.route('/html_cheatsheet.html')
 def html_cheatsheet():
   return render_template('html_cheatsheet.html')

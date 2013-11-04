@@ -57,6 +57,10 @@ About
       </td>
       <td>
         <a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a>
+        {% if week.id == 9 %}
+        <a href="/static/assignments/html5_game_example.zip"}}> HTML5 Game Example </a><br>
+        <a href="/static/assignments/html5_game_skeleton.zip"}}> HTML5 Game Skeleton </a><br>
+        {% endif %}
       </td>
       <td>{{ week.assignment.deadline.strftime('%A, %B %d @ %I:%M%P') }}</td>
     </tr>
