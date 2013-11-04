@@ -36,6 +36,9 @@ About
         <a href="/static/assignments/tom_sawyer.txt"}}> tom_sawyer.txt </a>
         <br>
         {% endif %}
+	{% if week.id == 9 %}
+        <a href="/static/lectures/scraping.pdf"> Scraping Lecture </a>
+	{% endif %}
       </td>
       <td>
         {% if week.quiz is defined %}
@@ -55,6 +58,10 @@ About
 	<br>
 	{% endif %}
         <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a><br>
+	{% if week.id == 10%}
+	<a href="/static/assignments/twilio.html"}}> Twilio Example (Do this after Lab 9) </a>
+
+	{% endif %}
         {% if week.id == 9 %}
         <a href="/static/assignments/html5_game_example.zip"}}> HTML5 Game Example </a><br>
         <a href="/static/assignments/html5_game_skeleton.zip"}}> HTML5 Game Skeleton </a><br>
