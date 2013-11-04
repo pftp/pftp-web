@@ -62,6 +62,10 @@ def addweek8():
   add_week8()
 
 @task
+def addweek9():
+  add_week9()
+
+@task
 def adddecalrole():
   add_decal_role()
 
@@ -522,6 +526,17 @@ def add_week8():
   db.session.add(sublesson8)
   db.session.add(week8)
   db.session.commit()
+
+def add_week9():
+  lesson9 = Lesson(name="Week9", link="week9")
+  project1 = Assignment(name="Project", description="Start working on your project!", points=5, deadline=datetime(2013,11,17,14,59))
+  db.session.add(lesson9)
+  db.session.add(project1)
+  db.session.commit()
+  week9 = Week(assignment=project1.id, lesson=lesson9.id)
+  db.session.add(week9)
+  db.session.commit()
+
 
 def add_decal_role():
   decal_role = user_datastore.create_role(name="decal")
