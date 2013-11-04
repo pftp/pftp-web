@@ -627,7 +627,7 @@ def cheatsheet():
   return render_template('cheatsheet.html')
 
 @app.route('/jscheatsheet.html')
-def cheatsheet():
+def jscheatsheet():
   return render_template('jscheatsheet.html')
 
 @app.route('/html_cheatsheet.html')

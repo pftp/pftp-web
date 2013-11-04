@@ -11,7 +11,8 @@ About
 {% block content %}
 <div class="container">
 <h1> Class Calendar </h1>
-<a href="/cheatsheet.html"> Cheat Sheet for Python Syntax </a>
+<h4><a href="/cheatsheet.html"> Cheat Sheet for Python Syntax </a></h4>
+<h4><a href="/jscheatsheet.html"> Cheat Sheet for Javascript Syntax </a></h4>
 <table class="table table-bordered table-striped table-hover">
   <thead>
     <tr>
@@ -53,14 +54,14 @@ About
 	<a href="/static/assignments/scrape.html"}}> Scraping Lab </a>
 	<br>
 	{% endif %}
-        <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a>
-      </td>
-      <td>
-        <a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a>
+        <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a><br>
         {% if week.id == 9 %}
         <a href="/static/assignments/html5_game_example.zip"}}> HTML5 Game Example </a><br>
         <a href="/static/assignments/html5_game_skeleton.zip"}}> HTML5 Game Skeleton </a><br>
         {% endif %}
+      </td>
+      <td>
+        <a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a><br>
       </td>
       <td>{{ week.assignment.deadline.strftime('%A, %B %d @ %I:%M%P') }}</td>
     </tr>
