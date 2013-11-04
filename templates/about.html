@@ -34,6 +34,7 @@ About
         {% if week.id == 8%}
         <a href="/static/assignments/tom_sawyer.txt"}}> tom_sawyer.txt </a>
         <br>
+        <a href="/static/lectures/scraping.pdf"> Scraping Lecture </a>
         {% endif %}
       </td>
       <td>
@@ -54,6 +55,11 @@ About
 	<br>
 	{% endif %}
         <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a>
+	{% if week.id == 10%}
+	<br>
+	<a href="/static/assignments/twilio.html"}}> Twilio Example (Do this after Lab 9) </a>
+
+	{% endif %}
       </td>
       <td>
         <a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a>
