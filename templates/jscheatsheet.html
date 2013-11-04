@@ -1,0 +1,525 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span1"></div>
+      <div class="span10">
+	<center> <h1> JavaScript Cheat Sheet  </h1> </center>
+	<h4> <a href="#python_diffs">General Differences from Python</a> </h4>
+	<h4> <a href="#variables">Variables</a> </h4>
+	<h4> <a href="#if_statements">If Statements</a> </h4>
+	<h4> <a href="#arrays"> Arrays </a> </h4>
+	<h4> <a href="#objects"> Objects </a> </h4>
+	<h4> <a href="#for_loops">For Loops</a> </h4>
+	<h4> <a href="#while_loops">While Loops</a> </h4>
+	<h4> <a href="#functions">Functions</a> </h4>
+
+	<a id="python_diffs">&nbsp</a><br><br>
+	<h2> General Differences from Python </h2>
+  <div class="indent">
+    <ul>
+      <li>All statements must end with a semicolon</li>
+      <li>Use <code>//</code> instead of <code>#</code> for comments</li>
+      <li>Use <code>console.log('hello')</code> instead of <code>print 'hello'</code></li>
+      <li>The first (and only the first!) time we assign to a variable we have to write <code>var</code> before it to declare the variable</li>
+      <li>Use <code>===</code> and <code>!==</code> for equality comparisons instead of <code>==</code> and <code>!=</code></li>
+      <li>Use <code>{</code> and <code>}</code> to define code blocks instead of colons and indenting</li>
+      <li>Use <code>else if</code> instead of <code>elif</code></li>
+      <li><code>true</code> and <code>false</code> are lowercase instead of uppercase</li>
+      <li>Use <code>var foo = function(arg1, arg2) {</code> instead of <code>def foo(arg1, arg2):</code></li>
+      <li>We say 'array' instead of 'list' and 'object' instead of 'dictionary'</li>
+    </ul>
+  </div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="variables">&nbsp</a><br><br>
+	<h2>  Variables</h2>
+	<div class="indent">
+	  <h4> Assigning to a variable </h4>
+	  <b> Note: The first time we assign to a variable we have to declare the variable with the 'var' keyword. </b>
+<pre>> var a_string = "hello world";
+> console.log(a_string);
+hello world
+
+> var a_num = 23;
+> console.log(a_num);
+23
+
+> var a_string = "hello world";
+> console.log(a_string);
+> a_string = "goodbye world";
+> console.log(a_string);
+hello world
+goodbye world
+
+</pre>
+        <h4> Using a variable in place of a number or a string</h4>
+<pre>> 5 + 6;
+11
+
+> var x = 5;
+> console.log(x + 6);
+11
+
+> var a_string = "hello"
+> console.log(a_string + "world");
+helloworld
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="if_statements">&nbsp</a><br><br>
+	<h2> If Statements </h2>
+	<b>Note: When checking for equality use triple === instead of the single = we use for assignment </b> <br>
+	5 === 5 evalulates to true since 5 equals 5 <br>
+	5 === 6 evaluates to false since 5 does not equal 6<br>
+	x = 5 assigns 5 to x a single = sign means assignment<br>
+	5 !== 6 evaluates to true since 5 does not equal to 6 <br>
+	<div class="indent">
+	  <h4>Basic If Statement</h4>
+	  <pre>
+> if (5 === 5) {
+>    console.log('hello');
+> }
+hello
+
+> if (6 === 5) {
+>    console.log('hello');
+> }
+
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Basic If/Else Statement</h4>
+<pre>> if (6 === 5) {
+>   console.log('hello');
+> }
+
+
+> if (5 === 5) {
+>    console.log('5 equals 5');
+> } else {
+>    console.log('5 not equal to 5');
+> }
+5 equals 5
+
+> if (5 === 6) {
+>    console.log('5 equals 6');
+> } else {
+>    console.log('5 not equal to 6');
+> }
+5 not equal to 6
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>If, Else If, Else If, Else </h4>
+Checks each if, else if statement in order until finds one that's true and executes the body and skips the rest of else if/else cases. If none of the if/else if are satisfied, the body of the else executes.
+<pre>
+> if (5 > 6) {
+>    console.log('5 greater than 6');
+> } else if (5 === 6) {
+>    console.log('5 equal to 6');
+> } else if (5 < 6) {
+>    console.log('5 less than 6');
+> } else {
+>    console.log("it's all a lie");
+> }
+5 less than 6
+
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> If, If, If vs If, Else if, Else if</h4>
+	  Let's see what happens in each case by walking through the code. <br>
+	  If you use three if statements, they run independently from each other. If the first if is true, then we evaluate the body of the first if statement and check if the second if statement is true. If the second if statement is true we evaluate the body of the second if statement and then check if the third if is true. If the third if is true, we evaluate the body of the third if statement. <br>
+	  On the other hand, in the If/Else if/Else if case, we first check if the first if is true. If the first if is true, then we evaluate the body of the first if statement and then we complete the evaluation of the entire if/else if/else if block.
+<pre>
+> if ('hello'.indexOf('h') !== -1) {
+>    console.log('h is in hello');
+> }
+> if ('hello'.indexOf('e') !== -1) {
+>    console.log('e is in hello');
+> }
+> if ('hello'.indexOf('l') !== -1) {
+>    console.log('l is in hello');
+> }
+h is in hello
+e is in hello
+l in hello
+
+> if ('hello'.indexOf('h') !== -1) {
+>    console.log('h is in hello');
+> } else if ('hello'.indexOf('e') !== -1) {
+>    console.log('e is in hello');
+> } else if ('hello'.indexOf('l') !== -1) {
+>    console.log('l is in hello');
+> }
+h is in hello
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+
+	<a id="arrays">&nbsp</a><br><br>
+	<h2> Arrays </h2>
+	<div class="indent">
+	  <h4>Creating an array</h4>
+<pre>
+> var an_array = []; // creates an empty array
+> console.log(an_array);
+[]
+
+> var a_list = [1, 2, 3, 4]; // creates an array with numbers already inside
+> console.log(an_array);
+[1, 2, 3, 4]
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Adding elements to end of array</h4>
+<pre>
+> var an_array = [];
+> an_array.push(5);
+> an_array.push(4);
+> an_array.push(3);
+> an_array.push(2);
+> an_array.push(1);
+> an_array.push("BLAST OFF!");
+> console.log(an_array);
+[5, 4, 3, 2, 1, 'BLAST OFF!']
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Getting parts of an array</h4>
+<pre>
+> var an_array = ['hello', 'this', 'is', 'an', 'array'];
+> console.log(an_array[0]); // prints the first element of an_array
+> console.log(an_array[1]); // prints the second element of an_array
+> console.log(an_array[2]); // prints the third element of an_array
+> console.log(an_array.slice(0, 2)); // prints the first up to the third element of an_array (not including third element)
+> console.log(an_array.slice(2)); // prints all the elements from the third element of the array to the end of the list
+> console.log(an_array.slice(2, 4)); // prints the third up to the fifth element of an_array (not including the fifth element)
+hello
+this
+is
+['hello', 'this']
+['is', 'a', 'list']
+['is', 'a']
+</pre>
+	</div>
+	<div class="indent">
+	  <h4>Checking if an element is inside array</h4>
+<pre>
+> var array_of_ingredients = ['apples', 'strawberries', 'bananas', 'kiwis'];
+> console.log(array_of_ingredientes.indexOf('pineapples'));
+-1
+
+> var array_of_ingredients = ['apples', 'strawberries', 'bananas', 'kiwis'];
+> console.log(array_of_ingredients.indexOf('apples'));
+> console.log(array_of_ingredients.indexOf('bananas'));
+0
+2
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> Creating an array of arrays </h4>
+	  <pre>
+> var array_of_arrays = [];
+> var a_array = [1, 2, 3, 4, 5];
+> var another_array = [6, 7, 8, 9, 10];
+> var a_third_array = [11, 12, 13, 14, 15];
+> array_of_arrays.push(a_array);
+> array_of_arrays.push(another_array);
+> array_of_arrays.push(a_third_array);
+> console.log(array_of_arrays);
+[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15]]</pre>
+	  <h5> OR </h5>
+	  <pre>
+> var another_array_of_arrays = [['hello', 'this', 'is', 'gandalf'],['hi', 'gandalf']];
+> console.log(another_array_of_arrays);
+> console.log(another_array_of_arrays[0]);
+> console.log(another_array_of_arrays[0][1]);
+[['hello', 'this', 'is', 'gandalf'], ['hi', 'gandalf']]
+['hello', 'this', 'is', 'gandalf']
+this</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="objects">&nbsp</a><br><br>
+	<h2> Objects </h2>
+	<div class="indent">
+	  <h4>Creating an object</h4>
+	  <pre>
+> var empty_object = {};
+> console.log(empty_object);
+Object {}
+
+> var fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5};
+> console.log(fruit_prices);
+Object {orange: 1.5, strawberry: 0.5, banana: 0.5, apple: 1}</pre>
+	</div>
+	<div class="indent">
+	  <h4>Adding items to an object</h4>
+	  <pre>
+> var fruit_prices = {};
+> fruit_prices['banana'] = .5;
+> fruit_prices['apple'] = 1;
+> fruit_prices['strawberry'] = .5;
+> fruit_prices['orange'] = 1.50;
+> console.log(fruit_prices);
+Object {orange: 1.5, strawberry: 0.5, banana: 0.5, apple: 1} </pre>
+	</div>
+	<div class="indent">
+	  <h4>Looking up properties in an array</h4>
+<pre>
+> var fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5};
+> console.log(fruit_prices['banana']);
+0.5
+
+> var fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5};
+> console.log(fruit_prices['apple']);
+1
+
+> var fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5};
+> console.log(fruit_prices['orange']);
+> console.log(fruit_prices['strawberry']);
+1.5
+0.5</pre>
+	</div>
+	<div class="indent">
+	  <h4>Checking if property is in object</h4>
+<pre>
+> var fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5};
+> console.log('banana' in fruit_prices);
+true
+
+> var fruit_prices = {'banana' : .5, 'apple' : 1, 'orange' : 1.50, 'strawberry' : .5};
+> console.log('apple' in fruit_prices);
+> console.log('pineapple' in fruit_prices);
+true
+false </pre>
+	</div>
+	<div class="indent">
+	  <h4> Creating an array of objects </h4>
+	  <pre>
+> var fruit_prices = {'apple' : 1, 'pear' : .5, 'orange' : 1.5, 'banana' : .5};
+> var pet_prices = {'dog' : 500, 'giraffe' : 1000, 'kangaroo' : 1500, 'cat' : - 100};
+> var vegetable_prices = {'broccoli' : 1, 'celery' : 2, 'carrot' : 2, 'bittermelon' : - 1000};
+> var array_of_prices = [];
+> array_of_prices.push(fruit_prices)
+> array_of_prices.push(pet_prices)
+> array_of_prices.push(vegetable_prices)
+> console.log('All Prices:');
+> console.log(array_of_prices);
+> console.log('First Price Object:');
+> console.log(array_of_prices[0]);
+> console.log('First Price in First Price Object:');
+> console.log(array_of_prices[0]['orange']);
+All Prices:
+[Object {'orange': 1.5, 'pear': 0.5, 'apple': 1, 'banana': 0.5}, Object {'kangaroo': 1500, 'giraffe': 1000, 'dog': 500, 'cat': -100}, Object {'celery': 2, 'bittermelon': -1000, 'carrot': 2, 'broccoli': 1}]
+First Price Object:
+{'orange': 1.5, 'pear': 0.5, 'apple': 1, 'banana': 0.5}
+First Price in First Price Object:
+1.5</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="for_loops">&nbsp</a><br><br>
+	<h2> For Loops </h2>
+	<div class="indent">
+	  <h4>Looping over a range of numbers</h4>
+	  <pre>
+> for (var i = 0; i < 10; i++) {
+>    console.log(i);
+> }
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+> for (var i = 0; i < 10; i++) {
+>    console.log(i * i);
+> }
+0
+1
+4
+9
+16
+25
+36
+49
+64
+81</pre>
+	</div>
+	<div class="indent">
+	  <h4>Looping over an array. Printing out each element in an array one element on each line</h4>
+	  <pre>
+> var array_of_fruits = ['pineapple', 'banana', 'orange', 'strawberry'];
+> for (var i = 0; i < array_of_fruits.length; i++) {
+>    console.log(array_of_fruits[i]);
+> }
+pineapple
+banana
+orange
+strawberry</pre>
+	</div>
+	<div class="indent">
+	  <h4>Looping over an array of arrays</h4>
+	  <pre>
+> var array_of_arrays = [[1,2,3,4,5], [11, 12, 13, 14, 15], [21, 22, 23, 24, 25]];
+> for (var i = 0; i < array_of_arrays.length; i++) {
+>    var an_array = array_of_arrays[i];
+>    for (var j = 0; j < an_array.length; j++) {
+>       console.log(an_array[j]);
+>    }
+> }
+1
+2
+3
+4
+5
+11
+12
+13
+14
+15
+21
+22
+23
+24
+25
+</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="while_loops">&nbsp</a><br><br>
+	<h2> While Loops </h2>
+	<div class="indent">
+	  <h4>Basic While Loop</h4>
+	  <pre>
+> var x = 5;
+> while (x > 0) {
+>    console.log(x);
+>    x = x - 1;
+>    if (x === 0) {
+>       console.log('BLASTOFF!');
+>    }
+> }
+5
+4
+3
+2
+1
+BLASTOFF!</pre>
+	</div>
+	<div class="indent">
+	  <h4>Break</h4>
+	  <pre>
+> var x = 5;
+> while (true) {
+>    console.log(x);
+>    x = x - 1;
+>    if (x === 0) {
+>       console.log('BLASTOFF!');
+>       break
+>    }
+> }
+5
+4
+3
+2
+1
+BLASTOFF!</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<a id="functions">&nbsp</a><br><br>
+	<h2> Functions </h2>
+	<div class="indent">
+	  <h4>Creating a function with no arguments</h4>
+	  <pre>
+> var return_10 = function() {
+>    return 10;
+> };
+> console.log(return_10());
+10</pre>
+	</div>
+	<div class="indent">
+	  <h4>Creating a function with one argument</h4>
+	  <pre>
+> var multiply_by_10 = function(x) {
+>    return 10 * x;
+> };
+> console.log(multiply_by_10(10));
+> console.log(multiply_by_10(5));
+100
+50</pre>
+	</div>
+	<div class="indent">
+	  <h4>Creating a function with multiple arguments</h4>
+	  <pre>
+> var return_array_multiplied_by_x = function(an_array, x) {
+>    var new_array = [];
+>    for (var i = 0; i < an_array.length; i++) {
+>        new_array.push(an_array[i] * x);
+>    }
+>    return new_array;
+> };
+> console.log(return_array_multiplied_by_x([1,2,3,4,5], 5));
+> console.log(return_array_multiplied_by_x([1,2,3,4,5], 3));
+> console.log(return_array_multiplied_by_x([1,2,3,4,5], 2));
+[5, 10, 15, 20, 25]
+[3, 6, 9, 12, 15]
+[2, 4, 6, 8, 10]</pre>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+	<div class="indent">
+	  <h4> </h4>
+	</div>
+      </div>
+      <div class="span1"></div>
+    </div>
+  </div>
+{% endblock %}
