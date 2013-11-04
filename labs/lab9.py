@@ -4,7 +4,7 @@
 
 # First we need to install Flask. In your terminal, copy and paste the following command: `curl http://programmingfeelthepower.com/static/scripts/setup_flask.sh | sh`. You should see a bunch of stuff print out and then a message that says Flask was installed. Close your terminal and open a new one. If you can `import flask` from the Python interpreter without any errors, then Flask was installed successfully. If there are any errors, let us know!
 
-# Now download <a href="/static/zip/flask_tutorial.zip">flask_tutorial.zip</a> and unzip it into your home directory. When you enter flask_template, you'll see a file named `app.py`, and 2 folders named `static` and `templates`. To run the server which will let you see the website, run `python app.py`. Now you can visit <a href="http://127.0.0.1:5000">127.0.0.1:5000</a> to see your web app in action. 127.0.0.1 is a special url that is for servers which are running locally on your own computer.
+# Now download <a href="/static/zip/flask_tutorial.zip">flask_tutorial.zip</a> and unzip it into your home directory. When you enter flask_tutorial, you'll see a file named `app.py`, and 2 folders named `static` and `templates`. To run the server which will let you see the website, run `python app.py`. Now you can visit <a href="http://127.0.0.1:5000">127.0.0.1:5000</a> to see your web app in action. 127.0.0.1 is a special url that is for servers which are running locally on your own computer.
 # If you see a 'Yay first web app' message, then you have successfully run your first web app!
 
 # If you take a look inside `app.py`, you'll see the following code:
