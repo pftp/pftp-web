@@ -1,0 +1,18 @@
+### prompt
+Create an empty dictionary called <b> word_counts </b>  and add the key '{{ random_word:w1 }}' to value {{ random_int:i1 }} and the key '{{ random_word:w2 }}' to value {{ random_int:i2 }}. Then write <b>print word_counts['{{ random_word:w2 }}']</b> which will look up the value of '{{ random_word:w2 }}'in the dictionary word_counts.
+### solution
+word_counts = {}
+word_counts['{{ random_word:w1 }}'] = {{ random_int:i1 }}
+word_counts['{{ random_word:w2 }}'] = {{ random_int:i2 }}
+print word_counts['{{ random_word:w2 }}']
+
+### test
+print word_counts['{{ random_word:w1 }}']
+
+### hint
+Look at<a href="/cheatsheet.html"> this cheatsheet </a> to find information about how to create dictionaries and set a key to a value in a dictionary.
+<br>
+Did you remember to set '{{ random_word:w1 }}' to {{ random_int:i1 }}? We're checking it...
+### template_vars
+{}
+

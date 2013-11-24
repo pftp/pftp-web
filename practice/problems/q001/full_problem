@@ -1,0 +1,16 @@
+### prompt
+Print the string "{{ to_print }}"
+### solution
+print "{{ to_print }}"
+
+### test
+# pass
+
+### hint
+The syntax to print the string "lol" is
+<pre>print "lol"
+</pre>
+
+### template_vars
+{"to_print": ["hello", "i like chicken", "apples taste good", "mmm chocolate!"]}
+
