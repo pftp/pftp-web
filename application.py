@@ -7,7 +7,7 @@ from flask.ext.login import logout_user
 from flask_security.forms import RegisterForm, TextField, Required
 
 from termcolor import colored
-from utils import get_problem
+from utils import get_template_vars, get_problem
 ################################################################################
 # Config
 ################################################################################
@@ -404,10 +404,10 @@ def practice2(ex_id):
     return render_template('message.html', message='You need to log in first')
   problem = PracticeProblemTemplate.query.filter_by(problem_dir="q%03d" % ex_id, is_current=True).first()
 
-
   if problem is not None:
-    problem = get_problem(problem.to_dict())
-    problem['template_vars'] = json.dumps(problem['template_vars'])
+    problem = problem.to_dict()
+    problem['template_vars'] = get_template_vars(problem['template_vars'])
+    problem = get_problem(problem)
     return render_template('practice2.html', problem=problem)
   else:
     return redirect('/practice2/1')
@@ -424,9 +424,9 @@ def submit_practice(ex_id):
   problem = PracticeProblemTemplate.query.filter_by(problem_dir="q%03d" % ex_id, is_current=True).first().to_dict()
   got_hint = True if request.form['got_hint'] == 'true' else False
   problem['template_vars'] = template_vars
-  problem = get_problem(problem, fill_random=False)
+  problem = get_problem(problem)
   correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
-  submission = PracticeProblemSubmissions(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=json.dumps(problem['template_vars']))
+  submission = PracticeProblemSubmissions(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'])
   db.session.add(submission)
   db.session.commit()
   if correct:

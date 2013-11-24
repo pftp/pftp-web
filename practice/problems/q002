@@ -17,5 +17,7 @@ The syntax for the function add_5 is
 </pre>
 
 ### template_vars
-{"x": ["2", "3", "4", "5"]}
+res = {
+  'x': rand_int(2, 20)
+}
 

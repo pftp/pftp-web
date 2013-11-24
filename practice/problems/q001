@@ -12,5 +12,7 @@ The syntax to print the string "lol" is
 </pre>
 
 ### template_vars
-{"to_print": ["hello", "i like chicken", "apples taste good", "mmm chocolate!"]}
+res = {
+  'to_print': rand_choice(['hello', 'i like chicken', 'apples taste good', 'mmm chocolate!'])
+}
 
