@@ -1,1 +1,0 @@
-Create an empty dictionary called <b> word_counts </b>  and add the key '{{ random_word:w1 }}' to value {{ random_int:i1 }} and the key '{{ random_word:w2 }}' to value {{ random_int:i2 }}. Then write <b>print word_counts['{{ random_word:w2 }}']</b> which will look up the value of '{{ random_word:w2 }}'in the dictionary word_counts.
