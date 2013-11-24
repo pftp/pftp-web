@@ -1,9 +1,13 @@
-import turtle
+import turtle, sys
+import time as tm
 winston = turtle.Turtle()
 winston.speed(0)
+print tm.now()
 
-colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+print new_colors
 def color(i):
+  colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+  new_colors = [color[1:] for color in colors]
   return colors[i % len(colors)]
 
 def triangle(size):
@@ -17,3 +21,4 @@ for i in range(300, 1, -5):
   winston.pencolor(color(i))
   winston.fillcolor(color(i))
   triangle(i)
+
