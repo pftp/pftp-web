@@ -1,0 +1,29 @@
+### prompt
+Given a list of words, write a function called get_word_counts(list_of_words) that returns a dictionary of the word counts of the list of words. Ex: get_word_counts(["hello", "my", "name", "is", "joe", "hello", "joe"]) will return {"hello": 2, "my": 1, "name": 1, "is": 1, "joe": 2}. Then execute the line 'print get_word_counts({{ random_string_list:x }})'.
+### solution
+def get_word_counts(list_of_words):
+    word_counts = {}
+    for word in list_of_words:
+        if word not in word_counts:
+            word_counts[word] = 0
+        word_counts[word] += 1
+    return word_counts
+
+### test
+print get_word_counts(['hello', 'my', 'name', 'is', 'joe'])
+print get_word_counts(['joe', 'joe', 'joe', 'joe'])
+print get_word_counts(['hello', 'hello', 'my', 'my', 'name', 'name', 'is', 'is', 'joe', 'joe'])
+
+### hint
+The syntax for the function create_entry_for_each_word is below. This function creates an entry in the dictoinary for each word and has word: True for each word in the list.
+<pre>def create_entry_for_each_word(list_of_words):
+  words = {}
+  for word in list_of_words:
+    if word not in words:
+      words[word] = True
+  return words
+</pre>
+
+### template_vars
+res = {}
+

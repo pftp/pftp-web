@@ -5,25 +5,30 @@ import json
 import sys
 PARENT_PROBLEM_DIR = 'problems'
 def read_problem(problem_dir):
-    problem_path = PARENT_PROBLEM_DIR + '/' + problem_dir
-    prompt = open(problem_path + '/prompt', 'r').read()
-    #expected = open(problem_path + '/expected', 'r').read()
-    solution = open(problem_path + '/solution.py', 'r').read()
-    test= open(problem_path + '/test.py', 'r').read()
-    hint = open(problem_path + '/hint', 'r').read()
-    if os.path.isfile(problem_path + '/template_vars.json'):
-        template_vars = json.load(open(problem_path + '/template_vars.json', 'r'))
+  problem_path = PARENT_PROBLEM_DIR + '/' + problem_name
+  problem_file = open(problem_path, 'r')
+  current_key = ''
+  current_val = ''
+  res = {'problem_dir': problem_name.strip()}
+  for line in problem_file.readlines():
+    if line[:3] == '###':
+      if (current_key != ''):
+        res[current_key] = current_val.strip()
+      current_key = line[3:].strip()
+      current_val = ''
     else:
-        template_vars = {}
-    return {'prompt': prompt.strip(), 'solution': solution.strip(), 'test': test.strip(), 'hint': hint.strip(), 'template_vars': template_vars, 'problem_dir': problem_dir.strip()}
-
+      current_val += line
+  if (current_key != ''):
+    res[current_key] = current_val.strip()
+  problem_file.close()
+  return res
 
 
 """ load the problems """
-problem_dirs = os.listdir(PARENT_PROBLEM_DIR)
+problem_names = os.listdir(PARENT_PROBLEM_DIR)
 all_problems = []
-for problem_dir in problem_dirs:
-    all_problems.append(read_problem(problem_dir))
+for problem_name in problem_names:
+  all_problems.append(read_problem(problem_name))
 
 practice_problems = open('practice_problems.json', 'w')
 practice_problems.write(json.dumps(all_problems))

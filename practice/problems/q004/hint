@@ -1,3 +1,0 @@
-Look at<a href="/cheatsheet.html"> this cheatsheet </a> to find information about how to create dictionaries and set a key to a value in a dictionary.
-<br>
-Did you remember to set '{{ random_word:w1 }}' to {{ random_int:i1 }}? We're checking it...

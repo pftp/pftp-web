@@ -1,9 +1,0 @@
-Look at<a href="/cheatsheet.html"> this cheatsheet </a> and read about string manipulation (in particular the split method)!
-<br>
-To help you get started, below is a function called double that takes in one argument a and returns a * 2.
-<pre>
-def double(a):
-   return a * 2
-</pre>
-<br>
-Make sure you aren't printing anything extra or else we won't be able to validate your answer.

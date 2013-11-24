@@ -1,0 +1,23 @@
+### prompt
+Define a function multiply_by_{{ x }}(num) that takes in one number as input and returns the number multiplied by {{ x }}
+### solution
+def multiply_by_{{ x }}(num):
+    return num * {{ x }}
+
+### test
+print multiply_by_{{ x }}(5)
+print multiply_by_{{ x }}(10)
+print multiply_by_{{ x }}(12)
+print multiply_by_{{ x }}(3)
+
+### hint
+The syntax for the function add_5 is
+<pre>def add(num):
+  return num + 5
+</pre>
+
+### template_vars
+res = {
+  'x': rand_int(2, 20)
+}
+
