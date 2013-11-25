@@ -10,61 +10,6 @@ Python Practice
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/practice2/practice.js')}}"></script>
-<script type="text/javascript">
-$(function() {
-  var start_time = new Date().getTime() / 1000;
-  var got_hint = false;
-  $('#show_hint').click(function(e) {
-    got_hint = true;
-  });
-  $('#practice_run_code').click(function(e) {
-    var template_vars = $('#template_vars').text().trim();
-    var test_code = $('#test_cases').text().trim();
-    var code = window.editor.getValue().replace(/\t/g, '   ');
-    var result_no_test = '';
-    var result_test = '';
-    var submit_time = new Date().getTime() / 1000;
-    runObj = runit(code);
-    if (runObj['output'] !== undefined) {
-      result_no_test = runObj['output'];
-    } else {
-        result_no_test = '';
-    }
-    testObj = {'input': code + '\n' + test_code};
-    executeCode(testObj);
-    if (testObj['output'] !== undefined) {
-      result_test = testObj['output'];
-    } else {
-        result_test = '';
-    }
-    //only submit error free code
-    if (!runObj['error']) {
-      $.ajax({
-        type: 'POST',
-        url: 'submit/',
-        data: {
-          code: code,
-          result_test: result_test,
-          result_no_test: result_no_test,
-          start_time: start_time,
-          submit_time: submit_time,
-          got_hint: got_hint,
-          template_vars: template_vars
-        },
-        success: function(data) {
-          if (data == "correct") {
-            alert("Nice Job! You're done");
-          } else {
-            alert(data);
-          }
-        }
-      });
-    } else
-      alert('oops theres an error in your code! ' + runObj['error']);
-  });
-});
-
-</script>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice.css')}}" />
@@ -85,17 +30,14 @@ $(function() {
     <div id="hint">{{problem.hint |safe}}</div>
   </div>
 
-
-  <div id="solution_wrapper" style="display:none;">
-    <b>Solution:</b>
-    <div id="solution"><pre>{{problem.solution}}</pre></div>
-  </div>
-
   <div id="template_vars" style="display:none;">
     {{problem.template_vars}}
   </div>
   <div id="test_cases" style="display:none;">
     {{problem.test}}
+  </div>
+  <div id="concept_names" style="display:none;">
+    {{problem.concept_names}}
   </div>
 </div>
 {% endblock %}

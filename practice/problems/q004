@@ -13,7 +13,7 @@ print word_counts['{{ w1 }}']
 Look at<a href="/cheatsheet.html"> this cheatsheet </a> to find information about how to create dictionaries and set a key to a value in a dictionary.
 <br>
 Did you remember to set '{{ w1 }}' to {{ i1 }}? We're checking it...
-### template_vars
+### gen_template_vars
 res = {
   'w1': rand_word(),
   'w2': rand_word(),

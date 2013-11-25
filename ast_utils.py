@@ -1,4 +1,4 @@
-# USAGE: python get_concepts.py <python_file>
+# USAGE: python ast_utils.py <python_file>
 # Prints a list of all relevant concepts from python_file by traversing its ast
 
 import sys, ast
@@ -64,11 +64,16 @@ class FuncVisitor(ast.NodeVisitor):
         if func_name not in self.concepts:
           self.concepts.append(func_name)
 
-f = open(sys.argv[1])
-x = ast.parse(f.read())
-f.close()
-cv = ConceptVisitor()
-cv.visit(x)
-fv = FuncVisitor(cv.user_defs, cv.modules)
-fv.visit(x)
-print cv.concepts + fv.concepts
+def get_concepts(src_str):
+  src_ast = ast.parse(src_str)
+  cv = ConceptVisitor()
+  cv.visit(src_ast)
+  fv = FuncVisitor(cv.user_defs, cv.modules)
+  fv.visit(src_ast)
+  return cv.concepts + fv.concepts
+
+if __name__ == '__main__':
+  f = open(sys.argv[1])
+  x = f.read()
+  f.close()
+  print get_concepts(x)
