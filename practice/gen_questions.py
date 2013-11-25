@@ -4,12 +4,12 @@ import os.path
 import json
 import sys
 PARENT_PROBLEM_DIR = 'problems'
-def read_problem(problem_dir):
+def read_problem(problem_name):
   problem_path = PARENT_PROBLEM_DIR + '/' + problem_name
   problem_file = open(problem_path, 'r')
   current_key = ''
   current_val = ''
-  res = {'problem_dir': problem_name.strip()}
+  res = {'problem_name': problem_name.strip()}
   for line in problem_file.readlines():
     if line[:3] == '###':
       if (current_key != ''):

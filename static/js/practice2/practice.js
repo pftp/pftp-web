@@ -27,45 +27,20 @@ var executeCode = function(execObj) {
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code};
+  var runObj = {'input': code}, outText = '';
   executeCode(runObj);
   if (runObj['output'] !== undefined) {
-    $('#practice_output').text(runObj['output']);
-  } else {
-    $('#practice_output').text(runObj['error']);
+    outText += runObj['output'];
   }
+  if (runObj['error'] !== undefined) {
+    outText += runObj['error'];
+  }
+  $('#practice_output').text(outText);
   return runObj;
 };
-var testit = function(code) {
-  var testCases, testCase, testObj, runLines, testResult, testObjs = [];
-  testCases = JSON.parse($('#test_cases').text());
-  for (testCase in testCases) {
-    if (testCases.hasOwnProperty(testCase)) {
-      testObj = {};
-      if (testCase !== '') {
-        testObj['input'] = code + '\nprint\nprint repr(' + testCase + ')';
-      } else {
-        testObj['input'] = code;
-      }
-      testObj['expected'] = testCases[testCase];
-      executeCode(testObj);
-      if (testObj['output'] !== undefined) {
-        if (testCase !== '') {
-          runLines = testObj['output'].split('\n');
-          testObj['output'] = runLines[runLines.length - 2];
-        }
-        testResult = testObj['output'];
-      } else {
-        testResult = testObj['error'];
-      }
-      testObj['correct'] = (testObj['expected'] === testResult) ? 1 : 0;
-      testObjs.push(testObj);
-    }
-  }
-  return testObjs;
-};
 $(function() {
-  var editor, execObj, execHistory = [];
+  var editor, execObj, execHistory = [], got_hint = false,
+    start_time = new Date().getTime() / 1000;
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'practice_output';
   editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
@@ -78,17 +53,60 @@ $(function() {
   });
   window.editor = editor;
   $('#practice_run_code').click(function(e) {
-    var runObj, testObjs, correct,
-      code = editor.getValue().replace(/\t/g, '    ');
+    var runObj, testObjs, correct, template_vars, test_code, code,
+      result_no_test, result_test, result_no_test_error, result_test_error,
+      submit_time;
+    template_vars = $('#template_vars').text().trim();
+    test_code = $('#test_cases').text().trim();
+    concept_names = $('#concept_names').text().trim();
+    code = editor.getValue().replace(/\t/g, '    ');
+    result_no_test = '';
+    result_no_test_error = false;
+    result_test = '';
+    result_test_error = false;
+    submit_time = new Date().getTime() / 1000;
+
     $('#practice_output').text('');
     runObj = runit(code);
-    //testObjs = testit(code);
-    //correct = testObjs.reduce(function(acc, testObj) {
-    //  return acc && testObj['correct'];
-    //}, true);
-    //if (correct) {
-    //$('#next_exercise').show();
-    //}
+    if (runObj['output'] !== undefined) {
+      result_no_test += runObj['output'];
+    }
+    if (runObj['error'] !== undefined) {
+      result_no_test += runObj['error'];
+      result_no_test_error = true;
+    }
+    testObj = {'input': code + '\n' + test_code};
+    executeCode(testObj);
+    if (testObj['output'] !== undefined) {
+      result_test += testObj['output'];
+    }
+    if (testObj['error'] !== undefined) {
+      result_test += testObj['error'];
+      result_test_error = true;
+    }
+    $.ajax({
+      type: 'POST',
+      url: 'submit/',
+      data: {
+        code: code,
+        result_test: result_test,
+        result_test_error: result_test_error,
+        result_no_test: result_no_test,
+        result_no_test_error: result_no_test_error,
+        start_time: start_time,
+        submit_time: submit_time,
+        got_hint: got_hint,
+        template_vars: template_vars,
+        concept_names: concept_names
+      },
+      success: function(data) {
+        if (data == "correct") {
+          alert("Nice Job! You're done");
+        } else {
+          alert(data);
+        }
+      }
+    });
   });
   $('#next_exercise').click(function(e) {
     window.location.href = $('#next_exercise').attr('href');

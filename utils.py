@@ -23,6 +23,9 @@ def rand_word():
 def rand_sentence():
   return choice(RANDOM_SENTENCE)
 
+def rand_string_list():
+  return choice(RANDOM_SENTENCE).split()
+
 def rand_sidict():
   return choice(RANDOM_S_I_DICTIONARY)
 

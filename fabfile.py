@@ -10,7 +10,8 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept
+import utils, ast_utils
 
 ################################################################################
 # Tasks
@@ -284,13 +285,28 @@ def add_practice_problems():
         p[k] = json.dumps(v)
   count_add = 0
   count_update = 0
-  for practice_problem in practice_problems:
-    new_template = PracticeProblemTemplate(problem_dir=practice_problem['problem_dir'], prompt=practice_problem['prompt'], solution=practice_problem['solution'], test=practice_problem['test'], hint=practice_problem['hint'], template_vars=practice_problem['template_vars'], is_current=True)
-    if PracticeProblemTemplate.query.filter_by(problem_dir=practice_problem['problem_dir']).filter_by(is_current=True).count() == 0:
+  for problem in practice_problems:
+    # Get concepts by traversing the ast of the problem's solution
+    pt = problem.copy()
+    pt['template_vars'] = utils.get_template_vars(pt['gen_template_vars'])
+    pt = utils.get_problem(pt)
+    concept_names = ast_utils.get_concepts(pt['solution'])
+    concepts = []
+    for concept_name in concept_names:
+      concept = PracticeProblemConcept.query.filter_by(name=concept_name).first()
+      if concept == None:
+        concept = PracticeProblemConcept(name=concept_name)
+        db.session.add(concept)
+        db.session.commit()
+      concepts.append(concept)
+
+    # Create a new template
+    new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
+    if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True).count() == 0:
       db.session.add(new_template)
       count_add += 1
     else:
-      old_template = PracticeProblemTemplate.query.filter_by(problem_dir=practice_problem['problem_dir']).filter_by(is_current=True)[0]
+      old_template = PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True)[0]
       add_new_template = False
       # check if we need to completely scratch the old template and add a new template (the structure of the problem has changed)
       for k in ['prompt', 'solution', 'test']:
@@ -301,14 +317,15 @@ def add_practice_problems():
         count_add += 1
         old_template.is_current = False
         continue
-      # update template variables and hint if they have been modified, since it doesn't change how the problem will actually be like
-      if old_template.template_vars != new_template.template_vars:
-        old_template.template_vars = new_template.template_vars
-        count_update += 1
-      if old_template.hint != new_template.hint:
-        old_template.hint = new_template.hint
-        count_update += 1
-
+      # update template variables, hint if they have been modified
+      # we don't need to readd our template in this case
+      count_update_updated = False
+      for field_name in ['gen_template_vars', 'hint']:
+        if getattr(old_template, field_name) != getattr(new_template, field_name):
+          setattr(old_template, field_name, getattr(new_template, field_name))
+          if not count_update_updated:
+            count_update += 1
+            count_update_updated = True
 
   db.session.commit()
   print colored("%d practice problems added to database. %d problems updated with changed hint or template variables" % (count_add, count_update), 'green')

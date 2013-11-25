@@ -1,5 +1,5 @@
 ### prompt
-Given a list of words, write a function called get_word_counts(list_of_words) that returns a dictionary of the word counts of the list of words. Ex: get_word_counts(["hello", "my", "name", "is", "joe", "hello", "joe"]) will return {"hello": 2, "my": 1, "name": 1, "is": 1, "joe": 2}. Then execute the line 'print get_word_counts({{ random_string_list:x }})'.
+Given a list of words, write a function called get_word_counts(list_of_words) that returns a dictionary of the word counts of the list of words. Ex: get_word_counts(["hello", "my", "name", "is", "joe", "hello", "joe"]) will return {"hello": 2, "my": 1, "name": 1, "is": 1, "joe": 2}. Then execute the line 'print get_word_counts({{ x }})'.
 ### solution
 def get_word_counts(list_of_words):
     word_counts = {}
@@ -8,6 +8,8 @@ def get_word_counts(list_of_words):
             word_counts[word] = 0
         word_counts[word] += 1
     return word_counts
+
+print get_word_counts({{ x }})
 
 ### test
 print get_word_counts(['hello', 'my', 'name', 'is', 'joe'])
@@ -24,6 +26,8 @@ The syntax for the function create_entry_for_each_word is below. This function c
   return words
 </pre>
 
-### template_vars
-res = {}
+### gen_template_vars
+res = {
+  'x': rand_string_list()
+}
 

@@ -11,7 +11,7 @@ The syntax to print the string "lol" is
 <pre>print "lol"
 </pre>
 
-### template_vars
+### gen_template_vars
 res = {
   'to_print': rand_choice(['hello', 'i like chicken', 'apples taste good', 'mmm chocolate!'])
 }

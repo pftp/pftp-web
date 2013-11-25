@@ -6,8 +6,8 @@ from flask.ext.security.signals import user_registered
 from flask.ext.login import logout_user
 from flask_security.forms import RegisterForm, TextField, Required
 
-from termcolor import colored
-from utils import get_template_vars, get_problem
+import utils
+import ast_utils
 ################################################################################
 # Config
 ################################################################################
@@ -231,53 +231,75 @@ class QuizResponse(db.Model):
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
   user_answer = db.Column(db.String(100), nullable=False)
 
+templates_concepts = db.Table('templates_concepts',
+    db.Column('practice_problem_template_id', db.Integer(), db.ForeignKey('practice_problem_template.id')),
+    db.Column('practice_problem_concept_id', db.Integer(), db.ForeignKey('practice_problem_concept.id')))
+
 class PracticeProblemTemplate(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  problem_dir = db.Column(db.String(20), nullable=False)
-  prompt = db.Column(db.String(500), nullable=False)
-  solution = db.Column(db.String(500), nullable=False)
-  test = db.Column(db.String(500), nullable=False)
-  hint = db.Column(db.String(500), nullable=False)
-  template_vars = db.Column(db.String(500), nullable=False)
+  problem_name = db.Column(db.Text(), nullable=False)
+  prompt = db.Column(db.Text(), nullable=False)
+  solution = db.Column(db.Text(), nullable=False)
+  test = db.Column(db.Text(), nullable=False)
+  hint = db.Column(db.Text(), nullable=False)
+  gen_template_vars = db.Column(db.Text(), nullable=False)
+  concepts = db.relationship('PracticeProblemConcept', secondary=templates_concepts,
+      backref=db.backref('practice_problem_template', lazy='dynamic'), lazy='dynamic')
   is_current = db.Column(db.Boolean(), nullable=False)
   def to_dict(self):
     return {
       'id': self.id,
-      'problem_dir': self.problem_dir,
+      'problem_name': self.problem_name,
       'prompt': self.prompt,
       'solution': self.solution,
       'test': self.test,
       'hint': self.hint,
-      'template_vars': self.template_vars,
+      'gen_template_vars': self.gen_template_vars,
+      'concepts': self.concepts,
       'is_current': self.is_current
     }
 
-class PracticeProblemSubmissions(db.Model):
+submissions_concepts = db.Table('submissions_concepts',
+    db.Column('practice_problem_submission_id', db.Integer(), db.ForeignKey('practice_problem_submission.id')),
+    db.Column('practice_problem_concept_id', db.Integer(), db.ForeignKey('practice_problem_concept.id')))
+
+class PracticeProblemSubmission(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
-  problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'))
-  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
-  code = db.Column(db.String(500), nullable=False)
-  result_test = db.Column(db.String(500), nullable=False)
-  result_no_test = db.Column(db.String(500), nullable=False)
+  code = db.Column(db.Text(), nullable=False)
+  result_test = db.Column(db.Text(), nullable=False)
+  result_test_error = db.Column(db.Boolean(), nullable=False)
+  result_no_test = db.Column(db.Text(), nullable=False)
+  result_no_test_error = db.Column(db.Boolean(), nullable=False)
   got_hint = db.Column(db.Boolean(), nullable=False)
   correct = db.Column(db.Boolean(), nullable=False)
   started = db.Column(db.DateTime(), nullable=False)
   submitted = db.Column(db.DateTime(), nullable=False)
-  template_vars = db.Column(db.String(500))
+  template_vars = db.Column(db.Text(), nullable=False)
+  problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'), nullable=False)
+  user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  concepts = db.relationship('PracticeProblemConcept', secondary=submissions_concepts,
+      backref=db.backref('practice_problem_submission', lazy='dynamic'), lazy='dynamic')
   def to_dict(self):
     return {
       'id': self.id,
-      'problem_id': self.problem_id,
-      'user_id': self.user_id,
       'code': self.code,
       'result_test': self.result_test,
+      'result_test_error': self.result_test_error,
       'result_no_test': self.result_no_test,
+      'result_no_test_error': self.result_no_test_error,
       'got_hint': self.got_hint,
       'correct': self.correct,
       'started': self.started,
       'submitted': self.submitted,
-      'template_vars': self.template_vars
+      'template_vars': self.template_vars,
+      'problem_id': self.problem_id,
+      'user_id': self.user_id,
+      'concepts': self.concepts
     }
+
+class PracticeProblemConcept(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  name = db.Column(db.Text(), nullable=False)
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
@@ -402,12 +424,25 @@ def practice(ex_id):
 def practice2(ex_id):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
-  problem = PracticeProblemTemplate.query.filter_by(problem_dir="q%03d" % ex_id, is_current=True).first()
+  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name="q%03d" % ex_id, is_current=True).first()
 
-  if problem is not None:
-    problem = problem.to_dict()
-    problem['template_vars'] = get_template_vars(problem['template_vars'])
-    problem = get_problem(problem)
+  if problem_obj is not None:
+    problem = problem_obj.to_dict()
+    problem['template_vars'] = utils.get_template_vars(problem['gen_template_vars'])
+    problem = utils.get_problem(problem)
+    concept_names = ast_utils.get_concepts(problem['solution'])
+    problem['concept_names'] = json.dumps(concept_names)
+    # Remove from our problem template any concepts which are not found in this
+    # random version of it
+    concepts = problem['concepts'].all()
+    edited = False
+    for i in range(len(concepts)-1, -1, -1):
+      if concepts[i].name not in concept_names:
+        del concepts[i]
+        edited = True
+    if edited:
+      problem_obj.concepts = concepts
+      db.session.commit()
     return render_template('practice2.html', problem=problem)
   else:
     return redirect('/practice2/1')
@@ -418,19 +453,32 @@ def submit_practice(ex_id):
   code = request.form['code']
   result_test = request.form['result_test']
   result_no_test = request.form['result_no_test']
+  result_test_error = 1 if request.form['result_test_error'] == 'true' else 0
+  result_no_test_error = 1 if request.form['result_no_test_error'] == 'true' else 0
   start_time = datetime.datetime.fromtimestamp(int(float(request.form['start_time'])))
   submit_time = datetime.datetime.fromtimestamp(int(float(request.form['submit_time'])))
   template_vars = request.form['template_vars']
-  problem = PracticeProblemTemplate.query.filter_by(problem_dir="q%03d" % ex_id, is_current=True).first().to_dict()
+  concept_names = json.loads(request.form['concept_names'])
+  concepts = []
+  for concept_name in concept_names:
+    concept = PracticeProblemConcept.query.filter_by(name=concept_name).first()
+    if concept == None:
+      concept = PracticeProblemConcept(name=concept_name)
+      db.session.add(concept)
+      db.session.commit()
+    concepts.append(concept)
+  problem = PracticeProblemTemplate.query.filter_by(problem_name="q%03d" % ex_id, is_current=True).first().to_dict()
   got_hint = True if request.form['got_hint'] == 'true' else False
   problem['template_vars'] = template_vars
-  problem = get_problem(problem)
+  problem = utils.get_problem(problem)
   correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
-  submission = PracticeProblemSubmissions(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'])
+  submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
   db.session.commit()
   if correct:
     return 'correct'
+  elif result_no_test_error:
+    return 'oops you have an error in your code:\n' + result_no_test
   else:
     return 'incorrect'
 
