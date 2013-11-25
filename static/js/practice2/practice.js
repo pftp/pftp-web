@@ -51,7 +51,6 @@ $(function() {
     mode: 'python',
     extraKeys: {"Enter": false}
   });
-  window.editor = editor;
   $('#practice_run_code').click(function(e) {
     var runObj, testObjs, correct, template_vars, test_code, code,
       result_no_test, result_test, result_no_test_error, result_test_error,
