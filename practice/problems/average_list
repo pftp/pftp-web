@@ -1,0 +1,28 @@
+### prompt
+Write a function called average_list that takes a nonempty list of integers as
+an argument and returns their average (aka the mean).
+
+### solution
+def average_list(lst):
+  sum = 0
+  for num in lst:
+    sum += num
+  return float(sum) / len(lst)
+
+### test
+print average_list([23])
+print average_list({{ x }})
+
+### hint
+Here's code for the average_three function which takes a three integers as an
+argument and returns their average:
+<pre>
+def average_three(x, y, z):
+  return float(x + y + z) / 3
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(100)
+}
+

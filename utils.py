@@ -5,13 +5,6 @@ import json
 
 RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'lu' 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'ping-pong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
 RANDOM_SENTENCE = ['i want it that way', 'breaking bad is awesome', 'terra nova is the best tv show', 'cows moo but chickens bawk', 'bunnies are cute', 'you are my fire my one desire', 'harry potter harry potter ron weasley', 'lol its frodo baggins', "im going to make him an offer he cant refuse", 'may the force be with you', "ill be back", 'mama always said life was like a box of chocolates', 'The best time to plant a tree was 20 years ago The second best time is now', 'mark twain once said something about lightning bugs and lightning']
-RANDOM_S_I_DICTIONARY = []
-for i in range(20):
-    current = {}
-    for x in range(randint(3, 8)):
-        current[choice(RANDOM_WORD)]= randint(3, 10)
-    RANDOM_S_I_DICTIONARY.append(current)
-
 
 # These functions may be used in template generation code in problem files
 rand_choice = choice
@@ -33,7 +26,10 @@ def rand_int_list(lst_len):
   return res
 
 def rand_sidict():
-  return choice(RANDOM_S_I_DICTIONARY)
+  res = {}
+  for i in range(20):
+    res[choice(RANDOM_WORD)] = randint(-100, 100)
+  return res
 
 def nth(n):
   nth = str(n)

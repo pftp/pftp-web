@@ -1,0 +1,25 @@
+### prompt
+Write a function called add_three that takes three numbers as arguments and
+returns their sum.
+
+### solution
+def add_three(x, y, z):
+  return x + y + z
+
+### test
+for i in range(-100, 100):
+  for j in range(-100, 100):
+    for k in range(-100, 100):
+      print add_three(i, j, k)
+
+### hint
+Here's code for the add_two function which takes two integers as
+arguments and returns their sum:
+<pre>
+def add_two(x, y):
+  return x + y
+</pre>
+
+### gen_template_vars
+res = {}
+
