@@ -1,0 +1,45 @@
+### prompt
+Write a function called index_of that takes two arguments lst and x, where lst
+is a list of integers and x is an integer, and returns the first index of x
+in lst. If x is not in lst index_of should return -1. For example,
+index_of([-4, 3, 47, 0], 47) should return 2.
+
+### solution
+def index_of(lst, x):
+  idx = -1
+  for i, num in enumerate(lst):
+    if num == x:
+      idx = i
+      break
+  return idx
+
+### test
+print index_of([], 2)
+print index_of([23], 23)
+print index_of([23], 5)
+print index_of({{ x }}, {{ n }})
+
+### hint
+Here's code for the index_of_23 function which takes a list of integers as
+an argument and returns the index of the first 23 it finds:
+<pre>
+def index_of_23(lst):
+  idx = -1
+  for i, num in enumerate(lst):
+    if num == 23:
+      idx = i
+      break
+  return idx
+</pre>
+
+### gen_template_vars
+x = rand_int_list(100)
+i = rand_int(10, 90)
+n = rand_int(-50, 50)
+x[i] = n
+x[i+5] = n
+res = {
+  'x' : rand_int_list(100),
+  'n' : n
+}
+

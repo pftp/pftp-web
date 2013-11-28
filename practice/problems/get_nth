@@ -1,0 +1,34 @@
+### prompt
+Write a function called get_{{ nth }} that takes a list as an
+argument and returns its {{ nth }} element. If the list is less than {{ n }}
+items long, get_{{ nth }} should return None.
+
+### solution
+def get_{{ nth }}(lst):
+  if {{ n }} > len(lst):
+    return None
+  return lst[{{ n }}-1]
+
+### test
+print get_{{ nth }}([])
+print get_{{ nth }}([23])
+print get_{{ nth }}({{ x }})
+
+### hint
+Here's code for the get_first function which takes a list as
+an argument and returns the first element:
+<pre>
+def get_first(lst):
+  return lst[0]
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 50)
+res = {
+  'x' : rand_int_list(100),
+  'y' : rand_int_list(n-1),
+  'z' : rand_int_list(n),
+  'n' : n,
+  'nth' : nth(n)
+}
+

@@ -1,0 +1,31 @@
+### prompt
+Print the sum of the first {{ n }} multiples of {{ x }}.
+
+### solution
+sum = 0
+x = 0
+for i in range({{ n }}):
+  x += {{ x }}
+  sum += x
+print sum
+
+### test
+# pass
+
+### hint
+To help you get started, here's how to print the sum of the first 100 integers:
+<pre>
+sum = 0
+x = 0
+for i in range(100):
+  x += 1
+  sum += x
+print sum
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(3, 9),
+  'n': rand_int(100, 1000)
+}
+

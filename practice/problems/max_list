@@ -1,0 +1,33 @@
+### prompt
+Write a function called max_list that takes a non-empty list of integers as an
+argument and returns the maximum number in the list.
+
+### solution
+def max_list(lst):
+  max_num = -float('inf')
+  for num in lst:
+    if num > max_num:
+      max_num = num
+  return max_num
+
+### test
+print max_list([23])
+print max_list({{ x }})
+
+### hint
+Here's code for the min_list function which takes a list of integers as an
+argument and returns their minimum:
+<pre>
+def min_list(lst):
+  min_num = float('inf')
+  for num in lst:
+    if num < min_num:
+      min_num = num
+  return min_num
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(100)
+}
+

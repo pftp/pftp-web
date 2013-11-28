@@ -1,0 +1,23 @@
+### prompt
+Write a function called is_prime that takes an integer as an argument and
+returns True if and only if it is prime.
+### solution
+def is_prime(x):
+  if x == 1:
+    return False
+  for i in range(2, x):
+    if x % i == 0:
+      return False
+  return True
+
+### test
+for i in range(1, 1000):
+  print is_prime(i)
+
+### hint
+Remember that 1 is not a prime number! Otherwise, a number is prime
+if its only factors are 1 and itself.
+
+### gen_template_vars
+res = {}
+

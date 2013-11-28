@@ -1,0 +1,25 @@
+### prompt
+Write a function called is_factor that takes two integers x, y as arguments and
+returns True if and only if x is a factor of y (that is, x divides y evenly with
+no remainder).
+
+### solution
+def is_factor(x, y):
+  return y % x == 0
+
+### test
+for i in range(1, 1000):
+  for j in range(1, 1000):
+    print is_factor(i, j)
+
+### hint
+Here's code for an is_even function which takes an integer x and returns True if
+and only if 2 is a factor of x:
+<pre>
+def is_even(x):
+  return x % 2 == 0
+</pre>
+
+### gen_template_vars
+res = {}
+

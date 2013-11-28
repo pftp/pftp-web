@@ -420,11 +420,11 @@ def practice(ex_id):
   else:
     return redirect('/practice/ex1')
 
-@app.route('/practice2/<int:ex_id>/')
-def practice2(ex_id):
+@app.route('/practice2/<problem_name>/')
+def practice2(problem_name):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
-  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name="q%03d" % ex_id, is_current=True).first()
+  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
 
   if problem_obj is not None:
     problem = problem_obj.to_dict()
@@ -445,11 +445,11 @@ def practice2(ex_id):
       db.session.commit()
     return render_template('practice2.html', problem=problem)
   else:
-    return redirect('/practice2/1')
+    return redirect('/practice2/q001')
 
-@app.route('/practice2/<int:ex_id>/submit/', methods=['POST'])
+@app.route('/practice2/<problem_name>/submit/', methods=['POST'])
 @login_required
-def submit_practice(ex_id):
+def submit_practice(problem_name):
   code = request.form['code']
   result_test = request.form['result_test']
   result_no_test = request.form['result_no_test']
@@ -467,7 +467,7 @@ def submit_practice(ex_id):
       db.session.add(concept)
       db.session.commit()
     concepts.append(concept)
-  problem = PracticeProblemTemplate.query.filter_by(problem_name="q%03d" % ex_id, is_current=True).first().to_dict()
+  problem = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first().to_dict()
   got_hint = True if request.form['got_hint'] == 'true' else False
   problem['template_vars'] = template_vars
   problem = utils.get_problem(problem)
