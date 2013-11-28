@@ -2,12 +2,13 @@ import turtle, sys
 import time as tm
 winston = turtle.Turtle()
 winston.speed(0)
-print tm.now()
 
-print new_colors
+print tm.time()
+print "hello".split('l')
 def color(i):
   colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
   new_colors = [color[1:] for color in colors]
+  print new_colors
   return colors[i % len(colors)]
 
 def triangle(size):
