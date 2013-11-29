@@ -33,11 +33,11 @@ def rand_sidict():
 
 def nth(n):
   nth = str(n)
-  if nth[-1] == '1' and nth[-2] != '1':
+  if nth[-1] == '1' and (len(nth) < 2 or nth[-2] != '1'):
     nth += 'st'
-  elif nth[-1] == '2' and nth[-2] != '1':
+  elif nth[-1] == '2' and (len(nth) < 2 or nth[-2] != '1'):
     nth += 'nd'
-  elif nth[-1] == '3' and nth[-2] != '1':
+  elif nth[-1] == '3' and (len(nth) < 2 or nth[-2] != '1'):
     nth += 'rd'
   else:
     nth += 'th'
