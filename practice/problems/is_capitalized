@@ -1,5 +1,6 @@
 ### prompt
-Write a function called is_capitalized that takes a string as an argument and returns True if and only if it starts with a capital letter.
+Write a function called is_capitalized that takes a string as its argument and
+returns True if and only if it starts with a capital letter.
 
 ### solution
 def is_capitalized(s):

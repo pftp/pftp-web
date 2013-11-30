@@ -27,13 +27,13 @@ def is_backwards(x, y):
 </pre>
 
 ### gen_template_vars
-x = rand_word_list(20)
-for i, word in enumerate(x):
+x = rand_string_list(20)
+for i, s in enumerate(x):
   if random() < 0.5:
     ch = ''
     if random() < 0.5:
       ch = rand_char()
-    x[i] = word + ch + word[::-1]
+    x[i] = s + ch + s[::-1]
 res = {
   'x' : x
 }

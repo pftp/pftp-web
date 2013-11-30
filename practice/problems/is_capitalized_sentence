@@ -1,0 +1,35 @@
+### prompt
+Write a function called is_capitalized_sentence that takes a sentence string as
+its argument and returns True if and only if every one of its words (separated
+by spaces) starts with a capital letter.
+
+### solution
+def is_capitalized_sentence(s):
+  word_list = s.split()
+  for word in word_list:
+    if word[0] not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+      return False
+  return True
+
+### test
+for x in {{ xs }}:
+  print is_capitalized_sentence(x)
+
+### hint
+Here's code for is_lowercase_sentence which takes a sentence string as its
+argument and returns True if and only if every one of its wordsstarts with a
+lowercase letter:
+<pre>
+def is_lowercase_sentence(s):
+  word_list = s.split()
+  for word in word_list:
+    if word[0] not in 'abcdefghijklmnopqrstuvwxyz':
+      return False
+  return True
+</pre>
+
+### gen_template_vars
+res = {
+  'xs': rand_sentence_list(20)
+}
+

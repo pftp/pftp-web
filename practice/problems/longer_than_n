@@ -1,5 +1,6 @@
 ### prompt
-Write a function called longer_than_{{ n }} that takes a string as its argument and returns True if and only if it has more than {{ n }} characters.
+Write a function called longer_than_{{ n }} that takes a string as its argument
+and returns True if and only if it has more than {{ n }} characters.
 
 ### solution
 def longer_than_{{ n }}(s):

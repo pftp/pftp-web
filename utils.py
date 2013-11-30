@@ -3,14 +3,14 @@ import sys
 from random import random, randint, choice
 import json
 
-RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'lu' 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'ping-pong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
+RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'lu' 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'pingpong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
 RANDOM_SENTENCE = ['i want it that way', 'breaking bad is awesome', 'terra nova is the best tv show', 'cows moo but chickens bawk', 'bunnies are cute', 'you are my fire my one desire', 'harry potter harry potter ron weasley', 'lol its frodo baggins', "im going to make him an offer he cant refuse", 'may the force be with you', "ill be back", 'mama always said life was like a box of chocolates', 'The best time to plant a tree was 20 years ago The second best time is now', 'mark twain once said something about lightning bugs and lightning']
 
 # These functions may be used in template generation code in problem files
 rand_choice = choice
 rand_int = randint
 
-def rand_char():
+def rand_letter():
   ascii_val = 0
   if random() < 0.5:
     ascii_val = randint(65, 90)
@@ -18,11 +18,21 @@ def rand_char():
     ascii_val = randint(97, 122)
   return chr(ascii_val)
 
+def rand_char():
+  return chr(randint(32, 126))
+
 def rand_word():
   return choice(RANDOM_WORD)
 
 def rand_sentence():
   return choice(RANDOM_SENTENCE)
+
+def rand_string():
+  res = rand_sentence()
+  for i in range(rand_int(0, 5)):
+    idx = rand_int(0, len(res)-1)
+    res = res[:idx] + rand_char() + res[idx:]
+  return res
 
 def rand_word_list(n):
   res = []
@@ -40,6 +50,12 @@ def rand_sentence_list(n):
   res = []
   for i in range(n):
     res.append(rand_sentence())
+  return res
+
+def rand_string_list(n):
+  res = []
+  for i in range(n):
+    res.append(rand_string())
   return res
 
 def rand_int_list(n):

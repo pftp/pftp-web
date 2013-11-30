@@ -19,7 +19,7 @@ def not_contains_H(s):
 </pre>
 
 ### gen_template_vars
-x = rand_char()
+x = rand_letter()
 y = rand_word_list(20)
 for i, word in enumerate(y):
   if random() < 0.5:

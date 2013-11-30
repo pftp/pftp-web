@@ -1,0 +1,58 @@
+### prompt
+Write a function called capitalize_every_{{ nth }}_letter that takes a string as
+its argument and returns a new version of it with every {{ nth }} letter in it
+capitalized, starting with the first letter. Any non-letter characters should
+remain unchanged and should not be counted when determining every {{ nth }}
+letter.
+
+### solution
+def capitalize_every_{{ nth }}_letter(s):
+  res = ''
+  count = 0
+  alphabet = 'abcdefghijklmnopqrstuvwxyz'
+  for char in s:
+    if char in alphabet or char in alphabet.upper():
+      if count % {{ n }} == 0:
+        res += char.upper()
+      else:
+        res += char
+      count += 1
+    else:
+      res += char
+  return res
+
+### test
+print capitalize_every_{{ nth }}_letter('')
+for x in {{ xs }}:
+  print capitalize_every_{{ nth }}_letter(x)
+
+### hint
+Here's code for lowercase_every_3rd_letter which takes a string as its
+argument and returns a new version of it with every 3rd letter
+lowercase, starting with the first letter, and ignoring non-letter characters
+when counting:
+<pre>
+def lowercase_every_3rd_letter(s):
+  res = ''
+  count = 0
+  alphabet = 'abcdefghijklmnopqrstuvwxyz'
+  for char in s:
+    if char in alphabet or char in alphabet.upper():
+      if count % 3 == 0:
+        res += char.lower()
+      else:
+        res += char
+      count += 1
+    else:
+      res += char
+  return res
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 5)
+res = {
+  'xs': rand_string_list(20),
+  'n': n,
+  'nth': nth(n)
+}
+
