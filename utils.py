@@ -30,16 +30,16 @@ def rand_word_list(n):
     res.append(rand_word())
   return res
 
-def rand_sentence_list(n):
-  res = []
-  for i in range(n):
-    res.append(rand_sentence())
-  return res
-
 def rand_word_list_list(n):
   res = []
   for i in range(n):
     res.append(rand_word_list(randint(1, 10)))
+  return res
+
+def rand_sentence_list(n):
+  res = []
+  for i in range(n):
+    res.append(rand_sentence())
   return res
 
 def rand_int_list(n):
@@ -47,6 +47,13 @@ def rand_int_list(n):
   for i in range(n):
     res.append(randint(-100, 100))
   return res
+
+def rand_int_list_list(n):
+  res = []
+  for i in range(n):
+    res.append(rand_int_list(randint(1, 10)))
+  return res
+
 
 def rand_sidict():
   res = {}

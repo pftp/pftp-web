@@ -1,0 +1,30 @@
+### prompt
+Write a function called reverse_sentence that takes a sentence string as its argument and returns a new string with all the same words (separated by spaces) in reverse order that they appeared in the original string. You may assume all words are separated by a single space, and the setnence does not begin or end with any spaces.
+
+### solution
+def reverse_sentence(s):
+  word_list = s.split()
+  reverse_word_list = word_list[::-1]
+  return ' '.join(reverse_word_list)
+
+### test
+print reverse_sentence('')
+for s in {{ x }}:
+  print reverse_sentence(s)
+
+### hint
+Here's code for the every_other_word function that takes a string as its
+argument returns a new string made out of every other word of the string,
+using 'extended slices' in Python:
+<pre>
+def every_other_word(s):
+  word_list = s.split()
+  every_other_word_list = word_list[::2]
+  return ' '.join(every_other_word_list)
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_sentence_list(20)
+}
+

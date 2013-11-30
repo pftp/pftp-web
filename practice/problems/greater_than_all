@@ -1,0 +1,38 @@
+### prompt
+Write a function called greater_than_all(lst, x) that takes a list of integers lst and an integer x as arguments and returns True if and only if x is greater than every integer in lst.
+
+### solution
+def greater_than_all(lst, x):
+  for num in lst:
+    if x <= num:
+      return False
+  return True
+
+### test
+for x in {{ xs }}:
+  for lst in {{ lsts }}:
+    print greater_than_all(lst, x)
+
+### hint
+Here's code for less_than_all(x, y) that takes a list of integers lst and an
+integer x as arguments and returns True if and only if x is less than every
+integer in lst:
+<pre>
+def less_than_all(lst, x):
+  for num in lst:
+    if x >= num:
+      return False
+  return True
+</pre>
+
+### gen_template_vars
+xs = rand_int_list(20)
+lsts = rand_int_list_list(20)
+for i, lst in enumerate(lsts):
+  if random() < 0.5:
+    xs[i] = max(lst) + 1
+res = {
+  'xs': xs,
+  'lsts' : lsts
+}
+

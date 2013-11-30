@@ -1,0 +1,32 @@
+### prompt
+Write a function called prefix_suffix_{{ n }}(x, y) that takes two strings x, y as arguments and returns True if and only if the first {{ n }} characters of x are exactly the same as the last {{ n }} characters of y.
+
+### solution
+def prefix_suffix_{{ n }}(x, y):
+  return x[:{{ n }}] == y[-{{ n }}:]
+
+### test
+for x in {{ xs }}:
+  for y in {{ ys }}:
+    print prefix_suffix_{{ n }}(x, y)
+
+### hint
+Here's code for suffix_suffix_3(x, y) which takes two strings x, y as arguments and returns True if and only if the last 3 character of x and y are exactly the same:
+<pre>
+def suffix_suffix_3(x, y):
+  return x[-3:] == y[-3:]
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 10)
+xs = rand_word_list(20)
+ys = rand_word_list(20)
+for i, word in enumerate(ys):
+  if random() < 0.5:
+    xs[i] = word[-n:] + xs[i][n:]
+res = {
+  'n': n,
+  'xs': xs,
+  'ys': ys
+}
+

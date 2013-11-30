@@ -1,0 +1,26 @@
+### prompt
+Write a function called reverse_string that takes a string as its argument and returns the same string in reverse.
+
+### solution
+def reverse_string(s):
+  return s[::-1]
+
+### test
+print reverse_string('')
+for s in {{ x }}:
+  print reverse_string(s)
+
+### hint
+Here's code for the every_other_char function that takes a string as its
+argument returns the string made out of every other character of the string,
+using 'extended slices' in Python:
+<pre>
+def every_other_char(s):
+  return s[::2]
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word_list(20)
+}
+

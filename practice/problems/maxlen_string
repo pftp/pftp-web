@@ -1,0 +1,37 @@
+### prompt
+Write a function called maxlen_string(x, y, z) that takes three strings x, y, z as arguments and returns the string with maximum length between them. If two strings have the same length, prioritize returning x over y and y over z.
+
+### solution
+def maxlen_string(x, y, z):
+  if len(x) >= len(y):
+    if len(z) > len(x):
+      return z
+    return x
+  elif len(z) > len(y):
+    return z
+  return y
+
+### test
+for i in {{ x }}:
+  for j in {{ x }}:
+    for k in {{ x }}:
+      print maxlen_string(i, j, k)
+
+### hint
+Here's code for minlen_string(x, y, z) which takes three strings x, y, z as arguments and returns the string with maximum length between them:
+<pre>
+def minlen_string(x, y, z):
+  if len(x) <= len(y):
+    if len(z) < len(x):
+      return z
+    return x
+  elif len(z) < len(y):
+    return z
+  return y
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word_list(20)
+}
+

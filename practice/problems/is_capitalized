@@ -1,0 +1,29 @@
+### prompt
+Write a function called is_capitalized that takes a string as an argument and returns True if and only if it starts with a capital letter.
+
+### solution
+def is_capitalized(s):
+  return len(s) > 0 and s[0] in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+### test
+print is_capitalized('')
+for x in {{ xs }}:
+  print is_capitalized(x)
+
+### hint
+Here's code for is_lowercase(s): which takes a string as its argument and
+returns True if and only if it starts with a lowercase letter:
+<pre>
+def is_lowercase(s):
+  return len(s) > 0 and s[0] in 'abcdefghijklmnopqrstuvwxyz'
+</pre>
+
+### gen_template_vars
+xs = rand_word_list(20)
+for x in xs:
+  if random() < 0.5:
+    x = x[0].upper() + x[1:]
+res = {
+  'xs': xs
+}
+
