@@ -1,0 +1,32 @@
+### prompt
+Write a function called get_{{ nth }}_char that takes a string as an argument and returns its {{ nth }} character. If the string is less than {{ n }} characters long, get_{{ nth }}_char should return None.
+
+### solution
+def get_{{ nth }}_char(s):
+  if len(s) < {{ n }}:
+    return None
+  return s[{{ n }}-1]
+
+### test
+print get_{{ nth }}_char('')
+for s in {{ x }}:
+  print get_{{ nth }}_char(s)
+
+### hint
+Here's code for the get_first_char function which takes a string as
+an argument and returns its first character:
+<pre>
+def get_first(s):
+  if len(s) < 1:
+    return None
+  return s[0]
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 10)
+res = {
+  'x' : rand_sentence_list(10),
+  'n' : n,
+  'nth' : nth(n)
+}
+

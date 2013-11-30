@@ -1,0 +1,25 @@
+### prompt
+Write a function called make_sentence that takes a list of strings (words) as an argument and returns the string created by concatenating all the words with spaces in between.
+
+### solution
+def make_sentence(lst):
+  return ' '.join(lst)
+
+### test
+for lst in {{ x }}:
+  print make_sentence(lst)
+
+### hint
+Here's code for the make_csv function which takes list of strings as an argument
+and returns the string created by concatenating all the strings with commas in
+between:
+<pre>
+def make_csv(lst):
+  return ','.join(lst)
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_word_list_list(10)
+}
+
