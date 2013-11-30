@@ -1,6 +1,6 @@
 from cStringIO import StringIO
 import sys
-from random import randint, choice
+from random import random, randint, choice
 import json
 
 RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'lu' 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'ping-pong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
@@ -10,18 +10,41 @@ RANDOM_SENTENCE = ['i want it that way', 'breaking bad is awesome', 'terra nova 
 rand_choice = choice
 rand_int = randint
 
+def rand_char():
+  ascii_val = 0
+  if random() < 0.5:
+    ascii_val = randint(65, 90)
+  else:
+    ascii_val = randint(97, 122)
+  return chr(ascii_val)
+
 def rand_word():
   return choice(RANDOM_WORD)
 
 def rand_sentence():
   return choice(RANDOM_SENTENCE)
 
-def rand_string_list():
-  return choice(RANDOM_SENTENCE).split()
-
-def rand_int_list(lst_len):
+def rand_word_list(n):
   res = []
-  for i in range(lst_len):
+  for i in range(n):
+    res.append(rand_word())
+  return res
+
+def rand_sentence_list(n):
+  res = []
+  for i in range(n):
+    res.append(rand_sentence())
+  return res
+
+def rand_word_list_list(n):
+  res = []
+  for i in range(n):
+    res.append(rand_word_list(randint(1, 10)))
+  return res
+
+def rand_int_list(n):
+  res = []
+  for i in range(n):
     res.append(randint(-100, 100))
   return res
 

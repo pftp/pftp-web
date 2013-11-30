@@ -22,8 +22,8 @@ def concat_two(x, y):
 
 ### gen_template_vars
 res = {
-  'x': rand_string_list(),
-  'y': rand_string_list(),
-  'z': rand_string_list()
+  'x': rand_word_list(10),
+  'y': rand_word_list(10),
+  'z': rand_word_list(10)
 }
 

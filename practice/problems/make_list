@@ -23,7 +23,7 @@ print x
 
 ### gen_template_vars
 res = {
-  'x': rand_string_list(),
+  'x': rand_word_list(10),
   'y': rand_word(),
   'z': rand_word()
 }
