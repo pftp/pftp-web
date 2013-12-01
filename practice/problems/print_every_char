@@ -1,5 +1,5 @@
 ### prompt
-Print out every character of the string {{ s }}, each on a separate line.
+Print out every character of the string '{{ s }}', each on a separate line.
 
 ### solution
 for ch in '{{ s }}':
@@ -9,7 +9,7 @@ for ch in '{{ s }}':
 # pass
 
 ### hint
-Here's code to print every character of the string {{ s }}, each on the same
+Here's code to print every character of the string "{{ s }}", each on the same
 line separated by spaces:
 <pre>
 for ch in '{{ s }}':

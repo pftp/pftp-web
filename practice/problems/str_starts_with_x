@@ -1,5 +1,7 @@
 ### prompt
-Write a function called starts_with_{{ x }} that takes a string as an argument and returns True if and only if the string starts with the character {{ x }}. Take capitalization into account.
+Write a function called starts_with_{{ x }} that takes a string as an argument
+and returns True if and only if the string starts with the character '{{ x }}'.
+Take capitalization into account.
 
 ### solution
 def starts_with_{{ x }}(s):

@@ -1,5 +1,5 @@
 ### prompt
-Print out every {{ nth }} character of the string {{ s }}, each on a separate
+Print out every {{ nth }} character of the string '{{ s }}', each on a separate
 line, starting with the first character.
 
 ### solution

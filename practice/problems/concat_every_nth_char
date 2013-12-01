@@ -1,5 +1,5 @@
 ### prompt
-Take every {{ nth }} character of the string {{ s }}, starting with the first
+Take every {{ nth }} character of the string '{{ s }}', starting with the first
 character, and make a new string that is the concatenation of all of them. Then,
 print out this new string.
 

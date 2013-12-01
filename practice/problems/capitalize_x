@@ -1,6 +1,6 @@
 ### prompt
 Write a function called capitalize_{{ x }} that takes a string as its argument
-and returns a new version of it with every letter {{ x }} capitalized.
+and returns a new version of it with every letter '{{ x }}' capitalized.
 
 ### solution
 def capitalize_{{ x }}(s):
@@ -19,7 +19,7 @@ for y in {{ ys }}:
 
 ### hint
 Here's code for lowercase_B that takes a string as its argument
-and returns a new version of it with every letter B lowercased.
+and returns a new version of it with every letter 'B' lowercased.
 <pre>
 def lowercase_B(s):
   res = ''
