@@ -1,0 +1,34 @@
+### prompt
+Take every {{ nth }} character of the string {{ s }}, starting with the first
+character, and make a new string that is the concatenation of all of them. Then,
+print out this new string.
+
+### solution
+res = ''
+for i, ch in enumerate('{{ s }}'):
+  if i % {{ n }} == 0:
+    res += ch
+print res
+
+### test
+# pass
+
+### hint
+Here's code to concatenate every other character of the string "a gargantuan
+network of pipes", and print the resulting string:
+<pre>
+res = ''
+for i, ch in enumerate('a gargantuan network of pipes'):
+  if i % 2 == 0:
+    res += ch
+print res
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 6)
+res = {
+  's': rand_sentence(),
+  'n': n,
+  'nth': nth(n)
+}
+

@@ -1,0 +1,40 @@
+### prompt
+Write a function called print_return(x, y) that takes two strings x, y as
+arguments, prints x and returns y. Call print_return("{{ a }}", "{{ b }}") and
+don't print the result, and then call print_return("{{ x }}", "{{ y }}") and do
+print the result. Examine the difference.
+
+### solution
+def print_return(x, y):
+  print x
+  return y
+
+print_return('{{ a }}', '{{ b }}')
+print print_return('{{ x }}', '{{ y }}')
+
+### test
+for t in {{ ts }}:
+  for u in {{ us }}:
+    print print_return(t, u)
+
+### hint
+Did you remember to call your function twice to test it at the end of the
+program?<br>
+Here's a function called print_return(x) that takes a string x as an argument,
+prints x and then returns x:
+<pre>
+def print_return(x):
+  print x
+  return x
+</pre>
+
+### gen_template_vars
+res = {
+  'a': rand_word(),
+  'b': rand_word(),
+  'x': rand_word(),
+  'y': rand_word(),
+  'ts': rand_string_list(20),
+  'us': rand_string_list(20)
+}
+

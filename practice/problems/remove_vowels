@@ -1,0 +1,38 @@
+### prompt
+Write a function called remove_vowels that takes a string as its argument and
+returns it with all the vowels removed.
+
+### solution
+def remove_vowels(s):
+  res = ''
+  for char in s:
+    if char not in 'aeiouAEIOU':
+      res += char
+  return res
+
+### test
+print remove_vowels('')
+for x in {{ xs }}:
+  print remove_vowels(x)
+
+### hint
+Here's a function called remove_consonants that takes a string as its argument
+and returns it with all the consonants removed:
+<pre>
+def remove_consonants(s):
+  res = ''
+  for char in s:
+    if char in 'aeiouAEIOU':
+      res += char
+  return res
+</pre>
+
+### gen_template_vars
+xs = rand_string_list(20)
+for i, x in enumerate(xs):
+  if random() < 0.5:
+    xs[i] = x.upper()
+res = {
+  'xs': xs
+}
+

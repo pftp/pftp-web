@@ -1,0 +1,29 @@
+### prompt
+Print out every {{ nth }} character of the string {{ s }}, each on a separate
+line, starting with the first character.
+
+### solution
+for i, ch in enumerate('{{ s }}'):
+  if i % {{ n }} == 0:
+    print ch
+
+### test
+# pass
+
+### hint
+Here's code to print every other character of the string "a gargantuan network
+of pipes", each on the same line separated by spaces:
+<pre>
+for i, ch in enumerate('a gargantuan network of pipes'):
+  if i % 2 == 0:
+    print ch,
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 6)
+res = {
+  's': rand_sentence(),
+  'n': n,
+  'nth': nth(n)
+}
+

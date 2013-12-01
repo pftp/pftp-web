@@ -296,7 +296,7 @@ def add_practice_problems():
     start_time = time.time()
     # Get concepts by traversing the ast of the problem's solution
     pt = problem.copy()
-    print pt['problem_name']
+    print colored('processing practice problem %s' % pt['problem_name'], 'blue')
     pt['template_vars'] = utils.get_template_vars(pt['gen_template_vars'])
     pt = utils.get_problem(pt)
     concept_names = ast_utils.get_concepts(pt['solution'])

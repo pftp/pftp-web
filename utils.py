@@ -100,7 +100,7 @@ def replace_template_vars(template, template_vars):
 def get_expected(solution, test=''):
   old_stdout = sys.stdout
   sys.stdout = StringIO()
-  exec(solution + '\n' + test)
+  exec(solution + '\n' + test, {})
   expected = sys.stdout.getvalue()
   sys.stdout = old_stdout
   return expected

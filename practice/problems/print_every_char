@@ -1,0 +1,23 @@
+### prompt
+Print out every character of the string {{ s }}, each on a separate line.
+
+### solution
+for ch in '{{ s }}':
+  print ch
+
+### test
+# pass
+
+### hint
+Here's code to print every character of the string {{ s }}, each on the same
+line separated by spaces:
+<pre>
+for ch in '{{ s }}':
+  print ch,
+</pre>
+
+### gen_template_vars
+res = {
+  's': rand_sentence()
+}
+
