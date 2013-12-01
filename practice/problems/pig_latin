@@ -1,0 +1,38 @@
+### prompt
+Write a function called pig_latin that takes a sentence string as its argument
+and returns it with each of its words converted to pig latin. This means take
+all consonants from the beginning of each word (if there are any) and move them
+to the end of the word, and then append "ay" to the word. For example,
+pig_latin("A great surprise") should return "Aay eatgray urprisesay".
+
+### solution
+def pig_latin(s):
+  word_list = s.split()
+  for i, word in enumerate(word_list):
+    first_consonants = ''
+    rest_word = word
+    for ch in word:
+      if ch in 'aeiouAEIOU':
+        break
+      first_consonants += ch
+      rest_word = rest_word[1:]
+    word_list[i] = rest_word + first_consonants + 'ay'
+  return ' '.join(word_list)
+
+### test
+for x in {{ xs }}:
+  print pig_latin(x)
+
+### hint
+Remember to check for upper as well as lower case letters when going through
+each word looking for the first block of consonants.
+
+### gen_template_vars
+xs = rand_sentence_list(20)
+for i, x in enumerate(xs):
+  if random() < 0.5:
+    xs[i] = x.upper()
+res = {
+  'xs': xs
+}
+

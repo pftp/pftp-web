@@ -1,0 +1,71 @@
+### prompt
+Write a function called get_date that takes an integer number of days as its
+argument and returns a string that is a date formatted as "<month> <day>,
+<year>". Consider day 0 to be January 1, 1970. For example, get_date(3) should
+return "January 4, 1970". No need to account for years BCE.
+
+### solution
+def is_leap_year(year):
+  return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+def get_year_days(year):
+  return 366 if is_leap_year(year) else 365
+
+def get_month_days(month, year):
+  if month == 1:
+    return 29 if is_leap_year(year) else 28
+  if month in [3, 5, 8, 10]:
+    return 30
+  return 31
+
+def get_month_string(month):
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+      'August', 'September', 'October', 'November', 'December']
+  return months[month]
+
+def get_date(days):
+  current_year = 1970
+  current_month = 0
+  current_day = 0
+  if days > 0:
+    while days >= get_year_days(current_year):
+      days -= get_year_days(current_year)
+      current_year += 1
+    while days >= get_month_days(current_month, current_year):
+      days -= get_month_days(current_month, current_year)
+      current_month += 1
+  elif days < 0:
+    while days <= -get_year_days(current_year-1):
+      days += get_year_days(current_year-1)
+      current_year -= 1
+    if days < 0:
+      current_month = 12
+      current_year -= 1
+    while days < 0:
+      days += get_month_days(current_month-1, current_year)
+      current_month -= 1
+  month_str = get_month_string(current_month)
+  return '%s %d, %d' % (month_str, days+1, current_year)
+
+### test
+print get_date(0)
+print get_date(365)
+print get_date(789)
+print get_date(-365)
+print get_date(-672)
+for x in {{ xs }}:
+  print get_date(x)
+
+### hint
+Leap years are those when the year number is divisible by 4, except for those
+where the year number is divisible by 100 and not divisible by 400.<br>
+Also, remember to account for negative numbers of days!
+
+### gen_template_vars
+xs = []
+for i in range(20):
+  xs.append(rand_int(-718685, 1000000))
+res = {
+  'xs': xs
+}
+
