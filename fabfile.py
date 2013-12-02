@@ -82,7 +82,6 @@ def build():
   generate_labs()
   db.create_all()
   generate_models()
-  add_exercises()
   add_practice_problems()
   add_quiz1()
   add_quiz2()
@@ -263,19 +262,6 @@ def generate_models():
       week = Week(assignment=assignment.id, lesson=lesson.id)
       db.session.add(week)
   db.session.commit()
-
-def add_exercises():
-  exercises_file = open('static/js/practice/exercises.json', 'r')
-  exercises = json.loads(exercises_file.read())
-  db = sqlite3.connect('pftp.db')
-  for ex in exercises:
-      db.execute('insert into exercise (prompt, hint, test_cases, ' +
-                 'solution) values (?, ?, ?, ?)',
-                 [ex['prompt'], ex['hint'], json.dumps(ex['test_cases']),
-                     ex['solution']])
-  db.commit()
-  db.close()
-  print colored("%s exercises added to database." % len(exercises), "green")
 
 def add_practice_problems():
   with settings(warn_only=True):

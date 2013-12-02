@@ -83,22 +83,6 @@ class User(db.Model, UserMixin):
     else:
       return None
 
-class Exercise(db.Model):
-  id = db.Column(db.Integer(), primary_key = True)
-  prompt = db.Column(db.Text(), nullable = False)
-  hint = db.Column(db.Text(), nullable = False)
-  test_cases = db.Column(db.Text(), nullable = False)
-  solution = db.Column(db.Text(), nullable = False)
-
-  def __init__(self, prompt, hint, test_cases, solution):
-    self.prompt = prompt
-    self.hint = hint
-    self.test_cases = test_cases
-    self.solution = solution
-
-  def __repr__(self):
-    return '<Exercise %r>' % (self.prompt)
-
 class Assignment(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
   name = db.Column(db.String(100), index = True, unique = True, nullable = False)
@@ -411,17 +395,8 @@ def lab(lab_id):
     return render_template('lab.html', lab_id=lab_id, section=section, program=program)
   return render_template('lab.html', lab_id=lab_id, section=section)
 
-@app.route('/practice/ex<int:ex_id>')
-def practice(ex_id):
-  ex = Exercise.query.get(ex_id)
-  if ex is not None:
-    ex.hint = Markup(ex.hint)
-    return render_template('practice.html', ex=ex)
-  else:
-    return redirect('/practice/ex1')
-
-@app.route('/practice2/<problem_name>/')
-def practice2(problem_name):
+@app.route('/practice/<problem_name>/')
+def practice(problem_name):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
   problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
@@ -443,11 +418,11 @@ def practice2(problem_name):
     if edited:
       problem_obj.concepts = concepts
       db.session.commit()
-    return render_template('practice2.html', problem=problem)
+    return render_template('practice.html', problem=problem)
   else:
-    return redirect('/practice2/q001')
+    return redirect('/practice/q001/')
 
-@app.route('/practice2/<problem_name>/submit/', methods=['POST'])
+@app.route('/practice/<problem_name>/submit/', methods=['POST'])
 @login_required
 def submit_practice(problem_name):
   code = request.form['code']
