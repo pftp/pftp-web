@@ -27,20 +27,83 @@ var executeCode = function(execObj) {
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code}, outText = '';
+  var runObj = {'input': code};
   executeCode(runObj);
-  if (runObj['output'] !== undefined) {
-    outText += runObj['output'];
-  }
-  if (runObj['error'] !== undefined) {
-    outText += runObj['error'];
-  }
-  $('#practice_output').text(outText);
   return runObj;
 };
+var submitCode = function(editor, startTime, gotHint, gaveUp) {
+  var runObj, testObjs, correct, template_vars, test_code, code, result_no_test,
+    result_test, result_no_test_error, result_test_error, submit_time,
+    successFunc;
+  template_vars = $('#template_vars').text().trim();
+  test_code = $('#test_cases').text().trim();
+  concept_names = $('#concept_names').text().trim();
+  code = editor.getValue().replace(/\t/g, '    ');
+  result_no_test = '';
+  result_no_test_error = false;
+  result_test = '';
+  result_test_error = false;
+  submit_time = new Date().getTime() / 1000;
+
+  $('#practice_output').text('');
+  runObj = runit(code);
+  if (runObj['output'] !== undefined) {
+    result_no_test += runObj['output'];
+  }
+  if (runObj['error'] !== undefined) {
+    result_no_test += runObj['error'];
+    result_no_test_error = true;
+  }
+  if (!gaveUp) {
+    $('#practice_output').text(result_no_test);
+  }
+  testObj = {'input': code + '\n' + test_code};
+  executeCode(testObj);
+  if (testObj['output'] !== undefined) {
+    result_test += testObj['output'];
+  }
+  if (testObj['error'] !== undefined) {
+    result_test += testObj['error'];
+    result_test_error = true;
+  }
+  if (gaveUp) {
+    successFunc = function(data) {
+      window.location.href = '/practice/' + data['next_problem'];
+    }
+  } else {
+    successFunc = function(data) {
+      if (data['correct'] === 'correct') {
+        alert('correct!')
+        $('#give_up').hide();
+        $('#next_exercise').attr('href', '/practice/' + data['next_problem']);
+        $('#next_exercise').show();
+      } else {
+        alert(data['correct']);
+      }
+    }
+  }
+  $.ajax({
+    type: 'POST',
+    url: 'submit/',
+    data: {
+      code: code,
+      result_test: result_test,
+      result_test_error: result_test_error,
+      result_no_test: result_no_test,
+      result_no_test_error: result_no_test_error,
+      start_time: startTime,
+      submit_time: submit_time,
+      got_hint: gotHint,
+      gave_up: gaveUp,
+      template_vars: template_vars,
+      concept_names: concept_names
+    },
+    dataType: 'json',
+    success: successFunc
+  });
+}
 $(function() {
-  var editor, execObj, execHistory = [], got_hint = false,
-    start_time = new Date().getTime() / 1000;
+  var editor, got_hint = false, start_time = new Date().getTime() / 1000;
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'practice_output';
   editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
@@ -52,66 +115,10 @@ $(function() {
     extraKeys: {"Enter": false}
   });
   $('#practice_run_code').click(function(e) {
-    var runObj, testObjs, correct, template_vars, test_code, code,
-      result_no_test, result_test, result_no_test_error, result_test_error,
-      submit_time;
-    template_vars = $('#template_vars').text().trim();
-    test_code = $('#test_cases').text().trim();
-    concept_names = $('#concept_names').text().trim();
-    code = editor.getValue().replace(/\t/g, '    ');
-    result_no_test = '';
-    result_no_test_error = false;
-    result_test = '';
-    result_test_error = false;
-    submit_time = new Date().getTime() / 1000;
-
-    $('#practice_output').text('');
-    runObj = runit(code);
-    if (runObj['output'] !== undefined) {
-      result_no_test += runObj['output'];
-    }
-    if (runObj['error'] !== undefined) {
-      result_no_test += runObj['error'];
-      result_no_test_error = true;
-    }
-    testObj = {'input': code + '\n' + test_code};
-    executeCode(testObj);
-    if (testObj['output'] !== undefined) {
-      result_test += testObj['output'];
-    }
-    if (testObj['error'] !== undefined) {
-      result_test += testObj['error'];
-      result_test_error = true;
-    }
-    $.ajax({
-      type: 'POST',
-      url: 'submit/',
-      data: {
-        code: code,
-        result_test: result_test,
-        result_test_error: result_test_error,
-        result_no_test: result_no_test,
-        result_no_test_error: result_no_test_error,
-        start_time: start_time,
-        submit_time: submit_time,
-        got_hint: got_hint,
-        template_vars: template_vars,
-        concept_names: concept_names
-      },
-      dataType: 'json',
-      success: function(data) {
-        if (data['correct'] === 'correct') {
-          alert('correct!')
-          $('#give_up').hide();
-          $('#next_exercise').attr('href', '/practice/' + data['next_problem']);
-          $('#next_exercise').show();
-        } else {
-          alert(data['correct']);
-        }
-      }
-    });
+    submitCode(editor, start_time, got_hint, false);
   });
   $('#give_up').click(function(e) {
+    submitCode(editor, start_time, got_hint, true);
   });
   $('#show_hint').click(function(e) {
     got_hint = true;

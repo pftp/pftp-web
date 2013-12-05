@@ -258,6 +258,7 @@ class PracticeProblemSubmission(db.Model):
   result_no_test = db.Column(db.Text(), nullable=False)
   result_no_test_error = db.Column(db.Boolean(), nullable=False)
   got_hint = db.Column(db.Boolean(), nullable=False)
+  gave_up = db.Column(db.Boolean(), nullable=False)
   correct = db.Column(db.Boolean(), nullable=False)
   started = db.Column(db.DateTime(), nullable=False)
   submitted = db.Column(db.DateTime(), nullable=False)
@@ -275,6 +276,7 @@ class PracticeProblemSubmission(db.Model):
       'result_no_test': self.result_no_test,
       'result_no_test_error': self.result_no_test_error,
       'got_hint': self.got_hint,
+      'gave_up': self.gave_up,
       'correct': self.correct,
       'started': self.started,
       'submitted': self.submitted,
@@ -404,12 +406,14 @@ def get_next_problem(user_id):
     # Id submissions by their id as well as the time the student started working
     # on it, so we only get one score per version of a problem
     sub_id = json.dumps((sub.problem_id, sub.started.isoformat()))
-    score = -1
+    score = -float('inf')
     if sub.correct:
       if sub.got_hint:
         score = 1
       else:
         score = 2
+    elif sub.gave_up:
+      score = -1
     if sub_id in attempted_probs:
       # Take the maximum score a student achieved on a given problem session
       # (e.g. they get full credit for getting it right second try)
@@ -429,10 +433,13 @@ def get_next_problem(user_id):
   mastered_problem_ids = sets.Set()
   concept_progress = {}
   for score_pair in sub_score_pairs:
+    # If student attempted problem but never gave up or got it right, ignore it
+    if score_pair[1] == -float('inf'):
+      continue
     if score_pair[0] not in seen_problems:
       seen_problems[score_pair[0]] = PracticeProblemTemplate.query.filter_by(id=score_pair[0]).first()
     problem = seen_problems[score_pair[0]]
-    if score == 2:
+    if score_pair[1] == 2:
       mastered_problem_ids.add(score_pair[0])
     for concept in problem.concepts:
       if concept.name not in concept_progress:
@@ -440,6 +447,12 @@ def get_next_problem(user_id):
       concept_progress[concept.name] += score_pair[1]
       # Keep concept_progress between 0 and 10 at all times
       concept_progress[concept.name] = max(min(concept_progress[concept.name], 10), 0)
+
+  # If we gave up on our last problem, possibly go back to a mastered problem
+  if score_pair[1] == -1:
+    mastered_problem_ids = sets.Set()
+  # Don't repeat a problem twice in a row
+  mastered_problem_ids.add(score_pair[0])
 
   # Get all current problems we haven't mastered
   all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(mastered_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
@@ -462,6 +475,7 @@ def get_next_problem(user_id):
       problem_scores[prob.problem_name] = prob_score
 
   sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
+  print sorted_prob_score_pairs
   # Default to q001 if we've mastered all problems or if we haven't done any yet
   next_prob_name = 'q001'
   if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
@@ -525,10 +539,11 @@ def submit_practice(problem_name):
     concepts.append(concept)
   problem = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first().to_dict()
   got_hint = True if request.form['got_hint'] == 'true' else False
+  gave_up = True if request.form['gave_up'] == 'true' else False
   problem['template_vars'] = template_vars
   problem = utils.get_problem(problem)
   correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
-  submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
+  submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
   db.session.commit()
   return_data = {}
