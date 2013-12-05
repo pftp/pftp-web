@@ -1,0 +1,25 @@
+### prompt
+Print out every {{ nth }} number from {{ start }} to {{ end }} using a for loop.
+
+### solution
+for i in range({{ start }}, {{ end }}+1, {{ n }}):
+  print i
+
+### test
+# pass
+
+### hint
+Here's how you can write a for loop for every other number from 1 to 10:
+<pre>
+for i in range(1, 10, 2):
+  print i
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 10)
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300),
+  'n': n,
+  'nth': nth(n)
+}

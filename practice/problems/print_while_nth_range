@@ -1,0 +1,29 @@
+### prompt
+Print out every {{ nth }} number from {{ start }} to {{ end }} using a while loop.
+
+### solution
+i = {{ start }}
+while i <= {{ end }}:
+  print i
+  i = i + {{ n }}
+
+### test
+# pass
+
+### hint
+Here's how you can write a while loop for every 3rd number from 1 to 10:
+<pre>
+i = 1
+while i <= 10:
+  print i
+  i = i + 3
+</pre>
+
+### gen_template_vars
+n = randint(2, 10)
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300),
+  'n': n,
+  'nth': nth(n)
+}
