@@ -102,6 +102,7 @@ $(function() {
       success: function(data) {
         if (data['correct'] === 'correct') {
           alert('correct!')
+          $('#give_up').hide();
           $('#next_exercise').attr('href', '/practice/' + data['next_problem']);
           $('#next_exercise').show();
         } else {
@@ -109,6 +110,8 @@ $(function() {
         }
       }
     });
+  });
+  $('#give_up').click(function(e) {
   });
   $('#show_hint').click(function(e) {
     got_hint = true;

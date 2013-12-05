@@ -1,3 +1,7 @@
 #run_container {
   margin: 10px 0;
 }
+
+#give_up {
+  float: right;
+}

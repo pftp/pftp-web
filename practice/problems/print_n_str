@@ -14,7 +14,7 @@ for i in range(20):
 
 ### hint
 Here's a function called print_9_x that takes a string as its argument and
-prints it 5 times, on separate lines:
+prints it 9 times, on separate lines:
 <pre>
 def print_9_x(s):
   for i in range(9):
