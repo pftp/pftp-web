@@ -2,7 +2,7 @@
 Create a function count_even(nums) which returns the number of even values in nums using a for loop.
 
 ### solution
-def count_odd(nums):
+def count_even(nums):
   count = 0
   for num in nums:
     if num % 2 == 0:
