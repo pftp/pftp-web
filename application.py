@@ -464,7 +464,7 @@ def get_next_problem(user_id):
   sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
   # Default to q001 if we've mastered all problems or if we haven't done any yet
   next_prob_name = 'q001'
-  if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -3:
+  if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
     next_prob_name = sorted_prob_score_pairs[0][0]
 
   return next_prob_name
