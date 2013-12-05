@@ -432,6 +432,7 @@ def get_next_problem(user_id):
   # Keep a set of all problems the user got without a hint and don't repeat them
   mastered_problem_ids = sets.Set()
   concept_progress = {}
+  score_pair = None
   for score_pair in sub_score_pairs:
     # If student attempted problem but never gave up or got it right, ignore it
     if score_pair[1] == -float('inf'):
@@ -448,11 +449,12 @@ def get_next_problem(user_id):
       # Keep concept_progress between 0 and 10 at all times
       concept_progress[concept.name] = max(min(concept_progress[concept.name], 10), 0)
 
-  # If we gave up on our last problem, possibly go back to a mastered problem
-  if score_pair[1] == -1:
-    mastered_problem_ids = sets.Set()
-  # Don't repeat a problem twice in a row
-  mastered_problem_ids.add(score_pair[0])
+  if score_pair != None:
+    # If we gave up on our last problem, possibly go back to a mastered problem
+    if score_pair[1] == -1:
+      mastered_problem_ids = sets.Set()
+    # Don't repeat a problem twice in a row
+    mastered_problem_ids.add(score_pair[0])
 
   # Get all current problems we haven't mastered
   all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(mastered_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
@@ -474,8 +476,8 @@ def get_next_problem(user_id):
     if prob_score < 9:
       problem_scores[prob.problem_name] = prob_score
 
+  # Sort problems by score (high score means we've learned more of its concepts)
   sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
-  print sorted_prob_score_pairs
   # Default to q001 if we've mastered all problems or if we haven't done any yet
   next_prob_name = 'q001'
   if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
