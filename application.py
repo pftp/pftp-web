@@ -1,6 +1,7 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, sets
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 from flask.ext.security.signals import user_registered
 from flask.ext.login import logout_user
@@ -230,6 +231,7 @@ class PracticeProblemTemplate(db.Model):
   concepts = db.relationship('PracticeProblemConcept', secondary=templates_concepts,
       backref=db.backref('practice_problem_template', lazy='dynamic'), lazy='dynamic')
   is_current = db.Column(db.Boolean(), nullable=False)
+
   def to_dict(self):
     return {
       'id': self.id,
@@ -395,7 +397,25 @@ def lab(lab_id):
     return render_template('lab.html', lab_id=lab_id, section=section, program=program)
   return render_template('lab.html', lab_id=lab_id, section=section)
 
+def get_next_problem(user_id):
+  completed_problems = PracticeProblemSubmission.query.filter_by(user_id=user_id, correct=True).all()
+  completed_ids = sets.Set()
+  for completed_problem in completed_problems:
+    completed_ids.add(completed_problem.problem_id)
+  all_problems = PracticeProblemTemplate.query.filter_by(is_current=True).order_by(func.length(PracticeProblemTemplate.solution)).all()
+  for next_prob in all_problems:
+    if next_prob.id not in completed_ids:
+      break
+  return next_prob.problem_name
+
+@app.route('/practice/')
+@login_required
+def practice_default():
+  next_problem_name = get_next_problem(current_user.id)
+  return redirect('/practice/' + next_problem_name)
+
 @app.route('/practice/<problem_name>/')
+@login_required
 def practice(problem_name):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
@@ -420,7 +440,8 @@ def practice(problem_name):
       db.session.commit()
     return render_template('practice.html', problem=problem)
   else:
-    return redirect('/practice/q001/')
+    next_problem_name = get_next_problem(current_user.id)
+    return redirect('/practice/' + next_problem_name)
 
 @app.route('/practice/<problem_name>/submit/', methods=['POST'])
 @login_required
@@ -450,12 +471,15 @@ def submit_practice(problem_name):
   submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
   db.session.commit()
+  return_data = {}
   if correct:
-    return 'correct'
+    return_data['correct'] = 'correct'
+    return_data['next_problem'] = get_next_problem(current_user.id)
   elif result_no_test_error:
-    return 'oops you have an error in your code:\n' + result_no_test
+    return_data['correct'] = 'error'
   else:
-    return 'incorrect'
+    return_data['correct'] = 'incorrect'
+  return json.dumps(return_data)
 
 @app.route('/workspace/')
 def workspace_home():

@@ -98,25 +98,21 @@ $(function() {
         template_vars: template_vars,
         concept_names: concept_names
       },
+      dataType: 'json',
       success: function(data) {
-        if (data == "correct") {
-          alert("Nice Job! You're done");
+        if (data['correct'] === 'correct') {
+          alert('correct!')
+          $('#next_exercise').attr('href', '/practice/' + data['next_problem']);
+          $('#next_exercise').show();
         } else {
-          alert(data);
+          alert(data['correct']);
         }
       }
     });
   });
-  $('#next_exercise').click(function(e) {
-    window.location.href = $('#next_exercise').attr('href');
-  });
   $('#show_hint').click(function(e) {
+    got_hint = true;
     $('#show_hint').hide();
-    $('#show_solution').show();
     $('#hint_wrapper').show();
-  });
-  $('#show_solution').click(function(e) {
-    $('#show_solution').hide();
-    $('#solution_wrapper').show();
   });
 });

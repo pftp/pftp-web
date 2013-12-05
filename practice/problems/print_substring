@@ -18,7 +18,7 @@ print '{{ s }}'[{{ x }}+1:{{ y }}]
 ### gen_template_vars
 s = rand_sentence()
 x = rand_int(0, len(s)/2)
-y = rand_int(x, len(s)-2)
+y = rand_int(x+1, len(s)-2)
 res = {
   's': s,
   'x': x,
