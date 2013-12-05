@@ -1,0 +1,26 @@
+### prompt
+Print out every {{ nth }} value in {{ lst }} using a for loop.
+
+### solution
+values = {{ lst }}
+for i in range(0, len(values), {{ n }}):
+  print values[i]
+
+### test
+# pass
+
+### hint
+Here's how you can use a for loop to iterate over ever other value in a list:
+<pre>
+foo = [1,2,3,4,5,6]
+for i in range(0, len(foo), 2):
+  print foo[i]
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 4)
+res = {
+  'lst': rand_word_list(rand_int(10, 20)),
+  'n': n,
+  'nth': nth(n)
+}
