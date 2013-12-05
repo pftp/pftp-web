@@ -1,0 +1,32 @@
+### prompt
+Write a function called sum_list that takes a list of integers as an argument
+and returns their sum.
+
+### solution
+def sum_list(lst):
+  sum = 0
+  for num in lst:
+    sum += num
+  return sum
+
+### test
+print sum_list([])
+print sum_list([23])
+print sum_list({{ x }})
+
+### hint
+Here's code for the product_list function which takes a list of integers as an
+argument and returns their product:
+<pre>
+def product_list(lst):
+  product = 1
+  for num in lst:
+    product *= num
+  return product
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(100)
+}
+

@@ -1,0 +1,33 @@
+### prompt
+Write a function called make_phone_num that takes a 10-digit integer as its
+argument and returns a string in the format of a phone number such as
+"(xxx) xxx-xxxx". For example, make_phone_num(2345678901) should return
+"(234) 567-8901"
+
+### solution
+def make_phone_num(num):
+  num_str = str(num)
+  return '(' + num_str[:3] + ') ' + num_str[3:6] + '-' + num_str[6:]
+
+### test
+for x in {{ xs }}:
+  print make_phone_num(x)
+
+### hint
+Here's a function called make_phone_num(x) that takes a 7-digit integer as
+its argument and returns a string in the format of a phone number such as
+"xxx-xxxx":
+<pre>
+def make_phone_num(num):
+  num_str = str(num)
+  return num_str[:3] + '-' + num_str[3:]
+</pre>
+
+### gen_template_vars
+xs = []
+for i in range(20):
+  xs.append(rand_int(2000000000, 9999999999))
+res = {
+  'xs': xs
+}
+

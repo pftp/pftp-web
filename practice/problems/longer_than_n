@@ -1,0 +1,33 @@
+### prompt
+Write a function called longer_than_{{ n }} that takes a string as its argument
+and returns True if and only if it has more than {{ n }} characters.
+
+### solution
+def longer_than_{{ n }}(s):
+  return len(s) > {{ n }}
+
+### test
+print longer_than_{{ n }}('')
+print longer_than_{{ n }}({{ n }} * 'a')
+for x in {{ xs }}:
+  print longer_than_{{ n }}(x)
+
+### hint
+Here's code for shorter_than_5 which takes a string as its argument and returns
+True if and only if it has less than 5 characters:
+<pre>
+def shorter_than_5(s):
+  return len(s) < 5
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 10)
+xs = rand_word_list(20)
+for x in xs:
+  if random() < 0.5:
+    x = (n+1) * 'a'
+res = {
+  'n': n,
+  'xs': xs
+}
+

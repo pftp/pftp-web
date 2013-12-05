@@ -1,0 +1,32 @@
+### prompt
+Write a function called reverse_sentence_words that takes a sentence string as its argument and returns a new string with every individual word (separated by spaces) reversed, but in the same order as they appeared in the original sentence.
+
+### solution
+def reverse_sentence_words(s):
+  word_list = s.split()
+  for i, word in enumerate(word_list):
+    word_list[i] = word[::-1]
+  return ' '.join(word_list)
+
+### test
+print reverse_sentence_words('')
+for s in {{ x }}:
+  print reverse_sentence_words(s)
+
+### hint
+Here's code for the condense_sentence_words function that takes a string as its
+argument returns a new string by taking only every other character of every
+word, using 'extended slices' in Python:
+<pre>
+def condense_sentence_words(s):
+  word_list = s.split()
+  for i, word in enumerate(word_list):
+    word_list[i] = word[::2]
+  return ' '.join(word_list)
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_sentence_list(20)
+}
+

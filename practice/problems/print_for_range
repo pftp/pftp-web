@@ -1,0 +1,23 @@
+### prompt
+Print out every number from {{ start }} to {{ end }}, inclusive, using a for
+loop.
+
+### solution
+for i in range({{ start }}, {{ end }}+1):
+  print i
+
+### test
+# pass
+
+### hint
+Here's how you can write a for loop from 1 to 10, inclusive:
+<pre>
+for i in range(1, 11):
+  print i
+</pre>
+
+### gen_template_vars
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300)
+}

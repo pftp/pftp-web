@@ -1,0 +1,37 @@
+### prompt
+Write a function called starts_with_{{ x }} that takes a string as an argument
+and returns True if and only if the string starts with the character '{{ x }}'.
+Take capitalization into account.
+
+### solution
+def starts_with_{{ x }}(s):
+  if len(s) > 0 and s[0] == '{{ x }}':
+    return True
+  return False
+
+### test
+print starts_with_{{ x }}('')
+for s in {{ y }}:
+  print starts_with_{{ x }}(s)
+
+### hint
+Here's code for the ends_with_H function which takes a string as an argument and
+returns True if and only if it ends with the character 'H'.
+<pre>
+def ends_with_H(s):
+  if len(s) < 1:
+    return False
+  return s[-1] == 'H'
+</pre>
+
+### gen_template_vars
+x = rand_letter()
+y = rand_word_list(20)
+for i, word in enumerate(y):
+  if random() < 0.5:
+    y[i] = x + word
+res = {
+  'x' : x,
+  'y' : y
+}
+

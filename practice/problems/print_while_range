@@ -1,0 +1,26 @@
+### prompt
+Print out every number from {{ start }} to {{ end }} using a while loop.
+
+### solution
+i = {{ start }}
+while i <= {{ end }}:
+  print i
+  i = i + 1
+
+### test
+# pass
+
+### hint
+Here's how you can write a while loop from 1 to 10:
+<pre>
+i = 1
+while i <= 10:
+  print i
+  i = i + 1
+</pre>
+
+### gen_template_vars
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300)
+}

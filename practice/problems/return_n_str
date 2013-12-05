@@ -1,0 +1,37 @@
+### prompt
+Write a function called return_n_{{ x }} that takes an integer as its argument
+and returns a string that is made up of the word "{{ x }}" repeated that many
+times, separated by spaces. For example, return_n_{{ x }}(4) should return
+"{{ x }} {{ x }} {{ x }} {{ x }} {{ x }}".
+
+### solution
+def return_n_{{ x }}(n):
+  res = ''
+  for i in range(n):
+    res += '{{ x }}' + ' '
+  if len(res) > 0:
+    res = res[:-1]
+  return res
+
+### test
+for i in range(20):
+  print return_n_{{ x }}(i)
+
+### hint
+Here's a function called return_9_x that takes a string as its argument and
+returns a string that is made up of that word repeated 5 times, separated by
+spaces:
+<pre>
+def return_9_x(s):
+  res = ''
+  for i in range(9)
+    res += s + ' '
+  res = res[:-1]
+  return res
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word()
+}
+

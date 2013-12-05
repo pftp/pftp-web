@@ -1,0 +1,26 @@
+### prompt
+Print the string "{{ x }}"
+
+### solution
+print "{{ y }}"
+
+### test
+# pass
+
+### hint
+The syntax to print the string "Here's to your "health"" is
+<pre>
+print "Here's to your \"health\""
+</pre>
+
+### gen_template_vars
+x =  choice(["Don't forget your manners, say \"Thank you\"!",
+            "\"Never say never\", my teacher hadn't ever said.",
+            "\"Yarr! I'm a pirate\" yelled the pirate",
+            "Isn't it too bad people don't read \"classics\" anymore?",
+            "\"It ain't so\", said Joe."])
+res = {
+  'x': x,
+  'y': x.replace('"', '\\"')
+}
+

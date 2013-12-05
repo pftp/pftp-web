@@ -1,0 +1,38 @@
+### prompt
+Write a function called max_three that takes three integers as arguments and returns the maximum between them.
+
+### solution
+def max_three(x, y, z):
+  if x > y:
+    if z > x:
+      return z
+    return x
+  elif z > y:
+    return z
+  return y
+
+### test
+for i in {{ x }}:
+  for j in {{ x }}:
+    for k in {{ x }}:
+      print max_three(i, j, k)
+
+### hint
+Here's code for min_three that takes three integers as arguments and returns the
+minimum between them:
+<pre>
+def min_three(x, y, z):
+  if x < y:
+    if z < x:
+      return z
+    return x
+  elif z < y:
+    return z
+  return y
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int_list(20)
+}
+

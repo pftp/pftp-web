@@ -1,0 +1,39 @@
+### prompt
+Write a function called sum_every_{{ nth }} that takes a list of integers as an
+argument and returns the sum of every {{ nth }} number in the list, starting
+with the first number.
+
+### solution
+def sum_every_{{ nth }}(lst):
+  sum = 0
+  for i, num in enumerate(lst):
+    if i % {{ n }} == 0:
+      sum += num
+  return sum
+
+### test
+print sum_every_{{ nth }}([])
+print sum_every_{{ nth }}([23])
+print sum_every_{{ nth }}({{ x }})
+
+### hint
+Here's code for the sum_every_other function which takes a list of integers as
+an argument and returns the sum of every other number, starting with the first
+number:
+<pre>
+def sum_every_other(lst):
+  sum = 0
+  for i, num in enumerate(lst):
+    if i % 2 == 0:
+      sum += num
+  return sum
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 50)
+res = {
+  'x' : rand_int_list(1000),
+  'n' : n,
+  'nth' : nth(n)
+}
+

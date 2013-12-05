@@ -1,0 +1,44 @@
+### prompt
+Write a function called max_prefix(x, y) that takes two strings x, y as arguments and returns the number of characters that are the same at the beginning of both x and y. For example, max_prefix("hello", "hero") should return 2.
+
+### solution
+def max_prefix(x, y):
+  for i in range(len(x)):
+    if i >= len(y):
+      break
+    if x[i] != y[i]:
+      return i
+  return len(y)
+
+### test
+print max_prefix('abcd', 'abcde')
+print max_prefix('abcde', 'abcd')
+print max_prefix('abcd', 'abcd')
+for x in {{ xs }}:
+  for y in {{ ys }}:
+    print max_prefix(x, y)
+
+### hint
+Here's code for max_suffix(x, y) which takes two strings x, y as arguments and returns the number of characters that are the same at the end of both x and y:
+<pre>
+def max_suffix(x, y):
+  for i in range(1, len(x)+1):
+    if i > len(y):
+      break
+    if x[-i] != y[-i]:
+      return i - 1
+  return len(y)
+</pre>
+
+### gen_template_vars
+xs = rand_word_list(20)
+ys = rand_word_list(20)
+for i, word in enumerate(ys):
+  if random() < 0.5:
+    n = rand_int(1, len(word))
+    xs[i] = word[:n] + xs[i][n:]
+res = {
+  'xs': xs,
+  'ys': ys
+}
+

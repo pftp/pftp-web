@@ -3,6 +3,7 @@ import code
 import json
 import sqlite3
 import markdown
+import time
 from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
@@ -81,7 +82,6 @@ def build():
   generate_labs()
   db.create_all()
   generate_models()
-  add_exercises()
   add_practice_problems()
   add_quiz1()
   add_quiz2()
@@ -263,20 +263,11 @@ def generate_models():
       db.session.add(week)
   db.session.commit()
 
-def add_exercises():
-  exercises_file = open('static/js/practice/exercises.json', 'r')
-  exercises = json.loads(exercises_file.read())
-  db = sqlite3.connect('pftp.db')
-  for ex in exercises:
-      db.execute('insert into exercise (prompt, hint, test_cases, ' +
-                 'solution) values (?, ?, ?, ?)',
-                 [ex['prompt'], ex['hint'], json.dumps(ex['test_cases']),
-                     ex['solution']])
-  db.commit()
-  db.close()
-  print colored("%s exercises added to database." % len(exercises), "green")
-
 def add_practice_problems():
+  with settings(warn_only=True):
+    os.chdir('practice')
+    local('python gen_questions.py')
+    os.chdir('..')
   practice_problems = json.load(open('practice/practice_problems.json', 'r'))
   # convert all values to strings
   for p in practice_problems:
@@ -285,9 +276,13 @@ def add_practice_problems():
         p[k] = json.dumps(v)
   count_add = 0
   count_update = 0
+  count_all = 0
   for problem in practice_problems:
+    count_all += 1
+    start_time = time.time()
     # Get concepts by traversing the ast of the problem's solution
     pt = problem.copy()
+    print colored('processing practice problem %s' % pt['problem_name'], 'blue')
     pt['template_vars'] = utils.get_template_vars(pt['gen_template_vars'])
     pt = utils.get_problem(pt)
     concept_names = ast_utils.get_concepts(pt['solution'])
@@ -301,19 +296,22 @@ def add_practice_problems():
       concepts.append(concept)
 
     # Create a new template
-    new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
     if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True).count() == 0:
+      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
       db.session.add(new_template)
+      print colored("%s added to database." % new_template.problem_name, 'yellow')
       count_add += 1
     else:
       old_template = PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True)[0]
       add_new_template = False
       # check if we need to completely scratch the old template and add a new template (the structure of the problem has changed)
       for k in ['prompt', 'solution', 'test']:
-        if old_template.to_dict()[k] != new_template.to_dict()[k]:
+        if old_template.to_dict()[k] != problem[k]:
           add_new_template = True
       if add_new_template:
+        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
         db.session.add(new_template)
+        print colored("%s added to database." % new_template.problem_name, 'yellow')
         count_add += 1
         old_template.is_current = False
         continue
@@ -321,14 +319,18 @@ def add_practice_problems():
       # we don't need to readd our template in this case
       count_update_updated = False
       for field_name in ['gen_template_vars', 'hint']:
-        if getattr(old_template, field_name) != getattr(new_template, field_name):
-          setattr(old_template, field_name, getattr(new_template, field_name))
+        if getattr(old_template, field_name) != problem[field_name]:
+          setattr(old_template, field_name, problem[field_name])
+          print colored("%s updated with changed %s field" % (problem['problem_name'], field_name), 'yellow')
           if not count_update_updated:
             count_update += 1
             count_update_updated = True
+    time_spent = time.time() - start_time
+    if time_spent > 1:
+      print colored('%s took %.2f seconds to generate (more than 1 second is excessive)' % (problem['problem_name'], time_spent), 'red')
 
   db.session.commit()
-  print colored("%d practice problems added to database. %d problems updated with changed hint or template variables" % (count_add, count_update), 'green')
+  print colored("%d practice problems processed. %d problems added to database. %d problems updated with changed hint or template variables" % (count_all, count_add, count_update), 'green')
 
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)

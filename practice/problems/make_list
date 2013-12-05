@@ -1,0 +1,30 @@
+### prompt
+Create the following list and print it out: {{ x }}.
+Then, append "{{ y }}" and "{{ z }}" to it and print it out again.
+
+### solution
+x = {{ x }}
+print x
+x.append("{{ y }}")
+x.append("{{ z }}")
+
+### test
+# pass
+
+### hint
+Here's code to create the list [1, 2, 3], print it, and then
+append 4 to it and print it again:
+<pre>
+x = [1, 2, 3]
+print x
+x.append(4)
+print x
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word_list(10),
+  'y': rand_word(),
+  'z': rand_word()
+}
+

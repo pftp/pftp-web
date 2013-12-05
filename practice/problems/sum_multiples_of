@@ -1,0 +1,36 @@
+### prompt
+Write a function called sum_multiples_of_{{ n }} that takes a list of integers
+as an argument and returns the sum of all its numbers that are multiples of
+{{ n }}.
+
+### solution
+def sum_multiples_of_{{ n }}(lst):
+  sum = 0
+  for num in lst:
+    if num % {{ n }} == 0:
+      sum += num
+  return sum
+
+### test
+print sum_multiples_of_{{ n }}([])
+print sum_multiples_of_{{ n }}([23])
+print sum_multiples_of_{{ n }}({{ x }})
+
+### hint
+Here's code for the sum_evens function which takes a list of integers as
+an argument and returns the sum of every even number:
+<pre>
+def sum_evens(lst):
+  sum = 0
+  for num in lst:
+    if num % 2 == 0:
+      sum += num
+  return sum
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(1000),
+  'n' : rand_int(3, 50)
+}
+

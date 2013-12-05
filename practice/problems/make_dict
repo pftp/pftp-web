@@ -1,0 +1,30 @@
+### prompt
+Create the following dictionary and print it out: {{ x }}.
+Then, map "{{ y }}" to {{ z }} in it and print it out again.
+
+### solution
+x = {{ x }}
+print x
+x['{{ y }}'] = {{ z }}
+print x
+
+### test
+# pass
+
+### hint
+Here's code to create the dictionary { 2: "a", 3: "b" }, print it, and then
+map 47 to "xyz" in it and print it again:
+<pre>
+x = { 2: "a", 3: "b" }
+print x
+x[47] = "xyz"
+print x
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_sidict(),
+  'y': rand_word(),
+  'z': rand_int(-100, 100)
+}
+

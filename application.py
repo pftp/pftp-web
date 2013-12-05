@@ -1,6 +1,8 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, sets
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import not_, and_
+from sqlalchemy.sql import func
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 from flask.ext.security.signals import user_registered
 from flask.ext.login import logout_user
@@ -82,22 +84,6 @@ class User(db.Model, UserMixin):
       return grade
     else:
       return None
-
-class Exercise(db.Model):
-  id = db.Column(db.Integer(), primary_key = True)
-  prompt = db.Column(db.Text(), nullable = False)
-  hint = db.Column(db.Text(), nullable = False)
-  test_cases = db.Column(db.Text(), nullable = False)
-  solution = db.Column(db.Text(), nullable = False)
-
-  def __init__(self, prompt, hint, test_cases, solution):
-    self.prompt = prompt
-    self.hint = hint
-    self.test_cases = test_cases
-    self.solution = solution
-
-  def __repr__(self):
-    return '<Exercise %r>' % (self.prompt)
 
 class Assignment(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
@@ -246,6 +232,7 @@ class PracticeProblemTemplate(db.Model):
   concepts = db.relationship('PracticeProblemConcept', secondary=templates_concepts,
       backref=db.backref('practice_problem_template', lazy='dynamic'), lazy='dynamic')
   is_current = db.Column(db.Boolean(), nullable=False)
+
   def to_dict(self):
     return {
       'id': self.id,
@@ -271,6 +258,7 @@ class PracticeProblemSubmission(db.Model):
   result_no_test = db.Column(db.Text(), nullable=False)
   result_no_test_error = db.Column(db.Boolean(), nullable=False)
   got_hint = db.Column(db.Boolean(), nullable=False)
+  gave_up = db.Column(db.Boolean(), nullable=False)
   correct = db.Column(db.Boolean(), nullable=False)
   started = db.Column(db.DateTime(), nullable=False)
   submitted = db.Column(db.DateTime(), nullable=False)
@@ -288,6 +276,7 @@ class PracticeProblemSubmission(db.Model):
       'result_no_test': self.result_no_test,
       'result_no_test_error': self.result_no_test_error,
       'got_hint': self.got_hint,
+      'gave_up': self.gave_up,
       'correct': self.correct,
       'started': self.started,
       'submitted': self.submitted,
@@ -397,7 +386,6 @@ def submit_quiz(quiz_id):
   db.session.commit()
   return 'Submitted'
 
-
 @app.route('/labs/<int:lab_id>')
 def lab(lab_id):
   section = 0
@@ -411,20 +399,102 @@ def lab(lab_id):
     return render_template('lab.html', lab_id=lab_id, section=section, program=program)
   return render_template('lab.html', lab_id=lab_id, section=section)
 
-@app.route('/practice/ex<int:ex_id>')
-def practice(ex_id):
-  ex = Exercise.query.get(ex_id)
-  if ex is not None:
-    ex.hint = Markup(ex.hint)
-    return render_template('practice.html', ex=ex)
-  else:
-    return redirect('/practice/ex1')
+def get_next_problem(user_id):
+  all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id).all()
+  attempted_probs = {}
+  for sub in all_subs:
+    # Id submissions by their id as well as the time the student started working
+    # on it, so we only get one score per version of a problem
+    sub_id = json.dumps((sub.problem_id, sub.started.isoformat()))
+    score = -float('inf')
+    if sub.correct:
+      if sub.got_hint:
+        score = 1
+      else:
+        score = 2
+    elif sub.gave_up:
+      score = -1
+    if sub_id in attempted_probs:
+      # Take the maximum score a student achieved on a given problem session
+      # (e.g. they get full credit for getting it right second try)
+      attempted_probs[sub_id] = max(attempted_probs[sub_id], score)
+    else:
+      attempted_probs[sub_id] = score
 
-@app.route('/practice2/<int:ex_id>/')
-def practice2(ex_id):
+  # Sort problems by submission time so we can keep a running progress total
+  sorted_score_tups = sorted(attempted_probs.items(), key=lambda x: json.loads(x[0])[1])
+  # Keep track of problem id as well as score achieved (we may have multiple
+  # scores for the same problem if the student did multiple versions of it)
+  sub_score_pairs = map(lambda x: (json.loads(x[0])[0], x[1]), sorted_score_tups)
+
+  # Keep this dictionary around so we don't repeat problem queries
+  seen_problems = {}
+  # Keep a set of all problems the user got without a hint and don't repeat them
+  mastered_problem_ids = sets.Set()
+  concept_progress = {}
+  for score_pair in sub_score_pairs:
+    # If student attempted problem but never gave up or got it right, ignore it
+    if score_pair[1] == -float('inf'):
+      continue
+    if score_pair[0] not in seen_problems:
+      seen_problems[score_pair[0]] = PracticeProblemTemplate.query.filter_by(id=score_pair[0]).first()
+    problem = seen_problems[score_pair[0]]
+    if score_pair[1] == 2:
+      mastered_problem_ids.add(score_pair[0])
+    for concept in problem.concepts:
+      if concept.name not in concept_progress:
+        concept_progress[concept.name] = 0
+      concept_progress[concept.name] += score_pair[1]
+      # Keep concept_progress between 0 and 10 at all times
+      concept_progress[concept.name] = max(min(concept_progress[concept.name], 10), 0)
+
+  # If we gave up on our last problem, possibly go back to a mastered problem
+  if score_pair[1] == -1:
+    mastered_problem_ids = sets.Set()
+  # Don't repeat a problem twice in a row
+  mastered_problem_ids.add(score_pair[0])
+
+  # Get all current problems we haven't mastered
+  all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(mastered_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
+
+  # Give each problem a score based on how well we know each of its concepts
+  problem_scores = {}
+  for prob in all_problems:
+    prob_score = 0
+    for concept in prob.concepts:
+      if concept.name in concept_progress:
+        prob_score += concept_progress[concept.name]
+      else:
+        # Unseen concepts get a score of minus 10
+        prob_score -= 10
+    # Normalize score by the length of the concept list
+    if prob.concepts.count() > 0:
+      prob_score /= float(prob.concepts.count())
+    # Only add our problem if we haven't mastered most of its concepts
+    if prob_score < 9:
+      problem_scores[prob.problem_name] = prob_score
+
+  sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
+  print sorted_prob_score_pairs
+  # Default to q001 if we've mastered all problems or if we haven't done any yet
+  next_prob_name = 'q001'
+  if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
+    next_prob_name = sorted_prob_score_pairs[0][0]
+
+  return next_prob_name
+
+@app.route('/practice/')
+@login_required
+def practice_default():
+  next_problem_name = get_next_problem(current_user.id)
+  return redirect('/practice/' + next_problem_name)
+
+@app.route('/practice/<problem_name>/')
+@login_required
+def practice(problem_name):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
-  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name="q%03d" % ex_id, is_current=True).first()
+  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
 
   if problem_obj is not None:
     problem = problem_obj.to_dict()
@@ -443,13 +513,13 @@ def practice2(ex_id):
     if edited:
       problem_obj.concepts = concepts
       db.session.commit()
-    return render_template('practice2.html', problem=problem)
+    return render_template('practice.html', problem=problem)
   else:
-    return redirect('/practice2/1')
+    return redirect('/practice/')
 
-@app.route('/practice2/<int:ex_id>/submit/', methods=['POST'])
+@app.route('/practice/<problem_name>/submit/', methods=['POST'])
 @login_required
-def submit_practice(ex_id):
+def submit_practice(problem_name):
   code = request.form['code']
   result_test = request.form['result_test']
   result_no_test = request.form['result_no_test']
@@ -467,20 +537,24 @@ def submit_practice(ex_id):
       db.session.add(concept)
       db.session.commit()
     concepts.append(concept)
-  problem = PracticeProblemTemplate.query.filter_by(problem_name="q%03d" % ex_id, is_current=True).first().to_dict()
+  problem = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first().to_dict()
   got_hint = True if request.form['got_hint'] == 'true' else False
+  gave_up = True if request.form['gave_up'] == 'true' else False
   problem['template_vars'] = template_vars
   problem = utils.get_problem(problem)
   correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
-  submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
+  submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
   db.session.commit()
+  return_data = {}
   if correct:
-    return 'correct'
+    return_data['correct'] = 'correct'
+    return_data['next_problem'] = get_next_problem(current_user.id)
   elif result_no_test_error:
-    return 'oops you have an error in your code:\n' + result_no_test
+    return_data['correct'] = 'error'
   else:
-    return 'incorrect'
+    return_data['correct'] = 'incorrect'
+  return json.dumps(return_data)
 
 @app.route('/workspace/')
 def workspace_home():

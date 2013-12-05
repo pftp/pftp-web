@@ -1,0 +1,34 @@
+### prompt
+Write a function called list_multiply_{{ n }} that takes a list of integers as
+an argument and returns a list of each of its elements multiplied by {{ n }}.
+
+### solution
+def list_multiply_{{ n }}(lst):
+  res = []
+  for num in enumerate(lst):
+    res.append(num * {{ n }})
+  return res
+
+### test
+print list_multiply_{{ n }}([])
+print list_multiply_{{ n }}([23])
+print list_multiply_{{ n }}({{ x }})
+
+### hint
+Here's code for the list_add_5 function which takes a list of integers
+as an argument and returns a list of each of its elements added to 5:
+<pre>
+def list_add_5(lst):
+  res = []
+  for num in lst:
+    res.append(num + 5)
+  return res
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 50)
+res = {
+  'x' : rand_int_list(1000),
+  'n' : n
+}
+

@@ -1,0 +1,48 @@
+### prompt
+Write a function called rot13 that takes a string of letters as its argument and
+returns it with each of its letters rotated 13 letters forward in the alphabet,
+wrapping around and preserving capitalization. So 'a' becomes 'n', 'B' becomes
+'O', 'x' becomes 'k', etc. For example, rot13('JeLLo') should return
+'WrYYb'.
+
+### solution
+def rot13(s):
+  res = ''
+  for letter in s:
+    ascii_num = ord(letter)
+    new_num = ascii_num + 13
+    if (ascii_num <= 90 and new_num > 90) or new_num > 122:
+      new_num -= 26
+    res += chr(new_num)
+  return res
+
+### test
+print rot13('')
+for x in {{ xs }}:
+  print rot13(x)
+
+### hint
+Here's a function called rot3 that takes a string of letters as its argument and
+returns it with each of its letters rotated 3 letters forward in the alphabet,
+wrapping around and preserving capitalization:
+<pre>
+def rot3(s):
+  res = ''
+  for letter in s:
+    ascii_num = ord(letter)
+    new_num = ascii_num + 3
+    if (ascii_num <= 90 and new_num > 90) or new_num > 122:
+      new_num -= 26
+    res += chr(new_num)
+  return res
+</pre>
+
+### gen_template_vars
+xs = rand_word_list(20)
+for i, word in enumerate(xs):
+  if random() < 0.5:
+    xs[i] = word.upper()
+res = {
+  'xs': xs
+}
+

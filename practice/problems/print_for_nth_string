@@ -1,0 +1,26 @@
+### prompt
+Print out every {{ nth }} character in "{{ str }}" using a for loop.
+
+### solution
+sentence = "{{ str }}"
+for i in range(0, len(sentence), {{ n }}):
+  print sentence[i]
+
+### test
+# pass
+
+### hint
+Here's how you can use a for loop to iterate over ever other character in a string:
+<pre>
+sentence = "foobar"
+for i in range(0, len(sentence), 2):
+  print sentence[i]
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 5)
+res = {
+  'str': rand_sentence(),
+  'n': n,
+  'nth': nth(n)
+}

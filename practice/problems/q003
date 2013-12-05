@@ -28,6 +28,6 @@ The syntax for the function create_entry_for_each_word is below. This function c
 
 ### gen_template_vars
 res = {
-  'x': rand_string_list()
+  'x': rand_word_list(10)
 }
 

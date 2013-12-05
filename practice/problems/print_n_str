@@ -1,0 +1,28 @@
+### prompt
+Write a function called print_n_{{ x }} that takes an integer as its argument
+and prints "{{ x }}" that many times, on separate lines. The function should not
+return anything.
+
+### solution
+def print_n_{{ x }}(n):
+  for i in range(n):
+    print '{{ x }}'
+
+### test
+for i in range(20):
+  print print_n_{{ x }}(i)
+
+### hint
+Here's a function called print_9_x that takes a string as its argument and
+prints it 9 times, on separate lines:
+<pre>
+def print_9_x(s):
+  for i in range(9):
+    print s
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word()
+}
+

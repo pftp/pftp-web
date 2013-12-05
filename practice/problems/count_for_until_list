@@ -1,0 +1,37 @@
+### prompt
+Create a function count_until(words) which returns the number of values in the list before the first occurrence of "{{ value }}" using a for loop. The function should return the length of the list if "{{ value }}" is not in the list.
+
+### solution
+def count_until(words):
+  count = 0
+  for word in words:
+    if word != "{{ value }}":
+      count += 1
+    else:
+      break
+  return count
+
+### test
+print count_until([1,2,3,4])
+print count_until([1,"{{ value }}"])
+print count_until([1,2,"{{ value }}"])
+print count_until([1,2,3,"{{ value }}"])
+
+### hint
+Here's how you can exit a for loop upon encountering a certain value:
+<pre>
+count = 0
+foo = [1,2,3,4,5,5,7,4,5,4,3,6,5]
+for num in foo:
+  if num != 5:
+    count = count + 1
+  else:
+    break
+</pre>
+
+### gen_template_vars
+words = rand_word_list(rand_int(10, 20))
+res = {
+  'words': words,
+  'value': words[rand_int(0, len(words) - 1)]
+}

@@ -1,0 +1,27 @@
+### prompt
+Print out the substring from indices {{ x }} through {{ y }}, inclusive, of
+the string '{{ s }}'.
+
+### solution
+print '{{ s }}'[{{ x }}:{{ y }}+1]
+
+### test
+# pass
+
+### hint
+Here's code to print out the substring from indices {{ x }} through {{ y }},
+non-inclusive, of the string '{{ s }}'.
+<pre>
+print '{{ s }}'[{{ x }}+1:{{ y }}]
+</pre>
+
+### gen_template_vars
+s = rand_sentence()
+x = rand_int(0, len(s)/2)
+y = rand_int(x+1, len(s)-2)
+res = {
+  's': s,
+  'x': x,
+  'y': y
+}
+

@@ -1,0 +1,26 @@
+### prompt
+Write a function called compare_nums(x, y) that takes two integers x, y as arguments and returns True if and only if x {{ comp_op }} y.
+
+### solution
+def compare_nums(x, y):
+  return x {{ comp_op }} y
+
+### test
+for i in {{ x }}:
+  for j in {{ x }}:
+    print compare_nums(i, j)
+
+### hint
+Here's code for not_equals(x, y) that takes two integers x, y as arguments and
+returns True if and only if x is not equal to y:
+<pre>
+def not_equals(x, y):
+  return x != y
+</pre>
+
+### gen_template_vars
+res = {
+  'comp_op': choice(['<=', '<', '>=', '>']),
+  'x': rand_int_list(20)
+}
+

@@ -1,0 +1,38 @@
+### prompt
+Write a function called get_time_str that takes an integer number of seconds as
+its argument and returns a string in the form "<x> hours, <y> minutes, <z>
+seconds", where x, y, and z are integers. For example, get_time_str(5000) should
+return "1 hours, 23 minutes, 20 seconds".
+
+### solution
+def get_time_str(s):
+  hours = s / 3600
+  minutes = (s - (3600 * hours)) / 60
+  seconds = s - (3600 * hours) - (60 * minutes)
+  return '%d hours, %d minutes, %d seconds' % (hours, minutes, seconds)
+
+### test
+print get_time_str(0)
+print get_time_str(1)
+for x in {{ xs }}:
+  print get_time_str(x)
+
+### hint
+Here's a function called get_time_str that takes an integer number of seconds as
+its argument and returns a string in the form "<x> minutes, <y> seconds",
+where x and y are integers:
+<pre>
+def get_time_str(s):
+  minutes = s / 60
+  seconds = s - (60 * minutes)
+  return '%d minutes, %d seconds' % (minutes, seconds)
+</pre>
+
+### gen_template_vars
+xs = []
+for i in range(20):
+  xs.append(rand_int(0, 100000))
+res = {
+  'xs': xs
+}
+

@@ -63,6 +63,10 @@ class FuncVisitor(ast.NodeVisitor):
         func_name = 'modfunc_' + self.modules[attr_value.id] + '_' + node.func.attr
         if func_name not in self.concepts:
           self.concepts.append(func_name)
+      else:
+        func_name = 'func_' + node.func.attr
+        if node.func.attr not in self.user_defs and func_name not in self.concepts:
+          self.concepts.append(func_name)
 
 def get_concepts(src_str):
   src_ast = ast.parse(src_str)

@@ -1,0 +1,33 @@
+### prompt
+Print out the sum of every {{ nth }} number from {{ start }} to {{ end }} using a while loop.
+
+### solution
+total = 0
+i = {{ start }}
+while i <= {{ end }}:
+  total += i
+  i += {{ n }}
+print total
+
+### test
+# pass
+
+### hint
+Here's how you can print the sum for every 3rd number from 1 to 10:
+<pre>
+total = 0
+i = 1
+while i <= 10:
+  total = total + i
+  i = i + 3
+print total
+</pre>
+
+### gen_template_vars
+n = randint(2, 10)
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300),
+  'n': n,
+  'nth': nth(n)
+}

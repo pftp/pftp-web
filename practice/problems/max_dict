@@ -1,0 +1,49 @@
+### prompt
+Write a function called max_dict that takes a nonempty dictionary mapping
+strings to integers and returns the string that's mapped to the maximum value in
+the dictionary. If multiple words are mapped to the same maximum value, return a
+list of all of them.
+
+### solution
+def max_dict(d):
+  max_num = -float('inf')
+  max_words = []
+  for word, num in d.items():
+    if num > max_num:
+      max_num = num
+      max_words = [word]
+    elif num == max_num:
+      max_words.append(word)
+  if len(max_words) == 1:
+    return max_words[0]
+  return max_words
+
+### test
+print max_dict({'bob': 5})
+print max_dict({'a': -4, 'b': 0, 'c': 0})
+print max_dict({{ x }})
+
+### hint
+Here's code for the min_dict function which takes a dict mapping strings to
+integers as an argument and returns the string that's mapped to the minimum
+value in the dictionary:
+<pre>
+def min_dict(d):
+  min_num = float('inf')
+  min_words = []
+  for word, num in d.items():
+    if num < min_num:
+      min_num = num
+      min_words = [word]
+    elif num == min_num:
+      min_words.append(word)
+  if len(min_words) == 1:
+    return min_words[0]
+  return min_words
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_sidict()
+}
+

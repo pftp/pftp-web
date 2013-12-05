@@ -1,0 +1,30 @@
+### prompt
+Print out the sum of every {{ nth }} number from {{ start }} to {{ end }},
+inclusive, using a for loop.
+
+### solution
+total = 0
+for i in range({{ start }}, {{ end }}+1, {{ n }}):
+  total += i
+print total
+
+### test
+# pass
+
+### hint
+Here's how you can print the sum for every other number from 1 to 10, inclusive:
+<pre>
+total = 0
+for i in range(1, 11, 2):
+  total = total + i
+print total
+</pre>
+
+### gen_template_vars
+n = randint(2, 10)
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300),
+  'n': n,
+  'nth': nth(n)
+}

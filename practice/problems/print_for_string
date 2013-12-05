@@ -1,0 +1,22 @@
+### prompt
+Print out every character in "{{ str }}", each on a separate line, using a for
+loop.
+
+### solution
+for character in "{{ str }}":
+  print character
+
+### test
+# pass
+
+### hint
+Here's how you can use a for loop to iterate over a string:
+<pre>
+for character in 'foobar':
+  print character
+</pre>
+
+### gen_template_vars
+res = {
+  'str': rand_sentence()
+}

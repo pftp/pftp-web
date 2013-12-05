@@ -1,0 +1,22 @@
+### prompt
+Print out every value in {{ lst }} using a for loop.
+
+### solution
+for val in {{ lst }}:
+  print val
+
+### test
+# pass
+
+### hint
+Here's how you can use a for loop to iterate over a list:
+<pre>
+foo = [1,2,3,4,5,6]
+for num in foo:
+  print num
+</pre>
+
+### gen_template_vars
+res = {
+  'lst': rand_word_list(rand_int(5, 10)) 
+}

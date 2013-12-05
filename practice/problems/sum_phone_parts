@@ -1,0 +1,35 @@
+### prompt
+Write a function called sum_phone_parts that takes a string of a 10-digit phone
+number in the form "(xxx) yyy-zzzz" as its argument and returns the sum of its
+constituent parts, i.e. xxx+yyy+zzzz. For example,
+sum_phone_parts("(234) 567-8901") should return 9702.
+
+### solution
+def sum_phone_parts(num_str):
+  return int(num_str[1:4]) + int(num_str[6:9]) + int(num_str[10:])
+
+### test
+for x in {{ xs }}:
+  print sum_phone_parts(x)
+
+### hint
+Here's a function called sum_phone_parts that takes a string of a 7-digit phone
+number in the form "xxx-yyyy" as its argument and returns the sum of its
+constituent parts, i.e. xxx+yyyy:
+<pre>
+def sum_phone_parts(num_str):
+  return int(num_str[:3]) + int(num_str[4:])
+</pre>
+
+### gen_template_vars
+xs = []
+for i in range(20):
+  a = str(rand_int(200, 999))
+  b = str(rand_int(100, 999))
+  c = str(rand_int(1000, 9999))
+  num_str = '(' + a + ') ' + b + '-' + c
+  xs.append(num_str)
+res = {
+  'xs': xs
+}
+

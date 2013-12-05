@@ -1,0 +1,25 @@
+### prompt
+Write a function called num_words that takes a sentence string as an argument and returns the number of individual words, separated by spaces, in the string.
+
+### solution
+def num_words(s):
+  return len(s.split())
+
+### test
+print num_words('')
+for s in {{ x }}:
+  print num_words(s)
+
+### hint
+Here's code for the list_of_words function which takes a string as
+an argument and returns a list of its individual words:
+<pre>
+def list_of_words(s):
+  return s.split()
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_sentence_list(10)
+}
+

@@ -1,0 +1,29 @@
+### prompt
+Write a function called concat_three that takes three strings as arguments and
+returns them concatenated together.
+
+### solution
+def concat_three(x, y, z):
+  return x + y + z
+
+### test
+for i in {{ x }}:
+  for j in {{ y }}:
+    for k in {{ z }}:
+      print concat_three(i, j, k)
+
+### hint
+Here's code for the concat_two function which takes two strings as
+arguments and returns them concatenated together:
+<pre>
+def concat_two(x, y):
+  return x + y
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word_list(10),
+  'y': rand_word_list(10),
+  'z': rand_word_list(10)
+}
+

@@ -1,0 +1,46 @@
+### prompt
+Write a function called has_{{ n }}_{{ x }} that takes a string as its argument
+and returns True if and only if that string has {{ n }} or more instances of the
+character "{{ x }}". Take capitalization into account.
+
+### solution
+def has_{{ n }}_{{ x }}(s):
+  count = 0
+  for ch in s:
+    if ch == '{{ x }}':
+      count += 1
+  return count >= {{ n }}
+
+### test
+print has_{{ n }}_{{ x }}('')
+for y in {{ ys }}:
+  print has_{{ n }}_{{ x }}(y)
+
+### hint
+Here's a function called has_10_A that takes a string as its argument and
+returns True if and only if that string has 10 or more instances of the
+character "A".
+<pre>
+def has_10_A(s):
+  count = 0
+  for ch in s:
+    if ch == 'A':
+      count += 1
+  return count >= 10
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 5)
+x = rand_letter()
+ys = rand_string_list(20)
+for i in range(len(ys)):
+  if random() < 0.5:
+    for j in range(n):
+      idx = rand_int(0, len(ys[i])-1)
+      ys[i] = ys[i][:idx] + x + ys[i][idx:]
+res = {
+  'n': n,
+  'x': x,
+  'ys': ys
+}
+

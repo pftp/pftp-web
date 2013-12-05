@@ -1,0 +1,54 @@
+### prompt
+Write a function called num_found_{{ x }} that takes a string as its argument
+and returns the maximum number of times '{{ x }}' occurs in that string, not
+including overlaps.
+
+### solution
+def num_found_{{ x }}(s):
+  count = 0
+  i = 0
+  while i <= len(s) - len('{{ x }}'):
+    if s[i:i+len('{{ x }}')] == '{{ x }}':
+      count += 1
+      i += len('{{ x }}')
+    else:
+      i += 1
+  return count
+
+### test
+print num_found_{{ x }}('')
+for y in {{ ys }}:
+  print num_found_{{ x }}(y)
+
+### hint
+Here's the function is_bb_found_twice which takes a string as its argument and
+returns True if and only if 'bb' occurs at least twice in that string,
+not including overlaps.
+<pre>
+def is_bb_found_twice(s):
+  bb_found_once = False
+  i = 0
+  while i <= len(s) - len('bb'):
+    if s[i:i+len('bb')] == 'bb':
+      if bb_found_once:
+        return True
+      bb_found_once = True
+      i += len('bb')
+    else:
+      i += 1
+  return False
+</pre>
+
+### gen_template_vars
+x = choice(['haha', 'baabaa', 'xx', 'swingswing', 'lolo'])
+ys = rand_string_list(20)
+for i, y in enumerate(ys):
+  if random < 0.5:
+    for j in range(randint(0, 5)):
+      idx = randint(0, len(ys)-1)
+      ys[i] = y[:idx] + x * randint(1, 5) + y[idx+1:]
+res = {
+  'x': x,
+  'ys': ys
+}
+

@@ -1,0 +1,32 @@
+### prompt
+Write a function called replace_commas that takes a string as its argument and
+returns an identical string except with all commas replaced by spaces.
+
+### solution
+def replace_commas(s):
+  return s.replace(',', ' ')
+
+### test
+print replace_commas('')
+for x in {{ xs }}:
+  print replace_commas(x)
+
+### hint
+Here's the function replace_periods which takes a string as its argument and
+returns an identical string except with all periods replaced by spaces.
+<pre>
+def replace_periods(s):
+  return s.replace('.', ' ')
+</pre>
+
+### gen_template_vars
+xs = rand_string_list(20)
+for i, s in enumerate(xs):
+  if random() < 0.5:
+    for j in range(rand_int(0, 5)):
+      idx = rand_int(0, len(xs)-1)
+      xs[i] = s[:idx] + ',' + s[idx+1:]
+res = {
+  'xs': xs
+}
+
