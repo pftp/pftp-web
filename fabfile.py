@@ -296,8 +296,8 @@ def add_practice_problems():
       concepts.append(concept)
 
     # Create a new template
-    new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
     if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True).count() == 0:
+      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
       db.session.add(new_template)
       print colored("%s added to database." % new_template.problem_name, 'yellow')
       count_add += 1
@@ -306,9 +306,10 @@ def add_practice_problems():
       add_new_template = False
       # check if we need to completely scratch the old template and add a new template (the structure of the problem has changed)
       for k in ['prompt', 'solution', 'test']:
-        if old_template.to_dict()[k] != new_template.to_dict()[k]:
+        if old_template.to_dict()[k] != problem[k]:
           add_new_template = True
       if add_new_template:
+        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
         db.session.add(new_template)
         print colored("%s added to database." % new_template.problem_name, 'yellow')
         count_add += 1
@@ -318,9 +319,9 @@ def add_practice_problems():
       # we don't need to readd our template in this case
       count_update_updated = False
       for field_name in ['gen_template_vars', 'hint']:
-        if getattr(old_template, field_name) != getattr(new_template, field_name):
-          setattr(old_template, field_name, getattr(new_template, field_name))
-          print colored("%s updated with changed %s field" % (new_template.problem_name, field_name), 'yellow')
+        if getattr(old_template, field_name) != problem[field_name]:
+          setattr(old_template, field_name, problem[field_name])
+          print colored("%s updated with changed %s field" % (problem['problem_name'], field_name), 'yellow')
           if not count_update_updated:
             count_update += 1
             count_update_updated = True
