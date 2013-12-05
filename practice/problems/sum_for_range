@@ -1,5 +1,6 @@
 ### prompt
-Print out the sum of every number from {{ start }} to {{ end }} using a for loop.
+Print out the sum of every number from {{ start }} to {{ end }}, inclusive,
+using a for loop.
 
 ### solution
 total = 0
@@ -11,10 +12,10 @@ print total
 # pass
 
 ### hint
-Here's how you can print the sum for 1 to 10:
+Here's how you can print the sum for 1 to 10, inclusive:
 <pre>
 total = 0
-for i in range(1, 10):
+for i in range(1, 11):
   total = total + i
 print total
 </pre>

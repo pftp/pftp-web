@@ -1,6 +1,7 @@
 import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, sets
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import not_, and_
 from sqlalchemy.sql import func
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, roles_required, current_user
 from flask.ext.security.signals import user_registered
@@ -383,7 +384,6 @@ def submit_quiz(quiz_id):
   db.session.commit()
   return 'Submitted'
 
-
 @app.route('/labs/<int:lab_id>')
 def lab(lab_id):
   section = 0
@@ -398,15 +398,76 @@ def lab(lab_id):
   return render_template('lab.html', lab_id=lab_id, section=section)
 
 def get_next_problem(user_id):
-  completed_problems = PracticeProblemSubmission.query.filter_by(user_id=user_id, correct=True).all()
-  completed_ids = sets.Set()
-  for completed_problem in completed_problems:
-    completed_ids.add(completed_problem.problem_id)
-  all_problems = PracticeProblemTemplate.query.filter_by(is_current=True).order_by(func.length(PracticeProblemTemplate.solution)).all()
-  for next_prob in all_problems:
-    if next_prob.id not in completed_ids:
-      break
-  return next_prob.problem_name
+  all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id).all()
+  attempted_probs = {}
+  for sub in all_subs:
+    # Id submissions by their id as well as the time the student started working
+    # on it, so we only get one score per version of a problem
+    sub_id = json.dumps((sub.problem_id, sub.started.isoformat()))
+    score = -1
+    if sub.correct:
+      if sub.got_hint:
+        score = 1
+      else:
+        score = 2
+    if sub_id in attempted_probs:
+      # Take the maximum score a student achieved on a given problem session
+      # (e.g. they get full credit for getting it right second try)
+      attempted_probs[sub_id] = max(attempted_probs[sub_id], score)
+    else:
+      attempted_probs[sub_id] = score
+
+  # Sort problems by submission time so we can keep a running progress total
+  sorted_score_tups = sorted(attempted_probs.items(), key=lambda x: json.loads(x[0])[1])
+  # Keep track of problem id as well as score achieved (we may have multiple
+  # scores for the same problem if the student did multiple versions of it)
+  sub_score_pairs = map(lambda x: (json.loads(x[0])[0], x[1]), sorted_score_tups)
+
+  # Keep this dictionary around so we don't repeat problem queries
+  seen_problems = {}
+  # Keep a set of all problems the user got without a hint and don't repeat them
+  mastered_problem_ids = sets.Set()
+  concept_progress = {}
+  for score_pair in sub_score_pairs:
+    if score_pair[0] not in seen_problems:
+      seen_problems[score_pair[0]] = PracticeProblemTemplate.query.filter_by(id=score_pair[0]).first()
+    problem = seen_problems[score_pair[0]]
+    if score == 2:
+      mastered_problem_ids.add(score_pair[0])
+    for concept in problem.concepts:
+      if concept.name not in concept_progress:
+        concept_progress[concept.name] = 0
+      concept_progress[concept.name] += score_pair[1]
+      # Keep concept_progress between 0 and 10 at all times
+      concept_progress[concept.name] = max(min(concept_progress[concept.name], 10), 0)
+
+  # Get all current problems we haven't mastered
+  all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(mastered_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
+
+  # Give each problem a score based on how well we know each of its concepts
+  problem_scores = {}
+  for prob in all_problems:
+    prob_score = 0
+    for concept in prob.concepts:
+      if concept.name in concept_progress:
+        prob_score += concept_progress[concept.name]
+      else:
+        # Unseen concepts get a score of minus 10
+        prob_score -= 10
+    # Normalize score by the length of the concept list
+    if prob.concepts.count() > 0:
+      prob_score /= float(prob.concepts.count())
+    # Only add our problem if we haven't mastered most of its concepts
+    if prob_score < 9:
+      problem_scores[prob.problem_name] = prob_score
+
+  sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
+  # Default to q001 if we've mastered all problems or if we haven't done any yet
+  next_prob_name = 'q001'
+  if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -3:
+    next_prob_name = sorted_prob_score_pairs[0][0]
+
+  return next_prob_name
 
 @app.route('/practice/')
 @login_required
@@ -440,8 +501,7 @@ def practice(problem_name):
       db.session.commit()
     return render_template('practice.html', problem=problem)
   else:
-    next_problem_name = get_next_problem(current_user.id)
-    return redirect('/practice/' + next_problem_name)
+    return redirect('/practice/')
 
 @app.route('/practice/<problem_name>/submit/', methods=['POST'])
 @login_required

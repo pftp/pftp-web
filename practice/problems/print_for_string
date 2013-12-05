@@ -1,5 +1,5 @@
 ### prompt
-Print out every character in "{{ str }}" using a for loop.
+Print out every character in "{{ str }}", each on sepe using a for loop.
 
 ### solution
 for character in "{{ str }}":

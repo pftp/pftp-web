@@ -14,13 +14,18 @@ print_{{ x }}_return_{{ y }}()
 print print_{{ x }}_return_{{ y }}()
 
 ### hint
-Did you remember to call your function to test it at the end of the program?<br>
 Here's a function called print_hello_return_goodbye that prints "hello" and
 then returns "goodbye":
 <pre>
 def print_hello_return_goodbye():
   print 'hello'
   return 'goodbye'
+</pre>
+Did you remember to call your function to test it at the end of the program?
+In order to call a function we type its name and then parentheses with its
+arguments inside (or none if no arguments), for example:
+<pre>
+print_hello_return_goodbye()
 </pre>
 
 ### gen_template_vars
