@@ -1,0 +1,30 @@
+### prompt
+Print out every {{ nth }} character in "{{ str }}" using a while loop.
+
+### solution
+sentence = "{{ str }}"
+i = 0
+while i < len(sentence):
+  print sentence[i]
+  i += {{ n }}
+
+### test
+# pass
+
+### hint
+Here's how you can use a while loop to iterate over every 3rd character in a string:
+<pre>
+sentence = "foobar"
+i = 0
+while i < len(sentence):
+  print sentence[i]
+  i = i + 3
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 5)
+res = {
+  'str': rand_sentence(),
+  'n': n,
+  'nth': nth(n)
+}
