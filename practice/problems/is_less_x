@@ -1,0 +1,29 @@
+### prompt
+Write a function called is_less_{{ x }}(number) that takes in one argument (one number as input) and returns True if that number is less than {{ x }}. Then execute the line "print is_less{{ x }}(100)" to test if your function works.
+### solution
+def is_less_{{ x }}(number):
+  return number > {{ x }}
+print is_less_{{ x }}(100)
+### test
+print is_less_{{ x }}({{ x }})
+print is_less_{{ x }}(5)
+print is_less_{{ x }}(6)
+print is_less_{{ x }}(1)
+print is_less_{{ x }}(2)
+
+
+### hint
+The syntax to check and print if one  number is less than another number is
+<pre> print 5 < 1 # this will print False
+print 5 < 5 # this will print False
+print 5 < 6 # this will print True
+</pre>
+The syntax to define a function called returnTrue that always returns True is
+<pre> def returnTrue():
+   return True
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(2, 100)
+}
