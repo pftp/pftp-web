@@ -399,7 +399,7 @@ def lab(lab_id):
     return render_template('lab.html', lab_id=lab_id, section=section, program=program)
   return render_template('lab.html', lab_id=lab_id, section=section)
 
-def get_next_problem(user_id):
+def get_user_progress(user_id):
   all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id).all()
   attempted_probs = {}
   for sub in all_subs:
@@ -449,15 +449,21 @@ def get_next_problem(user_id):
       # Keep concept_progress between 0 and 10 at all times
       concept_progress[concept.name] = max(min(concept_progress[concept.name], 10), 0)
 
-  if score_pair != None:
-    # If we gave up on our last problem, possibly go back to a mastered problem
-    if score_pair[1] == -1:
-      mastered_problem_ids = sets.Set()
-    # Don't repeat a problem twice in a row
-    mastered_problem_ids.add(score_pair[0])
+  return (mastered_problem_ids, concept_progress, score_pair, seen_problems)
 
-  # Get all current problems we haven't mastered
-  all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(mastered_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
+
+def get_next_problem(user_id):
+  exempt_problem_ids, concept_progress, last_prob, seen_problems = get_user_progress(user_id)
+
+  if last_prob != None:
+    # If we gave up on our last problem, possibly go back to a mastered problem
+    if last_prob[1] == -1:
+      exempt_problem_ids = sets.Set()
+    # Don't repeat a problem twice in a row
+    exempt_problem_ids.add(last_prob[0])
+
+  # Get all current problems we haven't mastered and didn't just attempt
+  all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(exempt_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
 
   # Give each problem a score based on how well we know each of its concepts
   problem_scores = {}
@@ -484,6 +490,22 @@ def get_next_problem(user_id):
     next_prob_name = sorted_prob_score_pairs[0][0]
 
   return next_prob_name
+
+@app.route('/practice_progress/')
+@login_required
+def practice_progress():
+  mastered_problem_ids, concept_progress, last_prob, seen_problems = get_user_progress(current_user.id)
+  mastered_problems = []
+  for prob_id in mastered_problem_ids:
+    mastered_problems.append(seen_problems[prob_id].to_dict())
+  all_concepts = PracticeProblemConcept.query.all()
+  all_concept_progress = {}
+  for concept in all_concepts:
+    all_concept_progress[concept.name] = 0
+  for concept_name, concept_score in concept_progress.items():
+    all_concept_progress[concept_name] = concept_score
+  sorted_concept_progress = sorted(all_concept_progress.items(), key=lambda x: x[1], reverse=True)
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, concept_progress=sorted_concept_progress)
 
 @app.route('/practice/')
 @login_required

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Python Practice Progress
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h4> Concept Progress (between 0 and 10)</h4>
+  <ul>
+    {% for concept_name, concept_score in concept_progress %}
+    <li>{{ concept_name }}: {{ concept_score }}</li>
+    {% endfor %}
+  </ul>
+  <h4> Completed Problems </h4>
+  <ul>
+    {% for problem in mastered_problems %}
+    <li>{{ problem.problem_name }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
