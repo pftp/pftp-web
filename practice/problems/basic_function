@@ -1,0 +1,16 @@
+### prompt
+Create a function called first_function() that takes nothing as arguments and simply returns the number {{ x }}.
+## solution
+def first_function():
+  return {{ x }}
+### test
+print first_function()
+### hint
+The syntax to create a function called return_10() that takes in no arguments and simply returns 10 is
+<pre>def return_10():
+  return 10
+</pre>
+### gen_template_vars
+res = {
+  'x': rand_int(50, 100),
+}

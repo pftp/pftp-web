@@ -1,0 +1,19 @@
+### prompt
+Create a variable named {{ var_name }} and set the value of {{ var_name }} to be {{ x }}. Execute the lines "print {{ var_name }} == 5", "print {{ var_name }} != 5", "print {{ var_name }} < 3", "print {{ var_name }} > 0". Be sure to examine your result.
+## solution
+{{ var_name }} = {{ x }}
+print {{ var_name }} == 5
+print {{ var_name }} != 5
+print {{ var_name }} < 3
+print {{ var_name }} > 0
+### test
+print {{ var_name }}
+### hint
+The syntax to create a variable called num_chickens and set the value of num_chickens to be 5 is
+<pre>num_chickens = 5
+</pre>
+### gen_template_vars
+res = {
+  'var_name': rand_word(),
+  'x': rand_int(0, 100),
+}

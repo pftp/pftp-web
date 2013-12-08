@@ -1,0 +1,16 @@
+### prompt
+Create a function called return_word() that takes nothing as arguments and simply returns the word '{{ x }}'.
+## solution
+def return_word():
+  return '{{ x }}'
+### test
+print return_word()
+### hin
+tThe syntax to create a function called return_10() that takes in no arguments and simply returns 10 is
+<pre>def return_10():
+  return 10
+</pre>
+### gen_template_vars
+res = {
+  'x': rand_word()
+}

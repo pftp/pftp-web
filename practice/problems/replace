@@ -1,0 +1,15 @@
+### prompt
+Create a variable called a_sentence and set the value of a_sentence to be '{{ x }}'. Execute the line "print a_sentence.replace('a', 'e')" and examine what that line does.
+### solution
+a_sentence = '{{ x }}'
+print a_sentence.replace('a', 'e')
+### test
+# pass
+### hint
+The syntax to create a variable called a_sentence and set the value of a_sentence to be 'hello hurshal' is
+<pre>a_sentence = 'hello hurshal'
+</pre>
+### gen_template_vars
+res = {
+  'x': rand_word() + ' ' + rand_word() + ' ' + rand_word() + ' ' + rand_word(),
+}

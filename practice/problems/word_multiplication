@@ -1,0 +1,17 @@
+### prompt
+Create a variable called a_word and set the value of a_word to be '{{ y }}'. Execute the line "print a_word". Note what that line does. Now execute the line "print a_word * {{ rand_num }}". Note what multiplying a word by an integer does does.
+### solution
+a_word = '{{ y }}'
+print a_word
+print a_word * {{ rand_num }}
+### test
+# pass
+### hint
+The syntax to create a variable called a_sentence and set the value of a_sentence to be 'hello hurshal' is
+<pre>a_sentence = 'hello hurshal'
+</pre>
+### gen_template_vars
+res = {
+  'y': rand_word(),
+  'rand_num': rand_int(2, 5),
+}

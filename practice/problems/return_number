@@ -1,0 +1,17 @@
+### prompt
+Create a function called return_number(num) that takes a number as an argument and simply returns the number. Then execute the line "print return_number({{ x }})" to verify that the function returns the number {{ x }}.
+## solution
+def return_number(num):
+  return num
+print return_number({{ x }})
+### test
+print 2 * return_number({{ x }})
+### hint
+The syntax to create a function called return_2_times_number(num) that takes in a number as an argument and returns 2 times that number is
+<pre>def return_2_times_number(num):
+  return num * 2
+</pre>
+### gen_template_vars
+res = {
+  'x': rand_int(50, 100),
+}
