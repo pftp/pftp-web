@@ -1,0 +1,12 @@
+### prompt
+Execute the line "print '{{ random_word }}'" and note what it does.
+### solution
+print '{{ random_word }}'
+### test
+# pass
+### hint
+You should see '{{ random_word }}' printed out in the output
+### gen_template_vars
+res = {
+  'random_word': rand_word(),
+}

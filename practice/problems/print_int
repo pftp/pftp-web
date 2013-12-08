@@ -1,0 +1,12 @@
+### prompt
+Execute the line "print {{ x }}" and note what it does.
+### solution
+print {{ x }}
+### test
+# pass
+### hint
+You should see {{ x }} printed out in the output
+### gen_template_vars
+res = {
+  'x': rand_int(5, 100)
+}

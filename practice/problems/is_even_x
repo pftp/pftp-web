@@ -1,7 +1,7 @@
 ### prompt
 Write a function called is_even(number) that takes in one argument (one number as input) and returns True if that number is even. Then execute the line "print is_even(10)" to test if your function works.
 ### solution
-def is_even_{{ x }}(number):
+def is_even(number):
   return number % 2 == 0
 print is_even(10)
 ### test

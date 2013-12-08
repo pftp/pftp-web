@@ -1,0 +1,27 @@
+### prompt
+Write a function called is_odd(number) that takes in one argument (one number as input) and returns True if that number is odd. Then execute the line "print is_odd(10)" to test if your function works.
+### solution
+def is_odd(number):
+  return number % 2 == 1
+print is_odd(10)
+### test
+print is_odd(3)
+print is_odd(5)
+print is_odd(6)
+print is_odd(2)
+print is_odd(1)
+
+
+### hint
+The syntax to check and print if one  number is divisible by 3 is
+<pre> print 5 % 3 == 0 # this will return False since 5 mod 3 is equal to 2. % just returns the remainder when dividing
+print 6 % 3 == 0 # this will return True since 6 mod 3 is equal to 0.
+</pre>
+The syntax to define a function called returnTrue that always returns True is
+<pre> def returnTrue():
+   return True
+</pre>
+
+### gen_template_vars
+res = {
+}
