@@ -1,6 +1,6 @@
 ### prompt
 Create a variable named {{ var_name }} and set the value of {{ var_name }} to be {{ x }}. Execute the lines "print {{ var_name }} == 5", "print {{ var_name }} != 5", "print {{ var_name }} < 3", "print {{ var_name }} > 0". Be sure to examine your result.
-## solution
+### solution
 {{ var_name }} = {{ x }}
 print {{ var_name }} == 5
 print {{ var_name }} != 5

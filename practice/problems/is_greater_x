@@ -3,7 +3,7 @@ Write a function called is_greater_{{ x }}(number) that takes in one argument (o
 ### solution
 def is_greater_{{ x }}(number):
   return number > {{ x }}
-print is_greater{{ x }}(100)
+print is_greater_{{ x }}(100)
 ### test
 print is_greater_{{ x }}({{ x }})
 print is_greater_{{ x }}(5)

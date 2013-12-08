@@ -1,6 +1,6 @@
 ### prompt
 Create a function called return_number(num) that takes a number as an argument and simply returns the number. Then execute the line "print return_number({{ x }})" to verify that the function returns the number {{ x }}.
-## solution
+### solution
 def return_number(num):
   return num
 print return_number({{ x }})

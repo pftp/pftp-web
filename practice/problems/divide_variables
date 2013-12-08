@@ -1,6 +1,6 @@
 ### prompt
 Create a variable called {{ var_name }} and set the value of {{ var_name }} to be {{ x }}. Create another variable called {{ var_name1 }} and set the value of {{ var_name1 }} to be {{ y }}. Print the quotient of {{ var_name }} and {{ var_name1 }} by executing the line "print {{ var_name }} / {{ var_name1 }}". What's something you notice about the result?
-## solution
+### solution
 {{ var_name }} = {{ x }}
 {{ var_name1 }} = {{ y }}
 print {{ var_name }} / {{ var_name1 }}

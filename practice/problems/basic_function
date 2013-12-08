@@ -1,6 +1,6 @@
 ### prompt
 Create a function called first_function() that takes nothing as arguments and simply returns the number {{ x }}.
-## solution
+### solution
 def first_function():
   return {{ x }}
 ### test
