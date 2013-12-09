@@ -1,4 +1,4 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, sets
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, sets, ast
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import not_, and_
@@ -542,6 +542,62 @@ def practice(problem_name):
   else:
     return redirect('/practice/')
 
+# Parses x for dicts, and returns a tuple where the first item is a list of the
+# dicts and the second item is x with all the dicts removed
+def str_remove_dicts(x):
+  in_single_quotes = False
+  in_double_quotes = False
+  escaped = False
+  dict_nest_level = 0
+  dict_start_idx = 0
+  i = 0
+  dicts = []
+  while i < len(x):
+    ch = x[i]
+    if ch == "'" and not escaped and not in_double_quotes:
+      in_single_quotes = not in_single_quotes
+    if ch == '"' and not escaped and not in_single_quotes:
+      in_double_quotes = not in_double_quotes
+    if ch == "\\":
+      escaped = not escaped
+    else:
+      escaped = False
+    if ch == '{' and not in_single_quotes and not in_double_quotes:
+      if dict_nest_level == 0:
+        dict_start_idx = i
+      dict_nest_level += 1
+    if ch == '}' and not in_single_quotes and not in_double_quotes:
+      dict_nest_level -= 1
+      if dict_nest_level == 0:
+        dicts.append(ast.literal_eval(x[dict_start_idx:i+1]))
+        x = x[:dict_start_idx] + x[i+1:]
+        i = dict_start_idx - 1
+    i += 1
+  return (dicts, x)
+
+# Check if two dicts are the same, ignoring key order
+def same_dict(x, y):
+  if len(x.keys()) != len(y.keys()):
+    return False
+  for k, v in x.items():
+    if y[k] != v:
+      return False
+  return True
+
+# Check if two output strings are really the same
+# Ignores dictionary print order
+def same_output(x, y):
+  x_dicts, x_code = str_remove_dicts(x)
+  y_dicts, y_code = str_remove_dicts(y)
+  if x_code.strip() != y_code.strip():
+    return False
+  if len(x_dicts) != len(y_dicts):
+    return False
+  for i, d in enumerate(x_dicts):
+    if not same_dict(y_dicts[i], d):
+      return False
+  return True
+
 @app.route('/practice/<problem_name>/submit/', methods=['POST'])
 @login_required
 def submit_practice(problem_name):
@@ -567,7 +623,7 @@ def submit_practice(problem_name):
   gave_up = True if request.form['gave_up'] == 'true' else False
   problem['template_vars'] = template_vars
   problem = utils.get_problem(problem)
-  correct = problem['expected_test'].strip() == result_test.strip() and problem['expected_no_test'].strip() == result_no_test.strip()
+  correct = same_output(problem['expected_test'], result_test) and same_output(problem['expected_no_test'], result_no_test)
   submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
   db.session.commit()
