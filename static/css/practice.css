@@ -5,3 +5,13 @@
 #give_up {
   float: right;
 }
+
+#solution {
+  white-space: pre;
+  word-wrap: normal;
+  overflow: auto;
+}
+
+.modal {
+  z-index: -1;
+}

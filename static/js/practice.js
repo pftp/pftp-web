@@ -73,12 +73,18 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   } else {
     successFunc = function(data) {
       if (data['correct'] === 'correct') {
-        alert('correct!')
+        $('#solution').text(data['solution']);
+        $('#correct_modal').modal('show');
         $('#give_up').hide();
+        $('#modal_next_exercise').attr('href', '/practice/' + data['next_problem']);
         $('#next_exercise').attr('href', '/practice/' + data['next_problem']);
         $('#next_exercise').show();
+      } else if (data['correct'] === 'error') {
+        $('#error_modal').modal('show');
       } else {
-        alert(data['correct']);
+        $('#failure_quote').text(data['failure_quote'][0]);
+        $('#failure_quote_author').text(data['failure_quote'][1]);
+        $('#incorrect_modal').modal('show');
       }
     }
   }
@@ -125,4 +131,11 @@ $(function() {
     $('#show_hint').hide();
     $('#hint_wrapper').show();
   });
+  // Fix bug where we cannot select text that is blocked by hidden modal
+  $('.modal').on('show.bs.modal', function (e) {
+    $('.modal').css('z-index', 1050);
+  })
+  $('.modal').on('hidden.bs.modal', function (e) {
+    $('.modal').css('z-index', -1);
+  })
 });

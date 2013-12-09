@@ -10,6 +10,7 @@ from flask_security.forms import RegisterForm, TextField, Required
 
 import utils
 import ast_utils
+import random
 ################################################################################
 # Config
 ################################################################################
@@ -573,11 +574,61 @@ def submit_practice(problem_name):
   return_data = {}
   if correct:
     return_data['correct'] = 'correct'
+    return_data['solution'] = problem['solution']
     return_data['next_problem'] = get_next_problem(current_user.id)
   elif result_no_test_error:
     return_data['correct'] = 'error'
   else:
+    # Insert random inspirational failure quote
     return_data['correct'] = 'incorrect'
+    failure_quotes = [
+        ('Our greatest glory is not in never failing, but in rising up every time we fail.', 'Ralph Waldo Emerson'),
+        ('Satisfaction lies in the effort, not in the attainment. Full effort is full victory.', 'Mahatma Gandhi'),
+        ('As you proceed through life, following your own path, birds will shit on you. Don\'t bother to brush it off. Getting a comedic view of your situation gives you spiritual distance. Having a sense of humor saves you.', 'Joseph Campbell'),
+        ('If you focus on the risks, they\'ll multiply in your mind and eventually paralyze you. You want to focus on the task, instead, on doing what needs to be done.', 'Barry Eisler'),
+        ('If you take responsibility and blame yourself, you have the power to change things. But if you put responsibility on someone else, then you are giving them the power to decide your fate.', 'Deja King'),
+        ('H is for Habit, winners make a habit of doing the things losers don\'t want to do.', 'Lucas Remmerswaal'),
+        ('Success is a state of mind.  If you want success, start thinking of yourself as a success.', 'Joyce Brothers'),
+        ("If you set your goals ridiculously high and it's a failure, you will fail above everyone elses success", 'James Cameron'),
+        ('Genius is one percent inspiration and ninety-nine percent perspiration.', 'Thomas Edison'),
+        ('Luck is the dividend of sweat. The more you sweat, the luckier you get.', 'Ray Kroc'),
+        ('To have failed is to have striven, to have striven is to have grown.', 'Maltbie Davenport Babcock'),
+        ('He who does not hope to win has already lost.', 'Jose Joaquin Olmedo'),
+        ('When you get crapped on, grow a garden.', 'Tanja Kobasic'),
+        ('It is the work that matters, not the applause that follows.', 'Robert Falco Scott'),
+        ("I have not failed. I've just found 10,000 ways that won't work.", 'Thomas Edison'),
+        ('Success is not final, failure is not fatal: it is the courage to continue that counts.', 'Winston Churchill'),
+        ('Pain is temporary. Quitting lasts forever.', 'Lance Armstrong'),
+        ('Failure is the condiment that gives success its flavor.' 'Truman Capote'),
+        ('Success is stumbling from failure to failure with no loss of enthusiasm.', 'Winston Churchill'),
+        ("The brick walls are there for a reason. The brick walls are not there to keep us out. The brick walls are there to give us a chance to show how badly we want something. Because the brick walls are there to stop the people who don't want it badly enough. They're there to stop the other people.", 'Randy Pausch'),
+        ("A thinker sees his own actions as experiments and questions--as attempts to find out something. Success and failure are for him answers above all.", 'Friedrich Nietzsche'),
+        ("A bad day for your ego is a great day for your soul.", 'Jillian Michaels'),
+        ('Never confuse a single defeat with a final defeat.', 'F. Scott Fitzgerald'),
+        ("You're not obligated to win. You're obligated to keep trying. To the best you can do everyday.", 'Jason Mraz'),
+        ('If you fell down yesterday, stand up today.', 'H.G. Wells'),
+        ('We are all failures- at least the best of us are.', 'J.M. Barrie'),
+        ('Try again. Fail again. Fail better.', 'Samuel Beckett'),
+        ('The only real mistake is the one from which we learn nothing.', 'Henry Ford'),
+        ('Failures are finger posts on the road to achievement.', 'C.S. Lewis'),
+        ('The person who failed often knows how to avoid future failures. The person who knows only success can be more oblivious to all the pitfalls.', 'Randy Pausch'),
+        ('As long as I am breathing, in my eyes, I am just beginning.' 'Criss Jami'),
+        ('The harder you fall, the heavier your heart; the heavier your heart, the stronger you climb; the stronger you climb, the higher your pedestal.', 'Criss Jami'),
+        ("All the time you're saying to yourself, \"I could do that, but I won't,\"--which is just another way of saying that you can't.", "Richard P. Feynman"),
+        ("All men make mistakes, but a good man yields when he knows his course is wrong, and repairs the evil. The only crime is pride.", 'Sophocles'),
+        ("Winners are not afraid of losing. But losers are. Failure is part of the process of success. People who avoid failure also avoid success.", 'Robert T. Kiyosaki'),
+        ("What seems to us as bitter trials are often blessings in disguise", 'Oscar Wilde'),
+        ("Failure should be our teacher, not our undertaker. Failure is delay, not defeat. It is a temporary detour, not a dead end. Failure is something we can avoid only by saying nothing, doing nothing, and being nothing.", 'Denis Waitley'),
+        ("'Almost' only counts in horseshoes and hand grenades.", 'Anonymous'),
+        ("You build on failure. You use it as a stepping sone. Close the door on the past. You don't try to forget the mistakes, but you don't dwell on it. You don't let it have any of your energy, or any of your time, or any of your space.", 'Johnny Cash'),
+        ("We have forty million reasons for failure, but not a single excuse.", 'Rudyard Kipling'),
+        ("Failure? I never encountered it. All I ever met were temporary setbacks.", 'Dottie Walters'),
+        ("The major difference between a thing that might go wrong and a thing that cannot possibly go wrong is that when a thing that cannot possibly go wrong goes wrong it usually turns out to be impossible to get at or repair.", 'Douglas Adams'),
+        ('A man who fails well is greater than one who succeeds badly.', 'Thomas Merton'),
+        ('Our business in this world is not to succeed, but to continue to fail, in good spirits.', 'Robert Louis Stevenson'),
+        ("If at first you don't succeed, try, try, try again.", 'Anonymous')
+        ]
+    return_data['failure_quote'] = random.choice(failure_quotes)
   return json.dumps(return_data)
 
 @app.route('/workspace/')
