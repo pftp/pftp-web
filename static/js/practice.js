@@ -56,6 +56,12 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   }
   if (!gaveUp) {
     $('#practice_output').text(result_no_test);
+    if (result_no_test !== '') {
+      $('#correct_output').text(result_no_test);
+      $('#correct_output_container').show();
+    } else {
+      $('#correct_output_container').hide();
+    }
   }
   testObj = {'input': code + '\n' + test_code};
   executeCode(testObj);

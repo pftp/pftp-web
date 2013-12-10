@@ -10,10 +10,15 @@
   float: right;
 }
 
-#solution {
+pre {
+  max-height: 500px;
   white-space: pre;
   word-wrap: normal;
   overflow: auto;
+}
+
+.output-pre {
+  max-height: 150px;
 }
 
 .modal {
