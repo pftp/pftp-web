@@ -116,8 +116,9 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
 }
 $(function() {
   var editor, got_hint = false, start_time = new Date().getTime() / 1000;
-  Sk.canvas = 'turtle_canvas';
   Sk.pre = 'practice_output';
+  // Timeout if code takes more than 1 second to run
+  Sk.execLimit = 1000;
   editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
     autofocus: true,
     theme: 'cobalt',
