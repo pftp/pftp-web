@@ -17,7 +17,14 @@ pre {
   overflow: auto;
 }
 
+.solution-pre {
+  font-weight: 700;
+  color: #444;
+}
+
 .output-pre {
+  font-weight: 700;
+  color: #444;
   max-height: 150px;
 }
 

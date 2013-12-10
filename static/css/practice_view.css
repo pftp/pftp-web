@@ -1,4 +1,6 @@
 pre {
+  font-weight: 700;
+  color: #444;
   max-height: 500px;
   white-space: pre;
   word-wrap: normal;

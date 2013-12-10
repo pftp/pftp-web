@@ -1,8 +1,9 @@
 ### prompt
 Write a function called max_dict that takes a nonempty dictionary mapping
 strings to integers and returns the string that's mapped to the maximum value in
-the dictionary. If multiple words are mapped to the same maximum value, return a
-list of all of them.
+the dictionary. If multiple words are mapped to the same maximum value, return
+the one that comes first in alphabetical order, assuming all capital letters
+come before lowercase letters (the default in Python).
 
 ### solution
 def max_dict(d):
@@ -14,9 +15,8 @@ def max_dict(d):
       max_words = [word]
     elif num == max_num:
       max_words.append(word)
-  if len(max_words) == 1:
-    return max_words[0]
-  return max_words
+
+  return sorted(max_words)[0]
 
 ### test
 print max_dict({'bob': 5})
