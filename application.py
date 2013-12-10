@@ -1,4 +1,5 @@
 import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, ast
+from collections import defaultdict
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import not_, and_
@@ -433,8 +434,9 @@ def get_user_progress(user_id):
   # Keep a set of all problems the user got without a hint and don't repeat them
   mastered_problem_ids = []
   concept_progress = {}
+  problem_id_to_time_given_up = defaultdict(list)
   score_pair = None
-  for score_pair in sub_score_pairs:
+  for i, score_pair in enumerate(sub_score_pairs):
     # If student attempted problem but never gave up or got it right, ignore it
     if score_pair[1] == -float('inf'):
       continue
@@ -443,6 +445,9 @@ def get_user_progress(user_id):
     problem = seen_problems[score_pair[0]]
     if score_pair[1] == 2 and score_pair[0] not in mastered_problem_ids:
       mastered_problem_ids.append(score_pair[0])
+    # if the user gave up on the problem, record the index the user gave up on the problem
+    if score_pair[1] == -1:
+      problem_id_to_time_given_up[score_pair[0]].append(i)
     for concept in problem.concepts:
       if concept.name not in concept_progress:
         concept_progress[concept.name] = 0
@@ -450,10 +455,11 @@ def get_user_progress(user_id):
       # Keep concept_progress between 0 and 10 at all times
       concept_progress[concept.name] = max(min(concept_progress[concept.name], 10), 0)
 
-  return (mastered_problem_ids, concept_progress, score_pair, seen_problems)
+  return (mastered_problem_ids, concept_progress, score_pair, seen_problems, problem_id_to_time_given_up, len(sub_score_pairs))
+
 
 def get_next_problem(user_id):
-  exempt_problem_ids, concept_progress, last_prob, seen_problems = get_user_progress(user_id)
+  exempt_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
 
   if last_prob != None:
     # If we gave up on our last problem, possibly go back to a mastered problem
@@ -465,6 +471,19 @@ def get_next_problem(user_id):
 
   # Get all current problems we haven't mastered and didn't just attempt
   all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(exempt_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
+
+  # filter out problems that the user has repeatedly given up on
+  new_all_problems = []
+  for prob in all_problems:
+    if prob.id in problem_id_to_time_given_up:
+      # if it has been at least (3 * number given up) problems since the last time problem prob has been given up on,
+      # then we can reconsider this problem for use
+      if problems_attempted - problem_id_to_time_given_up[prob.id][-1] > len(problem_id_to_time_given_up[prob.id]) * 3:
+        new_all_problems.append(prob)
+    else:
+      new_all_problems.append(prob)
+  if len(new_all_problems) > 5:
+    all_problems = new_all_problems
 
   # Give each problem a score based on how well we know each of its concepts
   problem_scores = {}
@@ -496,7 +515,7 @@ def get_next_problem(user_id):
 @app.route('/practice_progress/')
 @login_required
 def practice_progress():
-  mastered_problem_ids, concept_progress, last_prob, seen_problems = get_user_progress(current_user.id)
+  mastered_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(current_user.id)
 
   # Get a list of mastered problems that are still current,
   # in reverse order of mastery
