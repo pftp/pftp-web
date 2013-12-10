@@ -1,4 +1,4 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, sets, ast
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, ast
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import not_, and_
@@ -431,7 +431,7 @@ def get_user_progress(user_id):
   # Keep this dictionary around so we don't repeat problem queries
   seen_problems = {}
   # Keep a set of all problems the user got without a hint and don't repeat them
-  mastered_problem_ids = sets.Set()
+  mastered_problem_ids = []
   concept_progress = {}
   score_pair = None
   for score_pair in sub_score_pairs:
@@ -441,8 +441,8 @@ def get_user_progress(user_id):
     if score_pair[0] not in seen_problems:
       seen_problems[score_pair[0]] = PracticeProblemTemplate.query.filter_by(id=score_pair[0]).first()
     problem = seen_problems[score_pair[0]]
-    if score_pair[1] == 2:
-      mastered_problem_ids.add(score_pair[0])
+    if score_pair[1] == 2 and score_pair[0] not in mastered_problem_ids:
+      mastered_problem_ids.append(score_pair[0])
     for concept in problem.concepts:
       if concept.name not in concept_progress:
         concept_progress[concept.name] = 0
@@ -452,16 +452,16 @@ def get_user_progress(user_id):
 
   return (mastered_problem_ids, concept_progress, score_pair, seen_problems)
 
-
 def get_next_problem(user_id):
   exempt_problem_ids, concept_progress, last_prob, seen_problems = get_user_progress(user_id)
 
   if last_prob != None:
     # If we gave up on our last problem, possibly go back to a mastered problem
     if last_prob[1] == -1:
-      exempt_problem_ids = sets.Set()
+      exempt_problem_ids = []
     # Don't repeat a problem twice in a row
-    exempt_problem_ids.add(last_prob[0])
+    if last_prob[0] not in exempt_problem_ids:
+      exempt_problem_ids.append(last_prob[0])
 
   # Get all current problems we haven't mastered and didn't just attempt
   all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(exempt_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
@@ -496,17 +496,29 @@ def get_next_problem(user_id):
 @login_required
 def practice_progress():
   mastered_problem_ids, concept_progress, last_prob, seen_problems = get_user_progress(current_user.id)
+
+  # Get a list of mastered problems that are still current,
+  # in reverse order of mastery
   mastered_problems = []
-  for prob_id in mastered_problem_ids:
-    mastered_problems.append(seen_problems[prob_id].to_dict())
+  for prob_id in reversed(mastered_problem_ids):
+    if seen_problems[prob_id].is_current:
+      mastered_problems.append(seen_problems[prob_id].to_dict())
+
+  # Get percent of current problems that have been mastered
+  current_problem_count = PracticeProblemTemplate.query.filter_by(is_current=True).count()
+  mastered_percent = int(float(len(mastered_problems)) / current_problem_count * 100)
+
+  # Get progress for all concepts, including ones the user has not yet encountered
   all_concepts = PracticeProblemConcept.query.all()
   all_concept_progress = {}
   for concept in all_concepts:
     all_concept_progress[concept.name] = 0
   for concept_name, concept_score in concept_progress.items():
-    all_concept_progress[concept_name] = concept_score
+    # Convert concept_score to a percentage, assuming it is out of ten
+    all_concept_progress[concept_name] = float(concept_score) * 10
   sorted_concept_progress = sorted(all_concept_progress.items(), key=lambda x: x[1], reverse=True)
-  return render_template('practice_progress.html', mastered_problems=mastered_problems, concept_progress=sorted_concept_progress)
+
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress)
 
 @app.route('/practice/')
 @login_required

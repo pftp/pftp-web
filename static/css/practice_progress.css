@@ -1,0 +1,28 @@
+li {
+  display: inline;
+  padding: 0px 10px;
+}
+
+.progress-bar {
+  display: inline-block;
+  background-color: black;
+  width: 150px;
+  border-radius: 13px;
+  padding: 3px;
+  margin: 5px;
+}
+
+.inner-progress-bar {
+  display: inline-block;
+  background-color: green;
+  height: 20px;
+  border-radius: 10px;
+  overflow: visible;
+}
+
+.progress-bar-text {
+  color: white;
+  padding: 10px;
+  white-space: nowrap;
+}
+

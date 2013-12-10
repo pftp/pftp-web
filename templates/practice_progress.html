@@ -5,20 +5,32 @@ Python Practice Progress
 {% endblock %}
 
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice_progress.css')}}" />
 {% endblock %}
 
 {% block content %}
 <div class="container">
-  <h4> Concept Progress (between 0 and 10)</h4>
-  <ul>
-    {% for concept_name, concept_score in concept_progress %}
-    <li>{{ concept_name }}: {{ concept_score }}</li>
-    {% endfor %}
-  </ul>
   <h4> Completed Problems </h4>
+  <div class="progress-bar" style="display:block;width:100%;">
+    <div class="inner-progress-bar" style="width:{{mastered_percent}}%">
+      <span class="progress-bar-text">{{mastered_percent}}% of problems completed</span>
+    </div>
+  </div>
   <ul>
     {% for problem in mastered_problems %}
     <li>{{ problem.problem_name }}</li>
+    {% endfor %}
+  </ul>
+  <h4> Concept Progress</h4>
+  <ul>
+    {% for concept_name, concept_percent in concept_progress %}
+    <li>
+    <div class="progress-bar">
+      <div class="inner-progress-bar" style="width:{{concept_percent}}%">
+        <span class="progress-bar-text">{{ concept_name }}</span>
+      </div>
+    </div>
+    </li>
     {% endfor %}
   </ul>
 </div>
