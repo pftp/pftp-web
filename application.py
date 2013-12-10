@@ -342,7 +342,7 @@ def lesson_home():
   context['lesson_name'] = 'Lessons'
   return render_template('lesson_home.html', context=context)
 
-@app.route('/lessons/<path:lesson_path>')
+@app.route('/lessons/<path:lesson_path>/')
 def lesson(lesson_path):
   file_path = os.path.join('gen', lesson_path)
   if '.pdf' in file_path:
@@ -388,7 +388,7 @@ def submit_quiz(quiz_id):
   db.session.commit()
   return 'Submitted'
 
-@app.route('/labs/<int:lab_id>')
+@app.route('/labs/<int:lab_id>/')
 def lab(lab_id):
   section = 0
   program = None
@@ -544,7 +544,7 @@ def practice_progress():
 @login_required
 def practice_default():
   next_problem_name = get_next_problem(current_user.id)
-  return redirect('/practice/' + next_problem_name)
+  return redirect('/practice/%s/' % next_problem_name)
 
 @app.route('/practice/<problem_name>/')
 @login_required
@@ -742,7 +742,7 @@ def workspace_home():
     return render_template('workspace_home.html', programs=programs)
   return render_template('workspace.html')
 
-@app.route('/workspace/<int:program_id>')
+@app.route('/workspace/<int:program_id>/')
 @login_required
 def workspace(program_id):
   program = Program.query.filter_by(id=program_id, user_id=current_user.id).first()
@@ -750,7 +750,7 @@ def workspace(program_id):
     return redirect('/workspace/')
   return render_template('workspace.html', program=program)
 
-@app.route('/workspace/<int:program_id>/revision/<int:revision_id>')
+@app.route('/workspace/<int:program_id>/revision/<int:revision_id>/')
 @login_required
 def program_revision(program_id, revision_id):
   program = Program.query.filter_by(id=program_id, user_id=current_user.id).first()
@@ -758,7 +758,7 @@ def program_revision(program_id, revision_id):
     return redirect('/workspace/')
   target_revision = CodeRevision.query.filter_by(id=revision_id, program_id=program.id, user_id=current_user.id).first()
   if target_revision == None:
-    return redirect('/workspace/' + str(program.id))
+    return redirect('/workspace/%s/' % str(program.id))
   revisions = CodeRevision.query.order_by(CodeRevision.time).filter(CodeRevision.time <= target_revision.time).all()
   codelines = ['']
   for revision in revisions:
@@ -778,7 +778,7 @@ def new_program():
   program = Program(user_id=current_user.id)
   db.session.add(program)
   db.session.commit()
-  return redirect('/workspace/'+str(program.id))
+  return redirect('/workspace/%s/' % str(program.id))
 
 def compute_diff(old_code, new_code):
   memo = {}
@@ -906,13 +906,13 @@ def assignments_home():
   assignments = Assignment.query.order_by(Assignment.deadline).all()
   return render_template('assignment_home.html', assignments=assignments)
 
-@app.route('/assignments/<int:assignment_id>')
+@app.route('/assignments/<int:assignment_id>/')
 def assignments(assignment_id):
   assignment = Assignment.query.get(assignment_id)
   if assignment is not None:
     return render_template('assignment.html', assignment=assignment)
   else:
-    return redirect('/assignments/1')
+    return redirect('/assignments/1/')
 
 @app.route('/submit_assignment/', methods=['POST'])
 @login_required
