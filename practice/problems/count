@@ -1,0 +1,37 @@
+### prompt
+Create a function called count_{{ x }}(list) that takes in a list of integers and returns the number of times {{ x }} appears in the list. Then verify that your function works by executing "print count_{{ x }}({{ random_list }})"
+
+
+### solution
+def count_{{ x }}(list):
+  count = 0
+  for x in list:
+    if x == {{ x }}:
+      count += 1
+  return count
+print count_{{ x }}({{ random_list }})
+### test
+print count_{{ x }}([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10])
+print count_{{ x }}([1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,7,7,7,7,7,7,8,8,8,8,8,9,9,9,9,10,10,10,10])
+
+### hint
+Here's code for the print_2_appears(list) function that takes a list as input and prints "2 appears" for each time two appears in the list
+<pre>
+def print_list(list):
+  for num in list:
+    if num % 2 == 0:
+      print "2 appears"
+</pre>
+Here's code for sum(list) function that takes a list as input and returns the sum of the elements in the list.
+<pre>
+def sum(list):
+  total = 0
+  for num in list:
+    total = total + num
+  return total
+
+### gen_template_vars
+res = {
+  'x': [ 3, 4, 5, 6, 7][rand_int(0, 4)],
+  'random_list': [rand_int(1, 10) for i in range(rand_int(10, 14))]
+}

@@ -1,0 +1,29 @@
+### prompt
+Create a function called remove_multiples_of_{{ x }}(list) that takes in a list of integers and returns a new identical list, but with numbers that are a multiple of {{ x }} removed. Then verify that your function works by executing "print remove_multiples_of_{{ x }}({{ random_list }})"
+
+### solution
+def remove_multiples_of_{{ x }}(list):
+  new_list = []
+  for x in list:
+    if x % {{ x }} != 0:
+      new_list.append(x)
+  return new_list
+print remove_multiples_of_{{ x }}({{ random_list }})
+### test
+print remove_multiples_of_{{ x }}([1,2,3,4,5,6,7,8,9,10])
+print remove_multiples_of_{{ x }}([11,12,13,14,15,16,17,18,19,20])
+print remove_multiples_of_{{ x }}([21,22,23,24,25,26,27,28,29,30])
+### hint
+Here's code for the print_multiples_2(list) function that takes each element in the list and prints it if it is a multiple of 2
+<pre>
+def print_list(list):
+  for num in list:
+    if num % 2 == 0:
+      print num
+</pre>
+
+### gen_template_vars
+res = {
+  'x': [ 3, 4, 5, 6, 7][rand_int(0, 4)],
+  'random_list': [rand_int(1, 35) for i in range(rand_int(8, 12))]
+}

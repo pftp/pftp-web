@@ -1,0 +1,26 @@
+### prompt
+Create a function called remove_{{ x }}(list) that takes in a list of integers and returns a new identical list, but with all {{ x }} removed. Then verify that your function works by executing "print remove_{{ x }}([7, 5, 4, 8, 1, 2, 1, 2, 13, 7, 2,  3, 15, 4, 1, 2, 9, 8, 12, 11, 10, 14])"
+
+### solution
+def remove_{{ x }}(list):
+  new_list = []
+  for x in list:
+    if x != {{ x }}:
+      new_list.append(x)
+  return new_list
+print remove_{{ x }}([7, 5, 4, 8, 1, 2, 1, 2, 13, 7, 2,  3, 15, 4, 1, 2, 9, 8, 12, 11, 10, 14])
+### test
+print remove_{{ x }}([{{ x }}, {{ x }}, 1, {{ x }}])
+print remove_{{ x }}([1,2,3,4])
+### hint
+Here's code for the print_list(list) function that takes each element in the list and prints it
+<pre>
+def print_list(list):
+  for num in list:
+    print num
+</pre>
+
+### gen_template_vars
+res = {
+  'x': [7, 5, 13, 3, 15, 4, 1, 2, 9, 8, 12, 11, 10, 14][rand_int(0, len([7, 5, 13, 3, 15, 4, 1, 2, 9, 8, 12, 11, 10, 14]) - 1)]
+}

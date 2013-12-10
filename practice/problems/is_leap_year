@@ -1,0 +1,29 @@
+### prompt
+Write a function called is_leap_year(year) that takes in a year as an input and returns True if the year is a leap year and returns False if the year is not a leap year. Remember years that are divisible by 4 are leap years, with the exception that years that are divisible by 100 are not leap years, with the exception that years that are divisible by 400 are leap years. Then test your function by executing "print is_leap_year(2000)", "print is_leap_year(2012)", "print is_leap_year(2013)", "print is_leap_year(2100)".
+
+### solution
+def is_leap_year(year):
+  if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+    return True
+  return False
+print is_leap_year(2000)
+print is_leap_year(2012)
+print is_leap_year(2013)
+print is_leap_year(2100)
+
+### test
+print is_leap_year(200)
+print is_leap_year(201)
+print is_leap_year(202)
+print is_leap_year(2200)
+print is_leap_year(2400)
+### hint
+Here's code for the add_two function which takes two integers as
+arguments and returns their sum:
+<pre>
+def add_two(x, y):
+  return x + y
+</pre>
+
+### gen_template_vars
+res = {}

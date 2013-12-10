@@ -1,0 +1,26 @@
+### prompt
+Create a function called multiply_list(list) that takes in a list of integers and returns the product of the list. Then verify that your function works by executing "print multiply_list({{ random_list }})".
+
+### solution
+def multiply_list(list):
+  product = 1
+  for num in list:
+    product = product * num
+  return product
+print multiply_list({{ random_list }})
+### test
+print multiply_list([1,2,3,4,5,6])
+print multiply_list([0,2,3,4,5,6])
+print multiply_list([2,3,4,2,3,4])
+### hint
+Here's code for the print_list(list) function that takes each element in the list and prints it
+<pre>
+def print_list(list):
+  for num in list:
+    print num
+</pre>
+
+### gen_template_vars
+res = {
+  'random_list': [rand_int(3, 10) for i in range(rand_int(3, 7))]
+}

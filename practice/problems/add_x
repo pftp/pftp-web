@@ -1,0 +1,22 @@
+### prompt
+Create a function called add_{{ x }}(num) that takes in a number as an argument and returns that number plus {{ x }}. Then execute the line "print add_{{ x }}(5)" to verify that your functiion works.
+
+### solution
+def add_{{ x }}(num):
+  return {{ x }} + num
+print add_{{ x }}(5)
+### test
+print add_{{ x }}(6)
+print add_{{ x }}(7)
+### hint
+Here's code for the add_two function which takes two integers as
+arguments and returns their sum:
+<pre>
+def add_two(x, y):
+  return x + y
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(10, 100)
+}
