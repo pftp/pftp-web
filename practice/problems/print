@@ -1,12 +1,18 @@
 ### prompt
-Execute the line "print '{{ random_word }}'" and note what it does.
+Print the string "{{ to_print }}"
 ### solution
-print '{{ random_word }}'
+print "{{ to_print }}"
+
 ### test
 # pass
+
 ### hint
-You should see '{{ random_word }}' printed out in the output
+The syntax to print the string "lol" is
+<pre>print "lol"
+</pre>
+
 ### gen_template_vars
 res = {
-  'random_word': rand_word(),
+  'to_print': rand_choice(['hello', 'i like chicken', 'apples taste good', 'mmm chocolate!'])
 }
+

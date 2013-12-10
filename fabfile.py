@@ -277,7 +277,9 @@ def add_practice_problems():
   count_add = 0
   count_update = 0
   count_all = 0
+  all_problem_names = []
   for problem in practice_problems:
+    all_problem_names.append(problem['problem_name'])
     count_all += 1
     start_time = time.time()
     # Get concepts by traversing the ast of the problem's solution
@@ -329,8 +331,18 @@ def add_practice_problems():
     if time_spent > 1:
       print colored('%s took %.2f seconds to generate (more than 1 second is excessive)' % (problem['problem_name'], time_spent), 'red')
 
+  count_deleted = 0
+  current_problems = PracticeProblemTemplate.query.filter_by(is_current=True).all()
+  for problem in current_problems:
+    if problem.problem_name not in all_problem_names:
+      problem.is_current = False
+      count_deleted += 1
+      print colored("%s deleted from database (set is_current=False)." % problem.problem_name, 'red')
+
   db.session.commit()
+
   print colored("%d practice problems processed. %d problems added to database. %d problems updated with changed hint or template variables" % (count_all, count_add, count_update), 'green')
+  print colored("%d practice problems deleted from database (set is_current=False)" % count_deleted, 'green')
 
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)

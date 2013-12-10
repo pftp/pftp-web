@@ -485,8 +485,9 @@ def get_next_problem(user_id):
 
   # Sort problems by score (high score means we've learned more of its concepts)
   sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
-  # Default to q001 if we've mastered all problems or if we haven't done any yet
-  next_prob_name = 'q001'
+  # Default to easiest problem if we've mastered all problems or if we haven't
+  # done any yet
+  next_prob_name = 'print'
   if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
     next_prob_name = sorted_prob_score_pairs[0][0]
 
@@ -684,7 +685,7 @@ def submit_practice(problem_name):
         ("I have not failed. I've just found 10,000 ways that won't work.", 'Thomas Edison'),
         ('Success is not final, failure is not fatal: it is the courage to continue that counts.', 'Winston Churchill'),
         ('Pain is temporary. Quitting lasts forever.', 'Lance Armstrong'),
-        ('Failure is the condiment that gives success its flavor.' 'Truman Capote'),
+        ('Failure is the condiment that gives success its flavor.', 'Truman Capote'),
         ('Success is stumbling from failure to failure with no loss of enthusiasm.', 'Winston Churchill'),
         ("The brick walls are there for a reason. The brick walls are not there to keep us out. The brick walls are there to give us a chance to show how badly we want something. Because the brick walls are there to stop the people who don't want it badly enough. They're there to stop the other people.", 'Randy Pausch'),
         ("A thinker sees his own actions as experiments and questions--as attempts to find out something. Success and failure are for him answers above all.", 'Friedrich Nietzsche'),
@@ -697,7 +698,7 @@ def submit_practice(problem_name):
         ('The only real mistake is the one from which we learn nothing.', 'Henry Ford'),
         ('Failures are finger posts on the road to achievement.', 'C.S. Lewis'),
         ('The person who failed often knows how to avoid future failures. The person who knows only success can be more oblivious to all the pitfalls.', 'Randy Pausch'),
-        ('As long as I am breathing, in my eyes, I am just beginning.' 'Criss Jami'),
+        ('As long as I am breathing, in my eyes, I am just beginning.', 'Criss Jami'),
         ('The harder you fall, the heavier your heart; the heavier your heart, the stronger you climb; the stronger you climb, the higher your pedestal.', 'Criss Jami'),
         ("All the time you're saying to yourself, \"I could do that, but I won't,\"--which is just another way of saying that you can't.", "Richard P. Feynman"),
         ("All men make mistakes, but a good man yields when he knows his course is wrong, and repairs the evil. The only crime is pride.", 'Sophocles'),

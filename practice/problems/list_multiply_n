@@ -5,7 +5,7 @@ an argument and returns a list of each of its elements multiplied by {{ n }}.
 ### solution
 def list_multiply_{{ n }}(lst):
   res = []
-  for num in enumerate(lst):
+  for num in lst:
     res.append(num * {{ n }})
   return res
 
