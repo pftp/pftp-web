@@ -3,12 +3,12 @@ Write a function called max_prefix(x, y) that takes two strings x, y as argument
 
 ### solution
 def max_prefix(x, y):
-  for i in range(len(x)):
-    if i >= len(y):
-      break
+  i = 0
+  while i < len(x) and i < len(y):
     if x[i] != y[i]:
-      return i
-  return len(y)
+      break
+    i += 1
+  return i
 
 ### test
 print max_prefix('abcd', 'abcde')
