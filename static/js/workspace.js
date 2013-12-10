@@ -20,7 +20,7 @@ var executeCode = function(execObj) {
   } catch (err) {
     if (err.toString().trim() === "TypeError: Cannot read property 'constructor' of null") {
       execObj['error'] = 'Error: Your function does not have return value. Your function needs a return value.';
-    } else if (err.toString().trim() === 'ImportError: No module named <stdin>') {
+    } else if (err.toString().trim() === 'ImportError: No module named <stdin> on line <unknown>') {
       execObj['error'] = 'Error: You did not type any code. You must type some code.';
     } else {
       execObj['error'] = err.toString();

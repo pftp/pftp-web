@@ -20,9 +20,10 @@ Python Practice
   <h3>{{problem.prompt |safe}}</h3>
   <textarea id="practice_code" style="display:none;"></textarea>
   <div id="run_container">
-    <button id="practice_run_code" class="btn btn-success">Run It!</button>
-    <button id="give_up" class="btn btn-success">Give Up</button>
-    <a id="next_exercise" href="#" class="btn btn-primary" style="display:none;">Next Exercise</a>
+    <button id="practice_run_code" class="btn btn-success left">Run It!</button>
+    <a href="/practice_progress/" target="_blank" class="btn btn-success left" >See Progress</a>
+    <a id="next_exercise" href="#" class="btn btn-primary left" style="display:none;">Next Exercise</a>
+    <button id="give_up" class="btn btn-success right">Give Up</button>
   </div>
   <h4>Output:</h4>
   <pre id="practice_output"></pre>
@@ -95,6 +96,25 @@ Python Practice
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="give_up_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Give Up???</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to give up?<br>
+        <span id="no_hint_yet">If you're stuck, try clicking the "Get hint" button!</span>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Give it another shot</button>
+        <a id="give_up_confirm" href="#" class="btn btn-primary">Give Up!</a>
       </div>
     </div>
   </div>

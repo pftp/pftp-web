@@ -1,5 +1,5 @@
 ### prompt
-Create a variable called a_word and set the value of a_word to be '{{ y }}'. Execute the line "print a_word". Note what that line does. Now execute the line "print a_word * {{ rand_num }}". Note what multiplying a word by an integer does does.
+Create a variable called a_word and set the value of a_word to be '{{ y }}'. Execute the line "print a_word". Note what that line does. Now execute the line "print a_word * {{ rand_num }}". Note what multiplying a word by an integer does.
 ### solution
 a_word = '{{ y }}'
 print a_word

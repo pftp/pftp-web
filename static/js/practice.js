@@ -19,7 +19,7 @@ var executeCode = function(execObj) {
   } catch (err) {
     if (err.toString().trim() === "TypeError: Cannot read property 'constructor' of null") {
       execObj['error'] = 'Error: Your function does not have return value. Your function needs a return value.';
-    } else if (err.toString().trim() === 'ImportError: No module named <stdin>') {
+    } else if (err.toString().trim() === 'ImportError: No module named <stdin> on line <unknown>') {
       execObj['error'] = 'Error: You did not type any code. You must type some code.';
     } else {
       execObj['error'] = err.toString();
@@ -121,15 +121,25 @@ $(function() {
     extraKeys: {"Enter": false}
   });
   $('#practice_run_code').click(function(e) {
+    $('#practice_run_code').prop('disabled', true);
+    $('#give_up').prop('disabled', true);
     submitCode(editor, start_time, got_hint, false);
   });
   $('#give_up').click(function(e) {
+    $('#practice_run_code').prop('disabled', true);
+    $('#give_up').prop('disabled', true);
+    $('#give_up_modal').modal('show');
+  });
+  $('#give_up_confirm').click(function(e) {
+    $('#practice_run_code').prop('disabled', true);
+    $('#give_up').prop('disabled', true);
     submitCode(editor, start_time, got_hint, true);
   });
   $('#show_hint').click(function(e) {
     got_hint = true;
     $('#show_hint').hide();
     $('#hint_wrapper').show();
+    $('#no_hint_yet').hide();
   });
   // Fix bug where we cannot select text that is blocked by hidden modal
   $('.modal').on('show.bs.modal', function (e) {
@@ -137,5 +147,7 @@ $(function() {
   })
   $('.modal').on('hidden.bs.modal', function (e) {
     $('.modal').css('z-index', -1);
+    $('#practice_run_code').prop('disabled', false);
+    $('#give_up').prop('disabled', false);
   })
 });
