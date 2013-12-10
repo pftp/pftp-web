@@ -74,7 +74,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   }
   if (gaveUp) {
     successFunc = function(data) {
-      window.location.href = '/practice/' + data['next_problem'];
+      window.location.href = '/practice/';
     }
   } else {
     successFunc = function(data) {
@@ -82,8 +82,6 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
         $('#solution').text(data['solution']);
         $('#correct_modal').modal('show');
         $('#give_up').hide();
-        $('#modal_next_exercise').attr('href', '/practice/' + data['next_problem']);
-        $('#next_exercise').attr('href', '/practice/' + data['next_problem']);
         $('#next_exercise').show();
       } else if (data['correct'] === 'error') {
         $('#error_modal').modal('show');

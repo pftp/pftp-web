@@ -680,7 +680,6 @@ def submit_practice(problem_name):
   if correct:
     return_data['correct'] = 'correct'
     return_data['solution'] = problem['solution']
-    return_data['next_problem'] = get_next_problem(current_user.id)
   elif result_no_test_error:
     return_data['correct'] = 'error'
   else:
