@@ -461,9 +461,11 @@ def get_user_progress(user_id):
 def get_next_problem(user_id):
   exempt_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
 
+  going_back = False
   if last_prob != None:
     # If we gave up on our last problem, possibly go back to a mastered problem
     if last_prob[1] == -1:
+      going_back = True
       exempt_problem_ids = []
     # Don't repeat a problem twice in a row
     if last_prob[0] not in exempt_problem_ids:
@@ -498,9 +500,7 @@ def get_next_problem(user_id):
     # Normalize score by the length of the concept list
     if prob.concepts.count() > 0:
       prob_score /= float(prob.concepts.count())
-    # Only add our problem if we haven't mastered most of its concepts
-    if prob_score < 9:
-      problem_scores[prob.problem_name] = prob_score
+    problem_scores[prob.problem_name] = prob_score
 
   # Sort problems by score (high score means we've learned more of its concepts)
   sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
@@ -509,6 +509,17 @@ def get_next_problem(user_id):
   next_prob_name = 'print'
   if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
     next_prob_name = sorted_prob_score_pairs[0][0]
+    # If we're going back, randomize the next problem somewhat to prevent
+    # serving the same problem every time we give up on something
+    if going_back:
+      max_score = sorted_prob_score_pairs[0][1]
+      top_prob_names = []
+      for psp in sorted_prob_score_pairs:
+        if psp[0] < max_score - 1:
+          break
+        top_prob_names.append(psp[0])
+      next_prob_name = random.choice(top_prob_names)
+
 
   return next_prob_name
 
