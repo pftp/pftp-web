@@ -1,5 +1,5 @@
 ### prompt
-Write a function called reverse_sentence that takes a sentence string as its argument and returns a new string with all the same words (separated by spaces) in reverse order that they appeared in the original string. You may assume all words are separated by a single space, and the setnence does not begin or end with any spaces.
+Write a function called reverse_sentence that takes a sentence string as its argument and returns a new string with all the same words (separated by spaces) in reverse order that they appeared in the original string. You may assume all words are separated by a single space, and the sentence does not begin or end with any spaces.
 
 ### solution
 def reverse_sentence(s):

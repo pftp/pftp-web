@@ -1,6 +1,6 @@
 ### prompt
 Write a function called get_seconds that takes as its argument a string of the
-form "<x> hours, <y> minutes, <z> seconds", where x, y, and z are integers, and
+form "x hours, y minutes, z seconds", where x, y, and z are integers, and
 converts it to an integer number of seconds. For example, get_seconds("1 hours,
 23 minutes, 20 seconds") should return 5000.
 
@@ -19,7 +19,7 @@ for x in {{ xs }}:
 
 ### hint
 Here's a function called get_seconds that takes as its argument a string of the
-form "<x> minutes, <y> seconds", where x and y are integers, and converts it to
+form "x minutes, y seconds", where x and y are integers, and converts it to
 an integer number of seconds:
 <pre>
 def get_seconds(time_str):

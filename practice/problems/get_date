@@ -1,7 +1,7 @@
 ### prompt
 Write a function called get_date that takes an integer number of days as its
-argument and returns a string that is a date formatted as "<month> <day>,
-<year>". Consider day 0 to be January 1, 1970. For example, get_date(3) should
+argument and returns a string that is a date formatted as "month day,
+year". Consider day 0 to be January 1, 1970. For example, get_date(3) should
 return "January 4, 1970". No need to account for years BCE.
 
 ### solution

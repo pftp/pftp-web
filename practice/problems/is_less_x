@@ -1,8 +1,8 @@
 ### prompt
-Write a function called is_less_{{ x }}(number) that takes in one argument (one number as input) and returns True if that number is less than {{ x }}. Then execute the line "print is_less{{ x }}(100)" to test if your function works.
+Write a function called is_less_{{ x }}(number) that takes in one argument (one number as input) and returns True if that number is less than {{ x }}. Then execute the line "print is_less_{{ x }}(100)" to test if your function works.
 ### solution
 def is_less_{{ x }}(number):
-  return number > {{ x }}
+  return number < {{ x }}
 print is_less_{{ x }}(100)
 ### test
 print is_less_{{ x }}({{ x }})
