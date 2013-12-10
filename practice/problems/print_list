@@ -1,0 +1,21 @@
+### prompt
+Create a variable called {{ var_name }} and set the value of {{ var_name }} to be the list {{ y }}. Then execute the line "print {{ var_name }}" and note what it does
+### solution
+{{ var_name }} = {{ y }}
+print {{ var_name }}
+### test
+print {{ var_name }}
+
+### hint
+The syntax to create a variable called num_kittens and set the value of num_kittens to be 5 is
+<pre>num_kittens = 5
+</pre>
+The syntax to print the variable num_kittens is
+<pre> print num_kittens # this will print 5
+</pre>
+
+### gen_template_vars
+res = {
+  'var_name': rand_word(),
+  'y': [rand_int(300, 700) for i in range(rand_int(8, 14))]
+}
