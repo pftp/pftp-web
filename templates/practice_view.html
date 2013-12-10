@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+Python Practice
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice_view.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3>{{problem.prompt |safe}}</h3>
+  <h4>Your Solution:</h4>
+  <pre id="user_code">{{user_solution}}</pre>
+  <h4>Our Solution:</h4>
+  <pre id="solution_code">{{problem.solution}}</pre>
+  <a href="/practice_progress/" class="btn btn-success">Back to Progress</a>
+</div>
+{% endblock %}

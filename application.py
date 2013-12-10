@@ -554,6 +554,23 @@ def practice(problem_name):
   else:
     return redirect('/practice/')
 
+@app.route('/practice_progress/<problem_name>/')
+@login_required
+def practice_view(problem_name):
+  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
+  if problem_obj == None:
+    return redirect('/practice_progress/')
+
+  problem_submission = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
+  if problem_submission == None:
+    return redirect('/practice_progress/')
+
+  problem = problem_obj.to_dict()
+  problem['template_vars'] = problem_submission.template_vars
+  problem = utils.get_problem(problem)
+
+  return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code)
+
 # Parses x for dicts, and returns a tuple where the first item is a list of the
 # dicts and the second item is x with all the dicts removed
 def str_remove_dicts(x):
