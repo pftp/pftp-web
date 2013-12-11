@@ -1027,6 +1027,7 @@ def admin_dashboard():
 
   def templatize_data(models):
     students = map(lambda x: x.__dict__, models)
+    students = sorted(students, key=lambda x: x['id'])
     # seed so randomly num practice attempted is deterministic
     random.seed(5)
     for student in students:
