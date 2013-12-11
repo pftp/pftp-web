@@ -569,6 +569,8 @@ def practice_progress_by_user_id(user_id):
     current_attempt['got_hint'] |= att.got_hint
     current_attempt['correct'] |= att.correct
     current_attempt['gave_up'] = att.gave_up
+  if current_problem_id != -1:
+    attempts.append(current_attempt)
   return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts)
 
 @app.route('/practice/')
