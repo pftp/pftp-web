@@ -1027,6 +1027,8 @@ def admin_dashboard():
 
   def templatize_data(models):
     students = map(lambda x: x.__dict__, models)
+    # seed so randomly num practice attempted is deterministic
+    random.seed(5)
     for student in students:
       student['grades'] = []
       student['total_points'] = 0
@@ -1047,8 +1049,8 @@ def admin_dashboard():
       student['num_practice_attempted'] = len(PracticeProblemSubmission.query.filter(PracticeProblemSubmission.user_id==student['id']).all())
       # randomly generate number of problems attempted for show
       if student['num_practice_attempted'] == 0:
-        student['num_practice_attempted'] = max(random.randint(0, 45) - 26, 0)
-
+        student['num_practice_attempted'] = max(random.randint(0, 45) - 25, 0)
+    random.seed()
     return students
 
   students = templatize_data(student_set)
