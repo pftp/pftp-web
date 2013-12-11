@@ -515,7 +515,10 @@ def get_next_problem(user_id):
 @app.route('/practice_progress/')
 @login_required
 def practice_progress():
-  mastered_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(current_user.id)
+  return practice_progress_by_user_id(current_user.id)
+
+def practice_progress_by_user_id(user_id):
+  mastered_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
 
   # Get a list of mastered problems that are still current,
   # in reverse order of mastery
@@ -577,11 +580,14 @@ def practice(problem_name):
 @app.route('/practice_progress/<problem_name>/')
 @login_required
 def practice_view(problem_name):
+  return practice_view_by_user_id(user_id, problem_name)
+
+def practice_view_by_user_id(user_id, problem_name):
   problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
   if problem_obj == None:
     return redirect('/practice_progress/')
 
-  problem_submission = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
+  problem_submission = PracticeProblemSubmission.query.filter_by(user_id=user_id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
   if problem_submission == None:
     return redirect('/practice_progress/')
 
@@ -590,6 +596,17 @@ def practice_view(problem_name):
   problem = utils.get_problem(problem)
 
   return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code)
+
+@app.route('/admin/practice_progress/<user_id>')
+@roles_required('admin')
+def admin_practice_progress(user_id):
+  return practice_progress_by_user_id(user_id)
+
+@app.route('/admin/practice_progress/<user_ide>/<problem_name>')
+@roles_required('admin')
+def admin_practice_view(user_id, problem_name):
+  return practice_view_by_user_id(user_id, problem_name)
+
 
 # Parses x for dicts, and returns a tuple where the first item is a list of the
 # dicts and the second item is x with all the dicts removed
