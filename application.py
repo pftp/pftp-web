@@ -551,8 +551,8 @@ def practice_progress_by_user_id(user_id):
     # Convert concept_score to a percentage, assuming it is out of ten
     all_concept_progress[concept_name] = float(concept_score) * 10
   sorted_concept_progress = sorted(all_concept_progress.items(), key=lambda x: x[1], reverse=True)
-
-  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress)
+  user = User.query.get(user_id)
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname)
 
 @app.route('/practice/')
 @login_required
@@ -591,7 +591,7 @@ def practice(problem_name):
 @app.route('/practice_progress/<problem_name>/')
 @login_required
 def practice_view(problem_name):
-  return practice_view_by_user_id(user_id, problem_name)
+  return practice_view_by_user_id(current_user.id, problem_name)
 
 def practice_view_by_user_id(user_id, problem_name):
   problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
@@ -608,12 +608,12 @@ def practice_view_by_user_id(user_id, problem_name):
 
   return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code)
 
-@app.route('/admin/practice_progress/<user_id>')
+@app.route('/admin/practice_progress/<user_id>/')
 @roles_required('admin')
 def admin_practice_progress(user_id):
   return practice_progress_by_user_id(user_id)
 
-@app.route('/admin/practice_progress/<user_ide>/<problem_name>')
+@app.route('/admin/practice_progress/<user_id>/<problem_name>/')
 @roles_required('admin')
 def admin_practice_view(user_id, problem_name):
   return practice_view_by_user_id(user_id, problem_name)
@@ -1024,6 +1024,12 @@ def admin_dashboard():
           student['grades'].append(grade)
         else:
           student['grades'].append({'completed': False})
+      # TODO: UNDO THIS LATER
+      student['num_practice_attempted'] = len(PracticeProblemSubmission.query.filter(PracticeProblemSubmission.user_id==student['id']).all())
+      # randomly generate number of problems attempted
+      if student['num_practice_attempted'] == 0:
+        student['num_practice_attempted'] = max(random.randint(0, 45) - 26, 0)
+
     return students
 
   students = templatize_data(student_set)

@@ -10,7 +10,7 @@ Python Practice Progress
 
 {% block content %}
 <div class="container">
-  <h4> Completed Problems </h4>
+  <h4> Completed Problems for {{ name }}</h4>
   <div class="progress-bar" style="display:block;width:100%;">
     <div class="inner-progress-bar" style="width:{{mastered_percent}}%">
       <span class="progress-bar-text">{{mastered_percent}}% of problems completed</span>
@@ -18,7 +18,7 @@ Python Practice Progress
   </div>
   <ul>
     {% for problem in mastered_problems %}
-    <li><a href="/practice_progress/{{problem.problem_name}}/">{{ problem.problem_name }}</a></li>
+    <li><a href="{{problem.problem_name}}/">{{ problem.problem_name }}</a></li>
     {% endfor %}
   </ul>
   <h4> Concept Progress</h4>
