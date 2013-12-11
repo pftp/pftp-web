@@ -342,7 +342,7 @@ def lesson_home():
   context['lesson_name'] = 'Lessons'
   return render_template('lesson_home.html', context=context)
 
-@app.route('/lessons/<path:lesson_path>')
+@app.route('/lessons/<path:lesson_path>/')
 def lesson(lesson_path):
   file_path = os.path.join('gen', lesson_path)
   if '.pdf' in file_path:
@@ -388,7 +388,7 @@ def submit_quiz(quiz_id):
   db.session.commit()
   return 'Submitted'
 
-@app.route('/labs/<int:lab_id>')
+@app.route('/labs/<int:lab_id>/')
 def lab(lab_id):
   section = 0
   program = None
@@ -461,9 +461,11 @@ def get_user_progress(user_id):
 def get_next_problem(user_id):
   exempt_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
 
+  going_back = False
   if last_prob != None:
     # If we gave up on our last problem, possibly go back to a mastered problem
     if last_prob[1] == -1:
+      going_back = True
       exempt_problem_ids = []
     # Don't repeat a problem twice in a row
     if last_prob[0] not in exempt_problem_ids:
@@ -498,9 +500,7 @@ def get_next_problem(user_id):
     # Normalize score by the length of the concept list
     if prob.concepts.count() > 0:
       prob_score /= float(prob.concepts.count())
-    # Only add our problem if we haven't mastered most of its concepts
-    if prob_score < 9:
-      problem_scores[prob.problem_name] = prob_score
+    problem_scores[prob.problem_name] = prob_score
 
   # Sort problems by score (high score means we've learned more of its concepts)
   sorted_prob_score_pairs = sorted(problem_scores.items(), key=lambda x: x[1], reverse=True)
@@ -509,6 +509,17 @@ def get_next_problem(user_id):
   next_prob_name = 'print'
   if len(sorted_prob_score_pairs) > 0 and sorted_prob_score_pairs[0][1] > -10:
     next_prob_name = sorted_prob_score_pairs[0][0]
+    # If we're going back, randomize the next problem somewhat to prevent
+    # serving the same problem every time we give up on something
+    if going_back:
+      max_score = sorted_prob_score_pairs[0][1]
+      top_prob_names = []
+      for psp in sorted_prob_score_pairs:
+        if psp[0] < max_score - 1:
+          break
+        top_prob_names.append(psp[0])
+      next_prob_name = random.choice(top_prob_names)
+
 
   return next_prob_name
 
@@ -547,7 +558,7 @@ def practice_progress_by_user_id(user_id):
 @login_required
 def practice_default():
   next_problem_name = get_next_problem(current_user.id)
-  return redirect('/practice/' + next_problem_name)
+  return redirect('/practice/%s/' % next_problem_name)
 
 @app.route('/practice/<problem_name>/')
 @login_required
@@ -697,7 +708,6 @@ def submit_practice(problem_name):
   if correct:
     return_data['correct'] = 'correct'
     return_data['solution'] = problem['solution']
-    return_data['next_problem'] = get_next_problem(current_user.id)
   elif result_no_test_error:
     return_data['correct'] = 'error'
   else:
@@ -760,7 +770,7 @@ def workspace_home():
     return render_template('workspace_home.html', programs=programs)
   return render_template('workspace.html')
 
-@app.route('/workspace/<int:program_id>')
+@app.route('/workspace/<int:program_id>/')
 @login_required
 def workspace(program_id):
   program = Program.query.filter_by(id=program_id, user_id=current_user.id).first()
@@ -768,7 +778,7 @@ def workspace(program_id):
     return redirect('/workspace/')
   return render_template('workspace.html', program=program)
 
-@app.route('/workspace/<int:program_id>/revision/<int:revision_id>')
+@app.route('/workspace/<int:program_id>/revision/<int:revision_id>/')
 @login_required
 def program_revision(program_id, revision_id):
   program = Program.query.filter_by(id=program_id, user_id=current_user.id).first()
@@ -776,7 +786,7 @@ def program_revision(program_id, revision_id):
     return redirect('/workspace/')
   target_revision = CodeRevision.query.filter_by(id=revision_id, program_id=program.id, user_id=current_user.id).first()
   if target_revision == None:
-    return redirect('/workspace/' + str(program.id))
+    return redirect('/workspace/%s/' % str(program.id))
   revisions = CodeRevision.query.order_by(CodeRevision.time).filter(CodeRevision.time <= target_revision.time).all()
   codelines = ['']
   for revision in revisions:
@@ -796,7 +806,7 @@ def new_program():
   program = Program(user_id=current_user.id)
   db.session.add(program)
   db.session.commit()
-  return redirect('/workspace/'+str(program.id))
+  return redirect('/workspace/%s/' % str(program.id))
 
 def compute_diff(old_code, new_code):
   memo = {}
@@ -924,13 +934,13 @@ def assignments_home():
   assignments = Assignment.query.order_by(Assignment.deadline).all()
   return render_template('assignment_home.html', assignments=assignments)
 
-@app.route('/assignments/<int:assignment_id>')
+@app.route('/assignments/<int:assignment_id>/')
 def assignments(assignment_id):
   assignment = Assignment.query.get(assignment_id)
   if assignment is not None:
     return render_template('assignment.html', assignment=assignment)
   else:
-    return redirect('/assignments/1')
+    return redirect('/assignments/1/')
 
 @app.route('/submit_assignment/', methods=['POST'])
 @login_required

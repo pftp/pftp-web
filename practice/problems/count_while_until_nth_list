@@ -1,20 +1,17 @@
 ### prompt
-Create a function count_until(words) which returns the number of values in the list before the {{ nth }} occurrence of "{{ value }}" using a while loop. The function should return the length of the list if "{{ value }}" is not in the list.
+Create a function count_until(words) which returns the number of values in the list before the {{ nth }} occurrence of "{{ value }}" using a while loop. The function should return the length of the list if "{{ value }}" appears fewer than {{ n }} times in the list.
 
 ### solution
 def count_until(words):
   count = 0
-  occurrences = 0
   i = 0
   while i < len(words):
-    if words[i] != "{{ value }}":
+    if words[i] == "{{ value }}":
       count += 1
-    else:
-      occurrences += 1
-      if occurrences == {{ n }}:
+      if count == {{ n }}:
         break
     i += 1
-  return count
+  return i
 
 ### test
 print count_until([1,2,3,4])

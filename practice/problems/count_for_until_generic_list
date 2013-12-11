@@ -1,5 +1,5 @@
 ### prompt
-Create a function count_until(value, n, words) which returns the number of values in the list before the nth occurrence of value using a for loop. The function should return the length of the list if value is not in the list.
+Create a function count_until(value, n, words) which returns the number of values not equal to value in the list words before the nth occurrence of value, using a for loop. The function should return the length of the list words minus the number of times value occurs if value occurs fewer than n times in words.
 
 ### solution
 def count_until(value, n, words):

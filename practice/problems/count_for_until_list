@@ -1,5 +1,5 @@
 ### prompt
-Create a function count_until(words) which returns the number of values in the list before the first occurrence of "{{ value }}" using a for loop. The function should return the length of the list if "{{ value }}" is not in the list.
+Create a function count_until(words) which returns the number of values in the list words before the first occurrence of "{{ value }}", using a for loop. The function should return the length of the list if "{{ value }}" is not in the list.
 
 ### solution
 def count_until(words):

@@ -63,7 +63,7 @@ Also, remember to account for negative numbers of days!
 
 ### gen_template_vars
 xs = []
-for i in range(20):
+for i in range(5):
   xs.append(rand_int(-718685, 1000000))
 res = {
   'xs': xs
