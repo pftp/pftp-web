@@ -528,7 +528,7 @@ def get_next_problem(user_id):
 def practice_progress():
   return practice_progress_by_user_id(current_user.id)
 
-def practice_progress_by_user_id(user_id):
+def practice_progress_by_user_id(user_id, admin=False):
   mastered_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
 
   # Get a list of mastered problems that are still current,
@@ -571,7 +571,7 @@ def practice_progress_by_user_id(user_id):
     current_attempt['gave_up'] = att.gave_up
   if current_problem_id != -1:
     attempts.append(current_attempt)
-  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts)
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id)
 
 @app.route('/practice/')
 @login_required
@@ -612,30 +612,45 @@ def practice(problem_name):
 def practice_view(problem_name):
   return practice_view_by_user_id(current_user.id, problem_name)
 
-def practice_view_by_user_id(user_id, problem_name):
+def practice_view_by_user_id(user_id, problem_name, fullhistory=False, admin=False):
   problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
   if problem_obj == None:
     return redirect('/practice_progress/')
 
-  problem_submission = PracticeProblemSubmission.query.filter_by(user_id=user_id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
-  if problem_submission == None:
-    return redirect('/practice_progress/')
+  if fullhistory:
+    problem_submissions = PracticeProblemSubmission.query.filter_by(user_id=user_id, problem_id=problem_obj.id).order_by(PracticeProblemSubmission.submitted.desc())
+    if problem_submissions == None:
+      return redirect('/practice_progress/')
+    problem_submissions = list(problem_submissions)
+    if len(problem_submissions) == 0:
+      return redirect('/practice_progress/')
 
-  problem = problem_obj.to_dict()
-  problem['template_vars'] = problem_submission.template_vars
-  problem = utils.get_problem(problem)
+    problem = problem_obj.to_dict()
+    problem['template_vars'] = problem_submissions[0].template_vars
+    problem = utils.get_problem(problem)
+  else:
+    problem_submission = PracticeProblemSubmission.query.filter_by(user_id=user_id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
+    if problem_submission == None:
+      return redirect('/practice_progress/')
 
-  return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code)
+    problem = problem_obj.to_dict()
+    problem['template_vars'] = problem_submission.template_vars
+    problem = utils.get_problem(problem)
+
+  if fullhistory:
+    return render_template('practice_view_history.html', problem=problem, user_submissions=problem_submissions, admin=admin, user_id=user_id)
+  else:
+    return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code)
 
 @app.route('/admin/practice_progress/<user_id>/')
 @roles_required('admin')
 def admin_practice_progress(user_id):
-  return practice_progress_by_user_id(user_id)
+  return practice_progress_by_user_id(user_id, admin=True)
 
 @app.route('/admin/practice_progress/<user_id>/<problem_name>/')
 @roles_required('admin')
 def admin_practice_view(user_id, problem_name):
-  return practice_view_by_user_id(user_id, problem_name)
+  return practice_view_by_user_id(user_id, problem_name, fullhistory=True, admin=True)
 
 
 # Parses x for dicts, and returns a tuple where the first item is a list of the

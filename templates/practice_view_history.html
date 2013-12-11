@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+Python Practice
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice_view.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3>{{problem.prompt |safe}}</h3>
+  <h4>Your Submissions:</h4>
+
+  <table class="table table-bordered table-striped table-hover">
+  <thead>
+    <th> Code </th>
+    <th> Time </th>
+    <th> Correct </th>
+    <th> Got Hint </th>
+    <th> Gave Up </th>
+  </thead>
+
+  {% for submission in user_submissions %}
+  <tr>
+    <td><pre id="user_code">{{submission.code}}</pre></td>
+    <td><span id="user_submission_time">{{submission.submitted}}</span></td>
+    <td>
+      {% if submission.correct %} <span style="color:blue; font-size:200%"> &#x2713; </span>{% else %} <span style="color:red; font-size:200%"> &#x2717; </span>{% endif %}
+    </td>
+    <td>
+      {% if submission.got_hint %} <span style="color:red; font-size:200%"> &#x2717; </span>{% endif %}
+    </td>
+
+    <td>
+      {% if submission.gave_up %} <span style="color:red; font-size:200%"> &#x2717; </span>{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+
+  <h4>Our Solution:</h4>
+  <pre id="solution_code">{{problem.solution}}</pre>
+  {% if admin %}
+  <a href="/admin/practice_progress/{{user_id}}" class="btn btn-success">Back to Progress</a>
+  {% else %}
+    <a href="/practice_progress/" class="btn btn-success">Back to Progress</a>
+  {% endif %}
+</div>
+{% endblock %}

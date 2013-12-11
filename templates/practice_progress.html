@@ -45,7 +45,19 @@ Python Practice Progress
 
     {% for att in attempts %}
   <tr>
-    <td> {{ att.problem_name }} </td>
+    {% if admin %}
+    <td>
+      <a href="/admin/practice_progress/{{user_id}}/{{ att.problem_name }}">
+        {{ att.problem_name }}
+      </a>
+    </td>
+    {% else %}
+    <td>
+      <a href="/practice_progress/{{ att.problem_name }}">
+        {{ att.problem_name }}
+      </a>
+    </td>
+    {% endif %}
     <td> {{ att.num_attempted }} </td>
     <td> {% if att.correct %} <span style="color:blue; font-size:200%"> &#x2713; </span>{% else %} <span style="color:red; font-size:200%"> &#x2717; </span>{% endif %} </td>
     <td> {% if att.got_hint %} <span style="color:red; font-size:200%"> &#x2717; </span> {% endif %} </td>
