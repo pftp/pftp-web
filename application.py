@@ -552,7 +552,19 @@ def practice_progress_by_user_id(user_id):
     all_concept_progress[concept_name] = float(concept_score) * 10
   sorted_concept_progress = sorted(all_concept_progress.items(), key=lambda x: x[1], reverse=True)
   user = User.query.get(user_id)
-  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname)
+
+  # Get all attempts
+  all_attempts = PracticeProblemSubmission.query.filter_by(user_id=user_id)
+  attempts = []
+  for att in all_attempts:
+      attempts.append({
+          'gave_up': att.gave_up,
+          'problem_id': att.problem_id,
+          'got_hint': att.got_hint,
+          'correct': att.correct
+        })
+
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts)
 
 @app.route('/practice/')
 @login_required

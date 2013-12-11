@@ -33,5 +33,15 @@ Python Practice Progress
     </li>
     {% endfor %}
   </ul>
+  <h4> Attempt History </h4>
+  <ul>
+    {% for att in attempts %}
+      <li>
+        Id: {{ att.problem_id }}, gave up:{{ att.gave_up }}, got hint: {{ att.got_hint }}, correct: {{ att.correct }}
+      </li>
+      <br/>
+    {% endfor %}
+  </ul>
+
 </div>
 {% endblock %}
