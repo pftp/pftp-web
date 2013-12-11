@@ -556,14 +556,19 @@ def practice_progress_by_user_id(user_id):
   # Get all attempts
   all_attempts = PracticeProblemSubmission.query.filter_by(user_id=user_id)
   attempts = []
-  for att in all_attempts:
-      attempts.append({
-          'gave_up': att.gave_up,
-          'problem_id': att.problem_id,
-          'got_hint': att.got_hint,
-          'correct': att.correct
-        })
 
+  current_problem_id = -1
+  for att in all_attempts:
+    if current_problem_id != att.problem_id:
+      if current_problem_id != -1:
+        attempts.append(current_attempt)
+      current_problem_id = att.problem_id
+      current_problem_name = PracticeProblemTemplate.query.get(att.problem_id).problem_name
+      current_attempt = {'gave_up': False, 'got_hint': False, 'correct': False, 'num_attempted': 0, 'problem_name': current_problem_name}
+    current_attempt['num_attempted'] += 1
+    current_attempt['got_hint'] |= att.got_hint
+    current_attempt['correct'] |= att.correct
+    current_attempt['gave_up'] = att.gave_up
   return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts)
 
 @app.route('/practice/')
@@ -1038,7 +1043,7 @@ def admin_dashboard():
           student['grades'].append({'completed': False})
       # TODO: UNDO THIS LATER
       student['num_practice_attempted'] = len(PracticeProblemSubmission.query.filter(PracticeProblemSubmission.user_id==student['id']).all())
-      # randomly generate number of problems attempted
+      # randomly generate number of problems attempted for show
       if student['num_practice_attempted'] == 0:
         student['num_practice_attempted'] = max(random.randint(0, 45) - 26, 0)
 

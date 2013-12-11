@@ -34,14 +34,26 @@ Python Practice Progress
     {% endfor %}
   </ul>
   <h4> Attempt History </h4>
-  <ul>
-    {% for att in attempts %}
-      <li>
-        Id: {{ att.problem_id }}, gave up:{{ att.gave_up }}, got hint: {{ att.got_hint }}, correct: {{ att.correct }}
-      </li>
-      <br/>
-    {% endfor %}
-  </ul>
+  <table class="table table-bordered table-striped table-hover">
+  <thead>
+    <th> Problem Name </th>
+    <th> Number Attempted </th>
+    <th> Correct </th>
+    <th> Got Hint </th>
+    <th> Gave Up </th>
+  </thead>
 
+    {% for att in attempts %}
+  <tr>
+    <td> {{ att.problem_name }} </td>
+    <td> {{ att.num_attempted }} </td>
+    <td> {% if att.correct %} <span style="color:blue; font-size:200%"> &#x2713; </span>{% else %} <span style="color:red; font-size:200%"> &#x2717; </span>{% endif %} </td>
+    <td> {% if att.got_hint %} <span style="color:red; font-size:200%"> &#x2717; </span> {% endif %} </td>
+    <td> {% if att.gave_up %} <span style="color:red; font-size:200%"> &#x2717; </span>{% endif %} </td>
+
+
+  </tr>
+    {% endfor %}
+  </table>
 </div>
 {% endblock %}
