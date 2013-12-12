@@ -28,8 +28,11 @@ def clean():
 @task
 def addpractice():
   add_practice_problems()
+  add_concepts()
 
-
+@task
+def addconcepts():
+  add_concepts()
 
 @task
 def addquiz1():
@@ -83,6 +86,7 @@ def build():
   db.create_all()
   generate_models()
   add_practice_problems()
+  add_concepts()
   add_quiz1()
   add_quiz2()
   add_quiz3()
@@ -343,6 +347,22 @@ def add_practice_problems():
 
   print colored("%d practice problems processed. %d problems added to database. %d problems updated with changed hint or template variables" % (count_all, count_add, count_update), 'green')
   print colored("%d practice problems deleted from database (set is_current=False)" % count_deleted, 'green')
+
+def add_concepts():
+  with settings(warn_only=True):
+    os.chdir('practice')
+    local('python gen_concepts.py')
+    os.chdir('..')
+  practice_concepts = json.load(open('practice/practice_concepts.json', 'r'))
+  concept_count = 0
+  all_concepts = PracticeProblemConcept.query.all()
+  for concept in all_concepts:
+    concept_obj = practice_concepts[concept.name]
+    concept.display_name = concept_obj['display_name']
+    concept.explanation = concept_obj['explanation']
+    concept_count += 1
+  db.session.commit()
+  print colored("%d concepts updated with display_name and explanation" % concept_count, 'green')
 
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)

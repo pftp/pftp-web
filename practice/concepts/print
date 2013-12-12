@@ -1,0 +1,6 @@
+print statement
+Traditionally, the first program written in a new language is called "Hello, World!" because all it does is display the words, "Hello, World!" In Python, it looks like this:<br>
+<pre>print "Hello, World!"</pre>
+This is an example of a <b>print statement</b>, which doesn't actually print anything on paper. It displays a value on the screen. In this case, the result is the words<br>
+<pre>Hello, World!</pre>
+The quotation marks in the program mark the beginning and end of the value; they don't appear in the result.

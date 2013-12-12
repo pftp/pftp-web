@@ -291,6 +291,8 @@ class PracticeProblemSubmission(db.Model):
 class PracticeProblemConcept(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   name = db.Column(db.Text(), nullable=False)
+  display_name = db.Column(db.Text())
+  explanation = db.Column(db.Text())
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
@@ -523,6 +525,14 @@ def get_next_problem(user_id):
 
   return next_prob_name
 
+@app.route('/concept/<concept_name>/')
+@login_required
+def concept_explanation(concept_name):
+  concept = PracticeProblemConcept.query.filter_by(name=concept_name).first()
+  if concept == None:
+    return redirect('/practice_progress/')
+  return render_template('concept_explanation.html', concept=concept)
+
 @app.route('/practice_progress/')
 @login_required
 def practice_progress():
@@ -545,12 +555,19 @@ def practice_progress_by_user_id(user_id, admin=False):
   # Get progress for all concepts, including ones the user has not yet encountered
   all_concepts = PracticeProblemConcept.query.all()
   all_concept_progress = {}
+  concept_display_names = {}
   for concept in all_concepts:
     all_concept_progress[concept.name] = 0
+    concept_display_names[concept.name] = concept.display_name
   for concept_name, concept_score in concept_progress.items():
     # Convert concept_score to a percentage, assuming it is out of ten
     all_concept_progress[concept_name] = float(concept_score) * 10
   sorted_concept_progress = sorted(all_concept_progress.items(), key=lambda x: x[1], reverse=True)
+  # Get map of concept display names to scores
+  display_concept_progress = []
+  for name, score in sorted_concept_progress:
+    display_concept_progress.append((concept_display_names[name], score))
+
   user = User.query.get(user_id)
 
   # Get all attempts
@@ -571,7 +588,7 @@ def practice_progress_by_user_id(user_id, admin=False):
     current_attempt['gave_up'] = att.gave_up
   if current_problem_id != -1:
     attempts.append(current_attempt)
-  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=sorted_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id)
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=display_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id)
 
 @app.route('/practice/')
 @login_required
