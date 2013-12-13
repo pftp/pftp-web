@@ -1,2 +1,22 @@
-if expressions
-No Explanation
+if expression
+<p>
+An <b>if expression</b> is a way to put an if statement entirely on one
+line:
+</p>
+<pre>
+>>> jury_mood = 'sympathetic'
+>>> verdict = 'innocent' if jury_mood == 'sympathetic' else 'guilty'
+>>> emotion = 'distraught' if verdict == 'guilty' else 'elated'
+>>> print 'the jury was feeling ' + jury_mood
+the jury was feeling sympathetic
+>>> print 'the verdict was ' + verdict
+the verdict was innocent
+>>> print 'the defendant was ' + emotion
+the defendant was elated
+</pre>
+<p>
+If expressions must be written on one line and are of the form
+<pre>some_var = true_result if some_condition else false_result</pre>
+after which some_var will be assigned to true_result if some_condition is true
+and false_result otherwise.
+</p>

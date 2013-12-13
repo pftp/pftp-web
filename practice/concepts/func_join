@@ -1,2 +1,42 @@
 join function
-No Explanation
+<p>
+The <b>split function</b> breaks a string into a list of words. By default, any
+ number of whitespace characters is considered a word boundary:
+</p>
+<pre>
+>>> song = "The rain in Spain..."
+>>> print song.split()
+['The', 'rain', 'in', 'Spain...']
+</pre>
+<p>
+An optional argument called a delimiter can be used to specify which characters
+to use as word boundaries. The following example uses the string 'ai' as the
+delimiter:
+</p>
+<pre>
+>>> print song.split('ai')
+['The r', 'n in Sp', 'n...']
+</pre>
+<p>
+Notice that the delimiter doesn't appear in the list.
+</p>
+<p>
+The <b>join function</b> is the inverse of split. You call it on a delimiter
+string, and it takes a list of strings and concatenates the elements with that
+delimiter between each pair:
+</p>
+<pre>
+>>> list = ['The', 'rain', 'in', 'Spain...']
+>>> print ' '.join(list)
+The rain in Spain...
+</pre>
+<p>
+We can specify any string as our delimiter to insert between elements:
+</p>
+<pre>
+>>> print '_'.join(list)
+'The_rain_in_Spain...'
+</pre>
+<p>
+As an exercise, describe the relationship between ' '.join(song.split()) and song. Are they the same for all strings? When would they be different?
+</p>

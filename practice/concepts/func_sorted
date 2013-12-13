@@ -1,2 +1,33 @@
 sorted function
-No Explanation
+The sorted function takes a list of sortable elements and returns a sorted
+version of it:
+<pre>
+>>> some_nums = [47, 23, 0, -100, 5]
+>>> print sorted(sum_nums)
+[-100, 0, 5, 23, 47]
+>>> some_words = ['banana', 'apple', 'persimmon', 'Kiwi', 'orange']
+>>> print sorted(sum_nums)
+['Kiwi', 'apple', 'banana', 'orange', 'persimmon']
+</pre>
+<p>
+Numbers in a list will be sorted in ascending order, and strings in a list
+will be sorted in alphabetical order.
+</p>
+<p>
+Why does uppercase 'Kiwi' come before all the rest of the words in our sorted
+word list? We have to take a behind-the-scenes look at string comparison in
+order to understand this behavior.
+</p>
+<p>
+In order to sort strings, Python first converts all the characters in them into
+their corresponding numeric ASCII code value, and then compares these codes
+to determine which letters come before one another in the alphabet.
+You can see the
+mappings between characters and ASCII codes by examining the 'Chr' and 'Dec'
+columns of this table:
+<a href="http://www.asciitable.com">http://www.asciitable.com</a>.</p>
+<p>
+Since all uppercase letters have lower-numbered codes than lowercase letters in
+that chart, in any sorted list all uppercase words will come before any
+lowercase words!
+</p>

@@ -1,2 +1,12 @@
 append function
-No Explanation
+The <b>append function</b> appends an item to the end of a list:
+<pre>
+primes = [2, 3, 5]
+primes.append(7)
+primes.append(11)
+print primes             # prints [2, 3, 5, 7, 11]
+</pre>
+<p>
+We can append as many items as we want to any list during program execution.
+</p>
+

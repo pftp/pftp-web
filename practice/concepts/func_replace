@@ -1,2 +1,10 @@
 replace function
-No Explanation
+The <b>replace function</b> replaces all occurences of some substring inside a
+larger string:
+<pre>
+>>> some_string = 'She sells seashells on the sea shore'
+>>> print some_string.replace('sea', 'bay')
+She sells bayshells on the bay shore
+>>> grocery_list = 'eggs milk bread bananas and sugar'
+>>> print grocery_list.replace(' ', ',')
+eggs,milk,bread,bananas,and,sugar
