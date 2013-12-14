@@ -630,8 +630,9 @@ def practice(problem_name):
     all_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id).all()
     seen_concept_names = sets.Set()
     for sub in all_subs:
-      for concept in sub.concepts.all():
-        seen_concept_names.add(concept.name)
+      if sub.correct:
+        for concept in sub.concepts.all():
+          seen_concept_names.add(concept.name)
     new_concepts = []
     for concept in concepts:
       if concept.name not in seen_concept_names:
