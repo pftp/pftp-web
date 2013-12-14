@@ -36,7 +36,7 @@ pre {
 }
 
 #hint_wrapper ul {
-  margin: 0;
+  margin: 0 0 20px 0;
 }
 
 #hint_wrapper ul li {
