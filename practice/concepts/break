@@ -1,2 +1,39 @@
 break
-No Explanation
+<p>
+The <b>break</b> statement allows us to immediately break out of a loop:
+</p>
+<pre>
+food_list = ['serendipity', 'laundromat', 'bagel', 'hippopotamus']
+words_before_bagel = 0
+for word in food_list:
+  if word != 'bagel':
+    words_before_bagel += 1
+  else:
+    break
+print words_before_bagel + " words found before 'bagel' in food_list"
+</pre>
+<p>
+In this case, we walk through our food_list in order, incrementing our
+words_before_bagel count every time we see a word that isn't bagel. Once
+'bagel' is finally found, we break out of our loop and the flow of
+execution moves to the first statement after the loop, in this case the
+print statement.
+</p>
+<p>
+Break statements can also be used with while loops:
+</p>
+<pre>
+countdown = 100
+while True:
+  if countdown == 0:
+    print 'Blast off!'
+    break
+  print countdown + ' seconds left!'
+  countdown -= 1
+</pre>
+<p>
+In this example, the while loop is infinite because the value True is always
+true. The only way to get out of the loop is to execute break, which happens
+when countdown is 0, which happens after 100 iterations of our loop.
+</p>
+

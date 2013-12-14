@@ -23,11 +23,11 @@ Python Practice Progress
   </ul>
   <h4> Concept Progress</h4>
   <ul>
-    {% for concept_name, concept_percent in concept_progress %}
+    {% for concept_name, display_name, concept_percent in concept_progress %}
     <li>
     <div class="progress-bar">
       <div class="inner-progress-bar" style="width:{{concept_percent}}%">
-        <span class="progress-bar-text">{{ concept_name }}</span>
+        <a href="/concept/{{concept_name}}" target="_blank" class="progress-bar-text">{{display_name}}</a>
       </div>
     </div>
     </li>

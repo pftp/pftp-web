@@ -1,2 +1,31 @@
 enumerate function
-No Explanation
+The <b>enumerate function</b> helps us keep track of item indices as we iterate
+through a string or list in a for loop:
+<pre>
+string_list = ['One fish', 'Two fish', 'Red fish', 'Blue fish']
+for i, word_pair in enumerate(string_list):
+  if word_pair == 'Red fish':
+    print "The index of 'Red fish' is " + i
+</pre>
+<p>
+The above code will print "The index of 'Red fish' is 2", since the string
+"Red fish" is at index 2 in the string_list.
+</p>
+<p>
+We can use the enumerate function in conjunction with the modulus operator to
+handle iteration over every nth item of some list:
+</p>
+<pre>
+num_list = [-8, 47, 3, -5, 23]
+every_other_sum = 0
+for i, num in enumerate(num_list):
+  if i % 2 == 0:
+    every_other_sum += num
+print every_other_sum          # prints 18 (since -8+3+23=18)
+</pre>
+<p>
+This code steps through every number in num_list, and whenever the
+list index i (aka the list position) of that number is even, it adds the number
+to our sum. Therefore our final sum consists of the numbers at positions 0, 2,
+and 4 of num_list.
+</p>

@@ -1,2 +1,21 @@
 lower function
-No Explanation
+<p>
+The <b>lower function</b> converts a string to all lowercase letters:
+</p>
+<pre>
+lower_word = 'jELLo23'.lower()
+print lower_word             # prints 'jello23'
+</pre>
+<p>
+Any lowercase letters or non-alphabet characters in the string remain unchanged.
+</p>
+<p>
+The <b>upper function</b> converts a string to all uppercase letters:
+</p>
+<pre>
+upper_word = 'jELLo23'.upper()
+print upper_word             # prints 'JELLO23'
+</pre>
+<p>
+Any uppercase letters or non-alphabet characters in the string remain unchanged.
+</p>

@@ -1,2 +1,32 @@
 chr function
-No Explanation
+The <b>chr function</b> takes an integer i as an argument and
+returns a string of a single character whose ASCII code is i:
+<pre>
+some_char = chr(97)
+print some_char          # prints 'a'
+another_char = chr(74)
+print another_char       # prints 'J'
+</pre>
+<p>
+The argument must be in the range [0..255], inclusive; ValueError will be raised
+if i is outside that range.
+</p>
+<p>
+Here's a table mapping characters to their ASCII codes (we are only
+concerned with the "Dec" and "Chr" columns):
+<a href="http://www.asciitable.com">http://www.asciitable.com</a></p>
+The <b>ord function</b> takes a string of length one as an argument and returns
+its ASCII code as an integer:
+<pre>
+some_ascii_code = ord('a')
+print some_ascii_code          # prints 97
+another_ascii_code = ord('J')
+print another_ascii_code       # prints 74
+</pre>
+<p>
+The ord function is the inverse of the chr function. So, if i is an integer,
+we know ord(chr(x)) simply returns i back to us, and if ch is a character,
+we know chr(ord(chr)) simply returns ch back to us.
+</p>
+
+

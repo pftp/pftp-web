@@ -1,2 +1,17 @@
 augmented assignment
-No Explanation
+The <b>augmented assignment statement</b> updates a variable to take
+on a new value:
+<pre>
+sentence = 'Don't worry, be '   # Normal assignment statement
+sentence += 'happy'             # Appends the string "happy" to the end of sentence
+count += 1                      # Increments count by 1
+product *= count                # Multiplies product by count
+</pre>
+<p>
+We pronounce these new operators "plus equals" and "times equals".
+We can "augment" the equals sign with any arithmetic operand on the left,
+so our "augmented assignment" operators in Python include +=, *=, -=, /=, %=,
+and **=. In all cases the augmented assignment "some_var <op>= other_var" is
+equivalent to writing the normal assignment statement
+"some_var = some_var <op> other_var".
+</p>

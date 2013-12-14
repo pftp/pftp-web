@@ -1,2 +1,10 @@
 unary operations
-No Explanation
+In Python, we can use the "unary minus" to negate a number:
+<pre>
+pos_num = 23
+neg_num = -47
+pow_num = -4**2
+</pre>
+The exponentiation operator takes precedence over the negation
+operator if the negation operator is on its left. So in the
+above example, the value of pow_num is -16.
