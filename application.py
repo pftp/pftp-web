@@ -1,4 +1,4 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, ast
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, ast, sets
 from collections import defaultdict
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -566,7 +566,7 @@ def practice_progress_by_user_id(user_id, admin=False):
   # Get map of concept display names to scores
   display_concept_progress = []
   for name, score in sorted_concept_progress:
-    display_concept_progress.append((concept_display_names[name], score))
+    display_concept_progress.append((name, concept_display_names[name], score))
 
   user = User.query.get(user_id)
 
@@ -613,14 +613,31 @@ def practice(problem_name):
     # random version of it
     concepts = problem['concepts'].all()
     edited = False
+    display_concepts = []
     for i in range(len(concepts)-1, -1, -1):
       if concepts[i].name not in concept_names:
         del concepts[i]
         edited = True
+      else:
+        display_concepts.append((concepts[i].name, concepts[i].display_name))
     if edited:
       problem_obj.concepts = concepts
       db.session.commit()
-    return render_template('practice.html', problem=problem)
+
+    # Get a list of new concepts, if there are any. This is extremely
+    # inefficient because we already queried all the user's submissions to
+    # figure out which problem to serve next
+    all_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id).all()
+    seen_concept_names = sets.Set()
+    for sub in all_subs:
+      for concept in sub.concepts.all():
+        seen_concept_names.add(concept.name)
+    new_concepts = []
+    for concept in concepts:
+      if concept.name not in seen_concept_names:
+        new_concepts.append((concept.name, concept.display_name))
+
+    return render_template('practice.html', problem=problem, concepts=display_concepts, new_concepts=new_concepts)
   else:
     return redirect('/practice/')
 

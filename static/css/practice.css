@@ -1,3 +1,10 @@
+#sidebar {
+  padding: 10px;
+  margin-left: 20px;
+  background-color: lightyellow;
+  border: 1px solid goldenrod;
+}
+
 #run_container {
   margin: 10px 0;
 }
@@ -26,6 +33,15 @@ pre {
   font-weight: 700;
   color: #444;
   max-height: 150px;
+}
+
+#hint_wrapper ul {
+  margin: 0;
+}
+
+#hint_wrapper ul li {
+  display: inline-block;
+  padding: 0px 20px 0px 0px;
 }
 
 .modal {

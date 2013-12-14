@@ -16,32 +16,52 @@ Python Practice
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <h3>{{problem.prompt |safe}}</h3>
-  <textarea id="practice_code" style="display:none;"></textarea>
-  <div id="run_container">
-    <button id="practice_run_code" class="btn btn-success left">Run It!</button>
-    <a href="/practice_progress/" target="_blank" class="btn btn-success left" >See Progress</a>
-    <button id="give_up" class="btn btn-success right">Give Up</button>
-    <a id="next_exercise" href="/practice/" class="btn btn-primary right" style="display:none;">Next Exercise</a>
+<div class="row-fluid all">
+  {% if new_concepts|length > 0 %}
+  <div id="sidebar" class="span2">
+    <h4>New Concepts!</h4>
+    <h5>Click to learn more:</h5>
+    <ul>
+      {% for concept_name, display_name in new_concepts %}
+      <li><a href="/concept/{{concept_name}}" target="_blank">{{display_name}}</a>
+      {% endfor %}
+    </ul>
   </div>
-  <h4>Output:</h4>
-  <pre id="practice_output" class="output-pre"></pre>
-  <button id="show_hint" class="btn btn-small">Get hint</button>
-  <div id="hint_wrapper" style="display:none;">
-    <b>Hint:</b>
-    <div id="hint">{{problem.hint |safe}}</div>
+  {% else %}
+  <div class="span2"></div>
+  {% endif %}
+  <div class="span8">
+    <h3>{{problem.prompt |safe}}</h3>
+    <textarea id="practice_code" style="display:none;"></textarea>
+    <div id="run_container">
+      <button id="practice_run_code" class="btn btn-success left">Run It!</button>
+      <a href="/practice_progress/" target="_blank" class="btn btn-success left" >See Progress</a>
+      <button id="give_up" class="btn btn-success right">Give Up</button>
+      <a id="next_exercise" href="/practice/" class="btn btn-primary right" style="display:none;">Next Exercise</a>
+    </div>
+    <h4>Output:</h4>
+    <pre id="practice_output" class="output-pre"></pre>
+    <button id="show_hint" class="btn btn-small">Get hint</button>
+    <div id="hint_wrapper" style="display:none;">
+      <b>Hint:</b>
+      <div id="hint">{{problem.hint |safe}}</div>
+      <b>Relevant concepts:</b>
+      <ul>
+        {% for concept_name, display_name in concepts %}
+        <li><a href="/concept/{{concept_name}}" target="_blank">{{display_name}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
-
-  <div id="template_vars" style="display:none;">
-    {{problem.template_vars}}
-  </div>
-  <div id="test_cases" style="display:none;">
-    {{problem.test}}
-  </div>
-  <div id="concept_names" style="display:none;">
-    {{problem.concept_names}}
-  </div>
+</div>
+<div id="template_vars" style="display:none;">
+  {{problem.template_vars}}
+</div>
+<div id="test_cases" style="display:none;">
+  {{problem.test}}
+</div>
+<div id="concept_names" style="display:none;">
+  {{problem.concept_names}}
 </div>
 <div id="correct_modal" class="modal fade">
   <div class="modal-dialog">
