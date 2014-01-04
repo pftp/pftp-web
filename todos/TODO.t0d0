@@ -2,15 +2,11 @@ Schema
 [ ] Possibly integrate Lessons and assignments on the same page: or link lessons to corresponding assignments
 [ ] rewrite schema
 
-Grading
-[ ] Make syllabus (grading)
-
 UI
 [ ] fix login ui
 [ ] prettyprint for syntax highlighting
 
 Jank code
-
 [ ] unjankify fullscreen labs
 [ ] unjankify course schedule hardcoding
 
