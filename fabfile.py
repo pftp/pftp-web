@@ -11,8 +11,9 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, get_next_problem
 import utils, ast_utils
+from emailer import Emailer
 
 ################################################################################
 # Tasks
@@ -41,6 +42,10 @@ def adddecalrole():
 @task
 def genlabs():
   generate_labs()
+
+@task
+def emailproblems():
+  email_problems()
 
 @task
 def build():
@@ -325,7 +330,7 @@ def add_concepts():
 
 
 def add_decal_role():
-  decal_role = user_datastore.create_role(name="decal")
+  decal_role = user_datastore.find_role("decal")
   for user in User.query.all():
     print user.id, user.firstname, user.lastname, user.email
     ans = raw_input('Add as DeCal student? [y/n]')
@@ -334,6 +339,17 @@ def add_decal_role():
       db.session.add(user)
   db.session.commit()
 
+def email_problems():
+  #with Emailer() as emailer:
+  subject = 'Your daily problem is here!'
+  for user in User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal')):
+    problem_name = get_next_problem(user.id)
+    text = "Hi %s!\nHere's todays problem: <a href='/practice/%s/'>%s</a>. Get cracking!\nBen, Lu, and Hurshal" % (user.firstname, problem_name, problem_name)
+    #emailer.email_user(user.email, user.firstname, subject, text)
+
+    print colored(problem_name, "yellow"), colored("emailed to user", "green"),
+    print colored("%s: %s %s at %s" % (user.id, user.firstname, user.lastname, user.email), "yellow")
+    print colored("Subject: %s\nText: %s" % (subject, text), "blue")
 
 def generate_labs():
   if not os.path.exists('static/lab'):
