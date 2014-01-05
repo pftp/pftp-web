@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}
+About
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/about.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<h1> Class Calendar (Fall 2013) </h1>
+<h4><a href="https://docs.google.com/forms/d/1sW9elfqEm0RSB4XnMc0oOxXKs3N3wxmhOP_Kir9Hs_s/viewform"> Final Feedback Survey! </a></h4>
+<h4><a href="https://docs.google.com/spreadsheet/ccc?key=0AqKe623IwK3vdEMwa3hveFZfYUNMRVZqRWVjd3pKa3c&usp=sharing"> Sign up for Final Project Presentations! </a></h4>
+<h4><a href="/cheatsheet.html"> Cheat Sheet for Python Syntax </a></h4>
+<h4><a href="/jscheatsheet.html"> Cheat Sheet for Javascript Syntax </a></h4>
+<table class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Week</th>
+      <th>Lessons</th>
+      <th>Lab</th>
+      <th>Assignment</th>
+      <th>Due date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> 1 </td>
+      <td>
+        <a href="/lessons/week1/lecture_1.pdf"> Lecture 1 </a>
+        <br>
+      </td>
+      <td>
+        <a href="/labs/1"> Lab 1 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/1">Homework 1</a><br>
+      </td>
+      <td>Sunday, September 15 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 2 </td>
+      <td>
+        <a href="/lessons/week2/lecture_2.pdf"> Lecture 2 </a>
+        <br>
+      </td>
+      <td>
+        <a href="/labs/2"> Lab 2 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/2">Homework 2</a><br>
+      </td>
+      <td>Sunday, September 22 @ 11:59pm</td>
+    </tr>
+  
+    <tr>
+      <td> 3 </td>
+      <td>
+        <a href="/lessons/week3/lecture_3.pdf"> Lecture 3 </a>
+        <br>
+      </td>
+      <td>
+        <a href = "/quiz/3">Week 3 Pop Quiz </a>
+        <br>
+        <a href="/labs/3"> Lab 3 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/3">Homework 3</a><br>
+      </td>
+      <td>Sunday, September 29 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 4 </td>
+      <td>
+        <a href="/lessons/week4/lecture_4.pdf"> Lecture 4 </a>
+        <br>
+      </td>
+      <td>
+        <a href = "/quiz/4">Week 4 Pop Quiz </a>
+        <br>
+        <a href="/labs/4"> Lab 4 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/8">Homework 4</a><br>
+      </td>
+      <td>Sunday, October 06 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 5 </td>
+      <td>
+        <a href="/lessons/week5/lecture_5.pdf"> Lecture 5 </a>
+        <br>
+      </td>
+      <td>
+        <a href = "/quiz/5">Week 5 Pop Quiz </a>
+        <br>
+  <a href="/static/assignments/terminal.html"> Terminal Lab </a>
+  <br>
+        <a href="/labs/5"> Lab 5 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/10">Homework 5</a><br>
+      </td>
+      <td>Sunday, October 13 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 6 </td>
+      <td>
+        <a href="/lessons/week6/lecture_6.pdf"> Lecture 6 </a>
+        <br>
+      </td>
+      <td>
+  <a href="/static/assignments/html.html"> HTML Lab </a>
+  <br>
+        <a href="/labs/6"> Lab 6 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/11">Homework 6</a><br>
+      </td>
+      <td>Sunday, October 20 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 7 </td>
+      <td>
+        <a href="/lessons/week7/lecture_7.pdf"> Lecture 7 </a>
+        <br>
+      </td>
+      <td>
+        <a href = "/quiz/7">Week 7 Pop Quiz </a>
+        <br>
+  <a href="/static/assignments/scrape.html"> Scraping Lab </a>
+  <br>
+        <a href="/labs/7"> Lab 7 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/13">Homework 7</a><br>
+      </td>
+      <td>Sunday, October 27 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 8 </td>
+      <td>
+        <a href="/lessons/week8/lecture_8.pdf"> Lecture 8 </a>
+        <br>
+        <a href="/static/assignments/tom_sawyer.txt"> tom_sawyer.txt </a>
+        <br>
+      </td>
+      <td>
+        <a href="/labs/8"> Lab 8 </a><br>
+      </td>
+      <td>
+        <a href="/assignments/15">Homework 8</a><br>
+      </td>
+      <td>Sunday, November 03 @ 11:59pm</td>
+    </tr>
+    <tr>
+      <td> 9 </td>
+      <td>
+        <a href="/static/lectures/scraping.pdf"> Scraping Lecture </a><br>
+        <a href="/static/lectures/html+css_intro.pdf"> HTML &amp; CSS Lecture </a>
+      </td>
+      <td>
+        <a href="/labs/9"> Lab 9 </a><br>
+        <a href="/static/assignments/web_example.zip"> HTML &amp; CSS Example </a><br>
+        <a href="/static/assignments/html5_game_example.zip"> HTML5 Game Example </a><br>
+        <a href="/static/assignments/html5_game_skeleton.zip"> HTML5 Game Skeleton </a><br>
+        <a href="/static/assignments/web_example_js.zip"> HTML &amp; CSS &amp; JS Example </a><br>
+      </td>
+      <td>
+        <a href="/assignments/16">Project</a><br>
+      </td>
+      <td>Sunday, November 17 @ 02:59pm</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+  <div id="container">
+    <div id="logistics">
+      <div id="time">
+        <img src="/static/img/icons/14.png">
+        <p>Monday</p>
+        <p>1-3pm</p>
+      </div>
+      <div id="units">
+        <img src="/static/img/icons/8.png">
+        <p>2 units</p>
+      </div>
+      <div id="location">
+        <img src="/static/img/icons/5.png">
+        <p>200 Sutardja Dai</p>
+      </div>
+    </div>
+    <div id="faq_container">
+  <p id="faq_title">FAQ</p>
+  <table id="faq_table">
+    <tr>
+      <td class="question">How much programming experience should I have coming into this course?</td>
+      <td class="answer">None. Nada. Zip. Zero. The course is designed to teach you from the ground up!</td>
+    </tr>
+    <tr>
+      <td class="question">Do I need a strong math background to take this DeCal?</td>
+      <td class="answer">If you can do arithmetic, you're good to go.</td>
+    </tr>
+    <tr>
+      <td class="question">Will there be homework?</td>
+      <td class="answer">Yes but we don't like homework just as much as you do.</td>
+    </tr>
+    <tr>
+      <td class="question">What will I actually learn from this course?</td>
+      <td class="answer">You will learn Python, our favorite programming language for just Getting
+        Stuff Done. You'll start by drawing a bunch of things with turtle graphics,
+        which is built into Python for learning purposes. About halfway through the
+        course, we'll dive into realer world applications such as web scraping, data
+        processing, and writing your own simple website.</td>
+    </tr>
+    <tr>
+      <td class="question">Will you teach me to make my website beautiful?</td>
+      <td class="answer">Unfortunately, no. Though we'll touch on web development, we will NOT be
+      teaching you how to make a nice-looking website, aka web design. For that, the
+      folks over at
+      <a href="http://www.thewebdesignworkshop.co" target="_blank">The Web Design Workshop</a>
+      seem to know what they're doing.</td>
+    </tr>
+    <tr>
+      <td class="question">Is attendance mandatory?</td>
+      <td class="answer">Yes</td>
+    </tr>
+    <tr>
+      <td class="question">Did anybody actually ask any of these questions?</td>
+      <td class="answer">Nope</td>
+    </tr>
+  </table>
+</div>
+    <div id="more_info">
+      <div id="apply">
+        <a href="https://docs.google.com/forms/d/1CYiTur4ItSRb2beK1TCIwC3h5xaYgxON5VyireKjLf0/viewform" target="_blank">
+          <img src="/static/img/icons/clipboard.png">
+          <p>Apply</p>
+        </a>
+      </div>
+      <div id="contact">
+        <img src="/static/img/icons/bubble.png">
+        <p>Contact us at:</p>
+        <p>programmingfeelthepower AT gmail.com</p>
+      </div>
+    </div>
+    <div id="instructors">
+    </div>
+    <div id="copyright">
+      <p>design by <a href="http://jiannmok.com" target="_blank">Jiann Mok</a></p>
+    </div>
+  </div>
+{% endblock %}

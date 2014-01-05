@@ -326,7 +326,9 @@ def index():
 
 @app.route('/about/')
 def about():
-  weeks = map(lambda x:x.__dict__, Week.query.all())
+  # TODO add new schedule
+  #weeks = map(lambda x:x.__dict__, Week.query.all())
+  weeks = []
   # not sure if this is the best way
   for week in weeks:
     week['assignment'] = Assignment.query.get(week['assignment'])
@@ -335,6 +337,10 @@ def about():
     if len(quiz.all()) == 1:
       week['quiz'] = quiz.first()
   return render_template('about.html', weeks=weeks)
+
+@app.route('/about/fa13/')
+def about_fa13():
+  return render_template('about_fa13.html')
 
 @app.route('/lessons/')
 def lesson_home():

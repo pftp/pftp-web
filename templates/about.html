@@ -9,12 +9,11 @@ About
 {% endblock %}
 
 {% block content %}
+<div id="container">
+  <div style="text-align: right; padding-right: 10px;">You can view the fall 2013 schedule <a href="/about/fa13">here</a></div>
+{% if weeks %}
 <div class="container">
 <h1> Class Calendar </h1>
-<h4><a href="https://docs.google.com/forms/d/1sW9elfqEm0RSB4XnMc0oOxXKs3N3wxmhOP_Kir9Hs_s/viewform"> Final Feedback Survey! </a></h4>
-<h4><a href="https://docs.google.com/spreadsheet/ccc?key=0AqKe623IwK3vdEMwa3hveFZfYUNMRVZqRWVjd3pKa3c&usp=sharing"> Sign up for Final Project Presentations! </a></h4>
-<h4><a href="/cheatsheet.html"> Cheat Sheet for Python Syntax </a></h4>
-<h4><a href="/jscheatsheet.html"> Cheat Sheet for Javascript Syntax </a></h4>
 <table class="table table-bordered table-striped table-hover">
   <thead>
     <tr>
@@ -34,42 +33,11 @@ About
         <a href="/lessons/{{ sublesson.link }}"> {{ sublesson.name }} </a>
         <br>
         {% endfor %}
-        {% if week.id == 8%}
-        <a href="/static/assignments/tom_sawyer.txt"> tom_sawyer.txt </a>
-        <br>
-        {% endif %}
-	{% if week.id == 9 %}
-        <a href="/static/lectures/scraping.pdf"> Scraping Lecture </a><br>
-        <a href="/static/lectures/html+css_intro.pdf"> HTML &amp; CSS Lecture </a>
-	{% endif %}
       </td>
       <td>
         {% if week.quiz is defined %}
         <a href = "/quiz/{{ week.quiz.week }}">{{ week.quiz.name }} </a>
         <br>
-        {% endif %}
-	{% if week.id == 5%}
-	<a href="/static/assignments/terminal.html"> Terminal Lab </a>
-	<br>
-	{% endif %}
-	{% if week.id == 6%}
-	<a href="/static/assignments/html.html"> HTML Lab </a>
-	<br>
-	{% endif %}
-	{% if week.id == 7%}
-	<a href="/static/assignments/scrape.html"> Scraping Lab </a>
-	<br>
-	{% endif %}
-        <a href="/labs/{{ week.id }}"> Lab {{ week.id }} </a><br>
-	{% if week.id == 10%}
-	<a href="/static/assignments/twilio.html"> Twilio Example (Do this after Lab 9) </a>
-
-	{% endif %}
-        {% if week.id == 9 %}
-        <a href="/static/assignments/web_example.zip"> HTML &amp; CSS Example </a><br>
-        <a href="/static/assignments/html5_game_example.zip"> HTML5 Game Example </a><br>
-        <a href="/static/assignments/html5_game_skeleton.zip"> HTML5 Game Skeleton </a><br>
-        <a href="/static/assignments/web_example_js.zip"> HTML &amp; CSS &amp; JS Example </a><br>
         {% endif %}
       </td>
       <td>
@@ -81,41 +49,40 @@ About
   </tbody>
 </table>
 </div>
-
-	<div id="container">
-		<div id="logistics">
-			<div id="time">
-				<img src="{{url_for('static', filename='img/icons/14.png')}}">
-				<p>TBD</p>
-			</div>
-			<div id="units">
-				<img src="{{url_for('static', filename='img/icons/8.png')}}">
-				<p>2 units</p>
-			</div>
-			<div id="location">
-				<img src="{{url_for('static', filename='img/icons/5.png')}}">
-				<p>TBD</p>
-			</div>
-		</div>
-		{% include "faq.html" %}
-		<div id="more_info">
-			<div id="apply">
-				<a href="https://docs.google.com/forms/d/1eLxIhIyO3fhanXlbFwBI-SCNf0xBclBqdLZkrtn-sRE/viewform" target="_blank">
-					<img src="{{url_for('static', filename='img/icons/clipboard.png')}}">
-					<p>Apply</p>
-				</a>
-			</div>
-			<div id="contact">
-				<img src="{{url_for('static', filename='img/icons/bubble.png')}}">
-				<p>Contact us at:</p>
-				<p>programmingfeelthepower AT gmail.com</p>
-			</div>
-		</div>
-		<div id="instructors">
-		</div>
-		<div id="copyright">
-			<p>design by <a href="http://jiannmok.com" target="_blank">Jiann Mok</a></p>
-		</div>
-	</div>
+{% endif %}
+  <div id="logistics">
+    <div id="time">
+      <img src="{{url_for('static', filename='img/icons/14.png')}}">
+      <p>TBD</p>
+    </div>
+    <div id="units">
+      <img src="{{url_for('static', filename='img/icons/8.png')}}">
+      <p>2 units</p>
+    </div>
+    <div id="location">
+      <img src="{{url_for('static', filename='img/icons/5.png')}}">
+      <p>TBD</p>
+    </div>
+  </div>
+  {% include "faq.html" %}
+  <div id="more_info">
+    <div id="apply">
+      <a href="https://docs.google.com/forms/d/1eLxIhIyO3fhanXlbFwBI-SCNf0xBclBqdLZkrtn-sRE/viewform" target="_blank">
+        <img src="{{url_for('static', filename='img/icons/clipboard.png')}}">
+        <p>Apply</p>
+      </a>
+    </div>
+    <div id="contact">
+      <img src="{{url_for('static', filename='img/icons/bubble.png')}}">
+      <p>Contact us at:</p>
+      <p>programmingfeelthepower AT gmail.com</p>
+    </div>
+  </div>
+  <div id="instructors">
+  </div>
+  <div id="copyright">
+    <p>design by <a href="http://jiannmok.com" target="_blank">Jiann Mok</a></p>
+  </div>
+</div>
 
 {% endblock %}
