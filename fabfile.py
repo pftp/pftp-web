@@ -11,8 +11,9 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, get_next_problem
 import utils, ast_utils
+from emailer import Emailer
 
 ################################################################################
 # Tasks
@@ -35,48 +36,16 @@ def addconcepts():
   add_concepts()
 
 @task
-def addquiz1():
-  add_quiz1()
-
-@task
-def addquiz2():
-  add_quiz2()
-
-@task
-def addquiz3():
-  add_quiz3()
-
-@task
-def addassignment5():
-  add_assignment5()
-
-@task
-def addweek6():
-  add_week6()
-
-@task
-def addquiz4():
-  add_quiz4()
-
-@task
-def addweek7():
-  add_week7()
-
-@task
-def addweek8():
-  add_week8()
-
-@task
-def addweek9():
-  add_week9()
-
-@task
 def adddecalrole():
   add_decal_role()
 
 @task
 def genlabs():
   generate_labs()
+
+@task
+def emailproblems():
+  email_problems()
 
 @task
 def build():
@@ -87,11 +56,6 @@ def build():
   generate_models()
   add_practice_problems()
   add_concepts()
-  add_quiz1()
-  add_quiz2()
-  add_quiz3()
-  add_assignment5()
-  add_quiz4()
 
 #XXX make this detect changes and automatically build
 @task
@@ -364,6 +328,103 @@ def add_concepts():
   db.session.commit()
   print colored("%d concepts updated with display_name and explanation" % concept_count, 'green')
 
+
+def add_decal_role():
+  decal_role = user_datastore.find_role("decal")
+  for user in User.query.all():
+    print user.id, user.firstname, user.lastname, user.email
+    ans = raw_input('Add as DeCal student? [y/n]')
+    if ans is 'y':
+      user_datastore.add_role_to_user(user, decal_role)
+      db.session.add(user)
+  db.session.commit()
+
+def email_problems():
+  #with Emailer() as emailer:
+  subject = 'Your daily problem is here!'
+  for user in User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal')):
+    problem_name = get_next_problem(user.id)
+    text = "Hi %s!\nHere's todays problem: <a href='/practice/%s/'>%s</a>. Get cracking!\nBen, Lu, and Hurshal" % (user.firstname, problem_name, problem_name)
+    #emailer.email_user(user.email, user.firstname, subject, text)
+
+    print colored(problem_name, "yellow"), colored("emailed to user", "green"),
+    print colored("%s: %s %s at %s" % (user.id, user.firstname, user.lastname, user.email), "yellow")
+    print colored("Subject: %s\nText: %s" % (subject, text), "blue")
+
+def generate_labs():
+  if not os.path.exists('static/lab'):
+    os.makedirs('static/lab')
+  (_,_,labfiles) = os.walk('labs').next()
+  for labfile in labfiles:
+    lab = open('labs/' + labfile, 'r')
+    steps = []
+    step = ['']
+    pre = False
+    code = ''
+
+    i = 0
+    lines = lab.readlines()
+    if '#%fullscreen' in lines[0]:
+      fullscreen_state = 'var lab_fullscreen = true;'
+      lines.pop(0)
+    else:
+      fullscreen_state = 'var lab_fullscreen = false;'
+    lines.append('\n')
+    for i in range(0, len(lines)):
+      line = lines[i]
+      if line == '\n':
+        if pre:
+          step[0] += '</pre>'
+          pre = False
+        if code:
+          step.append(code)
+          code = ''
+        if step[0]:
+          steps.append(step)
+          step = ['']
+      else:
+        if line[0:3] == '###':
+          code += line[3:]
+        elif line[0] == '#':
+          if pre:
+            step[0] += '</pre>'
+            pre = False
+          step[0] += process_line(line[1:].strip()) + '<br/><br/>'
+        else:
+          if not pre:
+            pre = True
+            step[0] += '<pre>'
+          step[0] += line
+
+    with open('static/lab/' + labfile.replace('.py', '.js'), 'w') as out:
+      out.write(fullscreen_state)
+      out.write('var lab_content = ')
+      out.write(str(steps))
+      out.write(';')
+  print colored("%s labs generated" % len(labfiles), "green")
+
+def process_line(line):
+  if not '`' in line:
+    return line
+
+  chunks = line.split('`')
+  if len(chunks) % 2 == 0:
+    return line
+
+  result = ''
+  for i in range(0, len(chunks)):
+    result += chunks[i]
+    if i % 2 == 0 and i != len(chunks) - 1:
+      result += '<code>'
+    else:
+      result += '</code>'
+  return result
+
+
+################################################################################
+# Old Tasks
+################################################################################
+
 def add_quiz1():
   quiz1 = Quiz(name="Week 3 Pop Quiz", week=3)
 
@@ -587,84 +648,3 @@ def add_week9():
   week9 = Week(assignment=project1.id, lesson=lesson9.id)
   db.session.add(week9)
   db.session.commit()
-
-
-def add_decal_role():
-  decal_role = user_datastore.create_role(name="decal")
-  for user in User.query.all():
-    print user.id, user.firstname, user.lastname, user.email
-    ans = raw_input('Add as DeCal student? [y/n]')
-    if ans is 'y':
-      user_datastore.add_role_to_user(user, decal_role)
-      db.session.add(user)
-  db.session.commit()
-
-
-def generate_labs():
-  if not os.path.exists('static/lab'):
-    os.makedirs('static/lab')
-  (_,_,labfiles) = os.walk('labs').next()
-  for labfile in labfiles:
-    lab = open('labs/' + labfile, 'r')
-    steps = []
-    step = ['']
-    pre = False
-    code = ''
-
-    i = 0
-    lines = lab.readlines()
-    if '#%fullscreen' in lines[0]:
-      fullscreen_state = 'var lab_fullscreen = true;'
-      lines.pop(0)
-    else:
-      fullscreen_state = 'var lab_fullscreen = false;'
-    lines.append('\n')
-    for i in range(0, len(lines)):
-      line = lines[i]
-      if line == '\n':
-        if pre:
-          step[0] += '</pre>'
-          pre = False
-        if code:
-          step.append(code)
-          code = ''
-        if step[0]:
-          steps.append(step)
-          step = ['']
-      else:
-        if line[0:3] == '###':
-          code += line[3:]
-        elif line[0] == '#':
-          if pre:
-            step[0] += '</pre>'
-            pre = False
-          step[0] += process_line(line[1:].strip()) + '<br/><br/>'
-        else:
-          if not pre:
-            pre = True
-            step[0] += '<pre>'
-          step[0] += line
-
-    with open('static/lab/' + labfile.replace('.py', '.js'), 'w') as out:
-      out.write(fullscreen_state)
-      out.write('var lab_content = ')
-      out.write(str(steps))
-      out.write(';')
-  print colored("%s labs generated" % len(labfiles), "green")
-
-def process_line(line):
-  if not '`' in line:
-    return line
-
-  chunks = line.split('`')
-  if len(chunks) % 2 == 0:
-    return line
-
-  result = ''
-  for i in range(0, len(chunks)):
-    result += chunks[i]
-    if i % 2 == 0 and i != len(chunks) - 1:
-      result += '<code>'
-    else:
-      result += '</code>'
-  return result
