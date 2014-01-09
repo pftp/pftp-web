@@ -23,7 +23,7 @@ Python Practice
     <h5>Click to learn more:</h5>
     <ul>
       {% for concept_name, display_name in new_concepts %}
-      <li><a href="/concept/{{concept_name}}" target="_blank">{{display_name}}</a>
+      <li><a href="/concept/{{ language }}/{{concept_name}}" target="_blank">{{display_name}}</a>
       {% endfor %}
     </ul>
   </div>
@@ -35,9 +35,9 @@ Python Practice
     <textarea id="practice_code" style="display:none;"></textarea>
     <div id="run_container">
       <button id="practice_run_code" class="btn btn-success left">Run It!</button>
-      <a href="/practice_progress/" target="_blank" class="btn btn-success left" >See Progress</a>
+      <a href="/practice_progress/{{ language }}" target="_blank" class="btn btn-success left" >See Progress</a>
       <button id="give_up" class="btn btn-success right">Give Up</button>
-      <a id="next_exercise" href="/practice/" class="btn btn-primary right" style="display:none;">Next Exercise</a>
+      <a id="next_exercise" href="/practice/{{ language }}" class="btn btn-primary right" style="display:none;">Next Exercise</a>
     </div>
     <h4>Output:</h4>
     <pre id="practice_output" class="output-pre"></pre>
@@ -48,7 +48,7 @@ Python Practice
       <b>Relevant concepts:</b>
       <ul>
         {% for concept_name, display_name in concepts %}
-        <li><a href="/concept/{{concept_name}}" target="_blank">{{display_name}}</a></li>
+        <li><a href="/concept/{{ language }}/{{concept_name}}" target="_blank">{{display_name}}</a></li>
         {% endfor %}
       </ul>
     </div>
@@ -82,7 +82,7 @@ Python Practice
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a id="modal_next_exercise" href="/practice/" class="btn btn-primary">Next Exercise</a>
+        <a id="modal_next_exercise" href="/practice/{{ language }}" class="btn btn-primary">Next Exercise</a>
       </div>
     </div>
   </div>
@@ -138,7 +138,7 @@ Python Practice
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Give it another shot</button>
-        <a id="give_up_confirm" href="/practice/" class="btn btn-primary">Give Up!</a>
+        <a id="give_up_confirm" href="/practice/{{ language }}" class="btn btn-primary">Give Up!</a>
       </div>
     </div>
   </div>

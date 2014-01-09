@@ -1,3 +1,10 @@
+Practice
+[ ] Add javascript problems
+[ ] Clean up fabfile addpractice code
+
+Bugs
+[ ] practice_progress shows attempts for problem where is_current=False
+
 Setup
 [ ] Clear old class schedule and set up new schema
 

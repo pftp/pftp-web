@@ -43,9 +43,9 @@ Python Practice
   <h4>Our Solution:</h4>
   <pre id="solution_code">{{problem.solution}}</pre>
   {% if admin %}
-  <a href="/admin/practice_progress/{{user_id}}" class="btn btn-success">Back to Progress</a>
+  <a href="/admin/practice_progress/{{user_id}}/{{ language }}" class="btn btn-success">Back to Progress</a>
   {% else %}
-    <a href="/practice_progress/" class="btn btn-success">Back to Progress</a>
+  <a href="/practice_progress/{{ language }}" class="btn btn-success">Back to Progress</a>
   {% endif %}
 </div>
 {% endblock %}

@@ -233,10 +233,15 @@ def generate_models():
 
 def add_practice_problems():
   with settings(warn_only=True):
-    os.chdir('practice')
+    #hardcoded python for now
+    #TODO dynamically add problems from all languages
+    os.chdir('practice/python')
     local('python gen_questions.py')
-    os.chdir('..')
-  practice_problems = json.load(open('practice/practice_problems.json', 'r'))
+    os.chdir('../..')
+  #TODO this too
+  practice_problems = json.load(open('practice/python/practice_problems.json', 'r'))
+  language = "python"
+  language_id = 1
   # convert all values to strings
   for p in practice_problems:
     for k, v in p.items():
@@ -252,34 +257,34 @@ def add_practice_problems():
     start_time = time.time()
     # Get concepts by traversing the ast of the problem's solution
     pt = problem.copy()
-    print colored('processing practice problem %s' % pt['problem_name'], 'blue')
+    print colored('processing (%s) practice problem %s' % (language, pt['problem_name']), 'blue')
     pt['template_vars'] = utils.get_template_vars(pt['gen_template_vars'])
     pt = utils.get_problem(pt)
     concept_names = ast_utils.get_concepts(pt['solution'])
     concepts = []
     for concept_name in concept_names:
-      concept = PracticeProblemConcept.query.filter_by(name=concept_name).first()
+      concept = PracticeProblemConcept.query.filter_by(name=concept_name, language_id=language_id).first()
       if concept == None:
-        concept = PracticeProblemConcept(name=concept_name)
+        concept = PracticeProblemConcept(name=concept_name, language_id=language_id)
         db.session.add(concept)
         db.session.commit()
       concepts.append(concept)
 
     # Create a new template
-    if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True).count() == 0:
-      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
+    if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name'], is_current=True, language_id=language_id).count() == 0:
+      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, language_id=language_id)
       db.session.add(new_template)
       print colored("%s added to database." % new_template.problem_name, 'yellow')
       count_add += 1
     else:
-      old_template = PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name']).filter_by(is_current=True)[0]
+      old_template = PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name'], is_current=True, language_id=language_id)[0]
       add_new_template = False
       # check if we need to completely scratch the old template and add a new template (the structure of the problem has changed)
       for k in ['prompt', 'solution', 'test']:
         if old_template.to_dict()[k] != problem[k]:
           add_new_template = True
       if add_new_template:
-        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True)
+        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, language_id=language_id)
         db.session.add(new_template)
         print colored("%s added to database." % new_template.problem_name, 'yellow')
         count_add += 1
@@ -300,7 +305,7 @@ def add_practice_problems():
       print colored('%s took %.2f seconds to generate (more than 1 second is excessive)' % (problem['problem_name'], time_spent), 'red')
 
   count_deleted = 0
-  current_problems = PracticeProblemTemplate.query.filter_by(is_current=True).all()
+  current_problems = PracticeProblemTemplate.query.filter_by(is_current=True, language_id=language_id).all()
   for problem in current_problems:
     if problem.problem_name not in all_problem_names:
       problem.is_current = False
@@ -314,12 +319,17 @@ def add_practice_problems():
 
 def add_concepts():
   with settings(warn_only=True):
-    os.chdir('practice')
+    #hardcoded python for now
+    #TODO dynamically add problems from all languages
+    os.chdir('practice/python')
     local('python gen_concepts.py')
-    os.chdir('..')
-  practice_concepts = json.load(open('practice/practice_concepts.json', 'r'))
+    os.chdir('../..')
+  #TODO this too
+  practice_concepts = json.load(open('practice/python/practice_concepts.json', 'r'))
+  language = "python"
+  language_id = 1
   concept_count = 0
-  all_concepts = PracticeProblemConcept.query.all()
+  all_concepts = PracticeProblemConcept.query.filter_by(language_id=language_id).all()
   for concept in all_concepts:
     concept_obj = practice_concepts[concept.name]
     concept.display_name = concept_obj['display_name']
