@@ -6,7 +6,8 @@ CREATE TABLE "language" (
   PRIMARY KEY (id)
 );
 INSERT INTO "language" (id, language) VALUES
-(1, "python"),
+(1, "python");
+INSERT INTO "language" (id, language) VALUES
 (2, "javascript");
 
 --
