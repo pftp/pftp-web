@@ -18,7 +18,11 @@ Python Practice Progress
   </div>
   <ul>
     {% for problem in mastered_problems %}
-    <li><a href="{{problem.problem_name}}/">{{ problem.problem_name }}</a></li>
+      {% if admin %}
+        <li><a href="{{problem.problem_name}}/">{{ problem.problem_name }}</a></li>
+      {% else %}
+        <li><a href="{{ language }}/{{problem.problem_name}}/">{{ problem.problem_name }}</a></li>
+      {% endif %}
     {% endfor %}
   </ul>
   <h4> Concept Progress</h4>
@@ -27,7 +31,7 @@ Python Practice Progress
     <li>
     <div class="progress-bar">
       <div class="inner-progress-bar" style="width:{{concept_percent}}%">
-        <a href="/concept/{{concept_name}}" target="_blank" class="progress-bar-text">{{display_name}}</a>
+        <a href="/concept/{{ language }}/{{concept_name}}" target="_blank" class="progress-bar-text">{{display_name}}</a>
       </div>
     </div>
     </li>
@@ -47,13 +51,13 @@ Python Practice Progress
   <tr>
     {% if admin %}
     <td>
-      <a href="/admin/practice_progress/{{user_id}}/{{ att.problem_name }}">
+      <a href="/admin/practice_progress/{{ user_id }}/{{ language }}/{{ att.problem_name }}">
         {{ att.problem_name }}
       </a>
     </td>
     {% else %}
     <td>
-      <a href="/practice_progress/{{ att.problem_name }}">
+      <a href="/practice_progress/{{ language }}/{{ att.problem_name }}">
         {{ att.problem_name }}
       </a>
     </td>

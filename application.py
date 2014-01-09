@@ -223,6 +223,13 @@ templates_concepts = db.Table('templates_concepts',
     db.Column('practice_problem_template_id', db.Integer(), db.ForeignKey('practice_problem_template.id')),
     db.Column('practice_problem_concept_id', db.Integer(), db.ForeignKey('practice_problem_concept.id')))
 
+class Language(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  language = db.Column(db.Text(), nullable=False)
+
+#TODO pull data from table for multiple languages
+language_map = {'python':1, 1:'python'}# 'javascript':2, 2:'javascript'}
+
 class PracticeProblemTemplate(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   problem_name = db.Column(db.Text(), nullable=False)
@@ -234,6 +241,8 @@ class PracticeProblemTemplate(db.Model):
   concepts = db.relationship('PracticeProblemConcept', secondary=templates_concepts,
       backref=db.backref('practice_problem_template', lazy='dynamic'), lazy='dynamic')
   is_current = db.Column(db.Boolean(), nullable=False)
+  language_id = db.Column(db.Integer(), db.ForeignKey('language.id'), nullable=False)
+
 
   def to_dict(self):
     return {
@@ -245,7 +254,8 @@ class PracticeProblemTemplate(db.Model):
       'hint': self.hint,
       'gen_template_vars': self.gen_template_vars,
       'concepts': self.concepts,
-      'is_current': self.is_current
+      'is_current': self.is_current,
+      'language_id': self.language_id
     }
 
 submissions_concepts = db.Table('submissions_concepts',
@@ -267,6 +277,7 @@ class PracticeProblemSubmission(db.Model):
   template_vars = db.Column(db.Text(), nullable=False)
   problem_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'), nullable=False)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  language_id = db.Column(db.Integer(), db.ForeignKey('language.id'), nullable=False)
   concepts = db.relationship('PracticeProblemConcept', secondary=submissions_concepts,
       backref=db.backref('practice_problem_submission', lazy='dynamic'), lazy='dynamic')
   def to_dict(self):
@@ -285,6 +296,7 @@ class PracticeProblemSubmission(db.Model):
       'template_vars': self.template_vars,
       'problem_id': self.problem_id,
       'user_id': self.user_id,
+      'language_id': self.language_id,
       'concepts': self.concepts
     }
 
@@ -293,6 +305,7 @@ class PracticeProblemConcept(db.Model):
   name = db.Column(db.Text(), nullable=False)
   display_name = db.Column(db.Text())
   explanation = db.Column(db.Text())
+  language_id = db.Column(db.Integer(), db.ForeignKey('language.id'), nullable=False)
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm)
@@ -409,8 +422,8 @@ def lab(lab_id):
     return render_template('lab.html', lab_id=lab_id, section=section, program=program)
   return render_template('lab.html', lab_id=lab_id, section=section)
 
-def get_user_progress(user_id):
-  all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id).all()
+def get_user_progress(user_id, language_id):
+  all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id).all()
   attempted_probs = {}
   for sub in all_subs:
     # Id submissions by their id as well as the time the student started working
@@ -466,8 +479,8 @@ def get_user_progress(user_id):
   return (mastered_problem_ids, concept_progress, score_pair, seen_problems, problem_id_to_time_given_up, len(sub_score_pairs))
 
 
-def get_next_problem(user_id):
-  exempt_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
+def get_next_problem(user_id, language_id):
+  exempt_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id, language_id)
 
   going_back = False
   if last_prob != None:
@@ -480,7 +493,7 @@ def get_next_problem(user_id):
       exempt_problem_ids.append(last_prob[0])
 
   # Get all current problems we haven't mastered and didn't just attempt
-  all_problems = PracticeProblemTemplate.query.filter(and_(not_(PracticeProblemTemplate.id.in_(exempt_problem_ids)), PracticeProblemTemplate.is_current == True)).all()
+  all_problems = PracticeProblemTemplate.query.filter(and_(and_(not_(PracticeProblemTemplate.id.in_(exempt_problem_ids)), PracticeProblemTemplate.is_current == True)), PracticeProblemTemplate.language_id == language_id).all()
 
   # filter out problems that the user has repeatedly given up on
   new_all_problems = []
@@ -531,21 +544,27 @@ def get_next_problem(user_id):
 
   return next_prob_name
 
-@app.route('/concept/<concept_name>/')
+@app.route('/concept/<language>/<concept_name>/')
 @login_required
-def concept_explanation(concept_name):
-  concept = PracticeProblemConcept.query.filter_by(name=concept_name).first()
+def concept_explanation(language, concept_name):
+  if language not in language_map:
+    return redirect('/practice_progress/')
+  language_id = language_map[language]
+  concept = PracticeProblemConcept.query.filter_by(name=concept_name, language_id=language_id).first()
   if concept == None:
     return redirect('/practice_progress/')
   return render_template('concept_explanation.html', concept=concept)
 
-@app.route('/practice_progress/')
+@app.route('/practice_progress/<language>')
 @login_required
-def practice_progress():
-  return practice_progress_by_user_id(current_user.id)
+def practice_progress(language):
+  if language not in language_map:
+    return redirect('/')
+  return practice_progress_by_user_id(current_user.id, language_map[language])
 
-def practice_progress_by_user_id(user_id, admin=False):
-  mastered_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id)
+def practice_progress_by_user_id(user_id, language_id, admin=False):
+  mastered_problem_ids, concept_progress, last_prob, seen_problems, problem_id_to_time_given_up, problems_attempted = get_user_progress(user_id, language_id)
+  language = language_map[language_id]
 
   # Get a list of mastered problems that are still current,
   # in reverse order of mastery
@@ -555,11 +574,11 @@ def practice_progress_by_user_id(user_id, admin=False):
       mastered_problems.append(seen_problems[prob_id].to_dict())
 
   # Get percent of current problems that have been mastered
-  current_problem_count = PracticeProblemTemplate.query.filter_by(is_current=True).count()
+  current_problem_count = PracticeProblemTemplate.query.filter_by(is_current=True, language_id=language_id).count()
   mastered_percent = int(float(len(mastered_problems)) / current_problem_count * 100)
 
   # Get progress for all concepts, including ones the user has not yet encountered
-  all_concepts = PracticeProblemConcept.query.all()
+  all_concepts = PracticeProblemConcept.query.filter_by(language_id=language_id).all()
   all_concept_progress = {}
   concept_display_names = {}
   for concept in all_concepts:
@@ -577,7 +596,7 @@ def practice_progress_by_user_id(user_id, admin=False):
   user = User.query.get(user_id)
 
   # Get all attempts
-  all_attempts = PracticeProblemSubmission.query.filter_by(user_id=user_id)
+  all_attempts = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id)
   attempts = []
 
   current_problem_id = -1
@@ -594,20 +613,26 @@ def practice_progress_by_user_id(user_id, admin=False):
     current_attempt['gave_up'] = att.gave_up
   if current_problem_id != -1:
     attempts.append(current_attempt)
-  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=display_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id)
+  return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=display_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id, language=language)
 
-@app.route('/practice/')
+@app.route('/practice/<language>')
 @login_required
-def practice_default():
-  next_problem_name = get_next_problem(current_user.id)
-  return redirect('/practice/%s/' % next_problem_name)
+def practice_default(language):
+  if language not in language_map:
+    return redirect('/')
+  next_problem_name = get_next_problem(current_user.id, language_map[language])
+  return redirect('/practice/%s/%s/' % (language, next_problem_name))
 
-@app.route('/practice/<problem_name>/')
+@app.route('/practice/<language>/<problem_name>/')
 @login_required
-def practice(problem_name):
+def practice(language, problem_name):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
-  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
+  if language not in language_map:
+    return redirect('/')
+  language_id = language_map[language]
+
+  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True, language_id=language_id).first()
 
   if problem_obj is not None:
     problem = problem_obj.to_dict()
@@ -633,7 +658,7 @@ def practice(problem_name):
     # Get a list of new concepts, if there are any. This is extremely
     # inefficient because we already queried all the user's submissions to
     # figure out which problem to serve next
-    all_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id).all()
+    all_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id).all()
     seen_concept_names = sets.Set()
     for sub in all_subs:
       if sub.correct:
@@ -644,54 +669,60 @@ def practice(problem_name):
       if concept.name not in seen_concept_names:
         new_concepts.append((concept.name, concept.display_name))
 
-    return render_template('practice.html', problem=problem, concepts=display_concepts, new_concepts=new_concepts)
+    return render_template('practice.html', problem=problem, concepts=display_concepts, new_concepts=new_concepts, language=language)
   else:
     return redirect('/practice/')
 
-@app.route('/practice_progress/<problem_name>/')
+@app.route('/practice_progress/<language>/<problem_name>/')
 @login_required
-def practice_view(problem_name):
-  return practice_view_by_user_id(current_user.id, problem_name)
+def practice_view(language, problem_name):
+  if language not in language_map:
+    return redirect('/')
+  return practice_view_by_user_id(current_user.id, language_map[language], problem_name)
 
-def practice_view_by_user_id(user_id, problem_name, fullhistory=False, admin=False):
-  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first()
+def practice_view_by_user_id(user_id, language_id, problem_name, fullhistory=False, admin=False):
+  problem_obj = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True, language_id=language_id).first()
   if problem_obj == None:
-    return redirect('/practice_progress/')
+    return redirect('/practice_progress/%s' % language_map[language_id])
 
   if fullhistory:
-    problem_submissions = PracticeProblemSubmission.query.filter_by(user_id=user_id, problem_id=problem_obj.id).order_by(PracticeProblemSubmission.submitted.desc())
+    problem_submissions = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id, problem_id=problem_obj.id).order_by(PracticeProblemSubmission.submitted.desc())
     if problem_submissions == None:
-      return redirect('/practice_progress/')
+      return redirect('/practice_progress/%s' % language_map[language_id])
     problem_submissions = list(problem_submissions)
     if len(problem_submissions) == 0:
-      return redirect('/practice_progress/')
+      return redirect('/practice_progress/%s' % language_map[language_id])
 
     problem = problem_obj.to_dict()
     problem['template_vars'] = problem_submissions[0].template_vars
     problem = utils.get_problem(problem)
   else:
-    problem_submission = PracticeProblemSubmission.query.filter_by(user_id=user_id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
+    problem_submission = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
     if problem_submission == None:
-      return redirect('/practice_progress/')
+      return redirect('/practice_progress/%s' % language_map[language_id])
 
     problem = problem_obj.to_dict()
     problem['template_vars'] = problem_submission.template_vars
     problem = utils.get_problem(problem)
 
   if fullhistory:
-    return render_template('practice_view_history.html', problem=problem, user_submissions=problem_submissions, admin=admin, user_id=user_id)
+    return render_template('practice_view_history.html', problem=problem, user_submissions=problem_submissions, admin=admin, user_id=user_id, language=language_map[language_id])
   else:
-    return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code)
+    return render_template('practice_view.html', problem=problem, user_solution=problem_submission.code, language=language_map[language_id])
 
-@app.route('/admin/practice_progress/<user_id>/')
+@app.route('/admin/practice_progress/<user_id>/<language>/')
 @roles_required('admin')
-def admin_practice_progress(user_id):
-  return practice_progress_by_user_id(user_id, admin=True)
+def admin_practice_progress(user_id, language):
+  if language not in language_map:
+    return redirect('/')
+  return practice_progress_by_user_id(user_id, language_map[language], admin=True)
 
-@app.route('/admin/practice_progress/<user_id>/<problem_name>/')
+@app.route('/admin/practice_progress/<user_id>/<language>/<problem_name>/')
 @roles_required('admin')
-def admin_practice_view(user_id, problem_name):
-  return practice_view_by_user_id(user_id, problem_name, fullhistory=True, admin=True)
+def admin_practice_view(user_id, language, problem_name):
+  if language not in language_map:
+    return redirect('/')
+  return practice_view_by_user_id(user_id, language_map[language], problem_name, fullhistory=True, admin=True)
 
 
 # Parses x for dicts, and returns a tuple where the first item is a list of the
@@ -750,9 +781,12 @@ def same_output(x, y):
       return False
   return True
 
-@app.route('/practice/<problem_name>/submit/', methods=['POST'])
+@app.route('/practice/<language>/<problem_name>/submit/', methods=['POST'])
 @login_required
-def submit_practice(problem_name):
+def submit_practice(language, problem_name):
+  if language not in language_map:
+    return 'error'
+  language_id = language_map[language]
   code = request.form['code']
   result_test = request.form['result_test']
   result_no_test = request.form['result_no_test']
@@ -764,19 +798,19 @@ def submit_practice(problem_name):
   concept_names = json.loads(request.form['concept_names'])
   concepts = []
   for concept_name in concept_names:
-    concept = PracticeProblemConcept.query.filter_by(name=concept_name).first()
+    concept = PracticeProblemConcept.query.filter_by(name=concept_name, language_id=language_id).first()
     if concept == None:
-      concept = PracticeProblemConcept(name=concept_name)
+      concept = PracticeProblemConcept(name=concept_name, language_id=language_id)
       db.session.add(concept)
       db.session.commit()
     concepts.append(concept)
-  problem = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True).first().to_dict()
+  problem = PracticeProblemTemplate.query.filter_by(problem_name=problem_name, is_current=True, language_id=language_id).first().to_dict()
   got_hint = True if request.form['got_hint'] == 'true' else False
   gave_up = True if request.form['gave_up'] == 'true' else False
   problem['template_vars'] = template_vars
   problem = utils.get_problem(problem)
   correct = same_output(problem['expected_test'], result_test) and same_output(problem['expected_no_test'], result_no_test)
-  submission = PracticeProblemSubmission(problem_id=problem['id'], user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
+  submission = PracticeProblemSubmission(problem_id=problem['id'], language_id=language_id, user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
   db.session.commit()
   return_data = {}
@@ -1100,7 +1134,8 @@ def admin_dashboard():
           student['grades'].append(grade)
         else:
           student['grades'].append({'completed': False})
-      student['num_practice_attempted'] = len(PracticeProblemSubmission.query.filter(PracticeProblemSubmission.user_id==student['id']).all())
+      #TODO show breakdown of attempts per language
+      student['num_practice_attempted'] = len(PracticeProblemSubmission.query.filter_by(user_id=student['id']).all())
     return students
 
   students = templatize_data(student_set)
