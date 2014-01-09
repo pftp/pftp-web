@@ -37,7 +37,8 @@ Teacher Dashboard
       {% for student in students %}
       <tr>
         <td>{{ student.id }}</td>
-        <td><a href="/admin/practice_progress/{{ student.id }}/">{{ student.num_practice_attempted }}</a> </td>
+        <!--TODO show all language attempts -->
+        <td><a href="/admin/practice_progress/{{ student.id }}/python">{{ student.num_practice_attempted }}</a> </td>
         <td>{{ student.email }}</td>
         <td>{{ student.firstname }}</td>
         <td>{{ student.lastname }}</td>
@@ -129,7 +130,8 @@ Teacher Dashboard
       {% for nonstudent in nonstudents %}
       <tr>
         <td>{{ nonstudent.id }}</td>
-        <td><a href="/admin/practice_progress/{{ nonstudent.id }}/">{{ nonstudent.num_practice_attempted }}</a> </td>
+        <!--TODO show all language attempts -->
+        <td><a href="/admin/practice_progress/{{ nonstudent.id }}/python">{{ nonstudent.num_practice_attempted }}</a> </td>
         <td>{{ nonstudent.email }}</td>
         <td>{{ nonstudent.firstname }}</td>
         <td>{{ nonstudent.lastname }}</td>
