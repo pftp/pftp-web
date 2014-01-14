@@ -1,7 +1,11 @@
-# USAGE: python ast_utils.py <python_file>
-# Prints a list of all relevant concepts from python_file by traversing its ast
+# USAGE: python ast_utils.py <{python, javascript}_file>
+# Prints a list of all relevant concepts from file by traversing its ast
 
-import sys, ast
+import sys
+import ast
+import os
+import tempfile
+import subprocess
 
 def node_type(node):
   return type(node).__name__.lower()
@@ -68,13 +72,23 @@ class FuncVisitor(ast.NodeVisitor):
         if node.func.attr not in self.user_defs and func_name not in self.concepts:
           self.concepts.append(func_name)
 
-def get_concepts(src_str):
-  src_ast = ast.parse(src_str)
-  cv = ConceptVisitor()
-  cv.visit(src_ast)
-  fv = FuncVisitor(cv.user_defs, cv.modules)
-  fv.visit(src_ast)
-  return cv.concepts + fv.concepts
+def get_concepts(src_str, language_id):
+  #TODO detect language automatically
+  if language_id == 1:
+    src_ast = ast.parse(src_str)
+    cv = ConceptVisitor()
+    cv.visit(src_ast)
+    fv = FuncVisitor(cv.user_defs, cv.modules)
+    fv.visit(src_ast)
+    return cv.concepts + fv.concepts
+  else:
+    tmp = tempfile.NamedTemporaryFile(delete=False)
+    tmp.write(src_str)
+    tmp.close()
+    process = subprocess.Popen(['node', 'ast_utils.js', tmp.name], stdout=subprocess.PIPE)
+    out, err = process.communicate()
+    os.unlink(tmp.name)
+    return filter(lambda x: len(x) > 0, out.split('\n'))
 
 if __name__ == '__main__':
   f = open(sys.argv[1])

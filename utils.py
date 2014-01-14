@@ -2,6 +2,9 @@ from cStringIO import StringIO
 import sys
 from random import random, randint, choice
 import json
+import subprocess
+import tempfile
+import os
 
 RANDOM_WORD = ['hello', 'socks', 'benjamin', 'hurshal', 'lu' 'world', 'moo', 'cow', 'apple', 'banana', 'pumpkin', 'abibliophobia', 'bumbershoot', 'codswallop', 'borborygm', 'batrachomyomachy', 'truffle', 'cherry', 'orange', 'fruit', 'lolipop', 'biscuit', 'manatee', 'pingpong', 'traffic', 'pop', 'oyster', 'bread', 'pineapple', 'mango', 'kiwi', 'strawberry', 'blueberry', 'raspberry', 'caramel', 'chocolate', 'cookie', 'papaya']
 RANDOM_SENTENCE = ['i want it that way', 'breaking bad is awesome', 'terra nova is the best tv show', 'cows moo but chickens bawk', 'bunnies are cute', 'you are my fire my one desire', 'harry potter harry potter ron weasley', 'lol its frodo baggins', "im going to make him an offer he cant refuse", 'may the force be with you', "ill be back", 'mama always said life was like a box of chocolates', 'The best time to plant a tree was 20 years ago The second best time is now', 'mark twain once said something about lightning bugs and lightning']
@@ -97,13 +100,23 @@ def replace_template_vars(template, template_vars):
   return template
 
 # Generates expected output, given solution string and test string
-def get_expected(solution, test=''):
-  old_stdout = sys.stdout
-  sys.stdout = StringIO()
-  exec(solution + '\n' + test, {})
-  expected = sys.stdout.getvalue()
-  sys.stdout = old_stdout
-  return expected
+def get_expected(solution, language_id, test=''):
+  #TODO detect language automatically
+  if language_id == 1:
+    old_stdout = sys.stdout
+    sys.stdout = StringIO()
+    exec(solution + '\n' + test, {})
+    expected = sys.stdout.getvalue()
+    sys.stdout = old_stdout
+    return expected
+  elif language_id == 2:
+    tmp = tempfile.NamedTemporaryFile(delete=False)
+    tmp.write(solution + '\n' + test)
+    tmp.close()
+    process = subprocess.Popen(['node', tmp.name], stdout=subprocess.PIPE)
+    out, err = process.communicate()
+    os.unlink(tmp.name)
+    return out
 
 # Generates the template vars, given gen_template_vars string from problem file
 # Returns a json object
@@ -114,11 +127,12 @@ def get_template_vars(gen_template_vars):
 
 # Generates a problem by filling its templates with template vars and its
 # expected fields with expected outputs
-def get_problem(problem):
+
+def get_problem(problem, language_id):
   specific_index = None
   template_vars = json.loads(problem['template_vars'])
   for name in ['prompt', 'solution', 'test', 'hint']:
     problem[name] = replace_template_vars(problem[name], template_vars)
-  problem['expected_test'] = get_expected(problem['solution'], problem['test'])
-  problem['expected_no_test'] = get_expected(problem['solution'])
+  problem['expected_test'] = get_expected(problem['solution'], language_id, problem['test'])
+  problem['expected_no_test'] = get_expected(problem['solution'], language_id)
   return problem

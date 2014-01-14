@@ -11,7 +11,7 @@ from datetime import datetime
 
 from fabric.api import local, task, settings
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, get_next_problem
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem
 import utils, ast_utils
 from emailer import Emailer
 
@@ -28,7 +28,9 @@ def clean():
 
 @task
 def addpractice():
-  add_practice_problems()
+  #TODO detect languages automatically
+  add_practice_problems("python")
+  add_practice_problems("javascript")
   add_concepts()
 
 @task
@@ -54,7 +56,7 @@ def build():
   generate_labs()
   db.create_all()
   generate_models()
-  add_practice_problems()
+  addpractice()
   add_concepts()
 
 #XXX make this detect changes and automatically build
@@ -133,6 +135,14 @@ def generate_pages():
 
 
 def generate_models():
+  python = Language(language="python")
+  javascript = Language(language="javascript")
+
+  db.session.add(python)
+  db.session.add(javascript)
+
+  print colored("2 languages added to database.", "green")
+
   user_role = user_datastore.create_role(name="user")
   admin_role = user_datastore.create_role(name="admin")
 
@@ -231,17 +241,18 @@ def generate_models():
       db.session.add(week)
   db.session.commit()
 
-def add_practice_problems():
+def add_practice_problems(language):
+  lang = Language.query.filter_by(language=language).first()
+  if not lang:
+    print colored("language %s not found" % language, "red")
+  language_id = lang.id
+
   with settings(warn_only=True):
-    #hardcoded python for now
-    #TODO dynamically add problems from all languages
-    os.chdir('practice/python')
-    local('python gen_questions.py')
-    os.chdir('../..')
-  #TODO this too
-  practice_problems = json.load(open('practice/python/practice_problems.json', 'r'))
-  language = "python"
-  language_id = 1
+    os.chdir('practice')
+    local('python gen_questions.py %s' % language)
+    os.chdir('..')
+  practice_problems = json.load(open('practice/%s/practice_problems.json' % language, 'r'))
+
   # convert all values to strings
   for p in practice_problems:
     for k, v in p.items():
@@ -259,8 +270,8 @@ def add_practice_problems():
     pt = problem.copy()
     print colored('processing (%s) practice problem %s' % (language, pt['problem_name']), 'blue')
     pt['template_vars'] = utils.get_template_vars(pt['gen_template_vars'])
-    pt = utils.get_problem(pt)
-    concept_names = ast_utils.get_concepts(pt['solution'])
+    pt = utils.get_problem(pt, language_id)
+    concept_names = ast_utils.get_concepts(pt['solution'], language_id)
     concepts = []
     for concept_name in concept_names:
       concept = PracticeProblemConcept.query.filter_by(name=concept_name, language_id=language_id).first()
