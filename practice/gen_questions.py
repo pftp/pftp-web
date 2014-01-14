@@ -1,9 +1,16 @@
 import os
 import os.path
-
 import json
 import sys
-PARENT_PROBLEM_DIR = 'problems'
+from termcolor import colored
+
+if len(sys.argv) < 2:
+  print colored("need language as argument", "red")
+  sys.exit(1)
+
+language = sys.argv[1]
+
+PARENT_PROBLEM_DIR = '%s/problems' % language
 def read_problem(problem_name):
   problem_path = PARENT_PROBLEM_DIR + '/' + problem_name
   problem_file = open(problem_path, 'r')
@@ -30,6 +37,6 @@ all_problems = []
 for problem_name in problem_names:
   all_problems.append(read_problem(problem_name))
 
-practice_problems = open('practice_problems.json', 'w')
+practice_problems = open('%s/practice_problems.json' % language, 'w')
 practice_problems.write(json.dumps(all_problems))
 practice_problems.close()
