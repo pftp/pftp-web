@@ -1,7 +1,6 @@
 Practice
 [ ] Add javascript problems
 [ ] Add beginner friendly references for js concepts
-[ ] Clean up fabfile addpractice code
 
 Bugs
 [ ] practice_progress shows attempts for problem where is_current=False
