@@ -31,11 +31,12 @@ def addpractice():
   #TODO detect languages automatically
   add_practice_problems("python")
   add_practice_problems("javascript")
-  add_concepts()
+  addconcepts()
 
 @task
 def addconcepts():
-  add_concepts()
+  add_concepts("python")
+  add_concepts("javascript")
 
 @task
 def adddecalrole():
@@ -57,7 +58,6 @@ def build():
   db.create_all()
   generate_models()
   addpractice()
-  add_concepts()
 
 #XXX make this detect changes and automatically build
 @task
@@ -328,17 +328,18 @@ def add_practice_problems(language):
   print colored("%d practice problems processed. %d problems added to database. %d problems updated with changed hint or template variables" % (count_all, count_add, count_update), 'green')
   print colored("%d practice problems deleted from database (set is_current=False)" % count_deleted, 'green')
 
-def add_concepts():
+def add_concepts(language):
+  lang = Language.query.filter_by(language=language).first()
+  if not lang:
+    print colored("language %s not found" % language, "red")
+  language_id = lang.id
+
   with settings(warn_only=True):
-    #hardcoded python for now
-    #TODO dynamically add problems from all languages
-    os.chdir('practice/python')
-    local('python gen_concepts.py')
-    os.chdir('../..')
-  #TODO this too
-  practice_concepts = json.load(open('practice/python/practice_concepts.json', 'r'))
-  language = "python"
-  language_id = 1
+    os.chdir('practice')
+    local('python gen_concepts.py %s' % language)
+    os.chdir('..')
+
+  practice_concepts = json.load(open('practice/%s/practice_concepts.json' % language, 'r'))
   concept_count = 0
   all_concepts = PracticeProblemConcept.query.filter_by(language_id=language_id).all()
   for concept in all_concepts:
@@ -347,7 +348,7 @@ def add_concepts():
     concept.explanation = concept_obj['explanation']
     concept_count += 1
   db.session.commit()
-  print colored("%d concepts updated with display_name and explanation" % concept_count, 'green')
+  print colored("%d %s concepts updated with display_name and explanation" % (concept_count, language), 'green')
 
 
 def add_decal_role():
