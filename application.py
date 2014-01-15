@@ -228,7 +228,7 @@ class Language(db.Model):
   language = db.Column(db.Text(), nullable=False)
 
 #TODO pull data from table for multiple languages
-language_map = {'python':1, 1:'python'}# 'javascript':2, 2:'javascript'}
+language_map = {'python':1, 1:'python', 'javascript':2, 2:'javascript'}
 
 class PracticeProblemTemplate(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
@@ -637,8 +637,8 @@ def practice(language, problem_name):
   if problem_obj is not None:
     problem = problem_obj.to_dict()
     problem['template_vars'] = utils.get_template_vars(problem['gen_template_vars'])
-    problem = utils.get_problem(problem)
-    concept_names = ast_utils.get_concepts(problem['solution'])
+    problem = utils.get_problem(problem, language_id)
+    concept_names = ast_utils.get_concepts(problem['solution'], language_id)
     problem['concept_names'] = json.dumps(concept_names)
     # Remove from our problem template any concepts which are not found in this
     # random version of it
@@ -695,7 +695,7 @@ def practice_view_by_user_id(user_id, language_id, problem_name, fullhistory=Fal
 
     problem = problem_obj.to_dict()
     problem['template_vars'] = problem_submissions[0].template_vars
-    problem = utils.get_problem(problem)
+    problem = utils.get_problem(problem, language_id)
   else:
     problem_submission = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id, problem_id=problem_obj.id, correct=True).order_by(PracticeProblemSubmission.started.desc()).first()
     if problem_submission == None:
@@ -703,7 +703,7 @@ def practice_view_by_user_id(user_id, language_id, problem_name, fullhistory=Fal
 
     problem = problem_obj.to_dict()
     problem['template_vars'] = problem_submission.template_vars
-    problem = utils.get_problem(problem)
+    problem = utils.get_problem(problem, language_id)
 
   if fullhistory:
     return render_template('practice_view_history.html', problem=problem, user_submissions=problem_submissions, admin=admin, user_id=user_id, language=language_map[language_id])
@@ -808,7 +808,7 @@ def submit_practice(language, problem_name):
   got_hint = True if request.form['got_hint'] == 'true' else False
   gave_up = True if request.form['gave_up'] == 'true' else False
   problem['template_vars'] = template_vars
-  problem = utils.get_problem(problem)
+  problem = utils.get_problem(problem, language_id)
   correct = same_output(problem['expected_test'], result_test) and same_output(problem['expected_no_test'], result_no_test)
   submission = PracticeProblemSubmission(problem_id=problem['id'], language_id=language_id, user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
   db.session.add(submission)
