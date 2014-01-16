@@ -1,29 +1,23 @@
-var builtinRead = function(x) {
-  if (Sk.builtinFiles === undefined ||
-      Sk.builtinFiles['files'][x] === undefined)
-    throw "File not found: '" + x + "'";
-  return Sk.builtinFiles['files'][x];
-};
-var genOutf = function(execObj) {
-  return function(text) {
-    if (!('output' in execObj)) {
-      execObj['output'] = '';
-    }
-    execObj['output'] += text;
+//HACKHACK hijack console.log to capture output
+(function(){
+  var nativeLog = console.log;
+  console.log = function (message) {
+    //record all log messages
+    console._history = console._history || [];
+    console._history.push(message)
+    nativeLog.apply(console, arguments);
   };
-};
+})();
+
 var executeCode = function(execObj) {
   try {
-    Sk.configure({output: genOutf(execObj), read: builtinRead});
-    eval(Sk.importMainWithBody('<stdin>', false, execObj['input']));
+    //clear log messages
+    console._history = [];
+    eval(execObj['input']);
+    execObj['output'] = console._history.join('\n');
   } catch (err) {
-    if (err.toString().trim() === "TypeError: Cannot read property 'constructor' of null") {
-      execObj['error'] = 'Error: Your function does not have return value. Your function needs a return value.';
-    } else if (err.toString().trim() === 'ImportError: No module named <stdin> on line <unknown>') {
-      execObj['error'] = 'Error: You did not type any code. You must type some code.';
-    } else {
-      execObj['error'] = err.toString();
-    }
+    //TODO write better error messages
+    execObj['error'] = err.toString();
   }
 };
 var runit = function(code) {
@@ -74,7 +68,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   }
   if (gaveUp) {
     successFunc = function(data) {
-      window.location.href = '/practice/python';
+      window.location.href = '/practice/javascript';
     }
   } else {
     successFunc = function(data) {
@@ -114,15 +108,13 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
 }
 $(function() {
   var editor, got_hint = false, start_time = new Date().getTime() / 1000;
-  Sk.pre = 'practice_output';
-  // Timeout if code takes more than 1 second to run
-  Sk.execLimit = 1000;
+  // TODO Timeout if code takes more than 1 second to run
   editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
     autofocus: true,
     theme: 'cobalt',
     lineNumbers: true,
     indentUnit: 4,
-    mode: 'python',
+    mode: 'javascript',
     extraKeys: {"Enter": false}
   });
   $('#practice_run_code').click(function(e) {

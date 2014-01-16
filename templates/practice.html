@@ -6,7 +6,7 @@
 
 {% block head %}
 <script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/%s/%s.js' % (language, language))}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/practice_%s.js' % language)}}"></script>
