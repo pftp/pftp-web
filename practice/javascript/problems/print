@@ -2,7 +2,7 @@
 Define a function multiply_by_{{ x }}(num) that takes in one number as input and returns the number multiplied by {{ x }}
 ### solution
 function multiply_by_{{ x }}(num) {
-  return num * {{ x }}
+  return num * {{ x }};
 }
 
 ### test
