@@ -1,3 +1,7 @@
+Javscipt
+[ ] show current language on problems
+[ ] rewrite runtime to detect javascript problems
+
 Practice
 [ ] Add javascript problems
 [ ] Add beginner friendly references for js concepts
@@ -15,6 +19,7 @@ Schema
 UI
 [ ] fix login ui
 [ ] prettyprint for syntax highlighting
+[ ] replace codemirror with ace editor
 
 Jank code
 [ ] unjankify fullscreen labs
