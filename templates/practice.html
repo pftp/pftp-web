@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Python Practice
+{{ language|capitalize }} Practice
 {% endblock %}
 
 {% block head %}
@@ -32,6 +32,7 @@ Python Practice
   {% endif %}
   <div class="span8">
     <h3>{{problem.prompt |safe}}</h3>
+    <span class="label label-info">{{ language|capitalize }}</span>
     <textarea id="practice_code" style="display:none;"></textarea>
     <div id="run_container">
       <button id="practice_run_code" class="btn btn-success left">Run It!</button>
