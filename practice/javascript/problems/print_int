@@ -1,0 +1,12 @@
+### prompt
+Execute the line "console.log({{ x }});" and note what it does.
+### solution
+console.log({{ x }});
+### test
+# pass
+### hint
+You should see {{ x }} printed out in the output
+### gen_template_vars
+res = {
+  'x': rand_int(5, 100)
+}
