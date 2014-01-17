@@ -4,7 +4,7 @@ Print the string "{{ to_print }}"
 console.log("{{ to_print }}");
 
 ### test
-# pass
+// pass
 
 ### hint
 The syntax to print the string "lol" is
