@@ -4,7 +4,8 @@
   console.log = function (message) {
     //record all log messages
     console._history = console._history || [];
-    console._history.push(message)
+    var args = Array.prototype.slice.call(arguments);
+    console._history.push(args.join(" "));
     nativeLog.apply(console, arguments);
   };
 })();
