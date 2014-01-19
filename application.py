@@ -671,7 +671,7 @@ def practice(language, problem_name):
 
     return render_template('practice.html', problem=problem, concepts=display_concepts, new_concepts=new_concepts, language=language)
   else:
-    return redirect('/practice/')
+    return redirect('/practice/%s' % language)
 
 @app.route('/practice_progress/<language>/<problem_name>/')
 @login_required
