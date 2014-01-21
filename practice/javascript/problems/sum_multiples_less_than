@@ -1,0 +1,32 @@
+### prompt
+Print the sum of all multiples of {{ x }} less than or equal to {{ n }}.
+
+### solution
+var sum = 0;
+var x = {{ x }};
+while (x <= {{ n }}) {
+  sum += x;
+  x += {{ x }};
+}
+console.log(sum);
+
+### test
+// pass
+
+### hint
+To help you get started, here's how to print the sum of all integers less than or equal to 100:
+<pre>
+var sum = 0;
+var x = 1;
+while (x <= 100) {
+  sum += x;
+  x += 1;
+}
+console.log(sum);
+</pre>
+### gen_template_vars
+res = {
+  'x': rand_int(3, 9),
+  'n': rand_int(1000, 10000)
+}
+

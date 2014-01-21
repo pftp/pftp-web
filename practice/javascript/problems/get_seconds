@@ -1,0 +1,45 @@
+### prompt
+Write a function called get_seconds that takes as its argument a string of the
+form "x hours, y minutes, z seconds", where x, y, and z are integers, and
+converts it to an integer number of seconds. For example, get_seconds("1 hours,
+23 minutes, 20 seconds") should return 5000.
+
+### solution
+function get_seconds(time_str) {
+  var split_time_str = time_str.split(' ');
+  var hours = parseInt(split_time_str[0]);
+  var minutes = parseInt(split_time_str[2]);
+  var seconds = parseInt(split_time_str[4]);
+  return 3600 * hours + 60 * minutes + seconds;
+}
+
+### test
+console.log(get_seconds("0 hours, 0 minutes, 0 seconds"));
+for (var x in {{ xs }})
+  console.log(get_seconds(x));
+
+### hint
+Here's a function called get_seconds that takes as its argument a string of the
+form "x minutes, y seconds", where x and y are integers, and converts it to
+an integer number of seconds:
+<pre>
+function get_seconds(time_str) {
+  var split_time_str = time_str.split(' ');
+  var minutes = parseInt(split_time_str[0]);
+  var seconds = parseInt(split_time_str[2]);
+  return 60 * minutes + seconds;
+}
+</pre>
+
+### gen_template_vars
+xs = []
+for i in range(20):
+  a = rand_int(0, 100)
+  b = rand_int(0, 59)
+  c = rand_int(0, 59)
+  time_str = "%d hours, %d minutes, %d seconds" % (a, b, c)
+  xs.append(time_str)
+res = {
+  'xs': xs
+}
+

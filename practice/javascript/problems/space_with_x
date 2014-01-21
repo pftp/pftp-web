@@ -1,0 +1,29 @@
+### prompt
+Write a function called space_with_{{ x }} that takes a string as its argument
+and replaces any spaces in it with the character '{{ x }}'.
+
+### solution
+function space_with_{{ x }}(s) {
+  return s.replace(' ', '{{ x }}');
+}
+
+### test
+console.log(space_with_{{ x }}(''));
+for (var y in {{ ys }})
+  console.log(space_with_{{ x }}(y));
+
+### hint
+Write a function called replace_periods that takes a string as its argument and
+returns an identical string except with all periods replaced by spaces.
+<pre>
+function replace_commas(s) {
+  return s.replace('.', ' ');
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_letter(),
+  'ys': rand_sentence_list(20)
+}
+

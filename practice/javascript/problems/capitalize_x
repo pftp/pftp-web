@@ -1,0 +1,50 @@
+### prompt
+Write a function called capitalize_{{ x }} that takes a string as its argument
+and returns a new version of it with every letter '{{ x }}' capitalized.
+
+### solution
+function capitalize_{{ x }}(s) {
+  var res = '';
+  for (var i = 0; i < s.length; i++) {
+    if (s[i] === '{{ x }}')
+      res += s[i].toUpperCase();
+    else
+      res += s[i];
+  }
+  return res;
+}
+
+### test
+console.log(capitalize_{{ x }}(''));
+for (var y in {{ ys }})
+  console.log(capitalize_{{ x }}(y));
+
+### hint
+Here's code for lowercase_B that takes a string as its argument
+and returns a new version of it with every letter 'B' lowercased.
+<pre>
+function lowercase_B(s) {
+  var res = '';
+  for (var i = 0; i < s.length; i++) {
+    if (s[i] === 'B')
+      res += s[i].toLowerCase();
+    else
+      res += s[i];
+  }
+  return res;
+}
+</pre>
+
+### gen_template_vars
+x = rand_letter()
+ys = rand_string_list(20)
+for i, s in enumerate(ys):
+  if random() < 0.5:
+    for j in range(rand_int(0, 5)):
+      idx = rand_int(0, len(ys)-1)
+      ys[i] = s[:idx] + x + s[idx+1:]
+res = {
+  'x': x,
+  'ys': ys
+}
+

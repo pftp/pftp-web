@@ -1,0 +1,32 @@
+### prompt
+Print out the sum of every number from {{ start }} to {{ end }} using a while loop.
+
+### solution
+var total = 0;
+var i = {{ start }};
+while (i <= {{ end }}) {
+  total += i;
+  i += 1;
+}
+console.log(total);
+
+### test
+// pass
+
+### hint
+Here's how you can print the sum for 1 to 10:
+<pre>
+var total = 0;
+var i = {{ start }};
+while (i <= {{ end }}) {
+  total = total + i;
+  i = i + 1;
+}
+console.log(total);
+</pre>
+
+### gen_template_vars
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300)
+}

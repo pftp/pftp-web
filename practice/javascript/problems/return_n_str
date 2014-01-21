@@ -1,0 +1,39 @@
+### prompt
+Write a function called return_n_{{ x }} that takes an integer as its argument
+and returns a string that is made up of the word "{{ x }}" repeated that many
+times, separated by spaces. For example, return_n_{{ x }}(4) should return
+"{{ x }} {{ x }} {{ x }} {{ x }} {{ x }}".
+
+### solution
+function return_n_{{ x }}(n) {
+  var res = '';
+  for (var i = 0; i < n; i++)
+    res += '{{ x }}' + ' ';
+  if (res.length > 0)
+    res = res.substring(0, res.length - 1);
+  return res;
+}
+
+### test
+for (var i = 0; i < 20; i++)
+  console.log(return_n_{{ x }}(i));
+
+### hint
+Here's a function called return_9_x that takes a string as its argument and
+returns a string that is made up of that word repeated 5 times, separated by
+spaces:
+<pre>
+function return_9_x(s) {
+  var res = '';
+  for (var i = 0; i < 9; i++)
+    res += s + ' ';
+  res = res.substring(0, res.length - 1);
+  return res;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word()
+}
+

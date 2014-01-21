@@ -1,0 +1,48 @@
+### prompt
+Create a function count_until(words) which returns the number of values in the array not equal to "{{ value }}" before the {{ nth }} occurrence of "{{ value }}", using a for loop. The function should return the length of the array minus the number of times "{{ value }}" occurs if "{{ value }}" occurs fewer than {{ n }} times in the array.
+
+### solution
+function count_until(words) {
+  var count = 0;
+  var occurrences = 0;
+  for (var i = 0; i < words.length; i++) {
+    var word = words[i];
+    if (word != "{{ value }}")
+      count += 1;
+    else {
+      occurrences += 1;
+      if (occurrences === {{ n }})
+        break;
+    }
+  }
+  return count;
+}
+
+### test
+console.log(count_until([1,2,3,4]));
+console.log(count_until([1,"{{ value }}","{{ value }}"]));
+console.log(count_until([1,2,"{{ value }}",3,4, "{{ value }}", 5,6, "{{ value }}", 7,8]));
+console.log(count_until([1,2,"{{ value }}",3,4, "{{ value }}", 5,6, "{{ value }}", 7,8, "{{ value }}", 4, "{{ value }}", 6]));
+
+### hint
+Here's how you can exit a for loop upon encountering a certain value:
+<pre>
+var count = 0;
+var foo = [1,2,3,4,5,5,7,4,5,4,3,6,5];
+for (var i = 0; i < foo.length; i++) {
+  if (foo[i] != 5)
+    count = count + 1;
+  else
+    break;
+}
+</pre>
+
+### gen_template_vars
+n = rand_int(2,5)
+words = rand_word_list(rand_int(10, 20))
+res = {
+  'words': words,
+  'value': words[rand_int(0, len(words) - 1)],
+  'n': n,
+  'nth': nth(n)
+}

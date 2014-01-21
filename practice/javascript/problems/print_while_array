@@ -1,0 +1,29 @@
+### prompt
+Print out every value in {{ lst }} using a while loop.
+
+### solution
+var values = {{ lst }};
+var i = 0;
+while (i < values.length) {
+  console.log(values[i]);
+  i += 1;
+}
+
+### test
+// pass
+
+### hint
+Here's how you can use a while loop to iterate over a array:
+<pre>
+var foo = [1,2,3,4,5,6];
+var i = 0;
+while (i < foo.length) {
+  console.log(foo[i]);
+  i = i + 1;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'lst': rand_word_list(rand_int(5, 10)) 
+}

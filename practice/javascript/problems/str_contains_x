@@ -1,0 +1,36 @@
+### prompt
+Write a function called contains_{{ x }} that takes a string as an argument and
+returns true if and only if the string contains the character '{{ x }}'. Take
+capitalization into account.
+
+### solution
+function contains_{{ x }}(s) {
+  return s.indexOf('{{ x }}') != -1;
+}
+
+### test
+console.log(contains_{{ x }}(''));
+for (var s in {{ y }})
+  console.log(contains_{{ x }}(s));
+
+### hint
+Here's code for the not_contains_H function which takes a string as an argument
+and returns True if and only if it does not contain the character 'H'.
+<pre>
+function not_contains_H(s) {
+  return s.indexOf('H') != -1;
+}
+</pre>
+
+### gen_template_vars
+x = rand_letter()
+y = rand_word_list(20)
+for i, word in enumerate(y):
+  if random() < 0.5:
+    idx = rand_int(0, len(word)-1)
+    y[i] = word[:idx] + x + word[idx:]
+res = {
+  'x' : x,
+  'y' : y
+}
+

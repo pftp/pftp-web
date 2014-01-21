@@ -1,0 +1,33 @@
+### prompt
+Create a function called keep_multiples_of_{{ x }}(array) that takes in a array of integers and returns a new identical array, but only with numbers that are a multiple of {{ x }}. Then verify that your function works by executing "console.log(keep_multiples_of_{{ x }}({{ random_list }}));"
+
+### solution
+function keep_multiples_of_{{ x }}(array) {
+  var new_array = [];
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] % {{ x }} === 0)
+      new_array.push(array[i]);
+  }
+  return new_array;
+}
+console.log(keep_multiples_of_{{ x }}({{ random_list }}));
+### test
+console.log(keep_multiples_of_{{ x }}([1,2,3,4,5,6,7,8,9,10]));
+console.log(keep_multiples_of_{{ x }}([11,12,13,14,15,16,17,18,19,20]));
+console.log(keep_multiples_of_{{ x }}([21,22,23,24,25,26,27,28,29,30]));
+### hint
+Here's code for the print_multiples_2(array) function that takes each element in the array and prints it if it is a multiple of 2
+<pre>
+function print_array(array) {
+  for (var i = 0; i < array.length; i++) {
+    if (num % 2 === 0)
+      console.log(num);
+  }
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': [ 3, 4, 5, 6, 7][rand_int(0, 4)],
+  'random_list': [rand_int(1, 35) for i in range(rand_int(8, 12))]
+}

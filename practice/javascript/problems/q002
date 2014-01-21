@@ -1,0 +1,25 @@
+### prompt
+Define a function multiply_by_{{ x }}(num) that takes in one number as input and returns the number multiplied by {{ x }}
+### solution
+function multiply_by_{{ x }}(num) {
+  return num * {{ x }};
+}
+
+### test
+console.log(multiply_by_{{ x }}(5));
+console.log(multiply_by_{{ x }}(10));
+console.log(multiply_by_{{ x }}(12));
+console.log(multiply_by_{{ x }}(3));
+
+### hint
+The syntax for the function add_5 is
+<pre>function add(num) {
+  return num + 5;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(2, 20)
+}
+

@@ -1,0 +1,34 @@
+### prompt
+Write a function called prefix_suffix_{{ n }}(x, y) that takes two strings x, y as arguments and returns true if and only if the first {{ n }} characters of x are exactly the same as the last {{ n }} characters of y.
+
+### solution
+function prefix_suffix_{{ n }}(x, y) {
+  return x.substring(0, {{ n }}) === y.substring(y.length - {{ n }});
+}
+
+### test
+for (var x in {{ xs }})
+  for (var y in {{ ys }})
+    console.log(prefix_suffix_{{ n }}(x, y));
+
+### hint
+Here's code for suffix_suffix_3(x, y) which takes two strings x, y as arguments and returns True if and only if the last 3 character of x and y are exactly the same:
+<pre>
+function suffix_suffix_3(x, y) {
+  return x.substring(x.length - 3) === y.substring(y.length - 3);
+}
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 10)
+xs = rand_word_list(20)
+ys = rand_word_list(20)
+for i, word in enumerate(ys):
+  if random() < 0.5:
+    xs[i] = word[-n:] + xs[i][n:]
+res = {
+  'n': n,
+  'xs': xs,
+  'ys': ys
+}
+

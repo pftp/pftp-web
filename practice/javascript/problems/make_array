@@ -1,0 +1,31 @@
+### prompt
+Create the following array and print it out: {{ x }}.
+Then, append "{{ y }}" and "{{ z }}" to it and print it out again.
+
+### solution
+var x = {{ x }};
+console.log(x);
+x.push("{{ y }}");
+x.push("{{ z }}");
+console.log(x);
+
+### test
+// pass
+
+### hint
+Here's code to create the array [1, 2, 3], print it, and then
+append 4 to it and print it again:
+<pre>
+var x = [1, 2, 3];
+console.log(x);
+x.push(4);
+console.log(x);
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word_list(10),
+  'y': rand_word(),
+  'z': rand_word()
+}
+

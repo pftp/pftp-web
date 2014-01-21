@@ -1,0 +1,44 @@
+### prompt
+Write a function called is_palindrome that takes a string as an argument and returns true if and only if that string is a palindrome (is exactly the same forwards and backwards, including capitalization).
+
+### solution
+function is_palindrome(s) {
+  for (var i = 0; i < s.length/2; i++) {
+    if (s[i] != s[s.length-i-1])
+      return false;
+  }
+  return true;
+}
+
+### test
+console.log(is_palindrome(''));
+for (var s in {{ x }})
+  console.log(is_palindrome(s));
+
+### hint
+Here's code for the is_backwards function that takes two strings x and y as
+arguments and returns true if and only if x is exactly the same as y backwards.
+<pre>
+function is_backwards(x, y) {
+  if (x.length != y.length)
+    return false;
+  for (var i = 0; i < x.length; i++) {
+    if (x[i] != y[y.length-i-1])
+      return false;
+  }
+  return true;
+}
+</pre>
+
+### gen_template_vars
+x = rand_string_list(20)
+for i, s in enumerate(x):
+  if random() < 0.5:
+    ch = ''
+    if random() < 0.5:
+      ch = rand_char()
+    x[i] = s + ch + s[::-1]
+res = {
+  'x' : x
+}
+

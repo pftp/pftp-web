@@ -1,0 +1,27 @@
+### prompt
+Write a function called make_sentence that takes an array of strings (words) as an argument and returns the string created by concatenating all the words with spaces in between.
+
+### solution
+function make_sentence(words) {
+  return words.join(' ');
+}
+
+### test
+var ll = {{ x }};
+for (var i = 0; i < ll.length; i++)
+  console.log(make_sentence(ll[i]));
+
+### hint
+Here's code for the make_csv function which takes array of strings as an argument
+and returns the string created by concatenating all the strings with commas in
+between:
+<pre>
+function make_csv(array) {
+  return array.join(',');
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_word_list_list(10)
+}

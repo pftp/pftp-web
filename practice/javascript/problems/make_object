@@ -1,0 +1,30 @@
+### prompt
+Create the following object and print it out: {{ x }}.
+Then, add the property "{{ y }}" with value {{ z }} and print it out again.
+
+### solution
+var x = {{ x }};
+console.log(x);
+x['{{ y }}'] = {{ z }};
+console.log(x);
+
+### test
+// pass
+
+### hint
+Here's code to create the object { "a": 2, "b": 3 }, print it, and then
+add the property 'foo' with value "xyz" and print it again:
+<pre>
+var x = { "a": 2, "b": 3 };
+console.log(x);
+x['foo'] = "xyz";
+console.log(x);
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_sidict(),
+  'y': rand_word(),
+  'z': rand_int(-100, 100)
+}
+

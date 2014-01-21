@@ -1,0 +1,17 @@
+### prompt
+Create a variable called {{ var_name }} and set the value of {{ var_name }} to be {{ y }}.
+### solution
+var {{ var_name }} = {{ y }};
+### test
+console.log({{ var_name }});
+
+### hint
+The syntax to create a variable called num_kittens and set the value of num_kittens to be 5 is
+<pre>var num_kittens = 5;
+</pre>
+
+### gen_template_vars
+res = {
+  'var_name': rand_word(),
+  'y': rand_int(300, 700)
+}

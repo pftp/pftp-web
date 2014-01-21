@@ -1,0 +1,51 @@
+### prompt
+Write a function called num_found_{{ x }}_overlaps that takes a string as its
+argument and returns the number of times '{{ x }}' occurs in that string,
+including overlaps.
+
+### solution
+function num_found_{{ x }}_overlaps(s) {
+  var str = '{{ x }}';
+  var count = 0;
+  for (var i = 0; i < s.length - str.length + 1; i++) {
+    if (s.substring(i, i+str.length) === str)
+      count += 1;
+  }
+  return count;
+}
+
+### test
+console.log(num_found_{{ x }}_overlaps(''));
+for (var y in {{ ys }})
+  console.log(num_found_{{ x }}_overlaps(y));
+
+### hint
+Here's the function is_bb_found_twice_overlaps which takes a string as its
+argument and returns true if and only if 'bb' occurs at least twice in that
+string, including overlaps.
+<pre>
+function is_bb_found_twice_overlaps(s):
+  var bb_found_once = false;
+  for (var i = 0; i < s.length 'bb'.length + 1; i++) {
+    if (s.substring(i, i+len('bb')) === 'bb') {
+      if (bb_found_once)
+        return true;
+      bb_found_once = true;
+    }
+  }
+  return false;
+</pre>
+
+### gen_template_vars
+x = choice(['haha', 'baabaa', 'xx', 'swingswing', 'lolo'])
+ys = rand_string_list(20)
+for i, y in enumerate(ys):
+  if random < 0.5:
+    for j in range(randint(0, 5)):
+      idx = randint(0, len(ys)-1)
+      ys[i] = y[:idx] + x * randint(1, 5) + y[idx+1:]
+res = {
+  'x': x,
+  'ys': ys
+}
+

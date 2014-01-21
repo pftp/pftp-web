@@ -1,0 +1,40 @@
+### prompt
+Create a function count(words) which returns the number of values in the array words which are equal to "{{ value }}" using a while loop.
+
+### solution
+function count(words) {
+  var count = 0;
+  var i = 0;
+  while (i < words.length) {
+    if (words[i] == "{{ value }}")
+      count += 1;
+    i += 1;
+  }
+  return count;
+}
+
+### test
+console.log(count([1,2,3,4]));
+console.log(count([1,"{{ value }}",3,4]));
+console.log(count([1,"{{ value }}","{{ value }}",4]));
+console.log(count(["{{ value }}","{{ value }}","{{ value }}"]));
+
+### hint
+Here's how you can count the number of occurrences of a value in a array using a while loop:
+<pre>
+var count = 0;
+var foo = [1,2,3,4,5,5,7,4,5,4,3,6,5];
+var i = 0;
+while (i < foo.length) {
+  if (foo[i] == 5)
+    count = count + 1;
+  i = i + 1;
+}
+</pre>
+
+### gen_template_vars
+words = rand_word_list(rand_int(10, 20))
+res = {
+  'words': words,
+  'value': words[rand_int(0, len(words) - 1)]
+}

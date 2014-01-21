@@ -1,0 +1,41 @@
+### prompt
+Write a function called sum_every_{{ nth }} that takes a array of integers as an
+argument and returns the sum of every {{ nth }} number in the array, starting
+with the first number.
+
+### solution
+function sum_every_{{ nth }}(array) {
+  var sum = 0;
+  for (var i = 0; i < array.length; i+={{ n }}) {
+    sum += array[i];
+  }
+  return sum;
+}
+
+### test
+console.log(sum_every_{{ nth }}([]));
+console.log(sum_every_{{ nth }}([23]));
+console.log(sum_every_{{ nth }}({{ x }}));
+
+### hint
+Here's code for the sum_every_other function which takes a array of integers as
+an argument and returns the sum of every other number, starting with the first
+number:
+<pre>
+function sum_every_other(array) {
+  var sum = 0;
+  for (var i = 0; i < array.length; i+=2) {
+    sum += array[i];
+  }
+  return sum;
+}
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 50)
+res = {
+  'x' : rand_int_list(1000),
+  'n' : n,
+  'nth' : nth(n)
+}
+

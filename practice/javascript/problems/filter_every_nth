@@ -1,0 +1,41 @@
+### prompt
+Write a function called filter_every_{{ nth }} that takes a array of integers as
+an argument and returns a array of only every {{ nth }} number in the array,
+starting with the first number.
+
+### solution
+function filter_every_{{ nth }}(array) {
+  var res = [];
+  for (var i = 0; i < array.length; i+={{ n }}) {
+    res.push(array[i]);
+  }
+  return res;
+}
+
+### test
+console.log(filter_every_{{ nth }}([]));
+console.log(filter_every_{{ nth }}([23]));
+console.log(filter_every_{{ nth }}({{ x }}));
+
+### hint
+Here's code for the filter_every_other function which takes a array of integers
+as an argument and returns a array of every other number, starting with the first
+number:
+<pre>
+function filter_every_other(array) {
+  var res = [];
+  for (var i = 0; i < array.length; i+=2) {
+    res.push(array[i])
+  }
+  return res;
+}
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 50)
+res = {
+  'x' : rand_int_list(1000),
+  'n' : n,
+  'nth' : nth(n)
+}
+

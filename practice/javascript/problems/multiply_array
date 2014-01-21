@@ -1,0 +1,30 @@
+### prompt
+Create a function called multiply_array(array) that takes in a array of integers and returns the product of the array. Then verify that your function works by executing "console.log(multiply_array({{ random_list }}));".
+
+### solution
+function multiply_array(array) {
+  var product = 1;
+  for (var i = 0; i < array.length; i++) {
+    product = product * array[i];
+  }
+  return product;
+}
+console.log(multiply_array({{ random_list }}));
+### test
+console.log(multiply_array([1,2,3,4,5,6]));
+console.log(multiply_array([0,2,3,4,5,6]));
+console.log(multiply_array([2,3,4,2,3,4]));
+### hint
+Here's code for the print_array(array) function that takes each element in the array and prints it
+<pre>
+function print_array(array) {
+  for (var i = 0; i < array.length; i++) {
+    console.log(array[i]);
+  }
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'random_list': [rand_int(3, 10) for i in range(rand_int(3, 7))]
+}

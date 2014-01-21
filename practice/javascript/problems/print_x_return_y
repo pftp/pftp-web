@@ -1,0 +1,38 @@
+### prompt
+Write a function called print_{{ x }}_return_{{ y }} that prints '{{ x }}' and
+then returns '{{ y }}'. Call this function once to see what happens but don't
+print the result of calling it.
+
+### solution
+function print_{{ x }}_return_{{ y }}() {
+  console.log('{{ x }}');
+  return '{{ y }}';
+}
+
+print_{{ x }}_return_{{ y }}()
+
+### test
+console.log(print_{{ x }}_return_{{ y }}());
+
+### hint
+Here's a function called print_hello_return_goodbye that prints "hello" and
+then returns "goodbye":
+<pre>
+function print_hello_return_goodbye() {
+  console.log('hello');
+  return 'goodbye';
+}
+</pre>
+Did you remember to call your function to test it at the end of the program?
+In order to call a function we type its name and then parentheses with its
+arguments inside (or none if no arguments), for example:
+<pre>
+print_hello_return_goodbye()
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word(),
+  'y': rand_word()
+}
+

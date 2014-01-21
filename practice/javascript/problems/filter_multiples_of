@@ -1,0 +1,40 @@
+### prompt
+Write a function called filter_multiples_of_{{ n }} that takes a array of
+integers as an argument and returns a new array with only its numbers that are
+multiples of {{ n }}.
+
+### solution
+function filter_multiples_of_{{ n }}(array) {
+  var res = [];
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] % {{ n }} == 0)
+      res.push(array[i]);
+  }
+  return res;
+}
+
+### test
+console.log(filter_multiples_of_{{ n }}([]));
+console.log(filter_multiples_of_{{ n }}([23]));
+console.log(filter_multiples_of_{{ n }}({{ x }}));
+
+### hint
+Here's code for the filter_evens function which takes a array of integers as
+an argument and returns a array of only its even numbers:
+<pre>
+function filter_evens(array) {
+  var res = [];
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] % 2 == 0)
+      res.push(array[i]);
+  }
+  return res;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(1000),
+  'n' : rand_int(3, 50)
+}
+

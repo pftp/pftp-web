@@ -1,0 +1,36 @@
+### prompt
+Write a function called in_range_{{ x }}_{{ y }} that takes an integer as its argument and returns true if and only if that integer is between {{ x }} and {{ y }}, inclusive.
+
+### solution
+function in_range_{{ x }}_{{ y }}(n) {
+  return n >= {{ x }} && n <= {{ y }};
+}
+
+### test
+console.log(in_range_{{ x }}_{{ y }}({{ x }}));
+console.log(in_range_{{ x }}_{{ y }}({{ y }}));
+for (var n in {{ lst }})
+  console.log(in_range_{{ x }}_{{ y }}(n));
+
+### hint
+Here's code for not_in_range_23_47 that takes an integer as its argument and
+returns true if and only if that integer is not between 23 and 47, inclusive:
+<pre>
+function not_in_range_23_47(n) {
+  return n < 23 || n > 47;
+}
+</pre>
+
+### gen_template_vars
+x = rand_int(0, 100)
+y = rand_int(x + 10, x + 100)
+lst = rand_int_list(20)
+for i in range(len(lst)):
+  if random() < 0.5:
+    lst[i] = rand_int(x, y)
+res = {
+  'x': x,
+  'y': y,
+  'lst': lst
+}
+

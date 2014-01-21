@@ -1,0 +1,25 @@
+### prompt
+Write a function called is_prime that takes an integer as an argument and
+returns true if and only if it is prime.
+### solution
+function is_prime(x) {
+  if (x <= 1)
+    return false;
+  for (var i = 2; i < x; i++) {
+    if (x % i === 0)
+      return false;
+  }
+  return true;
+}
+
+### test
+for (var i = 1; i < 1000; i++)
+  console.log(is_prime(i));
+
+### hint
+Remember that 1 is not a prime number! Otherwise, a number is prime
+if its only factors are 1 and itself.
+
+### gen_template_vars
+res = {}
+

@@ -1,0 +1,27 @@
+### prompt
+Write a function called first_word that takes in a sentence as the argument and returns the first word of the sentence. Then write the following line to test if your function works "console.log(first_word('{{ s1 }}'));".
+
+### solution
+function first_word(sentence) {
+  return sentence.split(' ')[0];
+}
+console.log(first_word('{{ s1 }}'));
+
+### test
+console.log(first_word('my pink pony'));
+
+### hint
+Look at<a href="/cheatsheet.html"> this cheatsheet </a> and read about string manipulation (in particular the split method)!
+<br>
+To help you get started, below is a function called double that takes in one argument a and returns a * 2.
+<pre>
+function double(a):
+   return a * 2
+</pre>
+<br>
+Make sure you aren't printing anything extra or else we won't be able to validate your answer.
+### gen_template_vars
+res = {
+  's1': rand_sentence()
+}
+
