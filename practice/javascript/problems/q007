@@ -1,0 +1,28 @@
+### prompt
+Write a function called do_arithmetic that takes arguments x, y, and z and returns (x {{ op0 }} y) {{ op1 }} z.
+
+### solution
+function do_arithmetic(x, y, z) {
+  return (x {{ op0 }} y) {{ op1 }} z;
+}
+
+### test
+console.log(do_arithmetic(3, 4, 5));
+console.log(do_arithmetic(-2, 100, -7));
+console.log(do_arithmetic(1, -4, 9999));
+
+### hint
+To help you get started, below is a function called multiply that takes in two arguments a and b and returns a * b.
+<pre>
+function multiply(a, b) {
+  return a * b;
+}
+</pre>
+<br>
+Make sure you aren't printing anything extra or else we won't be able to validate your answer.
+### gen_template_vars
+res = {
+  'op0': choice(['+', '-', '*', '/', '%']),
+  'op1': choice(['+', '-', '*', '/', '%'])
+}
+

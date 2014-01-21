@@ -1,0 +1,32 @@
+### prompt
+Write a function called is_capitalized that takes a string as its argument and
+returns true if and only if it starts with a capital letter.
+
+### solution
+function is_capitalized(s) {
+  return s.length > 0 && s[0] === s[0].toUpperCase();
+}
+
+### test
+console.log(is_capitalized(''));
+for (var x in {{ xs }})
+  console.log(is_capitalized(x));
+
+### hint
+Here's code for is_lowercase(s): which takes a string as its argument and
+returns true if and only if it starts with a lowercase letter:
+<pre>
+function is_lowercase(s) {
+  return s.length > 0 and s[0] === s[0].toLowerCase();
+}
+</pre>
+
+### gen_template_vars
+xs = rand_word_list(20)
+for x in xs:
+  if random() < 0.5:
+    x = x[0].upper() + x[1:]
+res = {
+  'xs': xs
+}
+

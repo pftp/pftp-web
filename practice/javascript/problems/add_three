@@ -1,0 +1,31 @@
+### prompt
+Write a function called add_three that takes three numbers as arguments and
+returns their sum.
+
+### solution
+function add_three(x, y, z) {
+  return x + y + z;
+}
+
+### test
+for (var i = -10; i < 10; i++) {
+  for (var j = -10; j < 10; j++) {
+    for (var k = -10; k < 10; k++) {
+      console.log(add_three(i, j, k));
+    }
+  }
+}
+console.log(add_three(-1234, 15, 2347));
+
+### hint
+Here's code for the add_two function which takes two integers as
+arguments and returns their sum:
+<pre>
+function add_two(x, y) {
+  return x + y;
+}
+</pre>
+
+### gen_template_vars
+res = {}
+

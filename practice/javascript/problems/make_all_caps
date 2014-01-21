@@ -1,0 +1,29 @@
+### prompt
+Write a function called make_all_caps that takes a string as its argument and
+returns a new version of it with all capital letters. Any non-letter character
+should remain unchanged.
+
+### solution
+function make_all_caps(s) {
+  return s.toUpperCase();
+}
+
+### test
+console.log(make_all_caps(''));
+for (var x in {{ xs }})
+  console.log(make_all_caps(x));
+
+### hint
+Here's code for make_all_lowercase that takes a string as its argument and
+returns a new version of it with all lowercase letters:
+<pre>
+function make_all_lowercase(s) {
+  return s.toLowerCase();
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'xs': rand_word_list(20)
+}
+

@@ -1,0 +1,35 @@
+### prompt
+Write a function called reverse_string that takes a string as its argument and returns the same string in reverse.
+
+### solution
+function reverse_string(s) {
+  var res = '';
+  for (var i = s.length - 1; i >= 0; i--) {
+    res += s[i];
+  }
+  return res;
+}
+
+### test
+console.log(reverse_string(''));
+for (var s in {{ x }})
+  console.log(reverse_string(s));
+
+### hint
+Here's code for the every_other_char function that takes a string as its
+argument and returns the string made out of every other character of the string
+<pre>
+function every_other_char(s) {
+  var res = '';
+  for (var i = 0; i < s.length; i+=2) {
+    res += s[i];
+  }
+  return res;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_word_list(20)
+}
+

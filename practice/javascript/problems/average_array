@@ -1,0 +1,31 @@
+### prompt
+Write a function called average_array that takes a nonempty array of integers as
+an argument and returns their average (aka the mean).
+
+### solution
+function average_array(array) {
+  var sum = 0;
+  for (var i = 0; i < array.length; i++) {
+    sum += array[i];
+  }
+  return sum / array.length;
+}
+
+### test
+console.log(average_array([23]));
+console.log(average_array({{ x }}));
+
+### hint
+Here's code for the average_three function which takes a three integers as an
+argument and returns their average:
+<pre>
+function average_three(x, y, z) {
+  return (x + y + z) / 3;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(100)
+}
+

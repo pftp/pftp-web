@@ -1,0 +1,51 @@
+### prompt
+Write a function called max_property that takes a nonempty object mapping
+string properties to integers and returns the property that's mapped to the maximum value in
+the object. If multiple words are mapped to the same maximum value, return
+the one that comes first in the object.
+
+### solution
+function max_property(d) {
+  var max_num = -Infinity;
+  var max_word = '';
+  for (var word in d) {
+    var num = d[word];
+    if (num > max_num) {
+      max_num = num;
+      max_word = word;
+    }
+  }
+
+  return max_word;
+}
+
+### test
+console.log(max_property({'bob': 5}));
+console.log(max_property({'a': -4, 'b': 0, 'c': 0}));
+console.log(max_property({{ x }}));
+
+### hint
+Here's code for the min_property function which takes an object mapping string properties to
+integers as an argument and returns the string that's mapped to the minimum
+value in the object:
+<pre>
+function min_property(d) {
+  var min_num = Infinity;
+  var min_word = '';
+  for (var word in d) {
+    var num = d[word];
+    if (num < max_num) {
+      min_num = num;
+      min_word = word;
+    }
+  }
+
+  return min_word;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_sidict()
+}
+

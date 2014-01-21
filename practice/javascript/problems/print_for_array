@@ -1,0 +1,23 @@
+### prompt
+Print out every value in {{ lst }} using a for loop.
+
+### solution
+var array = {{ lst }};
+for (var i = 0; i < array.length; i++)
+  console.log(array[i]);
+
+### test
+// pass
+
+### hint
+Here's how you can use a for loop to iterate over a array:
+<pre>
+var foo = [1,2,3,4,5,6];
+for (var i = 0; i < foo.length; i++)
+  console.log(foo[i]);
+</pre>
+
+### gen_template_vars
+res = {
+  'lst': rand_word_list(rand_int(5, 10)) 
+}

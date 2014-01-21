@@ -1,0 +1,35 @@
+### prompt
+Create a function count_even(nums) which returns the number of even values in nums using a for loop.
+
+### solution
+function count_even(nums) {
+  var count = 0;
+  for (var i = 0; i < nums.length; i++) {
+    if (nums[i] % 2 == 0) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+### test
+console.log(count_even([1,3,5,7]));
+console.log(count_even([0,3,5,7]));
+console.log(count_even([0,2,3,7]));
+console.log(count_even([0,2,4,7]));
+console.log(count_even([0,2,4,6]));
+
+### hint
+Here's how you can check if a number is odd:
+<pre>
+var num = 5;
+if (num % 2 == 0)
+  console.log('even');
+else
+  console.log('odd');
+</pre>
+
+### gen_template_vars
+res = {
+  'nums': rand_int_list(rand_int(10, 20))
+}

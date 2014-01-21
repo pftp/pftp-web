@@ -1,0 +1,51 @@
+### prompt
+Write a function called index_of that takes two arguments array and x, where array
+is an array of integers and x is an integer, and returns the first index of x
+in array. If x is not in array, index_of should return -1. For example,
+index_of([-4, 3, 47, 0], 47) should return 2.
+
+### solution
+function index_of(array, x) {
+  var idx = -1;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] == x) {
+      idx = i;
+      break;
+    }
+  }
+  return idx;
+}
+
+### test
+console.log(index_of([], 2));
+console.log(index_of([23], 23));
+console.log(index_of([23], 5));
+console.log(index_of({{ x }}, {{ n }}));
+
+### hint
+Here's code for the index_of_23 function which takes a array of integers as
+an argument and returns the index of the first 23 it finds:
+<pre>
+function index_of_23(array) {
+  var idx = -1;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] == 23) {
+      idx = i;
+      break;
+    }
+  }
+  return idx;
+}
+</pre>
+
+### gen_template_vars
+x = rand_int_list(100)
+i = rand_int(10, 90)
+n = rand_int(-50, 50)
+x[i] = n
+x[i+5] = n
+res = {
+  'x' : rand_int_list(100),
+  'n' : n
+}
+

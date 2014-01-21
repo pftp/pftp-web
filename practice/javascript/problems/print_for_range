@@ -1,0 +1,23 @@
+### prompt
+Print out every number from {{ start }} to {{ end }}, inclusive, using a for
+loop.
+
+### solution
+for (var i = {{ start }}; i < {{ end }}+1; i++)
+  console.log(i);
+
+### test
+// pass
+
+### hint
+Here's how you can write a for loop from 1 to 10, inclusive:
+<pre>
+for (var i = 0; i < 10+1; i++)
+  console.log(i);
+</pre>
+
+### gen_template_vars
+res = {
+  'start': randint(1, 100),
+  'end': randint(200, 300)
+}

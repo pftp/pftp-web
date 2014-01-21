@@ -1,0 +1,32 @@
+### prompt
+Write a function called is_not_{{ x }}(number) that takes in one argument (one number as input) and returns true if that number is not equal to {{ x }}. Then execute the line "console.log(is_not_{{ x }}(100));" to test if your function works.
+
+### solution
+function is_not_{{ x }}(number) {
+  return number != {{ x }};
+}
+console.log(is_not_{{ x }}(100));
+
+### test
+console.log(is_not_{{ x }}({{ x }}));
+console.log(is_not_{{ x }}(5));
+console.log(is_not_{{ x }}(6));
+console.log(is_not_{{ x }}(1));
+console.log(is_not_{{ x }}(2));
+
+
+### hint
+The syntax to print if two numbers are not equal to each other is
+<pre> console.log(5 != 1); // this will print true
+console.log(5 != 5); // this will print false
+</pre>
+The syntax to define a function called returnTrue that always returns True is
+<pre> function returnTrue() {
+  return true;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(2, 100)
+}

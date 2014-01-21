@@ -1,0 +1,48 @@
+### prompt
+Write a function called max_prefix(x, y) that takes two strings x, y as arguments and returns the number of characters that are the same at the beginning of both x and y. For example, max_prefix("hello", "hero") should return 2.
+
+### solution
+function max_prefix(x, y) {
+  var i = 0;
+  while (i < x.length && i < y.length) {
+    if (x[i] != y[i])
+      break;
+    i += 1;
+  }
+  return i;
+}
+
+### test
+console.log(max_prefix('abcd', 'abcde'));
+console.log(max_prefix('abcde', 'abcd'));
+console.log(max_prefix('abcd', 'abcd'));
+for (var x in {{ xs }})
+  for (var y in {{ ys }})
+    console.log(max_prefix(x, y));
+
+### hint
+Here's code for max_suffix(x, y) which takes two strings x, y as arguments and returns the number of characters that are the same at the end of both x and y:
+<pre>
+function max_suffix(x, y) {
+  for (var i = 1; i < x.length+1; i++) {
+    if (i > y.length)
+      break;
+    if (x[x.length-i] != y[y.length-i])
+      return i - 1;
+  }
+  return y.length;
+}
+</pre>
+
+### gen_template_vars
+xs = rand_word_list(20)
+ys = rand_word_list(20)
+for i, word in enumerate(ys):
+  if random() < 0.5:
+    n = rand_int(1, len(word))
+    xs[i] = word[:n] + xs[i][n:]
+res = {
+  'xs': xs,
+  'ys': ys
+}
+

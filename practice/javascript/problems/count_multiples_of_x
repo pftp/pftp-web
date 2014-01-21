@@ -1,0 +1,32 @@
+### prompt
+Create a function called count_multiples_of_{{ x }}(array) that takes in a array of integers and returns the number of elements in the array that are a multiple of {{ x }}. Then verify that your function works by executing "console.log(count_multiples_of_{{ x }}({{ random_list }}));"
+
+### solution
+function count_multiples_of_{{ x }}(array) {
+  var count = 0;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] % {{ x }} == 0)
+      count += 1;
+  }
+  return count;
+}
+console.log(count_multiples_of_{{ x }}({{ random_list }}));
+### test
+console.log(count_multiples_of_{{ x }}([1,2,3,4,5,6,7,8,9,10]));
+console.log(count_multiples_of_{{ x }}([11,12,13,14,15,16,17,18,19,20]));
+console.log(count_multiples_of_{{ x }}([21,22,23,24,25,26,27,28,29,30]));
+### hint
+Here's code for the print_multiples_2(array) function that takes each element in the array and prints it if it is a multiple of 2
+<pre>
+function print_array(array) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] % 2 == 0)
+      console.log(array[i]);
+  }
+</pre>
+
+### gen_template_vars
+res = {
+  'x': [ 3, 4, 5, 6, 7][rand_int(0, 4)],
+  'random_list': [rand_int(1, 35) for i in range(rand_int(8, 12))]
+}

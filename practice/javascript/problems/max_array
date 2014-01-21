@@ -1,0 +1,37 @@
+### prompt
+Write a function called max_array that takes a non-empty array of integers as an
+argument and returns the maximum number in the array.
+
+### solution
+function max_array(array) {
+  var max_num = -Infinity;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] > max_num)
+      max_num = array[i];
+  }
+  return max_num;
+}
+
+### test
+console.log(max_array([23]));
+console.log(max_array({{ x }}));
+
+### hint
+Here's code for the min_array function which takes a array of integers as an
+argument and returns their minimum:
+<pre>
+function min_array(array) {
+  var min_num = Infinity;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] < min_num)
+      min_num = array[i];
+  }
+  return min_num;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x' : rand_int_list(100)
+}
+

@@ -1,0 +1,33 @@
+### prompt
+Print the sum of the first {{ n }} multiples of {{ x }}.
+
+### solution
+var sum = 0;
+var x = 0;
+for (var i = 0; i < {{ n }}; i++) {
+  x += {{ x }};
+  sum += x;
+}
+console.log(sum);
+
+### test
+// pass
+
+### hint
+To help you get started, here's how to print the sum of the first 100 integers:
+<pre>
+var sum = 0;
+var x = 0;
+for (var i = 0; i < 100; i++) {
+  x += 1;
+  sum += x;
+}
+console.log(sum);
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(3, 9),
+  'n': rand_int(100, 1000)
+}
+

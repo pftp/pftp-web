@@ -1,0 +1,55 @@
+### prompt
+Write a function called arith0(x, y, z) that takes three integers x, y, z as
+arguments and returns (x {{ op0 }} y) {{ op1 }} z. Then, write another function
+arith1(x, y, z) that takes three integers x, y, z as arguments and
+returns (arith0(x, y, z) {{ op0 }} arith0(x, y, z)) {{ op1 }} arith0(x, y, z).
+Finally, print arith0({{ x }}, {{ y }}, {{ z }}) and print
+arith1({{ x }}, {{ y }}, {{ z }}).
+
+### solution
+function arith0(x, y, z) {
+  return (x {{ op0 }} y) {{ op1 }} z;
+}
+
+function arith1(x, y, z) {
+  var a0 = arith0(x, y, z);
+  return (a0 {{ op0 }} a0) {{ op1 }} a0;
+}
+
+console.log(arith0({{ x }}, {{ y }}, {{ z }}));
+console.log(arith1({{ x }}, {{ y }}, {{ z }}));
+
+### test
+for (var a in {{ as }}) {
+  for (var b in {{ bs }}) {
+    for (var c in {{ cs }}) {
+      console.log(arith0(a, b, c));
+      console.log(arith1(a, b, c));
+    }
+  }
+}
+
+### hint
+Did you remember to call both your functions to test them at the end of the
+program?<br>
+Here's a function called arith2(x, y, z) that takes three integers x, y, z as
+arguments and returns (arith1(x, y, z) - arith1(x, y, z)) * arith1(x, y, z):
+<pre>
+function arith2(x, y, z) {
+  var a1 = arith1(x, y, z);
+  return (a1 - a1) * a1;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(-100, 100),
+  'y': rand_int(-100, 100),
+  'z': rand_int(-100, 100),
+  'as': rand_int_list(10),
+  'bs': rand_int_list(10),
+  'cs': rand_int_list(10),
+  'op0': choice(['+', '-', '*']),
+  'op1': choice(['+', '-', '*'])
+}
+

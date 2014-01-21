@@ -1,0 +1,27 @@
+### prompt
+Write a function called is_factor that takes two integers x, y as arguments and
+returns true if and only if x is a factor of y (that is, x divides y evenly with
+no remainder).
+
+### solution
+function is_factor(x, y) {
+  return y % x == 0;
+}
+
+### test
+for (var i = 1; i < 100; i++)
+  for (var j = 1; j < 100; j++)
+    console.log(is_factor(i, j));
+
+### hint
+Here's code for an is_even function which takes an integer x and returns true if
+and only if 2 is a factor of x:
+<pre>
+function is_even(x) {
+  return x % 2 == 0;
+}
+</pre>
+
+### gen_template_vars
+res = {}
+

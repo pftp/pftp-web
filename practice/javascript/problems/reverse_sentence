@@ -1,0 +1,36 @@
+### prompt
+Write a function called reverse_sentence that takes a sentence string as its argument and returns a new string with all the same words (separated by spaces) in reverse order that they appeared in the original string. You may assume all words are separated by a single space, and the sentence does not begin or end with any spaces.
+
+### solution
+function reverse_sentence(s) {
+  var word_array = s.split(' ');
+  var reverse_word_array = [];
+  for (var i = word_array.length - 1; i >= 0; i--) {
+    reverse_word_array.push(word_array[i]);
+  }
+  return reverse_word_array.join(' ');
+}
+
+### test
+console.log(reverse_sentence(''));
+for (var s in {{ x }})
+  console.log(reverse_sentence(s));
+
+### hint
+Here's code for the every_other_word function that takes a string as its
+argument and returns a new string made out of every other word of the string:
+<pre>
+function every_other_word(s) {
+  var word_array = s.split(' ');
+  var every_other_word_array = [];
+  for (var i = 0; i < word_array.length; i+=2) {
+    every_other_word_array.push(word_array[i]);
+  }
+  return every_other_word_array.join(' ');
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_sentence_list(20)
+}
+

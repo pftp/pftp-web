@@ -1,0 +1,67 @@
+### prompt
+Write a function called same_num_{{ x }} that takes two strings as arguments and
+returns true if and only if they have exactly the same number of the character
+"{{ x }}".
+
+### solution
+function same_num_{{ x }}(a, b) {
+  var count = 0;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] == '{{ x }}')
+      count += 1;
+  }
+  for (var i = 0; i < b.length; i++) {
+    if (b[i] == '{{ x }}')
+      count -= 1;
+  }
+  return count == 0;
+}
+
+### test
+console.log(same_num_{{ x }}('', ''));
+for (var a in {{ bs }})
+  for (var b in {{ cs }})
+    console.log(same_num_{{ x }}(a, b));
+
+### hint
+Here's a function called different_num_H that takes two strings as arguments and
+returns True if and only if they have different numbers of the character 'H':
+<pre>
+function different_num_H(a, b) {
+  var count = 0;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] == 'H')
+      count += 1;
+  }
+  for (var i = 0; i < b.length; i++) {
+    if (b[i] == 'H')
+      count -= 1;
+  }
+  return count != 0;
+}
+</pre>
+
+### gen_template_vars
+x = rand_letter()
+bs = rand_string_list(20)
+cs = rand_string_list(20)
+for i, b in enumerate(cs):
+  if random() < 0.5:
+    count = 0
+    for ch in b:
+      if ch == x:
+        count += 1
+    for j, ch in enumerate(bs[i]):
+      if ch == x:
+        if count > 0:
+          count -= 1
+        else:
+          bs[i] = bs[i][:j] + '0' + bs[i][j+1:]
+    for j in range(count):
+      bs[i] += x
+res = {
+  'x': x,
+  'bs': bs,
+  'cs': cs
+}
+

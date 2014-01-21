@@ -1,0 +1,43 @@
+### prompt
+Write a function called pig_latin that takes a sentence string as its argument
+and returns it with each of its words converted to pig latin. This means take
+all consonants from the beginning of each word (if there are any) and move them
+to the end of the word, and then append "ay" to the word. For example,
+pig_latin("A great surprise") should return "Aay eatgray urprisesay".
+
+### solution
+function pig_latin(s) {
+  var word_array = s.split(" ");
+  for (var i = 0; i < word_array.length; i++) {
+    var word = word_array[i];
+    var first_consonants = '';
+    var rest_word = word;
+    for (var j = 0; j < word.length; j++) {
+      var ch = word[j];
+      if ('aeiouAEIOU'.indexOf(ch) != -1)
+        break;
+      first_consonants += ch;
+      rest_word = rest_word.substring(1);
+    }
+    word_array[i] = rest_word + first_consonants + 'ay';
+  }
+  return word_array.join(' ');
+}
+
+### test
+for (var x in {{ xs }})
+  console.log(pig_latin(x));
+
+### hint
+Remember to check for upper as well as lower case letters when going through
+each word looking for the first block of consonants.
+
+### gen_template_vars
+xs = rand_sentence_list(20)
+for i, x in enumerate(xs):
+  if random() < 0.5:
+    xs[i] = x.upper()
+res = {
+  'xs': xs
+}
+

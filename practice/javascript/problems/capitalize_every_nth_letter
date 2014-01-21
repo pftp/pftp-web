@@ -1,0 +1,64 @@
+### prompt
+Write a function called capitalize_every_{{ nth }}_letter that takes a string as
+its argument and returns a new version of it with every {{ nth }} letter in it
+capitalized, starting with the first letter. Any non-letter characters should
+remain unchanged and should not be counted when determining every {{ nth }}
+letter.
+
+### solution
+function capitalize_every_{{ nth }}_letter(s) {
+  var res = '';
+  var count = 0;
+  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  for (var i = 0; i < s.length; i++) {
+    var char = s[i];
+    if (alphabet.indexOf(char.toLowerCase()) != -1) {
+      if (count % {{ n }} == 0)
+        res += char.toUpperCase();
+      else
+        res += char;
+      count += 1;
+    } else
+      res += char;
+  }
+  return res;
+}
+
+### test
+console.log(capitalize_every_{{ nth }}_letter(''));
+for (var x in {{ xs }})
+  console.log(capitalize_every_{{ nth }}_letter(x));
+
+### hint
+Here's code for lowercase_every_3rd_letter which takes a string as its
+argument and returns a new version of it with every 3rd letter
+lowercase, starting with the first letter, and ignoring non-letter characters
+when counting:
+<pre>
+function lowercase_every_3rd_letter(s) {
+  var res = '';
+  var count = 0;
+  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  for (var i = 0; i < s.length; i++) {
+    var char = s[i];
+    if (alphabet.indexOf(char.toLowerCase()) != -1) {
+      if (count % 3 == 0)
+        res += char.toLowerCase();
+      else
+        res += char;
+      count += 1;
+    } else
+      res += char;
+  }
+  return res;
+}
+</pre>
+
+### gen_template_vars
+n = rand_int(2, 5)
+res = {
+  'xs': rand_string_list(20),
+  'n': n,
+  'nth': nth(n)
+}
+

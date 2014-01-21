@@ -1,0 +1,45 @@
+### prompt
+Write a function called reverse_sentence_words that takes a sentence string as its argument and returns a new string with every individual word (separated by spaces) reversed, but in the same order as they appeared in the original sentence.
+
+### solution
+function reverse_sentence_words(s) {
+  var word_array = s.split();
+  for (var i = 0; i < word_array.length; i++) {
+    var word = word_array[i];
+    var reverse_word = '';
+    for (var j = word.length - 1; j >= 0; j--) {
+      reverse_word += word[j];
+    }
+    word_array[i] = reverse_word;
+  }
+  return word_array.join(' ');
+}
+
+### test
+console.log(reverse_sentence_words(''));
+for (var s in {{ x }})
+  console.log(reverse_sentence_words(s));
+
+### hint
+Here's code for the condense_sentence_words function that takes a string as its
+argument returns a new string by taking only every other character of every word:
+<pre>
+function condense_sentence_words(s) {
+  var word_array = s.split();
+  for (var i = 0; i < word_array.length; i++) {
+    var word = word_array[i];
+    var condensed_word = '';
+    for (var j = 0; j < word.length; j+=2) {
+      condensed_word += word[j];
+    }
+    word_array[i] = condensed_word;
+  }
+  return word_array.join(' ');
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_sentence_list(20)
+}
+

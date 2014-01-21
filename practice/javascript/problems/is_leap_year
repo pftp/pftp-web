@@ -1,0 +1,30 @@
+### prompt
+Write a function called is_leap_year(year) that takes in a year as an input and returns true if the year is a leap year and returns false if the year is not a leap year. Remember years that are divisible by 4 are leap years, with the exception that years that are divisible by 100 are not leap years, with the exception that years that are divisible by 400 are leap years. Then test your function by executing "console.log(is_leap_year(2000));", "console.log(is_leap_year(2012));", "console.log(is_leap_year(2013));", "console.log(is_leap_year(2100));".
+
+### solution
+function is_leap_year(year) {
+  return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
+console.log(is_leap_year(2000));
+console.log(is_leap_year(2012));
+console.log(is_leap_year(2013));
+console.log(is_leap_year(2100));
+
+### test
+console.log(is_leap_year(200));
+console.log(is_leap_year(201));
+console.log(is_leap_year(202));
+console.log(is_leap_year(2200));
+console.log(is_leap_year(2400));
+### hint
+Here's code for the add_two function which takes two integers as
+arguments and returns their sum:
+<pre>
+function add_two(x, y) {
+  return x + y;
+}
+</pre>
+
+### gen_template_vars
+res = {}

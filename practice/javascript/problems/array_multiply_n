@@ -1,0 +1,38 @@
+### prompt
+Write a function called array_multiply_{{ n }} that takes an array of integers as
+an argument and returns a array of each of its elements multiplied by {{ n }}.
+
+### solution
+function array_multiply_{{ n }}(array) {
+  var res = [];
+  for (var i = 0; i < array.length; i++) {
+    res.push(array[i] * {{ n }});
+  }
+  return res;
+}
+
+### test
+console.log(array_multiply_{{ n }}([]));
+console.log(array_multiply_{{ n }}([23]));
+console.log(array_multiply_{{ n }}({{ x }}));
+
+### hint
+Here's code for the array_add_5 function which takes a array of integers
+as an argument and returns a array of each of its elements added to 5:
+<pre>
+function array_add_5(array) {
+  var res = [];
+  for (var i = 0; i < array.length; i++) {
+    res.append(array[i] + 5);
+  }
+  return res;
+}
+</pre>
+
+### gen_template_vars
+n = rand_int(3, 50)
+res = {
+  'x' : rand_int_list(1000),
+  'n' : n
+}
+

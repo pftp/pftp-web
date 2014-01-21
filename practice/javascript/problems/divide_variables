@@ -1,0 +1,20 @@
+### prompt
+Create a variable called {{ var_name }} and set the value of {{ var_name }} to be {{ x }}. Create another variable called {{ var_name1 }} and set the value of {{ var_name1 }} to be {{ y }}. Print the quotient of {{ var_name }} and {{ var_name1 }} by executing the line "console.log({{ var_name }} / {{ var_name1 }});". What's something you notice about the result?
+### solution
+var {{ var_name }} = {{ x }};
+var {{ var_name1 }} = {{ y }};
+console.log({{ var_name }} / {{ var_name1 }});
+### test
+console.log({{ var_name }});
+console.log({{ var_name1 }});
+### hint
+The syntax to create a variable called num_chickens and set the value of num_chickens to be 5 is
+<pre>var num_chickens = 5;
+</pre>
+### gen_template_vars
+res = {
+  'var_name': rand_word(),
+  'x': rand_int(10, 100),
+  'var_name1': rand_word(),
+  'y': rand_int(10, 1000)
+}

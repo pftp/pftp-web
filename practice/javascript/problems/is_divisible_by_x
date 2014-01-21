@@ -1,0 +1,31 @@
+### prompt
+Write a function called is_divisible_by_{{ x }}(number) that takes in one argument (one number as input) and returns true if that number is divisible by x. Then execute the line "console.log(is_divisible_by_{{ x }}(10));" to test if your function works.
+### solution
+function is_divisible_by_{{ x }}(number) {
+  return number % {{ x }} == 0;
+}
+
+console.log(is_divisible_by_{{ x }}(10));
+### test
+console.log(is_divisible_by_{{ x }}(3));
+console.log(is_divisible_by_{{ x }}(5));
+console.log(is_divisible_by_{{ x }}(6));
+console.log(is_divisible_by_{{ x }}(2));
+console.log(is_divisible_by_{{ x }}(1));
+
+
+### hint
+The syntax to check and print if one number is divisible by 3 is
+<pre> console.log(5 % 3 == 0); // this will return false since 5 mod 3 is equal to 2. % just returns the remainder when dividing
+console.log(6 % 3 == 0); // this will return true since 6 mod 3 is equal to 0.
+</pre>
+The syntax to define a function called returnTrue that always returns true is
+<pre> function returnTrue() {
+  return true;
+}
+</pre>
+
+### gen_template_vars
+res = {
+  'x': rand_int(2, 10)
+}

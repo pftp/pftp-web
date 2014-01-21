@@ -1,0 +1,37 @@
+### prompt
+Create a function called length_of_array(array) that takes in a array and returns the number of elements in the array. Then verify that your function works by executing "console.log(length_of_array({{ random_list }}));"
+
+### solution
+function length_of_array(array) {
+  return array.length;
+}
+console.log(length_of_array({{ random_list }}));
+### test
+console.log(length_of_array([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10]));
+console.log(length_of_array([1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,7,7,7,7,7,7,8,8,8,8,8,9,9,9,9,10,10,10,10]));
+
+### hint
+Here's code for the print_2_appears(array) function that takes a array as input and prints "2 appears" for each time two appears in the array
+<pre>
+function print_array(array) {
+  for (var i = 0; i < array.length; i++) {
+    var num = array[i];
+    if (num % 2 == 0)
+      console.log("2 appears");
+  }
+}
+</pre>
+Here's code for sum(array) function that takes a array as input and returns the sum of the elements in the array.
+<pre>
+function sum(array) {
+  var total = 0;
+  for (var i = 0; i < array.length; i++) {
+    total = total + array[i];
+  }
+  return total;
+}
+
+### gen_template_vars
+res = {
+  'random_list': [rand_int(1, 10) for i in range(rand_int(10, 14))]
+}
