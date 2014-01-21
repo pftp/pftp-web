@@ -6,9 +6,9 @@ function count_until(words) {
   var count = 0;
   var i = 0;
   while (i < words.length) {
-    if (words[i] == "{{ value }}") {
+    if (words[i] === "{{ value }}") {
       count += 1;
-      if (count == {{ n }})
+      if (count === {{ n }})
         break;
     }
     i += 1;

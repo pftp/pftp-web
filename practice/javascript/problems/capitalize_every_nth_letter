@@ -13,7 +13,7 @@ function capitalize_every_{{ nth }}_letter(s) {
   for (var i = 0; i < s.length; i++) {
     var char = s[i];
     if (alphabet.indexOf(char.toLowerCase()) != -1) {
-      if (count % {{ n }} == 0)
+      if (count % {{ n }} === 0)
         res += char.toUpperCase();
       else
         res += char;
@@ -42,7 +42,7 @@ function lowercase_every_3rd_letter(s) {
   for (var i = 0; i < s.length; i++) {
     var char = s[i];
     if (alphabet.indexOf(char.toLowerCase()) != -1) {
-      if (count % 3 == 0)
+      if (count % 3 === 0)
         res += char.toLowerCase();
       else
         res += char;

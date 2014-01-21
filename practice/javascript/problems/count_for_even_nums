@@ -5,7 +5,7 @@ Create a function count_even(nums) which returns the number of even values in nu
 function count_even(nums) {
   var count = 0;
   for (var i = 0; i < nums.length; i++) {
-    if (nums[i] % 2 == 0) {
+    if (nums[i] % 2 === 0) {
       count += 1;
     }
   }
@@ -23,7 +23,7 @@ console.log(count_even([0,2,4,6]));
 Here's how you can check if a number is odd:
 <pre>
 var num = 5;
-if (num % 2 == 0)
+if (num % 2 === 0)
   console.log('even');
 else
   console.log('odd');

@@ -7,14 +7,14 @@ returns true if and only if they have exactly the same number of the character
 function same_num_{{ x }}(a, b) {
   var count = 0;
   for (var i = 0; i < a.length; i++) {
-    if (a[i] == '{{ x }}')
+    if (a[i] === '{{ x }}')
       count += 1;
   }
   for (var i = 0; i < b.length; i++) {
-    if (b[i] == '{{ x }}')
+    if (b[i] === '{{ x }}')
       count -= 1;
   }
-  return count == 0;
+  return count === 0;
 }
 
 ### test
@@ -30,11 +30,11 @@ returns True if and only if they have different numbers of the character 'H':
 function different_num_H(a, b) {
   var count = 0;
   for (var i = 0; i < a.length; i++) {
-    if (a[i] == 'H')
+    if (a[i] === 'H')
       count += 1;
   }
   for (var i = 0; i < b.length; i++) {
-    if (b[i] == 'H')
+    if (b[i] === 'H')
       count -= 1;
   }
   return count != 0;
@@ -49,10 +49,10 @@ for i, b in enumerate(cs):
   if random() < 0.5:
     count = 0
     for ch in b:
-      if ch == x:
+      if ch === x:
         count += 1
     for j, ch in enumerate(bs[i]):
-      if ch == x:
+      if ch === x:
         if count > 0:
           count -= 1
         else:

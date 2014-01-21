@@ -5,7 +5,7 @@ Take capitalization into account.
 
 ### solution
 function starts_with_{{ x }}(s) {
-  return s.length > 0 && s[0] == '{{ x }}';
+  return s.length > 0 && s[0] === '{{ x }}';
 }
 ### test
 console.log(starts_with_{{ x }}(''));
@@ -17,7 +17,7 @@ Here's code for the ends_with_H function which takes a string as an argument and
 returns true if and only if it ends with the character 'H'.
 <pre>
 function ends_with_H(s) {
-  return s.length > 0 && s[0] == 'H';
+  return s.length > 0 && s[0] === 'H';
 }
 </pre>
 

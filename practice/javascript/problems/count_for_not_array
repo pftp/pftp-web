@@ -24,7 +24,7 @@ Here's how you can count the number of occurrences of a value in a array using a
 var count = 0;
 var foo = [1,2,3,4,5,5,7,4,5,4,3,6,5];
 for (var i = 0; i < foo.length; i++) {
-  if (foo[i] == 5)
+  if (foo[i] === 5)
     count = count + 1;
 }
 </pre>

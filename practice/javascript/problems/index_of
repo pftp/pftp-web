@@ -8,7 +8,7 @@ index_of([-4, 3, 47, 0], 47) should return 2.
 function index_of(array, x) {
   var idx = -1;
   for (var i = 0; i < array.length; i++) {
-    if (array[i] == x) {
+    if (array[i] === x) {
       idx = i;
       break;
     }
@@ -29,7 +29,7 @@ an argument and returns the index of the first 23 it finds:
 function index_of_23(array) {
   var idx = -1;
   for (var i = 0; i < array.length; i++) {
-    if (array[i] == 23) {
+    if (array[i] === 23) {
       idx = i;
       break;
     }

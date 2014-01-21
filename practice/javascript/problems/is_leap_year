@@ -3,7 +3,7 @@ Write a function called is_leap_year(year) that takes in a year as an input and 
 
 ### solution
 function is_leap_year(year) {
-  return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+  return (year % 4 === 0 && (year % 100 != 0 || year % 400 === 0));
 }
 
 console.log(is_leap_year(2000));

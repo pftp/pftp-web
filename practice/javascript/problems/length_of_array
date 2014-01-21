@@ -16,7 +16,7 @@ Here's code for the print_2_appears(array) function that takes a array as input 
 function print_array(array) {
   for (var i = 0; i < array.length; i++) {
     var num = array[i];
-    if (num % 2 == 0)
+    if (num % 2 === 0)
       console.log("2 appears");
   }
 }

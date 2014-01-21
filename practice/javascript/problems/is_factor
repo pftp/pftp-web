@@ -5,7 +5,7 @@ no remainder).
 
 ### solution
 function is_factor(x, y) {
-  return y % x == 0;
+  return y % x === 0;
 }
 
 ### test
@@ -18,7 +18,7 @@ Here's code for an is_even function which takes an integer x and returns true if
 and only if 2 is a factor of x:
 <pre>
 function is_even(x) {
-  return x % 2 == 0;
+  return x % 2 === 0;
 }
 </pre>
 
