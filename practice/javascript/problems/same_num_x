@@ -49,10 +49,10 @@ for i, b in enumerate(cs):
   if random() < 0.5:
     count = 0
     for ch in b:
-      if ch === x:
+      if ch == x:
         count += 1
     for j, ch in enumerate(bs[i]):
-      if ch === x:
+      if ch == x:
         if count > 0:
           count -= 1
         else:
