@@ -1,7 +1,7 @@
 *.pyc
 pftp.db
-practice/practice_problems.json
-practice/practice_concepts.json
+practice/*/practice_problems.json
+practice/*/practice_concepts.json
 templates/gen/*
 static/lab/*
 node_modules/*
