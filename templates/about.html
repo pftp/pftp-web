@@ -50,6 +50,16 @@ About
 </table>
 </div>
 {% endif %}
+  <center><h1> ARE YOU READY TO PROGRAM?</h1></center>
+  <center><a id="play_power" class="btn btn-success">Yes</a> <a id="leave" class="btn btn-error">Nope</a></center>
+  <script>
+    $('#play_power').click(function() {
+      $('#i_got_the_power')[0].play();
+    });
+    $('#leave').click(function() {
+      window.location.href='http://lmgtfy.com/?q=how+to+be+a+boring+person';
+    });
+  </script>
   <div id="logistics">
     <div id="time">
       <img src="{{url_for('static', filename='img/icons/14.png')}}">
