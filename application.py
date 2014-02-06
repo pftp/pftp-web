@@ -195,6 +195,7 @@ class Quiz(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   name = db.Column(db.String(30), nullable=False)
   week = db.Column(db.Integer(), nullable=False)
+  deadline = db.Column(db.DateTime(), nullable=False)
   questions = db.relationship('QuizQuestion', lazy='dynamic', backref='quiz')
 
   def to_dict(self):
@@ -215,6 +216,8 @@ class QuizQuestion(db.Model):
 
 class QuizResponse(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
+  submit_time = db.Column(db.DateTime(), nullable=False)
+  quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'), nullable=False)
   question_id = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
   user_answer = db.Column(db.String(100), nullable=False)
@@ -397,14 +400,14 @@ def quiz(quiz_id):
   first_quiz['questions'] = questions
   return render_template('quiz.html', quiz=first_quiz)
 
-
 @app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
 @login_required
 def submit_quiz(quiz_id):
   answer_choices = request.form.getlist('selected[]')
+  time_now = datetime.datetime.now()
   for answer_choice in answer_choices:
     question_id, answer = answer_choice.strip().split(',')
-    qr = QuizResponse(question_id=int(question_id), user_id=current_user.id, user_answer=answer)
+    qr = QuizResponse(quiz_id=int(quiz_id), question_id=int(question_id), user_id=current_user.id, user_answer=answer, submit_time=time_now)
     db.session.add(qr)
   db.session.commit()
   return 'Submitted'

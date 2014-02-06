@@ -1,5 +1,9 @@
 $(function() {
   $('#submit_quiz').click(function(e) {
+    if ($(":radio:checked").length !== $(":radio").length) {
+      alert('Please answer all questions!');
+      return;
+    }
     selected = [];
     $(":radio:checked").each(function (i) {
       selected.push($(this).val());

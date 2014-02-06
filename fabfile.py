@@ -76,6 +76,26 @@ def console():
 def run():
   app.run()
 
+############### Quizzes Spring 2014 ###############
+
+@task
+def add_quiz0():
+  quiz0 = Quiz(name="Info Session Quiz", week=0, deadline=datetime(2014,2,5,18,59))
+
+  question1 = QuizQuestion(question="Did you fill out <a target=\"_blank\" href=\"https://docs.google.com/forms/d/1eLxIhIyO3fhanXlbFwBI-SCNf0xBclBqdLZkrtn-sRE/viewform\">our online application</a>?",
+      answer_choices=json.dumps([{'id': 'A', 'answer': 'Yes'}]), solution='A', quiz=quiz0.id)
+  question2 = QuizQuestion(question="Did you register for our site with the same email address as on the application?",
+      answer_choices=json.dumps([{'id': 'A', 'answer': 'Yes'}]), solution='A', quiz=quiz0.id)
+
+  quiz0.questions.append(question1)
+  quiz0.questions.append(question2)
+  db.session.add(quiz0)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.commit()
+  print colored('quiz 0 added to database', "green")
+
+
 ################################################################################
 # Helpers
 ################################################################################
@@ -441,7 +461,6 @@ def process_line(line):
     else:
       result += '</code>'
   return result
-
 
 ################################################################################
 # Old Tasks

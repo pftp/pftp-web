@@ -9,6 +9,7 @@
 {% block content %}
 <div class="container" id="quiz_container">
 <h2> {{ quiz.name }} </h2>
+<h4> Due: {{ quiz.deadline }} </h4>
 <br><br>
 {% for question in quiz.questions %}
 <h4> {{ question.question |safe}} </h4>
@@ -19,7 +20,7 @@
     <div class="radio">
       <label>
         <input type="radio" name="{{ question.id }}" value="{{ question.id }},{{ answer_choice.id }}">
-        {{ answer_choice.answer |safe}}
+        {{ answer_choice.id}}. {{ answer_choice.answer |safe}}
       </label>
     </div>
     {% endfor %}
