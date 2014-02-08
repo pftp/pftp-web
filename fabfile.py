@@ -10,6 +10,7 @@ from random import randrange, random
 from datetime import datetime
 
 from fabric.api import local, task, settings
+from fabric.operations import get, put
 
 from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem
 import utils, ast_utils
@@ -71,6 +72,14 @@ def console():
   context['Assignment'] = Assignment
   context['Grade'] = Grade
   code.interact(local=locals())
+
+@task
+def pulldb():
+  get('pftp/pftp_prod.db', 'pftp_prod.db')
+
+@task
+def pushdb():
+  put('pftp.db', 'pftp/pftp.db')
 
 @task(default=True)
 def run():
