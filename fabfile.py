@@ -8,6 +8,7 @@ from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
 from datetime import datetime
+from time import strftime
 
 from fabric.api import local, task, settings
 from fabric.operations import get, put
@@ -80,6 +81,10 @@ def pulldb():
 @task
 def pushdb():
   put('pftp.db', 'pftp/pftp.db')
+
+@task
+def backup():
+  local('cp pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
 
 @task(default=True)
 def run():
