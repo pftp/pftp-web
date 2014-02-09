@@ -40,6 +40,15 @@ class FakeMail(object):
 app.extensions = getattr(app, 'extensions', {})
 app.extensions['mail'] = FakeMail()
 
+@app.before_request
+def check_for_maintenance():
+  if os.environ.get('MAINTENANCE', 'false') == 'true' and request.path != url_for('maintenance'):
+    return redirect(url_for('maintenance'))
+
+@app.route('/maintenance')
+def maintenance():
+  return 'Sorry, we\'re backing up some data right now. We\'ll be back in 10 minutes!', 503
+
 ################################################################################
 # Database
 ################################################################################
