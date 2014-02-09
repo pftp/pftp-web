@@ -38,7 +38,9 @@ if __name__ == '__main__':
     ret = sqlite.sqlite3_backup_step(p_backup, 20)
     remaining = sqlite.sqlite3_backup_remaining(p_backup)
     pagecount = sqlite.sqlite3_backup_pagecount(p_backup)
-    print('  backup in progress: {0:.2f}%'.format((pagecount - remaining) / float(pagecount) * 100))
+    amt = int((pagecount - remaining) / float(pagecount) * 100)
+    sys.stdout.write('\rbackup in progress: %d%% %s' % (amt, "|" + (amt) * "#" + (100 - amt) * " " + "|"))
+    sys.stdout.flush()
     if remaining == 0:
       break
     if ret in (SQLITE_OK, SQLITE_BUSY, SQLITE_LOCKED):
