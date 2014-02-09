@@ -84,7 +84,7 @@ def pushdb():
 
 @task
 def backup():
-  local('cp pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
+  local('python backups/backup.py pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
 
 @task(default=True)
 def run():
