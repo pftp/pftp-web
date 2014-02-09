@@ -5,6 +5,6 @@ practice/*/practice_concepts.json
 templates/gen/*
 static/lab/*
 node_modules/*
-backups/*
+backups/*.db
 *~
 *#
