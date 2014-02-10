@@ -1,5 +1,6 @@
 *.pyc
 pftp.db
+pftp_prod.db
 practice/*/practice_problems.json
 practice/*/practice_concepts.json
 templates/gen/*
