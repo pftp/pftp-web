@@ -94,7 +94,7 @@ def backup():
   local('service apache2 restart')
 
   #db is safe, now perform backup
-  local('python backups/backup.py pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
+  local('cp pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
 
   #disable pftp-maintenance vhost 
   local('rm /etc/apache2/sites-enabled/pftp-maintenance')
