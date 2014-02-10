@@ -6,5 +6,6 @@ templates/gen/*
 static/lab/*
 node_modules/*
 backups/*.db
+backups/*.db-journal
 *~
 *#
