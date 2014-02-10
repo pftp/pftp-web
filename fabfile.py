@@ -84,7 +84,26 @@ def pushdb():
 
 @task
 def backup():
+  #disable pftp vhost
+  local('rm /etc/apache2/sites-enabled/pftp')
+  #enable mod_rewrite
+  local('a2enmod rewrite')
+  #enable pftp-maintenance vhost
+  local('ln -s /etc/apache2/sites-available/pftp-maintenance /etc/apache2/sites-enabled/pftp-maintenance')
+  #restart apache
+  local('service apache2 restart')
+
+  #db is safe, now perform backup
   local('python backups/backup.py pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
+
+  #disable pftp-maintenance vhost 
+  local('rm /etc/apache2/sites-enabled/pftp-maintenance')
+  #disable mod_rewrite
+  local('a2dismod rewrite')
+  # enable pftp vhost
+  local('ln -s /etc/apache2/sites-available/pftp /etc/apache2/sites-enabled/pftp')
+  #restart apache
+  local('service apache2 restart')
 
 @task(default=True)
 def run():
