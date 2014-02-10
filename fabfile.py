@@ -95,6 +95,8 @@ def backup():
 
   #db is safe, now perform backup
   local('python backups/backup.py pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
+  #limit number of backups 
+  local('bash backups/clean_backups.sh')
 
   #disable pftp-maintenance vhost 
   local('rm /etc/apache2/sites-enabled/pftp-maintenance')
