@@ -394,7 +394,7 @@ def quiz(nonsense):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
 
-  nonsenses = ['microwave', 'toaster', 'pot', 'blender', 'oven', 'wok',
+  nonsenses = ['microwave', 'pot', 'toaster', 'blender', 'oven', 'wok',
           'dishwasher', 'stove', 'juicer', 'skillet', 'ricecooker', 'kettle',
           'waffleiron', 'barbecue', 'pressurecooker']
 
@@ -403,7 +403,7 @@ def quiz(nonsense):
 
   quiz_id = nonsenses.index(nonsense)
 
-  first_quiz = Quiz.query.filter(Quiz.week==quiz_id).first()
+  first_quiz = Quiz.query.filter(Quiz.id==quiz_id).first()
 
   if not first_quiz:
     redirect('/')
@@ -418,7 +418,7 @@ def quiz(nonsense):
 @app.route('/quiz/<nonsense>/submit/', methods=['POST'])
 @login_required
 def submit_quiz(nonsense):
-  nonsenses = ['microwave', 'toaster', 'pot', 'blender', 'oven', 'wok',
+  nonsenses = ['microwave','pot', 'toaster', 'blender', 'oven', 'wok',
           'dishwasher', 'stove', 'juicer', 'skillet', 'ricecooker', 'kettle',
           'waffleiron', 'barbecue', 'pressurecooker']
 
