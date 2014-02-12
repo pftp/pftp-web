@@ -404,6 +404,10 @@ def quiz(nonsense):
   quiz_id = nonsenses.index(nonsense)
 
   first_quiz = Quiz.query.filter(Quiz.week==quiz_id).first()
+
+  if not first_quiz:
+    redirect('/')
+
   questions = map(lambda x: x.__dict__, first_quiz.questions)
   for question in questions:
     question['answer_choices'] = json.loads(question['answer_choices'])
