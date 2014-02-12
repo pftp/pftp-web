@@ -1,6 +1,6 @@
 $(function() {
   $('#submit_quiz').click(function(e) {
-    if ($(":radio:checked").length !== $(":radio").length) {
+    if ($(":radio:checked").length !== $(".question").length) {
       alert('Please answer all questions!');
       return;
     }
