@@ -389,7 +389,17 @@ def lesson(lesson_path):
     return render_template('lesson_home.html', context=context)
   return redirect('/')
 
-@app.route('/quiz/<int:quiz_id>/')
+#TODO make better
+@app.route('/quiz/toaster')
+def quiz_toaster():
+  return quiz(1)
+
+@app.route('/quiz/submit/', methods=['POST'])
+@login_required
+def submit_quiz_toaster():
+  return submit_quiz(1)
+
+#@app.route('/quiz/<int:quiz_id>/')
 def quiz(quiz_id):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
@@ -401,8 +411,8 @@ def quiz(quiz_id):
   first_quiz['questions'] = questions
   return render_template('quiz.html', quiz=first_quiz)
 
-@app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
-@login_required
+#@app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
+#@login_required
 def submit_quiz(quiz_id):
   answer_choices = request.form.getlist('selected[]')
   time_now = datetime.datetime.now()
