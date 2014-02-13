@@ -13,7 +13,7 @@ from time import strftime
 from fabric.api import local, task, settings
 from fabric.operations import get, put
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz
 import utils, ast_utils
 from emailer import Emailer
 
@@ -72,6 +72,7 @@ def console():
   context['User'] = User
   context['Assignment'] = Assignment
   context['Grade'] = Grade
+  context['Quiz'] = Quiz
   code.interact(local=locals())
 
 @task
