@@ -389,19 +389,20 @@ def lesson(lesson_path):
     return render_template('lesson_home.html', context=context)
   return redirect('/')
 
-@app.route('/quiz/<nonsense>/')
-def quiz(nonsense):
+#TODO make better
+@app.route('/quiz/toaster')
+def quiz_toaster():
+  return quiz(2)
+
+@app.route('/quiz/submit/', methods=['POST'])
+@login_required
+def submit_quiz_toaster():
+  return submit_quiz(2)
+
+#@app.route('/quiz/<int:quiz_id>/')
+def quiz(quiz_id):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
-
-  nonsenses = ['microwave', 'pot', 'toaster', 'blender', 'oven', 'wok',
-          'dishwasher', 'stove', 'juicer', 'skillet', 'ricecooker', 'kettle',
-          'waffleiron', 'barbecue', 'pressurecooker']
-
-  if nonsense not in nonsenses:
-    return redirect('/')
-
-  quiz_id = nonsenses.index(nonsense)
 
   first_quiz = Quiz.query.filter(Quiz.id==quiz_id).first()
 
@@ -415,17 +416,9 @@ def quiz(nonsense):
   first_quiz['questions'] = questions
   return render_template('quiz.html', quiz=first_quiz)
 
-@app.route('/quiz/<nonsense>/submit/', methods=['POST'])
-@login_required
-def submit_quiz(nonsense):
-  nonsenses = ['microwave','pot', 'toaster', 'blender', 'oven', 'wok',
-          'dishwasher', 'stove', 'juicer', 'skillet', 'ricecooker', 'kettle',
-          'waffleiron', 'barbecue', 'pressurecooker']
-
-  if nonsense not in nonsenses:
-    return 'quiz not found'
-
-  quiz_id = nonsenses.index(nonsense)
+#@app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
+#@login_required
+def submit_quiz(quiz_id):
   answer_choices = request.form.getlist('selected[]')
   time_now = datetime.datetime.now()
   for answer_choice in answer_choices:
