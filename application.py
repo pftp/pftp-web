@@ -12,6 +12,7 @@ from flask_security.forms import RegisterForm, TextField, Required
 import utils
 import ast_utils
 import random
+from types import NoneType
 ################################################################################
 # Config
 ################################################################################
@@ -404,11 +405,12 @@ def quiz(quiz_id):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
 
-  first_quiz = Quiz.query.filter(Quiz.id==quiz_id).first()
+  quizzes = Quiz.query.filter(Quiz.id==quiz_id).all()
 
-  if not first_quiz:
+  if len(quizzes) < 1:
     redirect('/')
 
+  first_quiz = quizzes[0]
   questions = map(lambda x: x.__dict__, first_quiz.questions)
   for question in questions:
     question['answer_choices'] = json.loads(question['answer_choices'])
