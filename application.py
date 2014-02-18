@@ -404,15 +404,16 @@ def quiz_toaster():
 def submit_quiz_toaster():
   return submit_quiz(2)
 
-@app.route('/quiz/<int:quiz_id>/')
-def quiz(quiz_id):
+@app.route('/quiz/<int:quiz_week>/')
+def quiz(quiz_week):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
 
-  quizzes = Quiz.query.filter(Quiz.id==quiz_id).all()
+  quizzes = Quiz.query.filter(Quiz.week==quiz_week).all()
 
+  print len(quizzes)
   if len(quizzes) < 1:
-    redirect('/')
+    return redirect('/')
 
   first_quiz = quizzes[0]
   questions = map(lambda x: x.__dict__, first_quiz.questions)

@@ -112,6 +112,39 @@ def backup():
 def run():
   app.run()
 
+############### Assignments Spring 2014 ###############
+
+@task
+def add_quiz0_assignment():
+  quiz0 = Quiz.query.filter_by(week=0).first()
+  num_questions = QuizQuestion.query.filter_by(quiz_id=quiz0.id).count()
+  assignment0 = Assignment(name="Quiz 0", semester="sp14", href="/quiz/0/", description="", deadline=quiz0.deadline, points=num_questions)
+  db.session.add(assignment0)
+  db.session.commit()
+  quiz0.assignment_id = assignment0.id
+  db.session.add(quiz0)
+  db.session.commit()
+  print colored('quiz 0 assignment added to database', "green")
+
+@task
+def add_lab1_assignment():
+  assignment = Assignment(name="Lab 1", semester="sp14", href="https://docs.google.com/document/d/1RA0P097KZLwZp_zAB63HOQVCcE5z8W6p9osu3HjGjww/pub", description="", deadline=datetime(2014,2,19,17,59), points=5)
+  db.session.add(assignment)
+  db.session.commit()
+  print colored('lab 1 assignment added to database', "green")
+
+@task
+def add_quiz1_assignment():
+  quiz1 = Quiz.query.filter_by(week=1).first()
+  num_questions = QuizQuestion.query.filter_by(quiz_id=quiz1.id).count()
+  assignment1 = Assignment(name="Quiz 1", semester="sp14", href="/quiz/1/", description="", deadline=quiz1.deadline, points=num_questions)
+  db.session.add(assignment1)
+  db.session.commit()
+  quiz1.assignment_id = assignment1.id
+  db.session.add(quiz1)
+  db.session.commit()
+  print colored('quiz 1 assignment added to database', "green")
+
 ############### Quizzes Spring 2014 ###############
 
 @task
