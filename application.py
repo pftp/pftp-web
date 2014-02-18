@@ -232,6 +232,18 @@ templates_concepts = db.Table('templates_concepts',
     db.Column('practice_problem_template_id', db.Integer(), db.ForeignKey('practice_problem_template.id')),
     db.Column('practice_problem_concept_id', db.Integer(), db.ForeignKey('practice_problem_concept.id')))
 
+class Homework(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  week = db.Column(db.Integer(), nullable=False)
+  deadline = db.Column(db.DateTime(), nullable=False)
+  assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
+
+class HomeworkProblem(db.Model):
+  id = db.Column(db.Integer(), primary_key=True)
+  deadline = db.Column(db.DateTime(), nullable=False)
+  homework_id = db.Column(db.Integer(), db.ForeignKey('homework.id'))
+  template_id = db.Column(db.Integer(), db.ForeignKey('practice_problem_template.id'))
+
 class Language(db.Model):
   id = db.Column(db.Integer(), primary_key=True)
   language = db.Column(db.Text(), nullable=False)
