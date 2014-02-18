@@ -411,7 +411,6 @@ def quiz(quiz_week):
 
   quizzes = Quiz.query.filter(Quiz.week==quiz_week).all()
 
-  print len(quizzes)
   if len(quizzes) < 1:
     return redirect('/')
 
