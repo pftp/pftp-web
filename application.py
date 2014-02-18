@@ -92,6 +92,8 @@ class User(db.Model, UserMixin):
 class Assignment(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
   name = db.Column(db.String(100), index = True, unique = True, nullable = False)
+  semester = db.Column(db.String(100), nullable = False)
+  href = db.Column(db.Text(), nullable = False)
   description = db.Column(db.Text(), nullable = False)
   deadline = db.Column(db.DateTime(), nullable = False)
   points = db.Column(db.Integer(), nullable = False)
@@ -109,6 +111,7 @@ class Assignment(db.Model):
 class Grade(db.Model):
   id = db.Column(db.Integer(), primary_key = True)
   score = db.Column(db.Integer(), nullable = False)
+  submitted = db.Column(db.DateTime(), nullable = False)
   user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
   assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
 
@@ -198,6 +201,7 @@ class Quiz(db.Model):
   name = db.Column(db.String(30), nullable=False)
   week = db.Column(db.Integer(), nullable=False)
   deadline = db.Column(db.DateTime(), nullable=False)
+  assignment_id = db.Column(db.Integer(), db.ForeignKey('assignment.id'))
   questions = db.relationship('QuizQuestion', lazy='dynamic', backref='quiz')
 
   def to_dict(self):
@@ -1099,7 +1103,7 @@ def user_dashboard():
   context = {}
   context['total_score'] = 0
   context['total_points'] = 0
-  assignment_models = Assignment.query.order_by(Assignment.deadline).all()
+  assignment_models = Assignment.query.order_by(Assignment.deadline).filter_by(semester='sp14').all()
   assignments = map(lambda x: x.__dict__, assignment_models)
   for assignment in assignments:
     submission = Submission.query.filter_by(assignment_id=assignment['id'], user_id=current_user.id).order_by(Submission.submit_time.desc()).first()
@@ -1115,9 +1119,12 @@ def user_dashboard():
       assignment['graded'] = False
     context['total_points'] += assignment['points']
 
+  # Prevent divide by zero
+  if context['total_points'] == 0 and context['total_score'] == 0:
+    context['total_points'] = 1
+
   context['assignments'] = assignments
   context['programs'] = Program.query.filter_by(user_id=current_user.id).order_by(Program.last_modified.desc()).all()
-
 
   return render_template('dashboard.html', context=context)
 
@@ -1197,7 +1204,8 @@ def submit_grade():
   user = User.query.filter_by(id=request.form['user_id']).first()
   grade = Grade.query.filter_by(user_id=user.id, assignment_id=assignment.id).first()
   if grade == None:
-    grade = Grade(assignment_id=assignment.id, user_id=user.id, score=score)
+    time_now = datetime.datetime.now()
+    grade = Grade(assignment_id=assignment.id, submitted=time_now, user_id=user.id, score=score)
   else:
     grade.score = score
   db.session.add(grade)
