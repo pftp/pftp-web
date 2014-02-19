@@ -409,9 +409,10 @@ def add_practice_problems(language):
         db.session.commit()
       concepts.append(concept)
 
+    problem['is_homework'] = True if problem['is_homework'] == 'true' else False
     # Create a new template
     if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name'], is_current=True, language_id=language_id).count() == 0:
-      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, language_id=language_id)
+      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, is_homework=problem['is_homework'], language_id=language_id)
       db.session.add(new_template)
       print colored("%s added to database." % new_template.problem_name, 'yellow')
       count_add += 1
@@ -423,7 +424,7 @@ def add_practice_problems(language):
         if old_template.to_dict()[k] != problem[k]:
           add_new_template = True
       if add_new_template:
-        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, language_id=language_id)
+        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, is_homework=problem['is_homework'], language_id=language_id)
         db.session.add(new_template)
         print colored("%s added to database." % new_template.problem_name, 'yellow')
         count_add += 1
@@ -432,7 +433,7 @@ def add_practice_problems(language):
       # update template variables, hint if they have been modified
       # we don't need to readd our template in this case
       count_update_updated = False
-      for field_name in ['gen_template_vars', 'hint']:
+      for field_name in ['gen_template_vars', 'hint', 'is_homework']:
         if getattr(old_template, field_name) != problem[field_name]:
           setattr(old_template, field_name, problem[field_name])
           print colored("%s updated with changed %s field" % (problem['problem_name'], field_name), 'yellow')

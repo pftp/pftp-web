@@ -16,7 +16,7 @@ def read_problem(problem_name):
   problem_file = open(problem_path, 'r')
   current_key = ''
   current_val = ''
-  res = {'problem_name': problem_name.strip()}
+  res = {'problem_name': problem_name.strip(), 'is_homework': 'false'}
   for line in problem_file.readlines():
     if line[:3] == '###':
       if (current_key != ''):

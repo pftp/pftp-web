@@ -262,6 +262,7 @@ class PracticeProblemTemplate(db.Model):
   concepts = db.relationship('PracticeProblemConcept', secondary=templates_concepts,
       backref=db.backref('practice_problem_template', lazy='dynamic'), lazy='dynamic')
   is_current = db.Column(db.Boolean(), nullable=False)
+  is_homework = db.Column(db.Boolean(), nullable=False)
   language_id = db.Column(db.Integer(), db.ForeignKey('language.id'), nullable=False)
 
 
