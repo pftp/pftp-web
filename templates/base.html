@@ -15,29 +15,6 @@
 
     <!-- for fun -->
     <script type="text/javascript">
-      if ("{{ current_user.firstname }}" == "Robyn") {
-        var shitty_background_colors = ['aqua', 'blue', 'chartreuse', 'crimson', 'fuschia', 'redorange', 'pink', 'green', 'cream', 'beige', 'grey'];
-        var color = shitty_background_colors[Math.floor(Math.random() * shitty_background_colors.length)];
-        $('head').append('<style>body{background-color:' + color + ';}</style>');
-
-        for (var i = 0; i < 10; i++) {
-          $('body').append('<img src="/static/img/billy.png" class="billyball" id="billy' + i + '" />');
-
-          var deg = Math.floor(Math.random() * 360);
-          var x = Math.floor(Math.random() * ($(window).width()));
-          var y = Math.floor(Math.random() * ($(window).height()));
-          var width = Math.floor(Math.random() * 100 + 50);
-          $('#billy'+i).css('top', y + 'px');
-          $('#billy'+i).css('left', x + 'px');
-          $('#billy'+i).css('-webkit-transform', 'rotate(' + deg + 'deg)');
-          $('#billy'+i).css('-webkit-transform', 'rotate(' + deg + 'deg)');
-          $('#billy'+i).css('width', width + 'px');
-        }
-
-        $('.billyball').css('z-index', '-1');
-        $('.billyball').css('position', 'absolute');
-      }
-
       var home = function() {
         if (Math.random() > 0.9) {
           $('#i_got_the_power')[0].play();
