@@ -1,0 +1,85 @@
+body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+#calc_container {
+  background-color: #fdfdfd;
+  width: 250px;
+  height: 350px;
+  box-shadow: 0 1px 5px black;
+  border-radius: 5px;
+  margin: 0 auto;
+  border-spacing: 10px;
+  table-layout: fixed;
+}
+
+table button {
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: -webkit-linear-gradient(#f9f9f9, #e9e9e9);
+  background: -moz-linear-gradient(#f9f9f9, #e9e9e9);
+  background: -o-linear-gradient(#f9f9f9, #e9e9e9);
+  background: linear-gradient(#f9f9f9, #e9e9e9);
+  outline: none;
+}
+
+button:hover {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+table button:active {
+  background: -webkit-linear-gradient(#e9e9e9, #f9f9f9);
+  background: -moz-linear-gradient(#e9e9e9, #f9f9f9);
+  background: -o-linear-gradient(#e9e9e9, #f9f9f9);
+  background: linear-gradient(#e9e9e9, #f9f9f9);
+}
+
+#output {
+  background-color: white;
+  text-align: right;
+  font-size: 14px;
+  border: 1px solid rgba(0,0,0,0.2);
+  padding: 10px;
+}
+
+.container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#dance {
+  cursor: pointer;
+  margin: 10px;
+  padding: 5px;
+  font-size: 20px;
+  color: white;
+  background-color: #ff69b4;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.dance {
+  -webkit-animation-name: dance;
+  -webkit-animation-duration: 2s;
+}
+
+@-webkit-keyframes dance {
+  0%,50%,100% {
+    -webkit-transform: translateY(0px) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    -webkit-transform: translateY(-30px) rotate(-20deg);
+    opacity: 0.5;
+  }
+  75% {
+    -webkit-transform: translateY(-30px) rotate(20deg);
+    opacity: 0.5;
+  }
+}
