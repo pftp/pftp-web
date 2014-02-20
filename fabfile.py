@@ -203,6 +203,62 @@ def add_quiz1():
   db.session.commit()
   print colored('quiz 1 added to database', "green")
 
+@task
+def add_quiz2():
+  assignment = Assignment(name="Quiz 2", semester="sp14", href="/quiz/2/", description="", deadline=datetime(2014,2,19,18,59), points=4)
+  db.session.add(assignment)
+  db.session.commit()
+
+  quiz2 = Quiz(name="Week 2 Quiz", week=2, deadline=assignment.deadline, assignment_id=assignment.id)
+
+  question1 = QuizQuestion(question="How does the reading tell you to imagine variables?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'As renamed values'}
+          , {'id': 'B', 'answer': 'As tentacles to grasp values'}
+          , {'id': 'C', 'answer': 'As boxes to contain values'}
+          , {'id': 'D', 'answer': 'As envelopes to send values'}
+          ])
+      , solution='B')
+
+  question2 = QuizQuestion(question="Which of the following is an example of calling a function?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'alert("Star Slinger!")'}
+          , {'id': 'B', 'answer': 'var x = 5'}
+          , {'id': 'C', 'answer': 'var f = function() { }'}
+          , {'id': 'D', 'answer': 'All of the above'}
+          ])
+      , solution='A')
+
+  question3 = QuizQuestion(question="What symbol goes at the end of every statement in JavaScript?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'Dollar Sign ($)'}
+          , {'id': 'B', 'answer': 'Tilde (~)'}
+          , {'id': 'C', 'answer': 'Equals sign (=)'}
+          , {'id': 'D', 'answer': 'Semicolon (;)'}
+          ])
+      , solution='D')
+
+  question4 = QuizQuestion(question="How do we print 'Hello World!' in JavaScript?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'console.log("Hello World!")'}
+          , {'id': 'B', 'answer': 'System.out.println("Hello World!")'}
+          , {'id': 'C', 'answer': 'cout << "Hello World!" << endl'}
+          , {'id': 'D', 'answer': "print 'Hello World!'"}
+          ])
+      , solution='A')
+
+  quiz2.questions.append(question1)
+  quiz2.questions.append(question2)
+  quiz2.questions.append(question3)
+  quiz2.questions.append(question4)
+  db.session.add(quiz2)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.add(question4)
+  db.session.commit()
+  print colored('quiz 2 added to database', "green")
+
 
 ################################################################################
 # Helpers

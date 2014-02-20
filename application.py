@@ -408,21 +408,30 @@ def lesson(lesson_path):
   return redirect('/')
 
 #TODO make better
-@app.route('/quiz/toaster')
+@app.route('/quiz/toaster/')
 def quiz_toaster():
   return quiz(2)
 
-@app.route('/quiz/submit/', methods=['POST'])
+@app.route('/quiz/slingshot/')
+def quiz_slingshot():
+  return quiz(3)
+
+@app.route('/quiz/toaster/submit/', methods=['POST'])
 @login_required
 def submit_quiz_toaster():
   return submit_quiz(2)
 
-@app.route('/quiz/<int:quiz_week>/')
-def quiz(quiz_week):
+@app.route('/quiz/slingshot/submit/', methods=['POST'])
+@login_required
+def submit_quiz_slingshot():
+  return submit_quiz(3)
+
+@app.route('/quiz/<int:quiz_id>/')
+def quiz(quiz_id):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
 
-  quizzes = Quiz.query.filter(Quiz.week==quiz_week).all()
+  quizzes = Quiz.query.filter(Quiz.id==quiz_id).all()
 
   if len(quizzes) < 1:
     return redirect('/')
