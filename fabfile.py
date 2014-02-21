@@ -7,13 +7,13 @@ import time
 from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import strftime
 
 from fabric.api import local, task, settings
 from fabric.operations import get, put
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem
 import utils, ast_utils
 from emailer import Emailer
 
@@ -144,6 +144,16 @@ def add_quiz1_assignment():
   db.session.add(quiz1)
   db.session.commit()
   print colored('quiz 1 assignment added to database', "green")
+
+@task
+def add_homework_1():
+  assignment = Assignment(name="Homework 1", semester="sp14", href="/homework/1/", description="", deadline=datetime(2014,2,25,23,59), points=4)
+  db.session.add(assignment)
+  db.session.commit()
+  homework1 = Homework(week=3, deadline=assignment.deadline, assignment_id=assignment.id)
+  db.session.add(homework1)
+  db.session.commit()
+  print colored('homework 1 and assignment added to database', "green")
 
 ############### Quizzes Spring 2014 ###############
 
@@ -465,12 +475,13 @@ def add_practice_problems(language):
         db.session.commit()
       concepts.append(concept)
 
-    problem['is_homework'] = True if problem['is_homework'] == 'true' else False
+    problem['is_homework'] = 'homework' in problem
+    template = None
     # Create a new template
     if PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name'], is_current=True, language_id=language_id).count() == 0:
-      new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, is_homework=problem['is_homework'], language_id=language_id)
-      db.session.add(new_template)
-      print colored("%s added to database." % new_template.problem_name, 'yellow')
+      template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, is_homework=problem['is_homework'], language_id=language_id)
+      db.session.add(template)
+      print colored("%s added to database." % template.problem_name, 'yellow')
       count_add += 1
     else:
       old_template = PracticeProblemTemplate.query.filter_by(problem_name=problem['problem_name'], is_current=True, language_id=language_id)[0]
@@ -480,18 +491,19 @@ def add_practice_problems(language):
         if old_template.to_dict()[k] != problem[k]:
           add_new_template = True
       if add_new_template:
-        new_template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, is_homework=problem['is_homework'], language_id=language_id)
-        db.session.add(new_template)
-        print colored("%s added to database." % new_template.problem_name, 'yellow')
+        template = PracticeProblemTemplate(problem_name=problem['problem_name'], prompt=problem['prompt'], solution=problem['solution'], test=problem['test'], hint=problem['hint'], gen_template_vars=problem['gen_template_vars'], concepts=concepts, is_current=True, is_homework=problem['is_homework'], language_id=language_id)
+        db.session.add(template)
+        print colored("%s added to database." % template.problem_name, 'yellow')
         count_add += 1
         old_template.is_current = False
         continue
       # update template variables, hint if they have been modified
       # we don't need to readd our template in this case
+      template = old_template
       count_update_updated = False
       for field_name in ['gen_template_vars', 'hint', 'is_homework']:
-        if getattr(old_template, field_name) != problem[field_name]:
-          setattr(old_template, field_name, problem[field_name])
+        if getattr(template, field_name) != problem[field_name]:
+          setattr(template, field_name, problem[field_name])
           print colored("%s updated with changed %s field" % (problem['problem_name'], field_name), 'yellow')
           if not count_update_updated:
             count_update += 1
@@ -499,6 +511,36 @@ def add_practice_problems(language):
     time_spent = time.time() - start_time
     if time_spent > 1:
       print colored('%s took %.2f seconds to generate (more than 1 second is excessive)' % (problem['problem_name'], time_spent), 'red')
+
+    # Add reference to homework if we have a homework problem
+    if problem['is_homework']:
+      homework = None
+      for line in problem['homework'].split('\n'):
+        line_split = line.split()
+        if line_split[0] == 'week':
+          week_num = int(line_split[1])
+          homework = Homework.query.filter_by(week=week_num).first()
+          if homework == None:
+            print colored("homework for week %d does not exist" % week_num, 'red')
+            print colored("failed to add homework problem for day %s" % line_split[1], 'red')
+            break
+        elif line_split[0] == 'day':
+          back_day_num = 6 - int(line_split[1])
+          back_time = timedelta(back_day_num)
+          deadline = homework.deadline - back_time
+          homework_problem = HomeworkProblem.query.filter_by(template_id=template.id).first()
+          if homework_problem != None:
+            if homework_problem.deadline == deadline and homework_problem.homework_id == homework.id:
+              print colored("homework problem for template %s already in database for week %d, day %s" % (template.problem_name, homework.week, line_split[1]), 'green')
+              continue
+            else:
+              homework_problem.deadline = deadline
+              homework_problem.homework_id = homework.id
+              print colored("homework problem for template %s updated to week %d, day %s" % (template.problem_name, homework.week, line_split[1]), 'yellow')
+          else:
+            homework_problem = HomeworkProblem(deadline=deadline, homework_id=homework.id, template_id=template.id)
+          db.session.add(homework_problem);
+          print colored("homework problem week %d, day %s added to database" % (homework.week, line_split[1]), 'green')
 
   count_deleted = 0
   current_problems = PracticeProblemTemplate.query.filter_by(is_current=True, language_id=language_id).all()
@@ -510,7 +552,7 @@ def add_practice_problems(language):
 
   db.session.commit()
 
-  print colored("%d practice problems processed. %d problems added to database. %d problems updated with changed hint or template variables" % (count_all, count_add, count_update), 'green')
+  print colored("%d practice problems processed. %d problems added to database. %d problems updated with changed hint, template or is_homework variable" % (count_all, count_add, count_update), 'green')
   print colored("%d practice problems deleted from database (set is_current=False)" % count_deleted, 'green')
 
 def add_concepts(language):
