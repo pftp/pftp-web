@@ -670,6 +670,11 @@ def practice_default(language):
   next_problem_name = get_next_problem(current_user.id, language_map[language])
   return redirect('/practice/%s/%s/' % (language, next_problem_name))
 
+@app.route('/homework/')
+@login_required
+def homework():
+  return render_template('homework.html')
+
 @app.route('/practice/<language>/<problem_name>/')
 @login_required
 def practice(language, problem_name):

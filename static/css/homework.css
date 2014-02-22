@@ -1,0 +1,33 @@
+#run_container {
+  margin: 10px 0;
+}
+
+.left {
+  margin: 0px 5px 0px 0px;
+}
+
+.right {
+  float: right;
+}
+
+pre {
+  max-height: 500px;
+  white-space: pre;
+  word-wrap: normal;
+  overflow: auto;
+}
+
+.solution-pre {
+  font-weight: 700;
+  color: #444;
+}
+
+.output-pre {
+  font-weight: 700;
+  color: #444;
+  max-height: 150px;
+}
+
+.modal {
+  z-index: -1;
+}

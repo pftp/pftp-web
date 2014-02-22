@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ language|capitalize }} Homework
+{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/%s/%s.js' % (language, language))}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/homework.js' % language)}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/homework.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div class="row-fluid all">
+  <div class="span8">
+    <h3>{{problem.prompt |safe}}</h3>
+    <span class="label label-info">{{ language|capitalize }}</span>
+    <textarea id="homework_code" style="display:none;"></textarea>
+    <div id="run_container">
+      <button id="homwork_run_code" class="btn btn-success left">Run It!</button>
+      <button id="homework_submit_code" class="btn btn-success left">Submit It!</button>
+      <a id="next_problem" href="/practice/{{ language }}" class="btn btn-primary right" style="display:none;">Next Problem</a>
+    </div>
+    <h4>Output:</h4>
+    <pre id="homework_output" class="output-pre"></pre>
+  </div>
+</div>
+<div id="template_vars" style="display:none;">
+  {{problem.template_vars}}
+</div>
+<div id="test_cases" style="display:none;">
+  {{problem.test}}
+</div>
+<div id="correct_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Correct!</h4>
+      </div>
+      <div class="modal-body">
+        <div id="correct_output_container">
+          <p>Here's your output:</p>
+          <pre id="correct_output" class="output-pre"></pre>
+        </div>
+        <p>Here's our solution:</p>
+        <div id="solution_container">
+          <pre id="solution" class="solution-pre"></pre>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a id="modal_next_problem" href="/practice/{{ language }}" class="btn btn-primary">Next Problem</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="error_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Error</h4>
+      </div>
+      <div class="modal-body">
+        <p>Sorry, your code threw an error. Check the output box for more details.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="incorrect_modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Incorrect</h4>
+      </div>
+      <div class="modal-body">
+        <p>Sorry, your code failed at least one of our test cases.<br><br>
+        <small>
+          <i>"<span id="failure_quote"></span>"</i><br>
+          &nbsp;&nbsp;&ndash;<span id="failure_quote_author"></span>
+        </small>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
