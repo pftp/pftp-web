@@ -1,7 +1,7 @@
 //HACKHACK hijack console.log to capture output
 (function(){
   var nativeLog = console.log;
-  console.log = function (message) {
+  console.log = function() {
     //record all log messages
     console._history = console._history || [];
     var args = Array.prototype.slice.call(arguments);
@@ -12,17 +12,21 @@
 
 var executeCode = function(execObj) {
   try {
-    //clear log messages
+    //TODO jsHint for better style
     console._history = [];
     eval(execObj['input']);
     execObj['output'] = console._history.join('\n');
   } catch (err) {
     //TODO write better error messages
-    execObj['error'] = err.toString();
+    if (console._history.length > 0) {
+      execObj['output'] = console._history.join('\n') + '\n';
+    }
+    execObj['output'] += err.toString();
+    execObj['error'] = true;
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code};
+  var runObj = {'input': code, 'output': ''};
   executeCode(runObj);
   return runObj;
 };
@@ -40,7 +44,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   result_test_error = false;
   submit_time = new Date().getTime() / 1000;
 
-  $('#practice_output').text('');
+  $('#homework_output').text('');
   runObj = runit(code);
   if (runObj['output'] !== undefined) {
     result_no_test += runObj['output'];
@@ -50,7 +54,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
     result_no_test_error = true;
   }
   if (!gaveUp) {
-    $('#practice_output').text(result_no_test);
+    $('#homework_output').text(result_no_test);
     if (result_no_test !== '') {
       $('#correct_output').text(result_no_test);
       $('#correct_output_container').show();
@@ -110,7 +114,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
 $(function() {
   var editor, got_hint = false, start_time = new Date().getTime() / 1000;
   // TODO Timeout if code takes more than 1 second to run
-  editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
+  editor = CodeMirror.fromTextArea(document.getElementById('homework_code'), {
     autofocus: true,
     theme: 'cobalt',
     lineNumbers: true,
@@ -118,26 +122,15 @@ $(function() {
     mode: 'javascript',
     extraKeys: {"Enter": false}
   });
-  $('#practice_run_code').click(function(e) {
-    $('#practice_run_code').prop('disabled', true);
-    $('#give_up').prop('disabled', true);
-    submitCode(editor, start_time, got_hint, false);
+  $('#homework_submit_code').click(function(e) {
+    var runObj;
+    $('#homework_submit_code').prop('disabled', true);
+     runObj = runit(editor.getValue());
+     // TODO: finish me
   });
-  $('#give_up').click(function(e) {
-    $('#practice_run_code').prop('disabled', true);
-    $('#give_up').prop('disabled', true);
-    $('#give_up_modal').modal('show');
-  });
-  $('#give_up_confirm').click(function(e) {
-    $('#practice_run_code').prop('disabled', true);
-    $('#give_up').prop('disabled', true);
-    submitCode(editor, start_time, got_hint, true);
-  });
-  $('#show_hint').click(function(e) {
-    got_hint = true;
-    $('#show_hint').hide();
-    $('#hint_wrapper').show();
-    $('#no_hint_yet').hide();
+  $('#homework_run_code').click(function(e) {
+    var runObj = runit(editor.getValue());
+    $('#homework_output').text(runObj['output']);
   });
   // Fix bug where we cannot select text that is blocked by hidden modal
   $('.modal').on('show.bs.modal', function (e) {
@@ -145,7 +138,6 @@ $(function() {
   })
   $('.modal').on('hidden.bs.modal', function (e) {
     $('.modal').css('z-index', -1);
-    $('#practice_run_code').prop('disabled', false);
-    $('#give_up').prop('disabled', false);
+    $('#homework_run_code').prop('disabled', false);
   })
 });

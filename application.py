@@ -670,10 +670,17 @@ def practice_default(language):
   next_problem_name = get_next_problem(current_user.id, language_map[language])
   return redirect('/practice/%s/%s/' % (language, next_problem_name))
 
-@app.route('/homework/')
+@app.route('/homework/<int:problem_id>/')
 @login_required
-def homework():
-  return render_template('homework.html')
+def homework(problem_id):
+  homework_problem = HomeworkProblem.query.filter_by(id=problem_id).first();
+  if homework_problem == None:
+    return redirect('/')
+  problem_obj = PracticeProblemTemplate.query.get(homework_problem.template_id);
+  problem = problem_obj.to_dict()
+  problem['template_vars'] = utils.get_template_vars(problem['gen_template_vars'])
+  problem = utils.get_problem(problem, language_map['javascript'])
+  return render_template('homework.html', problem=problem)
 
 @app.route('/practice/<language>/<problem_name>/')
 @login_required
