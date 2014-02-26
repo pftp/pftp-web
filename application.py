@@ -416,6 +416,10 @@ def quiz_toaster():
 def quiz_slingshot():
   return quiz(3)
 
+@app.route('/quiz/alpaca/')
+def quiz_alpaca():
+  return quiz(4)
+
 @app.route('/quiz/toaster/submit/', methods=['POST'])
 @login_required
 def submit_quiz_toaster():
@@ -425,6 +429,11 @@ def submit_quiz_toaster():
 @login_required
 def submit_quiz_slingshot():
   return submit_quiz(3)
+
+@app.route('/quiz/alpaca/submit/', methods=['POST'])
+@login_required
+def submit_quiz_alpaca():
+  return submit_quiz(4)
 
 @app.route('/quiz/<int:quiz_id>/')
 def quiz(quiz_id):
