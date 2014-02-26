@@ -672,15 +672,36 @@ def practice_default(language):
 
 @app.route('/homework/<int:problem_id>/')
 @login_required
-def homework(problem_id):
+def homework_prob(problem_id):
+  language_id = language_map['javascript']
   homework_problem = HomeworkProblem.query.filter_by(id=problem_id).first();
   if homework_problem == None:
     return redirect('/')
   problem_obj = PracticeProblemTemplate.query.get(homework_problem.template_id);
   problem = problem_obj.to_dict()
   problem['template_vars'] = utils.get_template_vars(problem['gen_template_vars'])
-  problem = utils.get_problem(problem, language_map['javascript'])
-  return render_template('homework.html', problem=problem)
+  problem = utils.get_problem(problem, language_id)
+
+  # Deal with concepts
+  concept_names = ast_utils.get_concepts(problem['solution'], language_id)
+  problem['concept_names'] = json.dumps(concept_names)
+  # Remove from our problem template any concepts which are not found in this
+  # random version of it
+  concepts = problem['concepts'].all()
+  edited = False
+  for i in range(len(concepts)-1, -1, -1):
+    if concepts[i].name not in concept_names:
+      del concepts[i]
+      edited = True
+  if edited:
+    problem_obj.concepts = concepts
+    db.session.commit()
+
+  # TODO: actually use this start_time
+  dthandler = lambda obj: obj.isoformat()
+  start_time = json.dumps(datetime.datetime.now(), default=dthandler)
+
+  return render_template('homework.html', problem=problem, start_time=start_time)
 
 @app.route('/practice/<language>/<problem_name>/')
 @login_required
@@ -851,8 +872,9 @@ def submit_practice(language, problem_name):
   result_no_test = request.form['result_no_test']
   result_test_error = 1 if request.form['result_test_error'] == 'true' else 0
   result_no_test_error = 1 if request.form['result_no_test_error'] == 'true' else 0
+  # TODO: generate this in python instead of javascript
   start_time = datetime.datetime.fromtimestamp(int(float(request.form['start_time'])))
-  submit_time = datetime.datetime.fromtimestamp(int(float(request.form['submit_time'])))
+  submit_time = datetime.datetime.now()
   template_vars = request.form['template_vars']
   concept_names = json.loads(request.form['concept_names'])
   concepts = []

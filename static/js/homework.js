@@ -26,91 +26,60 @@ var executeCode = function(execObj) {
   }
 };
 var runit = function(code) {
-  var runObj = {'input': code, 'output': ''};
+  var runObj = {'input': code, 'output': '', 'error': false};
   executeCode(runObj);
   return runObj;
 };
-var submitCode = function(editor, startTime, gotHint, gaveUp) {
-  var runObj, testObjs, correct, template_vars, test_code, code, result_no_test,
-    result_test, result_no_test_error, result_test_error, submit_time,
-    successFunc;
+var submitCode = function(code, start_time) {
+  var runObj, testObjs, correct, template_vars, test_code, successFunc;
+  problem_name = $('#problem_name').text().trim();
   template_vars = $('#template_vars').text().trim();
   test_code = $('#test_cases').text().trim();
   concept_names = $('#concept_names').text().trim();
-  code = editor.getValue().replace(/\t/g, '    ');
-  result_no_test = '';
-  result_no_test_error = false;
-  result_test = '';
-  result_test_error = false;
-  submit_time = new Date().getTime() / 1000;
+  // TODO: actually use this
+  //start_time = $('#start_time').text().trim();
 
-  $('#homework_output').text('');
   runObj = runit(code);
-  if (runObj['output'] !== undefined) {
-    result_no_test += runObj['output'];
-  }
-  if (runObj['error'] !== undefined) {
-    result_no_test += runObj['error'];
-    result_no_test_error = true;
-  }
-  if (!gaveUp) {
-    $('#homework_output').text(result_no_test);
-    if (result_no_test !== '') {
-      $('#correct_output').text(result_no_test);
-      $('#correct_output_container').show();
-    } else {
-      $('#correct_output_container').hide();
-    }
-  }
-  testObj = {'input': code + '\n' + test_code};
-  executeCode(testObj);
-  if (testObj['output'] !== undefined) {
-    result_test += testObj['output'];
-  }
-  if (testObj['error'] !== undefined) {
-    result_test += testObj['error'];
-    result_test_error = true;
-  }
-  if (gaveUp) {
-    successFunc = function(data) {
-      window.location.href = '/practice/javascript';
-    }
+  testObj = runit(code + '\n' + test_code);
+  $('#homework_output').text(runObj['output']);
+  if (runObj['output'] !== '') {
+    $('#correct_output').text(runObj['output']);
+    $('#correct_output_container').show();
   } else {
-    successFunc = function(data) {
-      if (data['correct'] === 'correct') {
-        $('#solution').text(data['solution']);
-        $('#correct_modal').modal('show');
-        $('#give_up').hide();
-        $('#next_exercise').show();
-      } else if (data['correct'] === 'error') {
-        $('#error_modal').modal('show');
-      } else {
-        $('#failure_quote').text(data['failure_quote'][0]);
-        $('#failure_quote_author').text(data['failure_quote'][1]);
-        $('#incorrect_modal').modal('show');
-      }
+    $('#correct_output_container').hide();
+  }
+  successFunc = function(data) {
+    if (data['correct'] === 'correct') {
+      $('#solution').text(data['solution']);
+      $('#correct_modal').modal('show');
+      $('#next_problem').show();
+    } else if (data['correct'] === 'error') {
+      $('#error_modal').modal('show');
+    } else {
+      $('#failure_quote').text(data['failure_quote'][0]);
+      $('#failure_quote_author').text(data['failure_quote'][1]);
+      $('#incorrect_modal').modal('show');
     }
   }
   $.ajax({
     type: 'POST',
-    url: 'submit/',
+    url: '/practice/javascript/' + problem_name + '/submit/',
     data: {
       code: code,
-      result_test: result_test,
-      result_test_error: result_test_error,
-      result_no_test: result_no_test,
-      result_no_test_error: result_no_test_error,
-      start_time: startTime,
-      submit_time: submit_time,
-      got_hint: gotHint,
-      gave_up: gaveUp,
+      result_test: testObj['output'],
+      result_test_error: testObj['error'],
+      result_no_test: runObj['output'],
+      result_no_test_error: runObj['error'],
+      start_time: start_time,
+      got_hint: false,
+      gave_up: false,
       template_vars: template_vars,
       concept_names: concept_names
     },
     dataType: 'json',
     success: successFunc
   });
-}
+};
 $(function() {
   var editor, got_hint = false, start_time = new Date().getTime() / 1000;
   // TODO Timeout if code takes more than 1 second to run
@@ -123,10 +92,8 @@ $(function() {
     extraKeys: {"Enter": false}
   });
   $('#homework_submit_code').click(function(e) {
-    var runObj;
     $('#homework_submit_code').prop('disabled', true);
-     runObj = runit(editor.getValue());
-     // TODO: finish me
+    submitCode(editor.getValue(), start_time);
   });
   $('#homework_run_code').click(function(e) {
     var runObj = runit(editor.getValue());
@@ -138,6 +105,6 @@ $(function() {
   })
   $('.modal').on('hidden.bs.modal', function (e) {
     $('.modal').css('z-index', -1);
-    $('#homework_run_code').prop('disabled', false);
+    $('#homework_submit_code').prop('disabled', false);
   })
 });

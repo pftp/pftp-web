@@ -23,17 +23,26 @@
     <div id="run_container">
       <button id="homework_run_code" class="btn btn-success left">Run It!</button>
       <button id="homework_submit_code" class="btn btn-success left">Submit It!</button>
-      <a id="next_problem" href="/practice/{{ language }}" class="btn btn-primary right" style="display:none;">Next Problem</a>
+      <a id="next_problem" href="/homework/" class="btn btn-primary right" style="display:none;">Next Problem</a>
     </div>
     <h4>Output:</h4>
     <pre id="homework_output" class="output-pre"></pre>
   </div>
+</div>
+<div id="problem_name" style="display:none;">
+  {{problem.problem_name}}
 </div>
 <div id="template_vars" style="display:none;">
   {{problem.template_vars}}
 </div>
 <div id="test_cases" style="display:none;">
   {{problem.test}}
+</div>
+<div id="concept_names" style="display:none;">
+  {{problem.concept_names}}
+</div>
+<div id="start_time" style="display:none;">
+  {{start_time}}
 </div>
 <div id="correct_modal" class="modal fade">
   <div class="modal-dialog">
@@ -54,7 +63,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a id="modal_next_problem" href="/practice/{{ language }}" class="btn btn-primary">Next Problem</a>
+        <a id="modal_next_problem" href="/homework/" class="btn btn-primary">Next Problem</a>
       </div>
     </div>
   </div>
