@@ -147,7 +147,7 @@ def add_quiz1_assignment():
 
 @task
 def add_homework_1():
-  assignment = Assignment(name="Homework 1", semester="sp14", href="/homework/calendar/", description="", deadline=datetime(2014,3,5,23,59), points=4)
+  assignment = Assignment(name="Homework 1", semester="sp14", href="/homework/calendar/", description="", deadline=datetime(2014,3,4,23,59), points=10)
   db.session.add(assignment)
   db.session.commit()
   homework1 = Homework(week=4, deadline=assignment.deadline, assignment_id=assignment.id)
@@ -572,7 +572,7 @@ def add_practice_problems(language):
             print colored("failed to add homework problem for day %s" % line_split[1], 'red')
             break
         elif line_split[0] == 'day':
-          back_day_num = 7 - int(line_split[1])
+          back_day_num = 6 - int(line_split[1])
           back_time = timedelta(back_day_num)
           deadline = homework.deadline - back_time
           homework_problem = HomeworkProblem.query.filter_by(template_id=template.id).first()

@@ -671,7 +671,7 @@ def practice_progress_by_user_id(user_id, language_id, admin=False):
     attempts.append(current_attempt)
   return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=display_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id, language=language)
 
-@app.route('/practice/<language>')
+@app.route('/practice/<language>/')
 @login_required
 def practice_default(language):
   if language not in language_map:
@@ -694,8 +694,33 @@ def homework():
 @app.route('/homework/calendar/')
 @login_required
 def homework_calendar():
-  # TODO: fix this
-  return redirect('/homework/')
+  language_id = language_map['javascript'];
+  day_map = {1: 'Thu', 2: 'Fri', 3: 'Sat', 4: 'Sun', 5: 'Mon', 6: 'Tue'}
+  problem_list = HomeworkProblem.query.order_by(HomeworkProblem.deadline).all()
+  homework_list = Homework.query.all()
+  template_list = PracticeProblemTemplate.query.filter_by(language_id=language_id).all()
+  template_dict = {}
+  for template in template_list:
+    template_dict[template.id] = template
+  homework_dict = {}
+  for homework in homework_list:
+    homework_dict[homework.id] = homework
+  correct_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id, correct=True).all()
+  correct_ids = map(lambda x: x.problem_id, correct_subs)
+  homeworks = {}
+  for problem in problem_list:
+    template = template_dict[problem.template_id]
+    homework = homework_dict[problem.homework_id]
+    problem_obj = template.to_dict()
+    problem_day = 6 - (homework.deadline - problem.deadline).days
+    problem_obj['problem_id'] = problem.id
+    problem_obj['completed'] = problem.template_id in correct_ids
+    if homework.week not in homeworks:
+      homeworks[homework.week] = {}
+    if problem_day not in homeworks[homework.week]:
+      homeworks[homework.week][problem_day] = []
+    homeworks[homework.week][problem_day].append(problem_obj)
+  return render_template('homework_calendar.html', homeworks=homeworks, day_map=day_map)
 
 @app.route('/homework/problem/<int:problem_id>/')
 @login_required
@@ -728,7 +753,7 @@ def homework_prob(problem_id):
   dthandler = lambda obj: obj.isoformat()
   start_time = json.dumps(datetime.datetime.now(), default=dthandler)
 
-  return render_template('homework.html', problem=problem, start_time=start_time)
+  return render_template('homework.html', problem=problem, start_time=start_time, homework=homework_problem)
 
 @app.route('/practice/<language>/<problem_name>/')
 @login_required

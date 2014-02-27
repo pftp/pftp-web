@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+Homework Calendar
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/homework_calendar.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<h1> Homework Calendar </h1>
+{% for week, days in homeworks|dictsort %}
+<h4> Week {{ week }} </h4>
+<table class="table table-bordered table-striped table-hover">
+  <tr>
+    {% for day, probs in days|dictsort %}
+    <td>
+      {{ day_map[day] }}<br>
+      {% for prob in probs %}
+      <a href="/homework/problem/{{ prob.problem_id }}">{{ prob.problem_name }}</a>
+      {% if prob.completed %}
+      &#x2713;
+      {% else %}
+      &#x2717;
+      {% endif %}
+      <br>
+      {% endfor %}
+    </td>
+    {% endfor %}
+  </tr>
+</table>
+{% endfor %}
+</div>
+{% endblock %}
