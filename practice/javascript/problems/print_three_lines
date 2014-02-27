@@ -1,0 +1,20 @@
+### homework
+week 4
+day 2
+
+### prompt
+Print the words "{{ random_word }}", "{{ random_word2 }}", and
+"{{ random_word3 }}", each on its own line.
+### solution
+console.log('{{ random_word }}');
+console.log('{{ random_word2 }}');
+console.log('{{ random_word3 }}');
+### test
+// pass
+### hint
+### gen_template_vars
+res = {
+  'random_word': rand_word(),
+  'random_word2': rand_word(),
+  'random_word3': rand_word()
+}

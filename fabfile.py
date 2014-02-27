@@ -147,10 +147,10 @@ def add_quiz1_assignment():
 
 @task
 def add_homework_1():
-  assignment = Assignment(name="Homework 1", semester="sp14", href="/homework/1/", description="", deadline=datetime(2014,2,25,23,59), points=4)
+  assignment = Assignment(name="Homework 1", semester="sp14", href="/homework/calendar/", description="", deadline=datetime(2014,3,5,23,59), points=4)
   db.session.add(assignment)
   db.session.commit()
-  homework1 = Homework(week=3, deadline=assignment.deadline, assignment_id=assignment.id)
+  homework1 = Homework(week=4, deadline=assignment.deadline, assignment_id=assignment.id)
   db.session.add(homework1)
   db.session.commit()
   print colored('homework 1 and assignment added to database', "green")
@@ -542,21 +542,22 @@ def add_practice_problems(language):
         print colored("%s added to database." % template.problem_name, 'yellow')
         count_add += 1
         old_template.is_current = False
-        continue
-      # update template variables, hint if they have been modified
-      # we don't need to readd our template in this case
-      template = old_template
-      count_update_updated = False
-      for field_name in ['gen_template_vars', 'hint', 'is_homework']:
-        if getattr(template, field_name) != problem[field_name]:
-          setattr(template, field_name, problem[field_name])
-          print colored("%s updated with changed %s field" % (problem['problem_name'], field_name), 'yellow')
-          if not count_update_updated:
-            count_update += 1
-            count_update_updated = True
+      else:
+        # update template variables, hint if they have been modified
+        # we don't need to readd our template in this case
+        template = old_template
+        count_update_updated = False
+        for field_name in ['gen_template_vars', 'hint', 'is_homework']:
+          if getattr(template, field_name) != problem[field_name]:
+            setattr(template, field_name, problem[field_name])
+            print colored("%s updated with changed %s field" % (problem['problem_name'], field_name), 'yellow')
+            if not count_update_updated:
+              count_update += 1
+              count_update_updated = True
     time_spent = time.time() - start_time
     if time_spent > 1:
       print colored('%s took %.2f seconds to generate (more than 1 second is excessive)' % (problem['problem_name'], time_spent), 'red')
+    db.session.commit()
 
     # Add reference to homework if we have a homework problem
     if problem['is_homework']:
@@ -571,7 +572,7 @@ def add_practice_problems(language):
             print colored("failed to add homework problem for day %s" % line_split[1], 'red')
             break
         elif line_split[0] == 'day':
-          back_day_num = 6 - int(line_split[1])
+          back_day_num = 7 - int(line_split[1])
           back_time = timedelta(back_day_num)
           deadline = homework.deadline - back_time
           homework_problem = HomeworkProblem.query.filter_by(template_id=template.id).first()

@@ -1,9 +1,14 @@
+### homework
+week 4
+day 5
+
 ### prompt
-Print the word '{{ w1 }}' {{ i1 }} times, each on a separate line. Your code should not be longer than 2 lines.
+Print the word '{{ w1 }}' {{ i1 }} times, each on a separate line, using a for loop. Your code should not be longer than 3 lines.
 
 ### solution
-for (var i = 0; i < {{ i1 }}; i++)
+for (var i = 0; i < {{ i1 }}; i++) {
   console.log('{{ w1 }}');
+}
 
 ### test
 // pass
@@ -17,6 +22,6 @@ Make sure you aren't printing anything extra or else we won't be able to validat
 ### gen_template_vars
 res = {
   'w1': rand_word(),
-  'i1': rand_int(4, 10)
+  'i1': rand_int(6, 15)
 }
 

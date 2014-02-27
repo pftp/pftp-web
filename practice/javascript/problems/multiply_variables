@@ -1,3 +1,7 @@
+### homework
+week 4
+day 3
+
 ### prompt
 Create a variable called {{ var_name }} and set the value of {{ var_name }} to be {{ y }}. Create another variable called {{ var_name1 }} and set the value of {{ var_name1 }} to be {{ z }}. Print the product of {{ var_name }} and {{ var_name1 }} by executing the line "console.log({{ var_name }} * {{ var_name1 }});"
 ### solution

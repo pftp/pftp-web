@@ -1,13 +1,13 @@
 ### homework
 week 4
-day 3
+day 4
 
 ### prompt
-Create a variable called {{ var_name }} and set the value of {{ var_name }} to be {{ x }}. Create another variable called {{ var_name1 }} and set the value of {{ var_name1 }} to be {{ y }}. Print the sum of {{ var_name }} and {{ var_name1 }} by executing the line "console.log({{ var_name }} + {{ var_name1 }});"
+Create a variable called {{ var_name }} and set the value of {{ var_name }} to be {{ x }}. Create another variable called {{ var_name1 }} and set the value of {{ var_name1 }} to be {{ y }}. Print the modulus (aka division remainder) of {{ var_name }} and {{ var_name1 }} by executing the line "console.log({{ var_name }} % {{ var_name1 }});".
 ### solution
 var {{ var_name }} = {{ x }};
 var {{ var_name1 }} = {{ y }};
-console.log({{ var_name }} + {{ var_name1 }});
+console.log({{ var_name }} % {{ var_name1 }});
 ### test
 console.log({{ var_name }});
 console.log({{ var_name1 }});

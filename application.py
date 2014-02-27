@@ -679,7 +679,25 @@ def practice_default(language):
   next_problem_name = get_next_problem(current_user.id, language_map[language])
   return redirect('/practice/%s/%s/' % (language, next_problem_name))
 
-@app.route('/homework/<int:problem_id>/')
+@app.route('/homework/')
+@login_required
+def homework():
+  language_id = language_map['javascript'];
+  problem_list = HomeworkProblem.query.order_by(HomeworkProblem.deadline).all()
+  correct_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id, correct=True).all()
+  correct_ids = map(lambda x: x.problem_id, correct_subs)
+  for problem in problem_list:
+    if problem.template_id not in correct_ids:
+      return redirect('/homework/problem/' + str(problem.id) + '/')
+  return redirect('/')
+
+@app.route('/homework/calendar/')
+@login_required
+def homework_calendar():
+  # TODO: fix this
+  return redirect('/homework/')
+
+@app.route('/homework/problem/<int:problem_id>/')
 @login_required
 def homework_prob(problem_id):
   language_id = language_map['javascript']

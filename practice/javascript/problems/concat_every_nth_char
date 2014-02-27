@@ -6,8 +6,9 @@ print out this new string.
 ### solution
 var str = '{{ s }}';
 var res = '';
-for (var i = 0; i < str.length; i+= {{ n }})
+for (var i = 0; i < str.length; i+= {{ n }}) {
   res += str[i];
+}
 console.log(res);
 
 ### test

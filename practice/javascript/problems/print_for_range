@@ -1,10 +1,15 @@
+### homework
+week 4
+day 6
+
 ### prompt
 Print out every number from {{ start }} to {{ end }}, inclusive, using a for
-loop.
+loop. Each number should be printed on its own line.
 
 ### solution
-for (var i = {{ start }}; i < {{ end }}+1; i++)
+for (var i = {{ start }}; i < {{ end }}+1; i++) {
   console.log(i);
+}
 
 ### test
 // pass
