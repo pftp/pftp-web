@@ -270,6 +270,52 @@ def add_quiz2():
   print colored('quiz 2 added to database', "green")
 
 
+@task
+def add_quiz3():
+  assignment = Assignment(name="Quiz 3", semester="sp14", href="/quiz/3/", description="", deadline=datetime(2014,2,26,18,59), points=4)
+  db.session.add(assignment)
+  db.session.commit()
+
+  quiz3 = Quiz(name="Week 3 Quiz", week=3, deadline=assignment.deadline, assignment_id=assignment.id)
+
+  question1 = QuizQuestion(question="Which of the following cannot be used to control program execution flow?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'if statements'}
+          , {'id': 'B', 'answer': 'console.log statements'}
+          , {'id': 'C', 'answer': 'for loops'}
+          , {'id': 'D', 'answer': 'while loops'}
+          ])
+      , solution='B')
+
+  question2 = QuizQuestion(question="Which of the following variables is named using 'camel case' capitalization?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'fuzzylittleturtles'}
+          , {'id': 'B', 'answer': 'fuzzyLittleTurtles'}
+          , {'id': 'C', 'answer': 'FuzzyLittleTurtles'}
+          , {'id': 'D', 'answer': 'fuzzy_little_turtles'}
+          ])
+      , solution='B')
+
+  question3 = QuizQuestion(question="What does the following code print? 'console.log(\"This is\" + 7 + \"words in a sentence.\");",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'This is + 7 + words in a sentence.'}
+          , {'id': 'B', 'answer': 'This is7words in a sentence.'}
+          , {'id': 'C', 'answer': 'This is 7 words in a sentence.'}
+          , {'id': 'D', 'answer': '\"This is \" + 7 + \" words in a sentence.\"'}
+          ])
+      , solution='B')
+
+  quiz3.questions.append(question1)
+  quiz3.questions.append(question2)
+  quiz3.questions.append(question3)
+  db.session.add(quiz3)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.commit()
+  print colored('quiz 3 added to database', "green")
+
+
 ################################################################################
 # Helpers
 ################################################################################
