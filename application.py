@@ -689,7 +689,7 @@ def homework():
   for problem in problem_list:
     if problem.template_id not in correct_ids:
       return redirect('/homework/problem/' + str(problem.id) + '/')
-  return redirect('/')
+  return redirect('/homework/calendar/')
 
 @app.route('/homework/calendar/')
 @login_required
