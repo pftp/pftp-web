@@ -447,11 +447,40 @@ def quiz(quiz_week):
 
   first_quiz = quizzes[0]
   questions = map(lambda x: x.__dict__, first_quiz.questions)
+
   for question in questions:
     question['answer_choices'] = json.loads(question['answer_choices'])
   first_quiz = first_quiz.__dict__
   first_quiz['questions'] = questions
-  return render_template('quiz.html', quiz=first_quiz)
+
+  quiz_responses = QuizResponse.query.filter_by(quiz_id=first_quiz['id'], user_id=current_user.id).all()
+
+  #id = db.Column(db.Integer(), primary_key=True)
+  #submit_time = db.Column(db.DateTime(), nullable=False)
+  #quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'), nullable=False)
+  #question_id = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
+  #user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+  #user_answer = db.Column(db.String(100), nullable=False)
+
+  show_solutions = False
+  if len(quiz_responses) > 0:
+    show_solutions = True
+    first_quiz['score'] = len(first_quiz['questions'])
+    first_quiz['total'] = len(first_quiz['questions'])
+    responses = {}
+
+    for quiz_response in quiz_responses:
+      responses[quiz_response.question_id] = quiz_response.user_answer
+
+    for question in questions:
+      for answer_choice in question['answer_choices']:
+        if answer_choice['id'] == question['solution']:
+          answer_choice['correct'] = True
+        elif answer_choice['id'] == responses[question['id']]:
+          answer_choice['incorrect'] = True
+          first_quiz['score'] -= 1
+
+  return render_template('quiz.html', quiz=first_quiz, show_solutions=show_solutions)
 
 @app.route('/quiz/<int:quiz_week>/submit/', methods=['POST'])
 @login_required

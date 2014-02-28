@@ -4,12 +4,19 @@
 {% endblock %}
 
 {% block head %}
+{% if not show_solutions %}
 <script type="text/javascript" src="{{url_for('static', filename='js/quiz.js')}}"></script>
+{% endif %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/quiz.css') }}" />
 {% endblock %}
 {% block content %}
 <div class="container" id="quiz_container">
 <h2> {{ quiz.name }} </h2>
-<h4> Due: {{ quiz.deadline }} </h4>
+{% if show_solutions %}
+  <h4> Score: {{ quiz.score }} / {{ quiz.total }} </h4>
+{% else %}
+  <h4> Due: {{ quiz.deadline }} </h4>
+{% endif %}
 <br><br>
 {% for question in quiz.questions %}
 <h4> {{ question.question |safe}} </h4>
@@ -18,10 +25,21 @@
   <div class="span9">
     {% for answer_choice in question.answer_choices %}
     <div class="radio">
-      <label>
-        <input type="radio" name="{{ question.id }}" value="{{ question.id }},{{ answer_choice.id }}">
-        {{ answer_choice.id}}. {{ answer_choice.answer |safe}}
-      </label>
+      {% if show_solutions %}
+        <span
+          {% if answer_choice.correct %}
+            class="correct"
+          {% elif answer_choice.incorrect %}
+            class="incorrect"
+          {% endif %}>
+          {{ answer_choice.id}}. {{ answer_choice.answer |safe}}
+        </span>
+      {% else %}
+        <label>
+          <input type="radio" name="{{ question.id }}" value="{{ question.id }},{{ answer_choice.id }}">
+          {{ answer_choice.id}}. {{ answer_choice.answer |safe}}
+        </label>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
@@ -30,7 +48,9 @@
 <br><br>
 
 {% endfor %}
+{% if not show_solutions %}
 <button type="submit" class="btn btn-default" id="submit_quiz"> I'm Done! </button>
+{% endif %}
 </div>
 <br><br><br><br>
 {% endblock %}
