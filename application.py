@@ -410,37 +410,37 @@ def lesson(lesson_path):
 #TODO make better
 @app.route('/quiz/toaster/')
 def quiz_toaster():
-  return quiz(2)
+  return quiz(1)
 
 @app.route('/quiz/slingshot/')
 def quiz_slingshot():
-  return quiz(3)
+  return quiz(2)
 
 @app.route('/quiz/alpaca/')
 def quiz_alpaca():
-  return quiz(4)
+  return quiz(3)
 
 @app.route('/quiz/toaster/submit/', methods=['POST'])
 @login_required
 def submit_quiz_toaster():
-  return submit_quiz(2)
+  return submit_quiz(1)
 
 @app.route('/quiz/slingshot/submit/', methods=['POST'])
 @login_required
 def submit_quiz_slingshot():
-  return submit_quiz(3)
+  return submit_quiz(2)
 
 @app.route('/quiz/alpaca/submit/', methods=['POST'])
 @login_required
 def submit_quiz_alpaca():
-  return submit_quiz(4)
+  return submit_quiz(3)
 
-@app.route('/quiz/<int:quiz_id>/')
-def quiz(quiz_id):
+@app.route('/quiz/<int:quiz_week>/')
+def quiz(quiz_week):
   if not current_user.is_authenticated():
     return render_template('message.html', message='You need to log in first')
 
-  quizzes = Quiz.query.filter(Quiz.id==quiz_id).all()
+  quizzes = Quiz.query.filter_by(week=quiz_week).all()
 
   if len(quizzes) < 1:
     return redirect('/')
@@ -453,14 +453,17 @@ def quiz(quiz_id):
   first_quiz['questions'] = questions
   return render_template('quiz.html', quiz=first_quiz)
 
-@app.route('/quiz/<int:quiz_id>/submit/', methods=['POST'])
+@app.route('/quiz/<int:quiz_week>/submit/', methods=['POST'])
 @login_required
-def submit_quiz(quiz_id):
+def submit_quiz(quiz_week):
+  quiz = Quiz.query.filter_by(week=quiz_week).first()
+  if quiz == None:
+    return 'Error: No quiz found with given week'
   answer_choices = request.form.getlist('selected[]')
   time_now = datetime.datetime.now()
   for answer_choice in answer_choices:
     question_id, answer = answer_choice.strip().split(',')
-    qr = QuizResponse(quiz_id=int(quiz_id), question_id=int(question_id), user_id=current_user.id, user_answer=answer, submit_time=time_now)
+    qr = QuizResponse(quiz_id=int(quiz.id), question_id=int(question_id), user_id=current_user.id, user_answer=answer, submit_time=time_now)
     db.session.add(qr)
   db.session.commit()
   return 'Submitted'
