@@ -455,13 +455,6 @@ def quiz(quiz_week):
 
   quiz_responses = QuizResponse.query.filter_by(quiz_id=first_quiz['id'], user_id=current_user.id).all()
 
-  #id = db.Column(db.Integer(), primary_key=True)
-  #submit_time = db.Column(db.DateTime(), nullable=False)
-  #quiz_id = db.Column(db.Integer(), db.ForeignKey('quiz.id'), nullable=False)
-  #question_id = db.Column(db.Integer(), db.ForeignKey('quiz_question.id'), nullable=False)
-  #user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
-  #user_answer = db.Column(db.String(100), nullable=False)
-
   show_solutions = False
   if len(quiz_responses) > 0:
     show_solutions = True
@@ -486,16 +479,34 @@ def quiz(quiz_week):
 @login_required
 def submit_quiz(quiz_week):
   quiz = Quiz.query.filter_by(week=quiz_week).first()
+  questions = {}
+  for question in map(lambda x: x.__dict__, quiz.questions):
+    questions[question['id']] = question
+
   if quiz == None:
     return 'Error: No quiz found with given week'
   answer_choices = request.form.getlist('selected[]')
   time_now = datetime.datetime.now()
+  total = len(answer_choices)
+  score = 0
   for answer_choice in answer_choices:
     question_id, answer = answer_choice.strip().split(',')
-    qr = QuizResponse(quiz_id=int(quiz.id), question_id=int(question_id), user_id=current_user.id, user_answer=answer, submit_time=time_now)
+    question_id = int(question_id)
+    if answer == questions[question_id]['solution']:
+      score += 1
+    qr = QuizResponse(quiz_id=int(quiz.id), question_id=question_id, user_id=current_user.id, user_answer=answer, submit_time=time_now)
     db.session.add(qr)
-  db.session.commit()
-  return 'Submitted'
+
+  time_now = datetime.datetime.now()
+  assignments = Assignment.query.filter_by(href='/quiz/' + str(quiz_week) + '/', semester='sp14').all()
+  if len(assignments) == 0:
+    return 'Error: No assignment found for quiz'
+  else:
+    assignment = assignments[0]
+    grade = Grade(score=score, submitted=time_now, user_id=current_user.id, assignment_id=assignment.id)
+    db.session.add(grade)
+    db.session.commit()
+    return 'Submitted'
 
 @app.route('/labs/<int:lab_id>/')
 def lab(lab_id):
