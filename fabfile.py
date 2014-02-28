@@ -272,7 +272,7 @@ def add_quiz2():
 
 @task
 def add_quiz3():
-  assignment = Assignment(name="Quiz 3", semester="sp14", href="/quiz/3/", description="", deadline=datetime(2014,2,26,18,59), points=4)
+  assignment = Assignment(name="Quiz 3", semester="sp14", href="/quiz/3/", description="", deadline=datetime(2014,2,26,18,59), points=3)
   db.session.add(assignment)
   db.session.commit()
 
