@@ -1205,9 +1205,37 @@ def jscheatsheet():
 def html_cheatsheet():
   return render_template('html_cheatsheet.html')
 
+def calc_homework_grades(user_id):
+  language_id = language_map['javascript']
+  homeworks = Homework.query.all()
+  homework_dict = {}
+  for homework in homeworks:
+    homework_dict[homework.id] = 0
+  homework_problems = HomeworkProblem.query.all()
+  correct_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id, correct=True).all()
+  correct_dict = {}
+  for sub in correct_subs:
+    correct_dict[sub.problem_id] = sub
+  for problem in homework_problems:
+    for template_id, sub in correct_dict.iteritems():
+      if problem.template_id == template_id and sub.submitted <= problem.deadline:
+        homework_dict[problem.homework_id] += 1
+        break
+  for homework in homeworks:
+    grade = Grade.query.filter_by(assignment_id=homework.assignment_id, user_id=user_id).first()
+    time_now = datetime.datetime.now()
+    if grade == None:
+      grade = Grade(score=homework_dict[homework.id], submitted=time_now, user_id=user_id, assignment_id=homework.assignment_id)
+    else:
+      grade.score = homework_dict[homework.id]
+      grade.submitted=time_now
+    db.session.add(grade)
+    db.session.commit()
+
 @app.route('/dashboard/')
 @login_required
 def user_dashboard():
+  calc_homework_grades(current_user.id)
   context = {}
   context['total_score'] = 0
   context['total_points'] = 0
