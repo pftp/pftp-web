@@ -13,7 +13,7 @@ from time import strftime
 from fabric.api import local, task, settings
 from fabric.operations import get, put
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem, QuizResponse
 import utils, ast_utils
 from emailer import Emailer
 
@@ -314,6 +314,27 @@ def add_quiz3():
   db.session.add(question3)
   db.session.commit()
   print colored('quiz 3 added to database', "green")
+
+@task
+def grade_quizzes():
+  time_now = datetime.now()
+  quizzes = Quiz.query.all()
+  for user in User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal')):
+    for quiz in quizzes:
+      grade = Grade.query.filter_by(user_id=user.id, assignment_id=quiz.assignment_id).first()
+      if not grade:
+        assignment = Assignment.query.filter_by(id=quiz.assignment_id).first()
+        score = 0
+        responses = QuizResponse.query.filter_by(user_id=user.id, quiz_id=quiz.id).all()
+        if len(responses) != 0:
+          i = 0
+          for question in quiz.questions.all():
+            if question.solution == responses[i].user_answer:
+              score += 1
+        grade = Grade(score=score, submitted=time_now, user_id=user.id, assignment_id=assignment.id)
+        db.session.add(grade)
+        print 'Added', user.email, assignment.href, str(score) + '/' + str(assignment.points)
+  db.session.commit()
 
 
 ################################################################################
