@@ -1320,7 +1320,7 @@ def admin_dashboard():
   student_set = set(student_models.all())
   nonstudent_set = set(user_models.all()) - student_set
 
-  assignments = Assignment.query.order_by(Assignment.deadline).all()
+  assignments = Assignment.query.filter_by(semester='sp14').order_by(Assignment.deadline).all()
 
   def templatize_data(models):
     students = map(lambda x: x.__dict__, models)
