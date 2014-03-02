@@ -111,7 +111,9 @@ def backup():
   #HACKHACK
   #app isn't initialized properly unless apachectl is used
   #TODO figure out why
+  time.sleep(2)
   local('apachectl -k stop')
+  time.sleep(2)
   local('apachectl -k start')
 
 @task(default=True)
