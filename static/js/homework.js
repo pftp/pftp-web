@@ -30,14 +30,14 @@ var runit = function(code) {
   executeCode(runObj);
   return runObj;
 };
-var submitCode = function(code, start_time) {
-  var runObj, testObjs, correct, template_vars, test_code, successFunc;
+var submitCode = function(code) {
+  var runObj, testObjs, correct, template_vars, test_code, successFunc,
+    startTime;
   problem_name = $('#problem_name').text().trim();
   template_vars = $('#template_vars').text().trim();
   test_code = $('#test_cases').text().trim();
   concept_names = $('#concept_names').text().trim();
-  // TODO: actually use this
-  //start_time = $('#start_time').text().trim();
+  startTime = $('#start_time').text().trim();
 
   runObj = runit(code);
   testObj = runit(code + '\n' + test_code);
@@ -70,7 +70,7 @@ var submitCode = function(code, start_time) {
       result_test_error: testObj['error'],
       result_no_test: runObj['output'],
       result_no_test_error: runObj['error'],
-      start_time: start_time,
+      start_time: startTime,
       got_hint: false,
       gave_up: false,
       template_vars: template_vars,
@@ -81,7 +81,7 @@ var submitCode = function(code, start_time) {
   });
 };
 $(function() {
-  var editor, got_hint = false, start_time = new Date().getTime() / 1000;
+  var editor, got_hint = false;
   // TODO Timeout if code takes more than 1 second to run
   editor = CodeMirror.fromTextArea(document.getElementById('homework_code'), {
     autofocus: true,
@@ -93,7 +93,7 @@ $(function() {
   });
   $('#homework_submit_code').click(function(e) {
     $('#homework_submit_code').prop('disabled', true);
-    submitCode(editor.getValue(), start_time);
+    submitCode(editor.getValue());
   });
   $('#homework_run_code').click(function(e) {
     var runObj = runit(editor.getValue());
