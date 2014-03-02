@@ -325,12 +325,15 @@ def grade_quizzes():
       if not grade:
         assignment = Assignment.query.filter_by(id=quiz.assignment_id).first()
         score = 0
-        responses = QuizResponse.query.filter_by(user_id=user.id, quiz_id=quiz.id).all()
+        quiz_responses = QuizResponse.query.filter_by(user_id=user.id, quiz_id=quiz.id).all()
+        responses = {}
+        for quiz_response in quiz_responses:
+          responses[quiz_response.question_id] = quiz_response
         if len(responses) != 0:
-          i = 0
           for question in quiz.questions.all():
-            if question.solution == responses[i].user_answer:
+            if question.solution == responses[question.id].user_answer:
               score += 1
+
         grade = Grade(score=score, submitted=time_now, user_id=user.id, assignment_id=assignment.id)
         db.session.add(grade)
         print 'Added', user.email, assignment.href, str(score) + '/' + str(assignment.points)
