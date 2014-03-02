@@ -25,6 +25,7 @@ Teacher Dashboard
         <th>Id</th>
         <th> Practice Problems Attempted </th>
         <th>Email</th>
+        <th>Website</th>
         <th>First</th>
         <th>Last</th>
         {% for assignment in assignments %}
@@ -40,6 +41,13 @@ Teacher Dashboard
         <!--TODO show all language attempts -->
         <td><a href="/admin/practice_progress/{{ student.id }}/javascript">{{ student.num_practice_attempted }}</a> </td>
         <td>{{ student.email }}</td>
+        <td>
+        {% if student.website %}
+          <a href="{{ student.website }}">{{ student.website }}</a>
+        {% else %}
+          N/A
+        {% endif %}
+        </td>
         <td>{{ student.firstname }}</td>
         <td>{{ student.lastname }}</td>
         {% for grade in student.grades %}
