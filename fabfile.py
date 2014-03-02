@@ -108,6 +108,12 @@ def backup():
   #restart apache
   local('service apache2 restart')
 
+  #HACKHACK
+  #app isn't initialized properly unless apachectl is used
+  #TODO figure out why
+  local('apachectl -k stop')
+  local('apachectl -k start')
+
 @task(default=True)
 def run():
   app.run()
