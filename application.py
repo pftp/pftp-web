@@ -1,4 +1,4 @@
-import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, ast, sets
+import os, sys, sqlite3, datetime, json, subprocess, pipes, uuid, shutil, cgi, ast, sets, dateutil.parser
 from collections import defaultdict
 from flask import Flask, render_template, redirect, Markup, jsonify, url_for, request, send_file, Response
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -792,11 +792,12 @@ def homework_prob(problem_id):
     problem_obj.concepts = concepts
     db.session.commit()
 
-  # TODO: actually use this start_time
+  # Handle start_time server side
   dthandler = lambda obj: obj.isoformat()
   start_time = json.dumps(datetime.datetime.now(), default=dthandler)
+  problem['start_time'] = start_time
 
-  return render_template('homework.html', problem=problem, start_time=start_time, homework=homework_problem)
+  return render_template('homework.html', problem=problem, homework=homework_problem)
 
 @app.route('/practice/<language>/<problem_name>/')
 @login_required
@@ -843,6 +844,11 @@ def practice(language, problem_name):
     for concept in concepts:
       if concept.name not in seen_concept_names:
         new_concepts.append((concept.name, concept.display_name))
+
+    # Handle start_time server side
+    dthandler = lambda obj: obj.isoformat()
+    start_time = json.dumps(datetime.datetime.now(), default=dthandler)
+    problem['start_time'] = start_time
 
     return render_template('practice.html', problem=problem, concepts=display_concepts, new_concepts=new_concepts, language=language)
   else:
@@ -967,8 +973,7 @@ def submit_practice(language, problem_name):
   result_no_test = request.form['result_no_test']
   result_test_error = 1 if request.form['result_test_error'] == 'true' else 0
   result_no_test_error = 1 if request.form['result_no_test_error'] == 'true' else 0
-  # TODO: generate this in python instead of javascript
-  start_time = datetime.datetime.fromtimestamp(int(float(request.form['start_time'])))
+  start_time = dateutil.parser.parse(json.loads(request.form['start_time']))
   submit_time = datetime.datetime.now()
   template_vars = request.form['template_vars']
   concept_names = json.loads(request.form['concept_names'])

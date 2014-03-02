@@ -26,10 +26,10 @@ var runit = function(code) {
   executeCode(runObj);
   return runObj;
 };
-var submitCode = function(editor, startTime, gotHint, gaveUp) {
+var submitCode = function(editor, gotHint, gaveUp) {
   var runObj, testObjs, correct, template_vars, test_code, code, result_no_test,
-    result_test, result_no_test_error, result_test_error, submit_time,
-    successFunc;
+    result_test, result_no_test_error, result_test_error, successFunc,
+    startTime;
   template_vars = $('#template_vars').text().trim();
   test_code = $('#test_cases').text().trim();
   concept_names = $('#concept_names').text().trim();
@@ -38,7 +38,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   result_no_test_error = false;
   result_test = '';
   result_test_error = false;
-  submit_time = new Date().getTime() / 1000;
+  startTime = $('#start_time').text().trim();
 
   $('#practice_output').text('');
   runObj = runit(code);
@@ -97,7 +97,6 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
       result_no_test: result_no_test,
       result_no_test_error: result_no_test_error,
       start_time: startTime,
-      submit_time: submit_time,
       got_hint: gotHint,
       gave_up: gaveUp,
       template_vars: template_vars,
@@ -108,7 +107,7 @@ var submitCode = function(editor, startTime, gotHint, gaveUp) {
   });
 }
 $(function() {
-  var editor, got_hint = false, start_time = new Date().getTime() / 1000;
+  var editor, got_hint = false;
   // TODO Timeout if code takes more than 1 second to run
   editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
     autofocus: true,
@@ -121,7 +120,7 @@ $(function() {
   $('#practice_run_code').click(function(e) {
     $('#practice_run_code').prop('disabled', true);
     $('#give_up').prop('disabled', true);
-    submitCode(editor, start_time, got_hint, false);
+    submitCode(editor, got_hint, false);
   });
   $('#give_up').click(function(e) {
     $('#practice_run_code').prop('disabled', true);
@@ -131,7 +130,7 @@ $(function() {
   $('#give_up_confirm').click(function(e) {
     $('#practice_run_code').prop('disabled', true);
     $('#give_up').prop('disabled', true);
-    submitCode(editor, start_time, got_hint, true);
+    submitCode(editor, got_hint, true);
   });
   $('#show_hint').click(function(e) {
     got_hint = true;
