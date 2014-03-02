@@ -13,7 +13,7 @@ from time import strftime
 from fabric.api import local, task, settings
 from fabric.operations import get, put
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem, QuizResponse
+from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem, QuizResponse, calc_homework_grades
 import utils, ast_utils
 from emailer import Emailer
 
@@ -322,6 +322,16 @@ def add_quiz3():
   db.session.add(question3)
   db.session.commit()
   print colored('quiz 3 added to database', "green")
+
+@task
+def grade_homework():
+  students = User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal'))
+  count = 0
+  for student in students:
+    count += 1
+    calc_homework_grades(student.id)
+    print colored('Homework grades calculated for %s %s' % (student.firstname, student.lastname), 'yellow')
+  print colored('Homework grades calculated for %d students' % count, 'green')
 
 @task
 def grade_quizzes():

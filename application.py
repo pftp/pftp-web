@@ -1261,7 +1261,7 @@ def calc_homework_grades(user_id):
   for homework in homeworks:
     homework_dict[homework.id] = 0
   homework_problems = HomeworkProblem.query.all()
-  correct_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id, correct=True).all()
+  correct_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id, correct=True).all()
   correct_dict = {}
   for sub in correct_subs:
     correct_dict[sub.problem_id] = sub
