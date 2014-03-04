@@ -120,6 +120,14 @@ def backup():
 def run():
   app.run()
 
+############### DeCal specific tasks #################
+#TODO send concurrent HEAD requests
+@task
+def wake_sites():
+  for user in User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal')):
+    if user.website:
+      print "Waking " + user.website
+
 ############### Assignments Spring 2014 ###############
 
 @task
