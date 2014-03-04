@@ -1,31 +1,7 @@
-Practice
-[ ] Add javascript problems
 [ ] Add beginner friendly references for js concepts
-
-Bugs
 [ ] practice_progress shows attempts for problem where is_current=False
-
-Setup
-[ ] Clear old class schedule and set up new schema
-
-Schema
-[ ] Possibly integrate Lessons and assignments on the same page: or link lessons to corresponding assignments
-[ ] rewrite schema
-
-UI
 [ ] fix login ui
 [ ] prettyprint for syntax highlighting
 [ ] replace codemirror with ace editor
-
-Jank code
 [ ] unjankify fullscreen labs
-[ ] unjankify course schedule hardcoding
-
-Process
-[ ] online checkoff
-[ ] make adding new weeks easier
-
-DB
-[ ] do actual db backups
-[ ]   remove db from git history
-[ ]   make repo public again
+[ ] make repo public again
