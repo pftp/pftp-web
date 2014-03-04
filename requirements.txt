@@ -4,3 +4,4 @@ Fabric==1.6.1
 termcolor==1.1.0
 Flask-SQLAlchemy==0.16
 Flask-Security==1.6.4
+grequests==0.2.0

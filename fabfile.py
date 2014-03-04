@@ -4,11 +4,13 @@ import json
 import sqlite3
 import markdown
 import time
+import grequests
 from markdown.postprocessors import Postprocessor
 from termcolor import colored
 from random import randrange, random
 from datetime import datetime, timedelta
 from time import strftime
+
 
 from fabric.api import local, task, settings
 from fabric.operations import get, put
@@ -124,9 +126,13 @@ def run():
 #TODO send concurrent HEAD requests
 @task
 def wake_sites():
+  rs = []
   for user in User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal')):
     if user.website:
-      print "Waking " + user.website
+      rs.append(grequests.head(user.website))
+      print colored('Waking %s' % user.website, 'yellow')
+  grequests.map(rs)
+  print colored("%d sites awoken!" % len(rs), 'green')
 
 ############### Assignments Spring 2014 ###############
 
