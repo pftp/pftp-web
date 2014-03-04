@@ -53,7 +53,7 @@ Teacher Dashboard
         {% for grade in student.grades %}
         {% if grade.completed %}
 
-        <td>
+        <td sorttable_customkey="{{ grade.score / grade.points }}">
           {% if grade.score/grade.points > 0.7 %}
           <span class="badge badge-success">{{ grade.score }}/{{ grade.points }}</span>
           {% elif grade.score/grade.points > 0.4 %}
@@ -63,10 +63,10 @@ Teacher Dashboard
           {% endif %}
         </td>
         {% else %}
-        <td><span class="badge badge-info">N/A</span></td>
+        <td sorttable_customkey="-1"><span class="badge badge-info">N/A</span></td>
         {% endif %}
         {% endfor %}
-        <td>
+        <td sorttable_customkey="{{ student.total_score / student.total_points }}">
           {% if student.total_points != 0 %}
             {% if student.total_score/student.total_points > 0.7 %}
             <span class="badge badge-success">{{ student.total_score }}/{{ student.total_points }}</span>
