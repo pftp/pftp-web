@@ -40,15 +40,11 @@ var runit = function(code) {
 $(function() {
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'output';
-  editor = CodeMirror.fromTextArea(document.getElementById('code_area'), {
-    autofocus: true,
-    width: 500,
-    theme: 'cobalt',
-    lineNumbers: true,
-    indentUnit: 4,
-    mode: 'python',
-    extraKeys: {"Enter": false}
-  });
+
+  editor = ace.edit('admin_code');
+  editor.setTheme('ace/theme/monokai');
+  editor.getSession().setMode('ace/mode/python');
+
   $('#run_code').click(function(e) {
     var runObj, testObjs, correct,
     code = editor.getValue().replace(/\t/g, '    ');

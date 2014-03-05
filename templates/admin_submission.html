@@ -5,13 +5,10 @@ Admin Submission
 {% endblock %}
 
 {% block head %}
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/admin_submission.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/workspace.css')}}" />
 {% endblock %}
 
@@ -20,7 +17,7 @@ Admin Submission
   <div class="row">
     <div class="span6">
       <span id="program_title">{{ assignment.name}} for {{ user.firstname }} {{ user.lastname }}</span>
-      <textarea id="code_area" style="display:none;">{{ submission.code }}</textarea>
+      <pre id="admin_code">{{ submission.code }}</pre>
       <div id="run_container">
         <button id="run_code" class="btn btn-success">Run It!</button>
       </div>
