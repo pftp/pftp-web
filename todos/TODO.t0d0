@@ -2,6 +2,5 @@
 [ ] practice_progress shows attempts for problem where is_current=False
 [ ] fix login ui
 [ ] prettyprint for syntax highlighting
-[ ] replace codemirror with ace editor
 [ ] unjankify fullscreen labs
 [ ] make repo public again
