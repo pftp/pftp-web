@@ -77,19 +77,17 @@ $(function() {
   }
   Sk.canvas = 'turtle_canvas';
   Sk.pre = 'lab_output';
-  editor = CodeMirror.fromTextArea(document.getElementById('lab_code'), {
-    autofocus: true,
-    theme: 'cobalt',
-    lineNumbers: true,
-    indentUnit: 4,
-    mode: 'python',
-    extraKeys: {"Enter": false}
-  });
+
+  editor = ace.edit('lab_code');
+  editor.setTheme('ace/theme/monokai');
+  editor.getSession().setMode('ace/mode/python');
+
   $('#lab_run_code').click(function(e) {
     var code = editor.getValue().replace(/\t/g, '    ');
     $('#lab_output').text('');
     runit(code);
   });
+
   $('#next_section').click(function() {
     if (section < lab_content.length - 1) {
       section++;
@@ -97,6 +95,7 @@ $(function() {
       saveCode();
     }
   });
+
   $('#prev_section').click(function() {
     if (section > 0) {
       section--;
@@ -104,12 +103,15 @@ $(function() {
       saveCode();
     }
   });
+
   update(section, true);
+
   $('#save_canvas').click(function() {
     var uri = $('#turtle_canvas')[0].toDataURL();
     window.open(uri, '_blank');
   });
-  editor.on('change', function(cm, changeObj) {
+
+  editor.on('change', function(e) {
     $('#save_msg').text('Saving...');
     clearTimeout(saveTimer);
     saveTimer = setTimeout(saveCode, 1000);

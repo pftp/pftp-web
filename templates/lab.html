@@ -5,15 +5,11 @@ Lab {{ lab_id }}
 {% endblock %}
 
 {% block head %}
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lab/lab' ~ lab_id ~ '.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/lab.js')}}"></script>
-
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
 
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/workspace.css')}}" />
 <script type="text/javascript">
@@ -50,7 +46,7 @@ Lab {{ lab_id }}
           <button id="next_section" class="btn btn-primary btn-small">Next</button>
         </div>
         <div id="online_lab">
-          <textarea id="lab_code" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
+          <pre id="lab_code">{% if program %}{{ program.code }}{% endif %}</pre>
           <button id="lab_run_code" class="btn btn-success" style="margin: 10px 0;">Run It!</button>
           {% if current_user.is_authenticated() %}
           <span id="save_msg">All changes saved</span>
