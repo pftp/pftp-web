@@ -1266,8 +1266,12 @@ def calc_homework_grades(user_id):
   for sub in correct_subs:
     correct_dict[sub.problem_id] = sub
   for problem in homework_problems:
+    # Deal with UTC / PST time delta and daylight savings
+    tz_delta = datetime.timedelta(hours=8)
+    if problem.deadline >= datetime.datetime(2014, 3, 9, 2, 0, 0):
+      tz_delta = datetime.timedelta(hours=7)
     for template_id, sub in correct_dict.iteritems():
-      if problem.template_id == template_id and sub.submitted <= problem.deadline:
+      if problem.template_id == template_id and sub.submitted <= problem.deadline + tz_delta:
         homework_dict[problem.homework_id] += 1
         break
   for homework in homeworks:
