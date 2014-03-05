@@ -81,28 +81,27 @@ var submitCode = function(code) {
   });
 };
 $(function() {
-  var editor, got_hint = false;
+  var got_hint = false;
   // TODO Timeout if code takes more than 1 second to run
-  editor = CodeMirror.fromTextArea(document.getElementById('homework_code'), {
-    autofocus: true,
-    theme: 'cobalt',
-    lineNumbers: true,
-    indentUnit: 4,
-    mode: 'javascript',
-    extraKeys: {"Enter": false}
-  });
+  var editor = ace.edit('homework_code');
+  editor.setTheme('ace/theme/monokai');
+  editor.getSession().setMode('ace/mode/javascript');
+
   $('#homework_submit_code').click(function(e) {
     $('#homework_submit_code').prop('disabled', true);
     submitCode(editor.getValue());
   });
+
   $('#homework_run_code').click(function(e) {
     var runObj = runit(editor.getValue());
     $('#homework_output').text(runObj['output']);
   });
+
   // Fix bug where we cannot select text that is blocked by hidden modal
   $('.modal').on('show.bs.modal', function (e) {
     $('.modal').css('z-index', 1050);
   })
+
   $('.modal').on('hidden.bs.modal', function (e) {
     $('.modal').css('z-index', -1);
     $('#homework_submit_code').prop('disabled', false);

@@ -10,7 +10,7 @@
   float: right;
 }
 
-pre {
+.text {
   max-height: 500px;
   white-space: pre;
   word-wrap: normal;
@@ -30,4 +30,8 @@ pre {
 
 .modal {
   z-index: -1;
+}
+
+#homework_code {
+  height: 333px;
 }
