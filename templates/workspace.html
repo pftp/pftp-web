@@ -5,13 +5,10 @@ Workspace
 {% endblock %}
 
 {% block head %}
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/python/python.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/workspace.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/workspace.css')}}" />
 {% endblock %}
 
@@ -22,7 +19,7 @@ Workspace
     <div class="span6">
       {% if current_user.is_authenticated() %}<a href="/workspace/">back</a>{% endif %}
       <span id="program_title" role="button" data-toggle="tooltip" data-placement="bottom" title="Rename">{% if program %}{{ program.title }}{% else %}Untitled Program{% endif %}</span>
-      <textarea id="code_area" style="display:none;">{% if program %}{{ program.code }}{% endif %}</textarea>
+      <pre id="workspace_code">{% if program %}{{ program.code }}{% endif %}</pre>
       <div id="run_container">
         <button id="run_code" class="btn btn-success">Run It!</button>
         {% if current_user.has_role('admin') %}
