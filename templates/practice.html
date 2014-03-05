@@ -5,13 +5,10 @@
 {% endblock %}
 
 {% block head %}
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/lib/codemirror.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='lib/codemirror/mode/%s/%s.js' % (language, language))}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/practice_%s.js' % language)}}"></script>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/lib/codemirror.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='lib/codemirror/theme/cobalt.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice.css')}}" />
 {% endblock %}
 
@@ -33,7 +30,7 @@
   <div class="span8">
     <h3>{{problem.prompt |safe}}</h3>
     <span class="label label-info">{{ language|capitalize }}</span>
-    <textarea id="practice_code" style="display:none;"></textarea>
+    <pre id="practice_code"></pre>
     <div id="run_container">
       <button id="practice_run_code" class="btn btn-success left">Run It!</button>
       <a href="/practice_progress/{{ language }}" target="_blank" class="btn btn-success left" >See Progress</a>
@@ -41,7 +38,7 @@
       <a id="next_exercise" href="/practice/{{ language }}" class="btn btn-primary right" style="display:none;">Next Exercise</a>
     </div>
     <h4>Output:</h4>
-    <pre id="practice_output" class="output-pre"></pre>
+    <pre id="practice_output" class="text output-pre"></pre>
     <button id="show_hint" class="btn btn-small">Get hint</button>
     <div id="hint_wrapper" style="display:none;">
       <b>Hint:</b>
@@ -77,11 +74,11 @@
       <div class="modal-body">
         <div id="correct_output_container">
           <p>Here's your output:</p>
-          <pre id="correct_output" class="output-pre"></pre>
+          <pre id="correct_output" class="text output-pre"></pre>
         </div>
         <p>Here's our solution:</p>
         <div id="solution_container">
-          <pre id="solution" class="solution-pre"></pre>
+          <pre id="solution" class="text solution-pre"></pre>
         </div>
       </div>
       <div class="modal-footer">

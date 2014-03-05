@@ -107,41 +107,43 @@ var submitCode = function(editor, gotHint, gaveUp) {
   });
 }
 $(function() {
-  var editor, got_hint = false;
+  var got_hint = false;
   // TODO Timeout if code takes more than 1 second to run
-  editor = CodeMirror.fromTextArea(document.getElementById('practice_code'), {
-    autofocus: true,
-    theme: 'cobalt',
-    lineNumbers: true,
-    indentUnit: 4,
-    mode: 'javascript',
-    extraKeys: {"Enter": false}
-  });
+
+  var editor = ace.edit('practice_code');
+  editor.setTheme('ace/theme/monokai');
+  editor.getSession().setMode('ace/mode/javascript');
+
   $('#practice_run_code').click(function(e) {
     $('#practice_run_code').prop('disabled', true);
     $('#give_up').prop('disabled', true);
     submitCode(editor, got_hint, false);
   });
+
   $('#give_up').click(function(e) {
     $('#practice_run_code').prop('disabled', true);
     $('#give_up').prop('disabled', true);
     $('#give_up_modal').modal('show');
   });
+
   $('#give_up_confirm').click(function(e) {
     $('#practice_run_code').prop('disabled', true);
     $('#give_up').prop('disabled', true);
     submitCode(editor, got_hint, true);
   });
+
   $('#show_hint').click(function(e) {
     got_hint = true;
     $('#show_hint').hide();
     $('#hint_wrapper').show();
     $('#no_hint_yet').hide();
   });
+
   // Fix bug where we cannot select text that is blocked by hidden modal
   $('.modal').on('show.bs.modal', function (e) {
     $('.modal').css('z-index', 1050);
   })
+
   $('.modal').on('hidden.bs.modal', function (e) {
     $('.modal').css('z-index', -1);
     $('#practice_run_code').prop('disabled', false);
