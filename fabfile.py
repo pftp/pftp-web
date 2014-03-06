@@ -338,6 +338,51 @@ def add_quiz3():
   print colored('quiz 3 added to database', "green")
 
 @task
+def add_quiz4():
+  assignment = Assignment(name="Quiz 4", semester="sp14", href="/quiz/4/", description="", deadline=datetime(2014,3,5,18,59), points=3)
+  db.session.add(assignment)
+  db.session.commit()
+
+  quiz4 = Quiz(name="Week 4 Quiz", week=4, deadline=assignment.deadline, assignment_id=assignment.id)
+
+  question1 = QuizQuestion(question="Consider the following function definition:<br><br>var window = function(sill, pane) {<br>&nbsp;&nbsp;return sill * sill + pane;<br>};<br><br>What is the name of the function?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'window'}
+          , {'id': 'B', 'answer': 'sill'}
+          , {'id': 'C', 'answer': 'pane'}
+          , {'id': 'D', 'answer': 'anonymous'}
+          ])
+      , solution='A')
+
+  question2 = QuizQuestion(question="What are the parameters (also called arguments) of the above function?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'window'}
+          , {'id': 'B', 'answer': 'sill and pane'}
+          , {'id': 'C', 'answer': 'window, sill, and pane'}
+          , {'id': 'D', 'answer': 'return'}
+          ])
+      , solution='B')
+
+  question3 = QuizQuestion(question="Which of the following would print '23'?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'window(23);'}
+          , {'id': 'B', 'answer': 'window(4, 7);'}
+          , {'id': 'C', 'answer': 'window();'}
+          , {'id': 'D', 'answer': 'console.log(window(1, 1) + "3");'}
+          ])
+      , solution='D')
+
+  quiz4.questions.append(question1)
+  quiz4.questions.append(question2)
+  quiz4.questions.append(question3)
+  db.session.add(quiz4)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.commit()
+  print colored('quiz 4 added to database', "green")
+
+@task
 def grade_homework():
   students = User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal'))
   count = 0
