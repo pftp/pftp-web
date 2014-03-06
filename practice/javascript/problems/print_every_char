@@ -1,11 +1,16 @@
+### homework
+week 5
+day 2
+
 ### prompt
-Print out every character in "{{ str }}" using a while loop.
+Print out every character in "{{ str }}", each on a separate line. Hint: Use a
+loop. Look up the charAt() method.
 
 ### solution
 var sentence = "{{ str }}";
 var i = 0;
 while (i < sentence.length) {
-  console.log(sentence[i]);
+  console.log(sentence.charAt(i));
   i += 1;
 }
 

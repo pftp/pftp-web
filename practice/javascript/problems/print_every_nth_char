@@ -1,11 +1,16 @@
+### homework
+week 5
+day 3
+
 ### prompt
 Print out every {{ nth }} character of the string '{{ s }}', each on a separate
 line, starting with the first character.
 
 ### solution
 var str = '{{ s }}';
-for (var i = 0; i < str.length; i+={{ n }})
-  console.log(str[i]);
+for (var i = 0; i < str.length; i+={{ n }}) {
+  console.log(str.charAt(i));
+}
 
 ### test
 // pass

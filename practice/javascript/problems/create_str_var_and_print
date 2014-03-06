@@ -1,3 +1,7 @@
+### homework
+week 5
+day 1
+
 ### prompt
 Create a variable called {{ var_name }} and set the value of {{ var_name }} to be the string '{{ y }}'. Print out {{ var_name }}.
 ### solution

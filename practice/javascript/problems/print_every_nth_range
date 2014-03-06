@@ -1,5 +1,9 @@
+### homework
+week 5
+day 4
+
 ### prompt
-Print out every {{ nth }} number from {{ start }} to {{ end }} using a while loop.
+Print out every {{ nth }} number from {{ start }} to {{ end }}, inclusive.
 
 ### solution
 var i = {{ start }};

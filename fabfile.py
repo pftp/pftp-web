@@ -168,7 +168,7 @@ def add_quiz1_assignment():
   print colored('quiz 1 assignment added to database', "green")
 
 @task
-def add_homework_1():
+def add_homework1():
   assignment = Assignment(name="Homework 1", semester="sp14", href="/homework/calendar/", description="", deadline=datetime(2014,3,4,23,59), points=10)
   db.session.add(assignment)
   db.session.commit()
@@ -176,6 +176,16 @@ def add_homework_1():
   db.session.add(homework1)
   db.session.commit()
   print colored('homework 1 and assignment added to database', "green")
+
+@task
+def add_homework2():
+  assignment = Assignment(name="Homework 2", semester="sp14", href="/homework/calendar/", description="", deadline=datetime(2014,3,11,23,59), points=6)
+  db.session.add(assignment)
+  db.session.commit()
+  homework2 = Homework(week=5, deadline=assignment.deadline, assignment_id=assignment.id)
+  db.session.add(homework2)
+  db.session.commit()
+  print colored('homework 2 and assignment added to database', "green")
 
 ############### Quizzes Spring 2014 ###############
 
