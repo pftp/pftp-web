@@ -42,7 +42,7 @@ function lowercase_B(s) {
 </pre>
 
 ### gen_template_vars
-x = rand_letter()
+x = rand_letter().lower()
 ys = rand_string_list(20)
 for i, s in enumerate(ys):
   if random() < 0.5:
