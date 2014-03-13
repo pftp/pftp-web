@@ -425,6 +425,10 @@ def quiz_alpaca():
 def quiz_freedom():
   return quiz(4)
 
+@app.route('/quiz/banana/')
+def quiz_banana():
+  return quiz(5)
+
 @app.route('/quiz/toaster/submit/', methods=['POST'])
 @login_required
 def submit_quiz_toaster():
@@ -444,6 +448,11 @@ def submit_quiz_alpaca():
 @login_required
 def submit_quiz_freedom():
   return submit_quiz(4)
+
+@app.route('/quiz/banana/submit/', methods=['POST'])
+@login_required
+def submit_quiz_banana():
+  return submit_quiz(5)
 
 @app.route('/quiz/<int:quiz_week>/')
 def quiz(quiz_week):

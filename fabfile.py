@@ -392,6 +392,51 @@ def add_quiz4():
   db.session.commit()
   print colored('quiz 4 added to database', "green")
 
+
+@task
+def add_quiz5():
+  assignment = Assignment(name="Quiz 5", semester="sp14", href="/quiz/5/", description="", deadline=datetime(2014,3,12,18,59), points=3)
+  db.session.add(assignment)
+  db.session.commit()
+
+  quiz5 = Quiz(name="Week 5 Quiz", week=5, deadline=assignment.deadline, assignment_id=assignment.id)
+
+  question1 = QuizQuestion(question="Consider the following function definition:<br><br>var hotdogs = function(num) {<br>&nbsp;&nbsp;for (var i = 0; i <= num; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;console.log(i);<br>&nbsp;&nbsp}<br>};<br><br>What does the following code print?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'Nothing gets printed because the function is never called'}
+          , {'id': 'B', 'answer': 'Every number from 0 to num'}
+          , {'id': 'C', 'answer': '0 1 2 3 4 5 6'}
+          , {'id': 'D', 'answer': '0'}
+          ])
+      , solution='A')
+
+  question2 = QuizQuestion(question="Consider the following function definition:<br><br>var hotdogs = function(num) {<br>&nbsp;&nbsp;for (var i = 0; i <= num; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;console.log(i);<br>&nbsp;&nbsp}<br>};<br>hotdogs(10);<br><br>What does the following code print?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'Nothing gets printed because the function is never called'}
+          , {'id': 'B', 'answer': '0 1 2 3 4 5 6 7 8 9 10'}
+          , {'id': 'C', 'answer': '0 1 2 3 4 5 6 7 8 9'}
+          ])
+      , solution='B')
+
+  question3 = QuizQuestion(question="Consider the following function definition:<br><br>var hotdogs = function(num) {<br>&nbsp;&nbsp;for (var i = 0; i <= num; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;console.log(i);<br>&nbsp;&nbsp}<br>&nbsp;&nbsp;return num;<br>};<br>var x = hotdogs(3);<br>var y = hotdog(4);<br>console.log(x + y);<br>What does the following code print?",
+      answer_choices=json.dumps(
+          [ {'id': 'A', 'answer': 'Nothing gets printed because the function is never called'}
+          , {'id': 'B', 'answer': '0 1 2 3 0 1 2 3 4'}
+          , {'id': 'C', 'answer': '7'}
+          , {'id': 'D', 'answer': '0 1 2 3 0 1 2 3 4 7'}
+          ])
+      , solution='D')
+
+  quiz5.questions.append(question1)
+  quiz5.questions.append(question2)
+  quiz5.questions.append(question3)
+  db.session.add(quiz5)
+  db.session.add(question1)
+  db.session.add(question2)
+  db.session.add(question3)
+  db.session.commit()
+  print colored('quiz 5 added to database', "green")
+
 @task
 def grade_homework():
   students = User.query.filter(User.roles.any(Role.name == 'user'), User.roles.any(Role.name == 'decal'))
