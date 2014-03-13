@@ -1,8 +1,12 @@
+### homework
+week 6
+day 2
+
 ### prompt
 Write a function called compare_nums(x, y) that takes two integers x, y as arguments and returns true if and only if x {{ comp_op }} y.
 
 ### solution
-function compare_nums(x, y) {
+var compare_nums = function(x, y) {
   return x {{ comp_op }} y;
 }
 

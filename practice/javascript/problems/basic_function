@@ -1,9 +1,13 @@
+### homework
+week 6
+day 1
+
 ### prompt
 Create a function called first_function() that takes nothing as arguments and simply returns the number {{ x }}.
 ### solution
-function first_function() {
+var first_function = function() {
   return {{ x }};
-}
+};
 ### test
 console.log(first_function());
 ### hint

@@ -1,12 +1,16 @@
+### homework
+week 6
+day 3
+
 ### prompt
 Write a function called contains_{{ x }} that takes a string as an argument and
 returns true if and only if the string contains the character '{{ x }}'. Take
 capitalization into account.
 
 ### solution
-function contains_{{ x }}(s) {
+var contains_{{ x }} = function(s) {
   return s.indexOf('{{ x }}') != -1;
-}
+};
 
 ### test
 console.log(contains_{{ x }}(''));

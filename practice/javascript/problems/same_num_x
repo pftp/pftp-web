@@ -1,21 +1,25 @@
+### homework
+week 6
+day 6
+
 ### prompt
 Write a function called same_num_{{ x }} that takes two strings as arguments and
 returns true if and only if they have exactly the same number of the character
 "{{ x }}".
 
 ### solution
-function same_num_{{ x }}(a, b) {
+var same_num_{{ x }} = function(a, b) {
   var count = 0;
   for (var i = 0; i < a.length; i++) {
-    if (a[i] === '{{ x }}')
+    if (a.charAt(i) === '{{ x }}')
       count += 1;
   }
   for (var i = 0; i < b.length; i++) {
-    if (b[i] === '{{ x }}')
+    if (b.charAt(i) === '{{ x }}')
       count -= 1;
   }
   return count === 0;
-}
+};
 
 ### test
 console.log(same_num_{{ x }}('', ''));

@@ -187,6 +187,16 @@ def add_homework2():
   db.session.commit()
   print colored('homework 2 and assignment added to database', "green")
 
+@task
+def add_homework3():
+  assignment = Assignment(name="Homework 3", semester="sp14", href="/homework/calendar/", description="", deadline=datetime(2014,3,18,23,59), points=8)
+  db.session.add(assignment)
+  db.session.commit()
+  homework3 = Homework(week=6, deadline=assignment.deadline, assignment_id=assignment.id)
+  db.session.add(homework3)
+  db.session.commit()
+  print colored('homework 3 and assignment added to database', "green")
+
 ############### Quizzes Spring 2014 ###############
 
 @task

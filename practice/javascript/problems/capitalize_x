@@ -1,9 +1,14 @@
+### homework
+week 6
+day 5
+
 ### prompt
 Write a function called capitalize_{{ x }} that takes a string as its argument
-and returns a new version of it with every letter '{{ x }}' capitalized.
+and returns a new version of it with every letter '{{ x }}' capitalized. Hint:
+check out the toUpperCase function.
 
 ### solution
-function capitalize_{{ x }}(s) {
+var capitalize_{{ x }} = function(s) {
   var res = '';
   for (var i = 0; i < s.length; i++) {
     if (s[i] === '{{ x }}')
@@ -12,7 +17,7 @@ function capitalize_{{ x }}(s) {
       res += s[i];
   }
   return res;
-}
+};
 
 ### test
 console.log(capitalize_{{ x }}(''));

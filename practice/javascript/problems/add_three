@@ -1,11 +1,15 @@
+### homework
+week 6
+day 1
+
 ### prompt
 Write a function called add_three that takes three numbers as arguments and
 returns their sum.
 
 ### solution
-function add_three(x, y, z) {
+var add_three = function(x, y, z) {
   return x + y + z;
-}
+};
 
 ### test
 for (var i = -10; i < 10; i++) {

@@ -4,12 +4,12 @@ then returns '{{ y }}'. Call this function once to see what happens but don't
 print the result of calling it.
 
 ### solution
-function print_{{ x }}_return_{{ y }}() {
+var print_{{ x }}_return_{{ y }} = function() {
   console.log('{{ x }}');
   return '{{ y }}';
-}
+};
 
-print_{{ x }}_return_{{ y }}()
+print_{{ x }}_return_{{ y }}();
 
 ### test
 console.log(print_{{ x }}_return_{{ y }}());

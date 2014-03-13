@@ -1,12 +1,16 @@
+### homework
+week 6
+day 4
+
 ### prompt
-Write a function called get_{{ nth }}_char that takes a string as an argument and returns its {{ nth }} character. If the string is less than {{ n }} characters long, get_{{ nth }}_char should return null.
+Write a function called get_{{ nth }}_char that takes a string as an argument and returns its {{ nth }} character, counting from 1. If the string is less than {{ n }} characters long, get_{{ nth }}_char should return null. Hint: The str.charAt function counts from 0. Also, str.length gives the length of str
 
 ### solution
-function get_{{ nth }}_char(s) {
+var get_{{ nth }}_char = function(s) {
   if (s.length < {{ n }})
     return null;
-  return s[{{ n }}-1];
-}
+  return s.charAt({{ n }}-1);
+};
 
 ### test
 console.log(get_{{ nth }}_char(''));
