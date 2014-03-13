@@ -428,7 +428,7 @@ def add_quiz5():
           ])
       , solution='B')
 
-  question3 = QuizQuestion(question="Consider the following function definition:<br><br>var hotdogs = function(num) {<br>&nbsp;&nbsp;for (var i = 0; i <= num; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;console.log(i);<br>&nbsp;&nbsp}<br>&nbsp;&nbsp;return num;<br>};<br>var x = hotdogs(3);<br>var y = hotdog(4);<br>console.log(x + y);<br>What does the following code print?",
+  question3 = QuizQuestion(question="Consider the following function definition:<br><br>var hotdogs = function(num) {<br>&nbsp;&nbsp;for (var i = 0; i <= num; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;console.log(i);<br>&nbsp;&nbsp}<br>&nbsp;&nbsp;return num;<br>};<br>var x = hotdogs(3);<br>var y = hotdogs(4);<br>console.log(x + y);<br>What does the following code print?",
       answer_choices=json.dumps(
           [ {'id': 'A', 'answer': 'Nothing gets printed because the function is never called'}
           , {'id': 'B', 'answer': '0 1 2 3 0 1 2 3 4'}
