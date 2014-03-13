@@ -11,12 +11,14 @@ returns true if and only if they have exactly the same number of the character
 var same_num_{{ x }} = function(a, b) {
   var count = 0;
   for (var i = 0; i < a.length; i++) {
-    if (a.charAt(i) === '{{ x }}')
+    if (a.charAt(i) === '{{ x }}') {
       count += 1;
+    }
   }
   for (var i = 0; i < b.length; i++) {
-    if (b.charAt(i) === '{{ x }}')
+    if (b.charAt(i) === '{{ x }}') {
       count -= 1;
+    }
   }
   return count === 0;
 };
