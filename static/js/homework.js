@@ -2,9 +2,17 @@
 (function(){
   var nativeLog = console.log;
   console.log = function() {
+    var args, i;
     //record all log messages
     console._history = console._history || [];
-    var args = Array.prototype.slice.call(arguments);
+    args = Array.prototype.slice.call(arguments);
+    for (i = 0; i < args.length; i++) {
+      if (args[i] === null) {
+        args[i] = "null";
+      } else if (args[i] === undefined) {
+        args[i] = "undefined";
+      }
+    }
     console._history.push(args.join(" "));
     nativeLog.apply(console, arguments);
   };

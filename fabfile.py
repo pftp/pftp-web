@@ -708,6 +708,11 @@ def add_practice_problems(language):
         print colored("%s added to database." % template.problem_name, 'yellow')
         count_add += 1
         old_template.is_current = False
+        if old_template.is_homework:
+          homework_problem = HomeworkProblem.query.filter_by(template_id=old_template.id).first()
+          db.session.delete(homework_problem)
+          db.session.commit()
+          print colored("homework problem for old template %s deleted from database." % template.problem_name, 'red')
       else:
         # update template variables, hint if they have been modified
         # we don't need to readd our template in this case

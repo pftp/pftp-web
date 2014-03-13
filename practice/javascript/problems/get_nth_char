@@ -7,15 +7,19 @@ Write a function called get_{{ nth }}_char that takes a string as an argument an
 
 ### solution
 var get_{{ nth }}_char = function(s) {
-  if (s.length < {{ n }})
+  if (s.length < {{ n }}) {
     return null;
+  }
   return s.charAt({{ n }}-1);
 };
 
 ### test
 console.log(get_{{ nth }}_char(''));
-for (var s in {{ x }})
+var x = {{ x }};
+for (var i = 0; i < x.length; i++) {
+  var s = x[i];
   console.log(get_{{ nth }}_char(s));
+}
 
 ### hint
 Here's code for the get_first_char function which takes a string as
