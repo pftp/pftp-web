@@ -1,0 +1,25 @@
+body {
+  background-image: url("/static/img/code_banner.png");
+  background-size: cover;
+}
+
+.banner {
+  width: 100%;
+  margin: 0px;
+  padding-bottom: 50px;
+}
+
+.headline {
+  color: #DDDDDD;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+}
+
+.white {
+  border-top: 3px solid #666666;
+  background-color: #FFFFFF;
+}
+
+.long {
+  height: 300px;
+}

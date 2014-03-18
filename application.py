@@ -358,7 +358,10 @@ def register():
 ################################################################################
 @app.route('/')
 def index():
-  return redirect('/about/')
+  if not current_user.is_authenticated():
+    return render_template('index.html')
+  else:
+    return redirect('/about/')
 
 @app.route('/about/')
 def about():

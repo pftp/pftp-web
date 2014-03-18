@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+Programming: Feel the Power
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+<div>
+  <div>
+    <div class="container">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <center>
+        <h1 class="headline">Are You Ready to Feel the Power?</h1>
+        <br>
+        <h4 class="headline">
+          Start learning Python and Javascript today.
+        </h4>
+      </center>
+      <br>
+      <br>
+      <br>
+      <center>
+        <a href="/about" class="btn btn-large btn-success">Learn More!</a>
+        <div class="btn-group">
+          <a class="btn btn-large btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+            Start Practicing!
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/practice/python">Python</a></li>
+            <li><a href="/practice/javascript">Javascript</a></li>
+          </ul>
+        </div>
+      </center>
+      <br>
+      <br>
+      <br>
+    </div>
+  </div>
+
+  <div class="banner white long">
+    <div class="container">
+      <br>
+      <br>
+      <br>
+      <div class="row">
+        <div class="span4">
+          <center>
+            <h4>Embedded Editor</h4>
+          </center>
+          <img src="/static/img/editor.png"/>
+        </div>
+        <div class="span4">
+          <center>
+            <h4>Practice Problems</h4>
+          </center>
+          <img src="/static/img/practice.png"/>
+        </div>
+        <div class="span4">
+          <center>
+            <h4>Online Curriculum</h4>
+          </center>
+          <img src="/static/img/curriculum.png"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
