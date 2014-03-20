@@ -9,10 +9,32 @@ body {
   padding-bottom: 50px;
 }
 
+.heading {
+  margin-top: 0;
+  margin-bottom: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: block;
+  *zoom: 1;
+  text-align: center;
+}
+
+.footer {
+  height: 60px;
+  color: #DDDDDD;
+  background: rgba(0, 0, 0, 0.8);
+  padding-top: 30px;
+}
+
 .headline {
   color: #DDDDDD;
   background: rgba(0, 0, 0, 0.8);
-  padding: 10px;
+  padding: 20px;
+}
+
+.big {
+  font-size: 40px;
 }
 
 .white {
