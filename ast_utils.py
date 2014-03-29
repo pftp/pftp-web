@@ -94,4 +94,5 @@ if __name__ == '__main__':
   f = open(sys.argv[1])
   x = f.read()
   f.close()
-  print get_concepts(x)
+  languages = {'py': 1, 'js': 1}
+  print get_concepts(x, 1)
