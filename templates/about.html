@@ -11,51 +11,8 @@ About
 {% block content %}
 <div id="container">
   <div style="text-align: right; padding-right: 10px;">You can view the fall 2013 schedule <a href="/about/fa13">here</a></div>
-{% if weeks %}
-<div class="container">
-<h1> Class Calendar </h1>
-<table class="table table-bordered table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Week</th>
-      <th>Lessons</th>
-      <th>Lab</th>
-      <th>Assignment</th>
-      <th>Due date</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for week in weeks %}
-    <tr>
-      <td> {{ week.id }} </td>
-      <td>
-        {% for sublesson in week.lesson.sublessons %}
-        <a href="/lessons/{{ sublesson.link }}"> {{ sublesson.name }} </a>
-        <br>
-        {% endfor %}
-      </td>
-      <td>
-        {% if week.quiz is defined %}
-        <a href = "/quiz/{{ week.quiz.week }}">{{ week.quiz.name }} </a>
-        <br>
-        {% endif %}
-      </td>
-      <td>
-        <a href="/assignments/{{ week.assignment.id }}">{{ week.assignment.name }}</a><br>
-      </td>
-      <td>{{ week.assignment.deadline.strftime('%A, %B %d @ %I:%M%P') }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-</div>
-{% endif %}
   <center><h1> ARE YOU READY TO PROGRAM?</h1></center>
   <center><a id="play_power" class="btn btn-success">Yes</a> <a id="leave" class="btn btn-error">Nope</a></center>
-  <br>
-  <center>If you get a message "COMMIT FAILED" when trying to run <b>git commit</b>,</center>
-  <center>run <b>rm .git/hooks/pre-commit</b> from your myfirstwebsite folder.</center>
-  <center>After running this, you should be able to redo your commit and continue!.</center>
   <br>
   <div class="container">
     <h1>Cheat Sheets</h1>
@@ -64,70 +21,70 @@ About
   </div>
   <br>
   <div class="container">
-<h1> Class Calendar </h1>
-<table class="table table-bordered table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Week</th>
-      <th>Date</th>
-      <th>Lecture</th>
-      <th>Lab</th>
-      <th>Readings (by next week)</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>0</td>
-    <td>Feb. 5</td>
-    <td>None</td>
-    <td><a href="https://docs.google.com/document/d/1UE58pzsESo5HpXhCFmn52O9_EwbUes3g1yUo233D1Do/pub">Basic Express App</a></td>
-    <td><a href="http://eloquentjavascript.net/2nd_edition/preview/index.html" target="_blank">Eloquent Javascript, Introduction and Ch. 1</a></td>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Feb. 12</td>
-    <td><a href="https://docs.google.com/presentation/d/1Sd-2B3APk3GXxBRYRP_YrRzc9kzW-13diAwKIbEZxGo/pub?start=false&loop=false&delayms=3000#slide=id.gffd0c860_028">What is programming?</a></td>
-    <td><a href="https://docs.google.com/document/d/1RA0P097KZLwZp_zAB63HOQVCcE5z8W6p9osu3HjGjww/pub">Dancing Pocket Calculator</a></td>
-    <td><a href="http://eloquentjavascript.net/2nd_edition/preview/02_program_structure.html" target="_blank">EJ, Ch. 2 through "Conditional Execution"</a></td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Feb. 19</td>
-    <td><a href="https://docs.google.com/presentation/d/1xkHM7btPwCYcr1pF5bGjkInG838ob0yJwUVhQLQhmeQ/pub?start=false&loop=false&delayms=3000#slide=id.p">Terminal, HTML, JavaScript</a></td>
-    <td><a href="https://docs.google.com/document/d/1o6F2RB2XQt_nP-BX9DbUat8XfABUIvXlL3Be6F16HbI/pub">Javascript and jQuery Practice</a></td>
-    <td><a href="http://eloquentjavascript.net/2nd_edition/preview/02_program_structure.html" target="_blank">EJ, Complete Ch. 2</a></td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Feb. 26</td>
-    <td><a href="https://docs.google.com/presentation/d/1LUxsg2aqfAB9IyhoProEbehZapt5-oNl7ujFWZcx0G0/pub?start=false&loop=false&delayms=3000">JavaScript: Variables and If Statements</a></td>
-    <td><a href="https://docs.google.com/document/d/1eyk23B2Z_3ynF3_CH9y3vu8bCVJD3Z14kbA92VMDZcc/pub">Imgrr</a></td>
-    <td><a href="http://eloquentjavascript.net/2nd_edition/preview/03_functions.html" target="_blank">EJ, Ch. 3 through "Functions as Values"</a></td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Mar. 5</td>
-    <td><a href="https://docs.google.com/presentation/d/1f6n9_Y6Z-LljhQU_X--A64yYbVD_QQ1FAAr2rfD0DtU/pub?start=false&loop=false&delayms=3000">JavaScript Loops and HTML5 Canvas</a></td>
-    <td><a href="https://docs.google.com/document/d/12Ocl-oztW8L6ndK_n4kaj1hV8f3CIxyEKW5r_WbnetQ/pub">2D Graphics</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Mar. 12</td>
-    <td><a href="https://docs.google.com/presentation/d/1jr0oqVmbqhUSBgQMZBblrL2tbvCI-wNfieIc0Bz3Vq0/pub?start=false&loop=false&delayms=3000">Abstraction and Functions</a></td>
-    <td><a href="https://docs.google.com/document/d/1nQUQiXVhsCaqZyFNjTdJKyR5-xEOMwUG8VfPn-DoAgI/pub">Functions</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>Mar. 19</td>
-    <td><a href="https://docs.google.com/presentation/d/1lsTkcXrnyDmUqbSoHB4zWg_LiFnkwn7GhYZ5XD3s4k4/pub?start=false&loop=false&delayms=3000">Objects and Animation</a></td>
-    <td><a href="https://docs.google.com/document/d/1Mx19aLxAFTjNO-j-PuIppUt9KrFGn0DUf3KxM1Jla4M/pub">Objects and Game Mechanics</a></td>
-    <td><a href="http://eloquentjavascript.net/2nd_edition/preview/04_data.html" target="_blank">EJ, Ch. 4: Data Structures</a></td>
-  </tr>
-  </tbody>
-</table>
-</div>
+    <h1> Class Calendar </h1>
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Date</th>
+          <th>Lecture</th>
+          <th>Lab</th>
+          <th>Readings (by next week)</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>0</td>
+        <td>Feb. 5</td>
+        <td>None</td>
+        <td><a href="https://docs.google.com/document/d/1UE58pzsESo5HpXhCFmn52O9_EwbUes3g1yUo233D1Do/pub">Basic Express App</a></td>
+        <td><a href="http://eloquentjavascript.net/2nd_edition/preview/index.html" target="_blank">Eloquent Javascript, Introduction and Ch. 1</a></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Feb. 12</td>
+        <td><a href="https://docs.google.com/presentation/d/1Sd-2B3APk3GXxBRYRP_YrRzc9kzW-13diAwKIbEZxGo/pub?start=false&loop=false&delayms=3000#slide=id.gffd0c860_028">What is programming?</a></td>
+        <td><a href="https://docs.google.com/document/d/1RA0P097KZLwZp_zAB63HOQVCcE5z8W6p9osu3HjGjww/pub">Dancing Pocket Calculator</a></td>
+        <td><a href="http://eloquentjavascript.net/2nd_edition/preview/02_program_structure.html" target="_blank">EJ, Ch. 2 through "Conditional Execution"</a></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Feb. 19</td>
+        <td><a href="https://docs.google.com/presentation/d/1xkHM7btPwCYcr1pF5bGjkInG838ob0yJwUVhQLQhmeQ/pub?start=false&loop=false&delayms=3000#slide=id.p">Terminal, HTML, JavaScript</a></td>
+        <td><a href="https://docs.google.com/document/d/1o6F2RB2XQt_nP-BX9DbUat8XfABUIvXlL3Be6F16HbI/pub">Javascript and jQuery Practice</a></td>
+        <td><a href="http://eloquentjavascript.net/2nd_edition/preview/02_program_structure.html" target="_blank">EJ, Complete Ch. 2</a></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Feb. 26</td>
+        <td><a href="https://docs.google.com/presentation/d/1LUxsg2aqfAB9IyhoProEbehZapt5-oNl7ujFWZcx0G0/pub?start=false&loop=false&delayms=3000">JavaScript: Variables and If Statements</a></td>
+        <td><a href="https://docs.google.com/document/d/1eyk23B2Z_3ynF3_CH9y3vu8bCVJD3Z14kbA92VMDZcc/pub">Imgrr</a></td>
+        <td><a href="http://eloquentjavascript.net/2nd_edition/preview/03_functions.html" target="_blank">EJ, Ch. 3 through "Functions as Values"</a></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Mar. 5</td>
+        <td><a href="https://docs.google.com/presentation/d/1f6n9_Y6Z-LljhQU_X--A64yYbVD_QQ1FAAr2rfD0DtU/pub?start=false&loop=false&delayms=3000">JavaScript Loops and HTML5 Canvas</a></td>
+        <td><a href="https://docs.google.com/document/d/12Ocl-oztW8L6ndK_n4kaj1hV8f3CIxyEKW5r_WbnetQ/pub">2D Graphics</a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Mar. 12</td>
+        <td><a href="https://docs.google.com/presentation/d/1jr0oqVmbqhUSBgQMZBblrL2tbvCI-wNfieIc0Bz3Vq0/pub?start=false&loop=false&delayms=3000">Abstraction and Functions</a></td>
+        <td><a href="https://docs.google.com/document/d/1nQUQiXVhsCaqZyFNjTdJKyR5-xEOMwUG8VfPn-DoAgI/pub">Functions</a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Mar. 19</td>
+        <td><a href="https://docs.google.com/presentation/d/1lsTkcXrnyDmUqbSoHB4zWg_LiFnkwn7GhYZ5XD3s4k4/pub?start=false&loop=false&delayms=3000">Objects and Animation</a></td>
+        <td><a href="https://docs.google.com/document/d/1Mx19aLxAFTjNO-j-PuIppUt9KrFGn0DUf3KxM1Jla4M/pub">Objects and Game Mechanics</a></td>
+        <td><a href="http://eloquentjavascript.net/2nd_edition/preview/04_data.html" target="_blank">EJ, Ch. 4: Data Structures</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
   <script>
     $('#play_power').click(function() {
       $('#i_got_the_power')[0].play();
