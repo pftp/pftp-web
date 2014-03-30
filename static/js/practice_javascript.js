@@ -40,7 +40,7 @@ var submitCode = function(editor, gotHint, gaveUp) {
   result_test_error = false;
   startTime = $('#start_time').text().trim();
 
-  $('#practice_output').text('');
+  $('#output').text('');
   runObj = runit(code);
   if (runObj['output'] !== undefined) {
     result_no_test += runObj['output'];
@@ -50,7 +50,7 @@ var submitCode = function(editor, gotHint, gaveUp) {
     result_no_test_error = true;
   }
   if (!gaveUp) {
-    $('#practice_output').text(result_no_test);
+    $('#output').text(result_no_test);
     if (result_no_test !== '') {
       $('#correct_output').text(result_no_test);
       $('#correct_output_container').show();
@@ -110,7 +110,7 @@ $(function() {
   var got_hint = false;
   // TODO Timeout if code takes more than 1 second to run
 
-  var editor = ace.edit('practice_code');
+  var editor = ace.edit('editor');
   editor.setTheme('ace/theme/monokai');
   editor.getSession().setMode('ace/mode/javascript');
 

@@ -49,7 +49,7 @@ var submitCode = function(code) {
 
   runObj = runit(code);
   testObj = runit(code + '\n' + test_code);
-  $('#homework_output').text(runObj['output']);
+  $('#output').text(runObj['output']);
   if (runObj['output'] !== '') {
     $('#correct_output').text(runObj['output']);
     $('#correct_output_container').show();
@@ -91,7 +91,7 @@ var submitCode = function(code) {
 $(function() {
   var got_hint = false;
   // TODO Timeout if code takes more than 1 second to run
-  var editor = ace.edit('homework_code');
+  var editor = ace.edit('editor');
   editor.setTheme('ace/theme/monokai');
   editor.getSession().setMode('ace/mode/javascript');
 
@@ -102,7 +102,7 @@ $(function() {
 
   $('#homework_run_code').click(function(e) {
     var runObj = runit(editor.getValue());
-    $('#homework_output').text(runObj['output']);
+    $('#output').text(runObj['output']);
   });
 
   // Fix bug where we cannot select text that is blocked by hidden modal
