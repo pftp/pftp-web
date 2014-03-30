@@ -1,47 +1,46 @@
-{% extends "base.html" %}
+{% extends "ace_base.html" %}
 
 {% block title %}
 {{ language|capitalize }} Homework
 {% endblock %}
 
-{% block head %}
+{% block ace_head %}
 <script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/homework.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/homework.css')}}" />
 {% endblock %}
 
-{% block content %}
-<div class="row-fluid all">
-  <div class="span2"></div>
-  <div class="span8">
-    <h3>{{problem.prompt |safe}}</h3>
-    <h5>Deadline: {{homework.deadline}}</h5>
-    <span class="label label-info">{{ language|capitalize }}</span>
-    <pre id="homework_code"></pre>
-    <div id="run_container">
-      <button id="homework_run_code" class="btn btn-success left">Run It!</button>
-      <button id="homework_submit_code" class="btn btn-success left">Submit It!</button>
-      <a id="next_problem" href="/homework/" class="btn btn-primary right" style="display:none;">Next Problem</a>
-    </div>
-    <h4>Output:</h4>
-    <pre id="homework_output" class="text output-pre"></pre>
+{% block ace_title %}
+  <h3>{{problem.prompt |safe}}</h3>
+  <h5>Deadline: {{homework.deadline}}</h5>
+  <span class="label label-info">{{ language|capitalize }}</span>
+{% endblock %}
+
+{% block ace_buttons %}
+  <button id="homework_run_code" class="btn btn-success left">Run It!</button>
+  <button id="homework_submit_code" class="btn btn-success left">Submit It!</button>
+  <a id="next_problem" href="/homework/" class="btn btn-primary right" style="display:none;">Next Problem</a>
+{% endblock %}
+
+{% block ace_template_data %}
+  <div id="problem_name" style="display:none;">
+    {{problem.problem_name}}
   </div>
-</div>
-<div id="problem_name" style="display:none;">
-  {{problem.problem_name}}
-</div>
-<div id="template_vars" style="display:none;">
-  {{problem.template_vars}}
-</div>
-<div id="test_cases" style="display:none;">
-  {{problem.test}}
-</div>
-<div id="concept_names" style="display:none;">
-  {{problem.concept_names}}
-</div>
-<div id="start_time" style="display:none;">
-  {{problem.start_time}}
-</div>
+  <div id="template_vars" style="display:none;">
+    {{problem.template_vars}}
+  </div>
+  <div id="test_cases" style="display:none;">
+    {{problem.test}}
+  </div>
+  <div id="concept_names" style="display:none;">
+    {{problem.concept_names}}
+  </div>
+  <div id="start_time" style="display:none;">
+    {{problem.start_time}}
+  </div>
+{% endblock %}
+
+{% block ace_correct_modal %}
 <div id="correct_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -66,6 +65,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block ace_error_modal %}
 <div id="error_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -82,6 +84,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block ace_incorrect_modal %}
 <div id="incorrect_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
+  {% block ace_head %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+  <div class="row-fluid all">
+    <div class="span2">
+      {% block ace_sidebar %}{% endblock %}
+    </div>
+    <div class="span8">
+      {% block ace_title %}{% endblock %}
+      <pre id="editor"></pre>
+      <div id="run_container">
+        {% block ace_buttons %}{% endblock %}
+      </div>
+      <h4>Output:</h4>
+      <pre id="output" class="text output-pre"></pre>
+      {% block ace_hint %}{% endblock %}
+    </div>
+  </div>
+  
+  <div style="display:none">
+    {% block ace_template_data %}{% endblock %}
+  </div>
+  
+  <div id="ace_modals">
+    {% block ace_correct_modal %}{% endblock %}
+    {% block ace_error_modal %}{% endblock %}
+    {% block ace_incorrect_modal %}{% endblock %}
+    {% block ace_give_up_modal %}{% endblock %}
+  </div>
+{% endblock %}
