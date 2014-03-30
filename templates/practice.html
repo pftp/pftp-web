@@ -1,21 +1,19 @@
-{% extends "base.html" %}
+{% extends "ace_base.html" %}
 
 {% block title %}
 {{ language|capitalize }} Practice
 {% endblock %}
 
-{% block head %}
-<script type="text/javascript" src="{{url_for('static', filename='lib/ace/ace.js') }}"></script>
+{% block ace_head %}
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='lib/skulpt/dist/skulpt-stdlib.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/practice_%s.js' % language)}}"></script>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/practice.css')}}" />
 {% endblock %}
 
-{% block content %}
-<div class="row-fluid all">
+{% block ace_sidebar %}
   {% if new_concepts|length > 0 %}
-  <div id="sidebar" class="span2">
+  <div id="sidebar">
     <h4>New Concepts!</h4>
     <h5>Click to learn more:</h5>
     <ul>
@@ -24,46 +22,51 @@
       {% endfor %}
     </ul>
   </div>
-  {% else %}
-  <div class="span2"></div>
   {% endif %}
-  <div class="span8">
-    <h3>{{problem.prompt |safe}}</h3>
-    <span class="label label-info">{{ language|capitalize }}</span>
-    <pre id="practice_code"></pre>
-    <div id="run_container">
-      <button id="practice_run_code" class="btn btn-success left">Run It!</button>
-      <a href="/practice_progress/{{ language }}" target="_blank" class="btn btn-success left" >See Progress</a>
-      <button id="give_up" class="btn btn-success right">Give Up</button>
-      <a id="next_exercise" href="/practice/{{ language }}" class="btn btn-primary right" style="display:none;">Next Exercise</a>
-    </div>
-    <h4>Output:</h4>
-    <pre id="practice_output" class="text output-pre"></pre>
-    <button id="show_hint" class="btn btn-small">Get hint</button>
-    <div id="hint_wrapper" style="display:none;">
-      <b>Hint:</b>
-      <div id="hint">{{problem.hint |safe}}</div>
-      <b>Relevant concepts:</b>
-      <ul>
-        {% for concept_name, display_name in concepts %}
-        <li><a href="/concept/{{ language }}/{{concept_name}}" target="_blank">{{display_name}}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
+{% endblock %}
+
+{% block ace_title %}
+  <h3>{{problem.prompt |safe}}</h3>
+  <span class="label label-info">{{ language|capitalize }}</span>
+{% endblock %}
+
+{% block ace_buttons %}
+  <button id="practice_run_code" class="btn btn-success left">Run It!</button>
+  <a href="/practice_progress/{{ language }}" target="_blank" class="btn btn-success left" >See Progress</a>
+  <button id="give_up" class="btn btn-success right">Give Up</button>
+  <a id="next_exercise" href="/practice/{{ language }}" class="btn btn-primary right" style="display:none;">Next Exercise</a>
+{% endblock %}
+
+{% block ace_hint %}
+  <button id="show_hint" class="btn btn-small">Get hint</button>
+  <div id="hint_wrapper" style="display:none;">
+    <b>Hint:</b>
+    <div id="hint">{{problem.hint |safe}}</div>
+    <b>Relevant concepts:</b>
+    <ul>
+      {% for concept_name, display_name in concepts %}
+      <li><a href="/concept/{{ language }}/{{concept_name}}" target="_blank">{{display_name}}</a></li>
+      {% endfor %}
+    </ul>
   </div>
-</div>
-<div id="template_vars" style="display:none;">
-  {{problem.template_vars}}
-</div>
-<div id="test_cases" style="display:none;">
-  {{problem.test}}
-</div>
-<div id="concept_names" style="display:none;">
-  {{problem.concept_names}}
-</div>
-<div id="start_time" style="display:none;">
-  {{problem.start_time}}
-</div>
+{% endblock %}
+
+{% block ace_template_data %}
+  <div id="template_vars" style="display:none;">
+    {{problem.template_vars}}
+  </div>
+  <div id="test_cases" style="display:none;">
+    {{problem.test}}
+  </div>
+  <div id="concept_names" style="display:none;">
+    {{problem.concept_names}}
+  </div>
+  <div id="start_time" style="display:none;">
+    {{problem.start_time}}
+  </div>
+{% endblock %}
+
+{% block ace_correct_modal %}
 <div id="correct_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -88,6 +91,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block ace_error_modal %}
 <div id="error_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -104,6 +110,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block ace_incorrect_modal %}
 <div id="incorrect_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -125,6 +134,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block ace_give_up_modal %}
 <div id="give_up_modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
