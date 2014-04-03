@@ -3,11 +3,12 @@ week 7
 day 1
 
 ### prompt
-Create a variable called {{ var_name }} and set the value of {{ var_name }} to be the array {{ y }}.
+Create a variable called {{ var_name }} and set the value of {{ var_name }} to be the array {{ y }}. Then print out the 1st and 3rd elements on separate lines.
 ### solution
 var {{ var_name }} = {{ y }};
+console.log({{ var_name }}[0]);
+console.log({{ var_name }}[2]);
 ### test
-console.log({{ var_name }});
 
 ### hint
 The syntax to create a variable called num_kittens and set the value of num_kittens to be 5 is

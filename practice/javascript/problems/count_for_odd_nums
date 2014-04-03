@@ -1,6 +1,6 @@
 ### homework
 week 7
-day 5
+day 6
 
 ### prompt
 Create a function count_odd(nums) which returns the number of odd values in nums using a for loop.

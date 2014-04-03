@@ -1,17 +1,17 @@
 ### homework
 week 7
-day 2
+day 3
 
 ### prompt
-Create the following array and print it out: {{ x }}.
-Then, append "{{ y }}" and "{{ z }}" to it and print it out again.
+Create the following array and print out the last value: {{ x }}.
+Then, append "{{ y }}" and "{{ z }}" to it and print out the last value again.
 
 ### solution
 var x = {{ x }};
-console.log(x);
+console.log(x[x.length-1]);
 x.push("{{ y }}");
 x.push("{{ z }}");
-console.log(x);
+console.log(x[x.length-1]);
 
 ### test
 // pass
