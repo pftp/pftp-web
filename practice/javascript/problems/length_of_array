@@ -1,3 +1,7 @@
+### homework
+week 7
+day 2
+
 ### prompt
 Create a function called length_of_array(array) that takes in a array and returns the number of elements in the array. Then verify that your function works by executing "console.log(length_of_array({{ random_list }}));"
 

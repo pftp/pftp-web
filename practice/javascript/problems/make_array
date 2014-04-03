@@ -1,3 +1,7 @@
+### homework
+week 7
+day 2
+
 ### prompt
 Create the following array and print it out: {{ x }}.
 Then, append "{{ y }}" and "{{ z }}" to it and print it out again.

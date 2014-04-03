@@ -1,3 +1,7 @@
+### homework
+week 7
+day 5
+
 ### prompt
 Create a function count(words) which returns the number of values in the array words which are equal to "{{ value }}" using a for loop.
 

@@ -1,3 +1,7 @@
+### homework
+week 7
+day 4
+
 ### prompt
 Create a function called multiply_array(array) that takes in a array of integers and returns the product of the array. Then verify that your function works by executing "console.log(multiply_array({{ random_list }}));".
 
