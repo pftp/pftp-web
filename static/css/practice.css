@@ -5,36 +5,6 @@
   border: 1px solid goldenrod;
 }
 
-#run_container {
-  margin: 10px 0;
-}
-
-.left {
-  margin: 0px 5px 0px 0px;
-}
-
-.right {
-  float: right;
-}
-
-.text {
-  max-height: 500px;
-  white-space: pre;
-  word-wrap: normal;
-  overflow: auto;
-}
-
-.solution-pre {
-  font-weight: 700;
-  color: #444;
-}
-
-.output-pre {
-  font-weight: 700;
-  color: #444;
-  max-height: 150px;
-}
-
 #hint_wrapper ul {
   margin: 0 0 20px 0;
 }
@@ -42,12 +12,4 @@
 #hint_wrapper ul li {
   display: inline-block;
   padding: 0px 20px 0px 0px;
-}
-
-.modal {
-  z-index: -1;
-}
-
-#editor {
-  height: 333px;
 }
