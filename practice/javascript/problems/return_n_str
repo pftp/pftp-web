@@ -2,7 +2,7 @@
 Write a function called return_n_{{ x }} that takes an integer as its argument
 and returns a string that is made up of the word "{{ x }}" repeated that many
 times, separated by spaces. For example, return_n_{{ x }}(4) should return
-"{{ x }} {{ x }} {{ x }} {{ x }} {{ x }}".
+"{{ x }} {{ x }} {{ x }} {{ x }}".
 
 ### solution
 function return_n_{{ x }}(n) {
