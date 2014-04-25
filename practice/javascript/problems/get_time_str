@@ -5,12 +5,12 @@ seconds", where x, y, and z are integers. For example, get_time_str(5000) should
 return "1 hours, 23 minutes, 20 seconds".
 
 ### solution
-function get_time_str(s) {
-  var hours = s / 3600;
-  var minutes = (s - (3600 * hours)) / 60;
+var get_time_str = function(s) {
+  var hours = Math.floor(s / 3600);
+  var minutes = Math.floor((s - 3600 * hours) / 60);
   var seconds = s - (3600 * hours) - (60 * minutes);
   return hours + ' hours, ' + minutes + ' minutes, ' + seconds + ' seconds';
-}
+};
 
 ### test
 console.log(get_time_str(0));
