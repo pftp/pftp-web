@@ -1,5 +1,22 @@
 The main site for the Programming: Feel the Power DeCal.
 
+## Setup
+You will need
+ * Python 2.7
+ * setuptools
+ * Pip
+ * Node.js
+
+Install Python dependencies with
+```bash
+pip install -r requirements.txt
+```
+and Node.js dependencies
+```bash
+npm install reflect
+npm install ast-traverse
+```
+
 ## Building
 ```bash
 fab build
@@ -9,13 +26,6 @@ fab build
 ```bash
 fab
 ```
-
-## Dependencies
-Install from requirements.txt:
-```python
-pip install -r requirements.txt
-```
-
 git submodule init
 git submodule update
 
