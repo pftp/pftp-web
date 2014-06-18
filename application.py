@@ -544,7 +544,10 @@ def lab(lab_id):
   return render_template('lab.html', lab_id=lab_id, section=section)
 
 def get_user_progress(user_id, language_id):
-  all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id).all()
+  if user_id > 0:
+    all_subs = PracticeProblemSubmission.query.filter_by(user_id=user_id, language_id=language_id).all()
+  else:
+    all_subs = PracticeProblemSubmission.query.filter_by(language_id=language_id).all()
   attempted_probs = {}
   for sub in all_subs:
     # Id submissions by their id as well as the time the student started working
@@ -666,7 +669,6 @@ def get_next_problem(user_id, language_id):
   return next_prob_name
 
 @app.route('/concept/<language>/<concept_name>/')
-@login_required
 def concept_explanation(language, concept_name):
   if language not in language_map:
     return redirect('/practice_progress/')
@@ -737,11 +739,13 @@ def practice_progress_by_user_id(user_id, language_id, admin=False):
   return render_template('practice_progress.html', mastered_problems=mastered_problems, mastered_percent=mastered_percent, concept_progress=display_concept_progress, name=user.firstname + ' ' + user.lastname, attempts = attempts, admin=admin, user_id=user_id, language=language)
 
 @app.route('/practice/<language>/')
-@login_required
 def practice_default(language):
   if language not in language_map:
     return redirect('/')
-  next_problem_name = get_next_problem(current_user.id, language_map[language])
+  if current_user.is_authenticated():
+    next_problem_name = get_next_problem(current_user.id, language_map[language])
+  else:
+    next_problem_name = get_next_problem(-1, language_map[language])
   return redirect('/practice/%s/%s/' % (language, next_problem_name))
 
 @app.route('/homework/')
@@ -822,10 +826,7 @@ def homework_prob(problem_id):
   return render_template('homework.html', problem=problem, homework=homework_problem)
 
 @app.route('/practice/<language>/<problem_name>/')
-@login_required
 def practice(language, problem_name):
-  if not current_user.is_authenticated():
-    return render_template('message.html', message='You need to log in first')
   if language not in language_map:
     return redirect('/')
   language_id = language_map[language]
@@ -856,13 +857,22 @@ def practice(language, problem_name):
     # Get a list of new concepts, if there are any. This is extremely
     # inefficient because we already queried all the user's submissions to
     # figure out which problem to serve next
-    all_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id).all()
-    seen_concept_names = sets.Set()
-    for sub in all_subs:
-      if sub.correct:
-        for concept in sub.concepts.all():
-          seen_concept_names.add(concept.name)
     new_concepts = []
+    seen_concept_names = sets.Set()
+
+    if current_user.is_authenticated():
+      all_subs = PracticeProblemSubmission.query.filter_by(user_id=current_user.id, language_id=language_id).all()
+      for sub in all_subs:
+        if sub.correct:
+          for concept in sub.concepts.all():
+            seen_concept_names.add(concept.name)
+    else:
+      templates = PracticeProblemTemplate.query.filter_by(problem_name=problem_name).all()
+      if templates and len(templates) > 0:
+        concepts = templates[0].concepts
+      else:
+        concepts = []
+
     for concept in concepts:
       if concept.name not in seen_concept_names:
         new_concepts.append((concept.name, concept.display_name))
@@ -985,7 +995,6 @@ def same_output(x, y):
   return True
 
 @app.route('/practice/<language>/<problem_name>/submit/', methods=['POST'])
-@login_required
 def submit_practice(language, problem_name):
   if language not in language_map:
     return 'error'
@@ -1013,9 +1022,10 @@ def submit_practice(language, problem_name):
   problem['template_vars'] = template_vars
   problem = utils.get_problem(problem, language_id)
   correct = same_output(problem['expected_test'], result_test) and same_output(problem['expected_no_test'], result_no_test)
-  submission = PracticeProblemSubmission(problem_id=problem['id'], language_id=language_id, user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
-  db.session.add(submission)
-  db.session.commit()
+  if current_user.is_authenticated():
+    submission = PracticeProblemSubmission(problem_id=problem['id'], language_id=language_id, user_id=current_user.id, code=code, result_test=result_test, result_no_test=result_no_test, result_test_error=result_test_error, result_no_test_error=result_no_test_error, got_hint=got_hint, gave_up=gave_up, correct=correct, started=start_time, submitted=submit_time, template_vars=problem['template_vars'], concepts=concepts)
+    db.session.add(submission)
+    db.session.commit()
   return_data = {}
   if correct:
     return_data['correct'] = 'correct'
