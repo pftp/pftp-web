@@ -79,7 +79,7 @@ def console():
 
 @task
 def pulldb():
-  get('pftp/pftp_prod.db', 'pftp_prod.db')
+  get('pftp/pftp.db', 'pftp.db')
 
 @task
 def pushdb():
@@ -97,7 +97,7 @@ def backup():
   local('service apache2 restart')
 
   #db is safe, now perform backup
-  local('cp pftp_prod.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
+  local('cp pftp.db backups/%s.db' % strftime('%Y-%m-%d_%H:%M:%S'))
   #limit number of backups
   local('bash backups/clean_backups.sh')
 
