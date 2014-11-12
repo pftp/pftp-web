@@ -18,6 +18,7 @@ from fabric.operations import get, put
 from application_config import app, db
 from application import Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem, QuizResponse, calc_homework_grades
 from common_models import Role, User, user_datastore
+from wiki import School, Topic, DiscussionPost, DiscussionResponse, Comment, Subject, Course, TopicToSubject, TopicTree, ContentToTopic, TopicToCourse
 import utils, ast_utils
 from emailer import Emailer
 
