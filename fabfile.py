@@ -15,7 +15,9 @@ from time import strftime
 from fabric.api import local, task, settings
 from fabric.operations import get, put
 
-from application import app, db, user_datastore, Role, User, Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem, QuizResponse, calc_homework_grades
+from application_config import app, db
+from application import Assignment, Grade, Lesson, Sublesson, Week, Quiz, QuizQuestion, PracticeProblemTemplate, PracticeProblemConcept, Language, get_next_problem, Quiz, Homework, HomeworkProblem, QuizResponse, calc_homework_grades
+from common_models import Role, User, user_datastore
 import utils, ast_utils
 from emailer import Emailer
 
